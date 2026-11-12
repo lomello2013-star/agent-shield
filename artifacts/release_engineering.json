@@ -1,0 +1,27 @@
+{
+  "generated_at": "2026-11-12T23:37:40.782544+00:00",
+  "commit": "b124e59",
+  "files_committed": 416,
+  "git_status": "clean",
+  "excluded": [
+    ".gitignore: secrets/",
+    "artifacts/_stdout",
+    "artifacts/_tmp",
+    "rust/target",
+    "spikes/artifacts/data",
+    "*.npz"
+  ],
+  "editable_install": {
+    "command": "pip install -e .[dev] --no-deps",
+    "ok": true,
+    "import": "core,schemas"
+  },
+  "ci": ".github/workflows/ci.yml (not connected to a runner)",
+  "missing": [
+    "installer/service",
+    "rules/models wheel data",
+    "production lockfile",
+    "CI runner",
+    "docs/status.md NUL fix"
+  ]
+}

@@ -2204,6 +2204,32 @@ Verify 20 000 записей: полный **221,95 мс**; инкремента
 
 ---
 
+## [2026-11-13 02:30] Release engineering — baseline: git, packaging, CI, checklist [code]
+
+**Действие**: заложен релизный контур. Инициализирован git (`main`), создан baseline-коммит; добавлены `.gitignore`, `README.md`, `LICENSE` (proprietary placeholder), `SECURITY.md`, `CHANGELOG.md`, `pyproject.toml` с build-system/extras, `requirements.lock`, GitHub Actions (Windows: pytest + Rust test/clippy), `docs/release-checklist.md`.
+**Файлы**: `.gitignore`, `README.md`, `LICENSE`, `SECURITY.md`, `CHANGELOG.md`, `pyproject.toml`, `requirements.lock`, `.github/workflows/ci.yml`, `docs/release-checklist.md`.
+**Числа**:
+| Проверка | Результат |
+|---|---|
+| Git baseline | commit `b124e59`, 416 файлов, `git status` чистый |
+| Исключено | `secrets/`, `artifacts/_stdout`, `artifacts/_tmp`, `rust/target`, `spikes/artifacts/data` (5 ГБ), `*.npz` (~670 МБ) |
+| Editable install | `pip install -e ".[dev]" --no-deps` — успешно; `import core, schemas` — ok |
+| CI workflow | добавлен; раннер ещё не подключён |
+| Installer/service | **не сделаны** |
+
+**Результат**: репозиторий и упаковочный скелет есть; секреты и тяжёлые данные не попадают в git. Release checklist фиксирует 7 групп готовности и открытые блокеры A–D, F11, E7/E12.
+**Вердикт: release-engineering baseline — да; production-релиз — нет.** Нет installer/service, полной упаковки `rules/`/`models/`, CI-раннера и production-lockfile.
+**Decision**: дальше — installer/service и упаковка данных после стабилизации F11; CI подключить к реальному remote.
+**Найденные дефекты**: 1) `rules/` и `models/` не входят в wheel; 2) `models/registry.json` содержит абсолютные пути; 3) `docs/status.md` всё ещё с NUL; 4) `LICENSE` — placeholder, владелец должен утвердить.
+**Ограничения (честно)**: baseline не заменяет приёмку; `pip install` проверен только editable + `--no-deps`; CI не запускался на runner.
+**Проверка**: `git log --oneline` → `b124e59`; `pip install -e ".[dev]" --no-deps`; `python -c "import core, schemas"`; `git check-ignore secrets/dev_keys.json`.
+**Статус**: baseline done; release blocked by product gates
+**Auto_review**: pending (изоляция невалидна: reviewer_model == author_model)
+**Actor**: agent
+**Run_id**: release-engineering-2026-11-13
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,
