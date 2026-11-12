@@ -1,0 +1,21 @@
+{
+  "gate": {
+    "alerts": 1,
+    "events": 100000,
+    "events_per_s": 2181543.704,
+    "seconds": 0.0458391
+  },
+  "ingest": {
+    "drained": 100000,
+    "events": 100000,
+    "ledger_ok": true,
+    "submit_s": 0.0292355,
+    "total_s": 0.0445184
+  },
+  "profile": "release",
+  "rules": {
+    "events": 10000,
+    "events_per_s": 24034.354,
+    "seconds": 0.4160711
+  }
+}

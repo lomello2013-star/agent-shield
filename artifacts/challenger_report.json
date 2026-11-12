@@ -1,0 +1,32 @@
+{
+  "rows": 5000,
+  "v1": {
+    "threshold": 0.740246,
+    "tp": 2181,
+    "fp": 26,
+    "tpr": 0.8759,
+    "fpr": 0.01036
+  },
+  "v2": {
+    "threshold": 0.730393,
+    "tp": 2246,
+    "fp": 26,
+    "tpr": 0.902,
+    "fpr": 0.01036
+  },
+  "v2_minus_v1_tpr_pp": 2.61,
+  "alert_agreement_pct": 96.02,
+  "disagreements": 199,
+  "latency_ms_p50_v1": 0.048,
+  "latency_ms_p50_v2": 0.064,
+  "scoring_5k_s": 0.169,
+  "recommendation": "promote v2",
+  "registry": {
+    "models": [
+      "aidf-pe-ember@1.0.0:challenger",
+      "aidf-pe-ember-v2@2.0.0:challenger"
+    ],
+    "champion": null,
+    "note": "champion slot intentionally empty: promotion requires a human (operator=True); an agent may register and compare only"
+  }
+}

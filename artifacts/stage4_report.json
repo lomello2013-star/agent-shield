@@ -1,0 +1,70 @@
+{
+  "environment": {
+    "python": "3.12.8",
+    "cpu": 8
+  },
+  "normalization": {
+    "win.etw.ti": {
+      "records": 5000,
+      "per_s": 23497.0,
+      "p50_us": 37.4,
+      "p95_us": 64.5,
+      "max_us": 466.5,
+      "quarantined": 0
+    },
+    "win.amsi": {
+      "records": 5000,
+      "per_s": 25439.0,
+      "p50_us": 34.9,
+      "p95_us": 59.3,
+      "max_us": 256.5,
+      "quarantined": 0
+    },
+    "linux.ebpf": {
+      "records": 5000,
+      "per_s": 23007.0,
+      "p50_us": 37.6,
+      "p95_us": 65.8,
+      "max_us": 241.0,
+      "quarantined": 0
+    },
+    "linux.auditd": {
+      "records": 5000,
+      "per_s": 23595.0,
+      "p50_us": 36.5,
+      "p95_us": 63.4,
+      "max_us": 340.4,
+      "quarantined": 0
+    }
+  },
+  "end_to_end": {
+    "records": 20000,
+    "elapsed_s": 2.6,
+    "records_per_s": 7705.0,
+    "verdicts": 1180,
+    "rejected": 0,
+    "lost": 0,
+    "ledger_ok": true,
+    "spilled_pending": 0,
+    "quarantined": 0,
+    "loss_ratio_pct": 0.0,
+    "target_loss_pct": 0.01
+  },
+  "quarantine": {
+    "malformed": 200,
+    "quarantined": 200,
+    "quarantine_lines": 200,
+    "lost_silently": 0
+  },
+  "priority": {
+    "noise_submitted": 5000,
+    "p0_submitted": 50,
+    "first_60_priorities": {
+      "p0": 50,
+      "p1": 10,
+      "p2": 0
+    },
+    "all_p0_delivered_first": true
+  },
+  "note": "synthetic records shaped like real provider payloads; not a live ETW/auditd capture (elevation blocker D)"
+}

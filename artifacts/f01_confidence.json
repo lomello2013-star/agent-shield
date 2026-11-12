@@ -1,0 +1,19 @@
+{
+  "model": "aidf-pe-ember-v2",
+  "prevalence": 0.001,
+  "target_fpr": 0.01,
+  "threshold": 0.721051,
+  "alerts_balanced_sample": 11525,
+  "tpr": 0.905,
+  "fpr": 0.01008,
+  "precision_at_deployment": 0.0825,
+  "mean_confidence_isotonic": 0.0949,
+  "gap_isotonic": 0.0124,
+  "mean_confidence_tail_ppv": 0.0936,
+  "gap_tail_ppv": 0.0111,
+  "bands": 32,
+  "half_to_half_drift_max": 0.2824,
+  "half_to_half_drift_p95": 0.2824,
+  "confidence_source": "bin_ppv",
+  "note": "prevalence-weighted mean confidence vs PPV(TPR,FPR,p) on the same rows"
+}

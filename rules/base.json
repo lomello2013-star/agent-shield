@@ -1,0 +1,498 @@
+{
+  "rules": [
+    {
+      "id": "WIN-EXEC-TEMP-001",
+      "title": "Process executed from a temporary directory",
+      "severity": "high",
+      "technique": "T1059",
+      "layer": "L2",
+      "prevention": true,
+      "reason_code": "proc_from_temp",
+      "match": {
+        "category": "process.start",
+        "actor.path": {
+          "regex": "(?i)\\\\(temp|tmp)\\\\"
+        },
+        "platform": "windows"
+      }
+    },
+    {
+      "id": "WIN-PS-ENCODED-002",
+      "title": "Encoded PowerShell command line",
+      "severity": "high",
+      "technique": "T1027",
+      "layer": "L2",
+      "prevention": true,
+      "reason_code": "encoded_powershell",
+      "match": {
+        "category": "process.start",
+        "actor.name": {
+          "regex": "(?i)powershell|pwsh"
+        },
+        "platform_data.cmdline": {
+          "regex": "(?i)-enc(odedcommand)?\\b"
+        },
+        "platform": "windows"
+      }
+    },
+    {
+      "id": "WIN-OFFICE-SPAWN-003",
+      "title": "Office application spawned a script interpreter",
+      "severity": "high",
+      "technique": "T1566",
+      "layer": "L1",
+      "prevention": true,
+      "reason_code": "office_spawns_interpreter",
+      "match": {
+        "category": "process.start",
+        "platform_data.parent_name": {
+          "regex": "(?i)winword|excel|powerpnt|outlook"
+        },
+        "actor.name": {
+          "regex": "(?i)cmd|powershell|wscript|cscript|mshta"
+        },
+        "platform": "windows"
+      }
+    },
+    {
+      "id": "WIN-LSASS-ACCESS-004",
+      "title": "Process opened LSASS for access",
+      "severity": "critical",
+      "technique": "T1003",
+      "layer": "L3",
+      "prevention": true,
+      "reason_code": "lsass_access",
+      "match": {
+        "category": "process.access",
+        "action": "open_process",
+        "object.path": {
+          "regex": "(?i)lsass\\.exe$"
+        },
+        "platform": "windows"
+      }
+    },
+    {
+      "id": "WIN-RUNKEY-005",
+      "title": "Registry Run key modified",
+      "severity": "high",
+      "technique": "T1547",
+      "layer": "L1",
+      "prevention": true,
+      "reason_code": "run_key_persistence",
+      "match": {
+        "category": "registry.change",
+        "object.path": {
+          "regex": "(?i)\\\\currentversion\\\\run(once)?\\\\"
+        },
+        "platform": "windows"
+      }
+    },
+    {
+      "id": "WIN-SCHTASK-006",
+      "title": "Scheduled task created or modified",
+      "severity": "high",
+      "technique": "T1053",
+      "layer": "L1",
+      "prevention": true,
+      "reason_code": "scheduled_task_persistence",
+      "match": {
+        "category": "persistence.change",
+        "action": {
+          "regex": "(?i)task"
+        },
+        "platform": "windows"
+      }
+    },
+    {
+      "id": "WIN-SERVICE-CREATE-007",
+      "title": "Service installed or modified",
+      "severity": "high",
+      "technique": "T1543",
+      "layer": "L1",
+      "prevention": true,
+      "reason_code": "service_persistence",
+      "match": {
+        "category": "persistence.change",
+        "action": {
+          "regex": "(?i)service"
+        },
+        "platform": "windows"
+      }
+    },
+    {
+      "id": "WIN-LOG-CLEAR-008",
+      "title": "Event log cleared",
+      "severity": "high",
+      "technique": "T1070",
+      "layer": "L1",
+      "prevention": true,
+      "reason_code": "log_tamper",
+      "match": {
+        "category": "log.tamper",
+        "platform": "windows"
+      }
+    },
+    {
+      "id": "WIN-DEFENDER-TAMPER-009",
+      "title": "Defender or AMSI configuration tampered with",
+      "severity": "critical",
+      "technique": "T1562",
+      "layer": "L8",
+      "prevention": true,
+      "reason_code": "defender_tamper",
+      "match": {
+        "category": "defender.tamper",
+        "platform": "windows"
+      }
+    },
+    {
+      "id": "WIN-INJECT-010",
+      "title": "Remote process memory written (possible injection)",
+      "severity": "high",
+      "technique": "T1055",
+      "layer": "L3",
+      "prevention": true,
+      "reason_code": "process_injection",
+      "match": {
+        "category": "memory.access",
+        "action": {
+          "regex": "(?i)write|inject"
+        },
+        "platform": "windows"
+      }
+    },
+    {
+      "id": "WIN-MASQUERADE-011",
+      "title": "System binary name running outside System32",
+      "severity": "medium",
+      "technique": "T1036",
+      "layer": "L1",
+      "prevention": true,
+      "reason_code": "masquerading_path",
+      "match": {
+        "category": "process.start",
+        "actor.name": {
+          "in": [
+            "svchost.exe",
+            "lsass.exe",
+            "services.exe",
+            "explorer.exe"
+          ]
+        },
+        "actor.path": {
+          "regex": "(?i)^(?!c:\\\\windows\\\\)"
+        },
+        "platform": "windows"
+      }
+    },
+    {
+      "id": "NET-SMB-LATERAL-012",
+      "title": "Outbound SMB connection (lateral movement)",
+      "severity": "high",
+      "technique": "T1021",
+      "layer": "L4",
+      "prevention": true,
+      "reason_code": "smb_lateral",
+      "match": {
+        "category": "net.connect",
+        "object.port": 445
+      }
+    },
+    {
+      "id": "NET-DNS-LONG-013",
+      "title": "DNS query with a loop",
+      "severity": "medium",
+      "technique": "T1071",
+      "layer": "L4",
+      "prevention": false,
+      "reason_code": "dns_long_query",
+      "match": {
+        "category": "dns.query",
+        "platform_data.qname": {
+          "regex": "^.{40,}$"
+        }
+      }
+    },
+    {
+      "id": "FILE-MASS-WRITE-014",
+      "title": "Mass file writes in a short window (ransomware behaviour)",
+      "severity": "critical",
+      "technique": "T1486",
+      "layer": "L6",
+      "prevention": true,
+      "reason_code": "mass_file_write",
+      "window_sec": 10,
+      "threshold": 50,
+      "group_by": "host.host_id",
+      "match": {
+        "category": "file.write"
+      }
+    },
+    {
+      "id": "FILE-CANARY-015",
+      "title": "Canary file deleted",
+      "severity": "critical",
+      "technique": "T1485",
+      "layer": "L5",
+      "prevention": true,
+      "reason_code": "canary_deleted",
+      "match": {
+        "category": "file.delete",
+        "object.path": {
+          "regex": "(?i)canary"
+        }
+      }
+    },
+    {
+      "id": "WIN-DOWNLOADS-EXEC-016",
+      "title": "Unsigned binary executed from the Downloads folder",
+      "severity": "high",
+      "technique": "T1204",
+      "layer": "L0",
+      "prevention": true,
+      "reason_code": "downloads_execution",
+      "match": {
+        "category": "process.start",
+        "actor.path": {
+          "regex": "(?i)\\\\downloads\\\\"
+        },
+        "integrity.verified": false,
+        "platform": "windows"
+      }
+    },
+    {
+      "id": "NET-EXFIL-LARGE-017",
+      "title": "Large outbound transfer to a single destination",
+      "severity": "high",
+      "technique": "T1041",
+      "layer": "L4",
+      "prevention": true,
+      "reason_code": "exfil_volume",
+      "match": {
+        "category": "net.connect",
+        "platform_data.bytes_out": {
+          "gt": 10000000
+        }
+      }
+    },
+    {
+      "id": "WIN-WMI-SUBSCRIPTION-018",
+      "title": "WMI event subscription created",
+      "severity": "high",
+      "technique": "T1546",
+      "layer": "L1",
+      "prevention": true,
+      "reason_code": "wmi_subscription",
+      "match": {
+        "category": "persistence.change",
+        "action": {
+          "regex": "(?i)wmi"
+        },
+        "platform": "windows"
+      }
+    },
+    {
+      "id": "LINUX-EXEC-TMP-101",
+      "title": "Process executed from /tmp or /dev/shm",
+      "severity": "high",
+      "technique": "T1059",
+      "layer": "L2",
+      "prevention": true,
+      "reason_code": "proc_from_tmp",
+      "match": {
+        "category": "process.start",
+        "actor.path": {
+          "regex": "^(/tmp/|/dev/shm/|/var/tmp/)"
+        },
+        "platform": "linux"
+      }
+    },
+    {
+      "id": "LINUX-CRON-102",
+      "title": "Cron persistence created",
+      "severity": "high",
+      "technique": "T1053",
+      "layer": "L1",
+      "prevention": true,
+      "reason_code": "cron_persistence",
+      "match": {
+        "category": "persistence.change",
+        "action": {
+          "regex": "(?i)cron"
+        },
+        "platform": "linux"
+      }
+    },
+    {
+      "id": "LINUX-AUDIT-TAMPER-103",
+      "title": "Audit subsystem tampered with",
+      "severity": "critical",
+      "technique": "T1070",
+      "layer": "L8",
+      "prevention": true,
+      "reason_code": "audit_tamper",
+      "match": {
+        "category": "log.tamper",
+        "platform": "linux"
+      }
+    },
+    {
+      "id": "LINUX-CRED-READ-104",
+      "title": "Sensitive credential file opened (shadow/sudoers/ssh keys)",
+      "severity": "high",
+      "technique": "T1003",
+      "layer": "L3",
+      "prevention": true,
+      "reason_code": "credential_file_access",
+      "match": {
+        "category": "file.read",
+        "platform": "linux",
+        "object.path": {
+          "regex": "^(/etc/shadow|/etc/gshadow|/etc/sudoers|/root/\\.ssh/)"
+        }
+      }
+    },
+    {
+      "id": "LINUX-INJECT-106",
+      "title": "Cross-process memory write (vm_writev / ptrace / /proc/pid/mem)",
+      "severity": "high",
+      "technique": "T1055",
+      "layer": "L3",
+      "prevention": false,
+      "reason_code": "process_vm_writev",
+      "match": {
+        "category": "memory.access",
+        "platform": "linux",
+        "action": {
+          "regex": "(?i)(vm_write|ptrace|proc_mem)"
+        }
+      }
+    },
+    {
+      "id": "LINUX-C2-PORT-105",
+      "title": "Outbound connection to a common C2/test port",
+      "severity": "high",
+      "technique": "T1071",
+      "layer": "L4",
+      "prevention": true,
+      "reason_code": "c2_port_connect",
+      "match": {
+        "category": "net.connect",
+        "platform": "linux",
+        "object.port": {
+          "in": [
+            4444,
+            1337,
+            31337
+          ]
+        }
+      }
+    },
+    {
+      "id": "LINUX-EXEC-MEM-107",
+      "title": "PROT_EXEC added to anonymous memory (JIT/injection primitive)",
+      "severity": "medium",
+      "technique": "T1055",
+      "layer": "L3",
+      "prevention": false,
+      "reason_code": "mprotect_exec_anon",
+      "match": {
+        "category": "memory.access",
+        "platform": "linux",
+        "action": "mprotect_exec",
+        "platform_data.anon": true
+      }
+    },
+    {
+      "id": "LINUX-EXEC-CORR-108",
+      "title": "PROT_EXEC after a cross-process memory write (correlated injection)",
+      "severity": "high",
+      "technique": "T1055",
+      "layer": "L3",
+      "prevention": false,
+      "reason_code": "mprotect_after_injection",
+      "match": {},
+      "correlate": {
+        "window_sec": 5,
+        "group_by": "actor.pid",
+        "require": [
+          {
+            "category": "memory.access",
+            "platform": "linux",
+            "action": "mprotect_exec",
+            "platform_data.anon": true
+          },
+          {
+            "category": "memory.access",
+            "platform": "linux",
+            "action": {
+              "regex": "(?i)(vm_write|ptrace|proc_mem)"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "LINUX-EXEC-CORR-109",
+      "title": "PROT_EXEC after a cross-process write in the same process tree (signal; alerting version is CORR-110)",
+      "severity": "low",
+      "technique": "T1055",
+      "layer": "L3",
+      "prevention": false,
+      "reason_code": "mprotect_after_injection_tree",
+      "match": {},
+      "correlate": {
+        "window_sec": 5,
+        "group_by": "process_tree",
+        "require": [
+          {
+            "category": "memory.access",
+            "platform": "linux",
+            "action": "mprotect_exec",
+            "platform_data.anon": true
+          },
+          {
+            "category": "memory.access",
+            "platform": "linux",
+            "action": {
+              "regex": "(?i)(vm_write|ptrace|proc_mem)"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "LINUX-EXEC-CORR-110",
+      "title": "PROT_EXEC after a cross-process write from an untrusted path",
+      "severity": "high",
+      "technique": "T1055",
+      "layer": "L3",
+      "prevention": false,
+      "reason_code": "mprotect_after_injection_provenance",
+      "match": {},
+      "correlate": {
+        "window_sec": 5,
+        "group_by": "process_tree",
+        "require": [
+          {
+            "category": "memory.access",
+            "platform": "linux",
+            "action": "mprotect_exec",
+            "platform_data.anon": true
+          },
+          {
+            "category": "memory.access",
+            "platform": "linux",
+            "action": {
+              "regex": "(?i)(vm_write|ptrace|proc_mem)"
+            },
+            "actor.path": {
+              "not_regex": "^/(usr|bin|sbin|opt|snap|nix)/"
+            },
+            "platform_data.provenance_known": true
+          }
+        ]
+      }
+    }
+  ]
+}

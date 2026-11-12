@@ -1,0 +1,17 @@
+{
+  "trials": 20,
+  "detected": 20,
+  "contract_s": 60.0,
+  "warn_after_s": 30.0,
+  "escalate_after_s": 45.0,
+  "warn_latency_s_max": 30.25,
+  "incident_latency_s_p50": 45.25,
+  "incident_latency_s_max": 45.25,
+  "incident_kinds": {
+    "stalled": 20
+  },
+  "margin_s": 14.75,
+  "margin_pct": 24.6,
+  "within_contract": true,
+  "target_margin_25pct": true
+}

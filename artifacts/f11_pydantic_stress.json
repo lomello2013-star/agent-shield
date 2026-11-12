@@ -1,0 +1,8 @@
+{
+  "threads": 4,
+  "duration_s": 180.0,
+  "validated": 9939634,
+  "rate_per_s": 55220.0,
+  "errors": [],
+  "note": "no daemon here: only Event.model_validate from several threads"
+}

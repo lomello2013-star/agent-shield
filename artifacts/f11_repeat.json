@@ -1,0 +1,25 @@
+{
+  "rounds": 2,
+  "duration_s": 600,
+  "crashes": 2,
+  "clean": 0,
+  "results": [
+    {
+      "round": 1,
+      "exit_code": 3221225477,
+      "crashed": true,
+      "elapsed_s": 120.9,
+      "last_progress_t": 118.3,
+      "stderr_tail": []
+    },
+    {
+      "round": 2,
+      "exit_code": 3221225477,
+      "crashed": true,
+      "elapsed_s": 480.8,
+      "last_progress_t": 479.2,
+      "stderr_tail": []
+    }
+  ],
+  "note": "subprocess isolation keeps the campaign alive across native crashes; stack dumps are in artifacts/_stdout/soak_stacks.txt"
+}

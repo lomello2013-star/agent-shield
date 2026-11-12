@@ -1,0 +1,130 @@
+{
+  "harness": "labelled synthetic stream (not a pilot)",
+  "simulated_days": 14,
+  "benign_events": 1120,
+  "benign_alerts": 0,
+  "benign_alert_rules": [],
+  "budget_per_14_days": 1,
+  "budget_respected": true,
+  "malicious_alerts_suppressed_by_budget": false,
+  "alerts_per_scenario": {
+    "S1_mass_write": 1,
+    "S2_canary_delete": 1,
+    "S3_large_exfil": 0,
+    "S4_c2_port": 0,
+    "S5_tmp_exec": 0,
+    "S6_injection": 0,
+    "S7_cred_read": 0,
+    "S8_lsass_access": 1
+  },
+  "alerted_scenarios": 3,
+  "note_budget": "critical verdicts bypass the alert budget (F12b: 1 -> 3 alerted); high-severity findings remain budgeted, so after the budget is spent they are contained but not announced — accepted noise cap, to be revisited at pilot",
+  "scenarios": 8,
+  "detected": 8,
+  "behavioural_tpr": 1.0,
+  "target_tpr": 0.85,
+  "tpr_met": true,
+  "details": [
+    {
+      "scenario": "S1_mass_write",
+      "platform": "windows",
+      "detected": true,
+      "alerts": 1,
+      "rule_hits": {
+        "FILE-MASS-WRITE-014": 1
+      }
+    },
+    {
+      "scenario": "S2_canary_delete",
+      "platform": "windows",
+      "detected": true,
+      "alerts": 1,
+      "rule_hits": {
+        "FILE-MASS-WRITE-014": 1,
+        "FILE-CANARY-015": 1
+      }
+    },
+    {
+      "scenario": "S3_large_exfil",
+      "platform": "windows",
+      "detected": true,
+      "alerts": 0,
+      "rule_hits": {
+        "FILE-MASS-WRITE-014": 1,
+        "FILE-CANARY-015": 1,
+        "NET-EXFIL-LARGE-017": 1
+      }
+    },
+    {
+      "scenario": "S4_c2_port",
+      "platform": "linux",
+      "detected": true,
+      "alerts": 0,
+      "rule_hits": {
+        "FILE-MASS-WRITE-014": 1,
+        "FILE-CANARY-015": 1,
+        "NET-EXFIL-LARGE-017": 1,
+        "LINUX-C2-PORT-105": 1
+      }
+    },
+    {
+      "scenario": "S5_tmp_exec",
+      "platform": "linux",
+      "detected": true,
+      "alerts": 0,
+      "rule_hits": {
+        "FILE-MASS-WRITE-014": 1,
+        "FILE-CANARY-015": 1,
+        "NET-EXFIL-LARGE-017": 1,
+        "LINUX-C2-PORT-105": 1,
+        "LINUX-EXEC-TMP-101": 1
+      }
+    },
+    {
+      "scenario": "S6_injection",
+      "platform": "linux",
+      "detected": true,
+      "alerts": 0,
+      "rule_hits": {
+        "FILE-MASS-WRITE-014": 1,
+        "FILE-CANARY-015": 1,
+        "NET-EXFIL-LARGE-017": 1,
+        "LINUX-C2-PORT-105": 1,
+        "LINUX-EXEC-TMP-101": 1,
+        "LINUX-INJECT-106": 1
+      }
+    },
+    {
+      "scenario": "S7_cred_read",
+      "platform": "linux",
+      "detected": true,
+      "alerts": 0,
+      "rule_hits": {
+        "FILE-MASS-WRITE-014": 1,
+        "FILE-CANARY-015": 1,
+        "NET-EXFIL-LARGE-017": 1,
+        "LINUX-C2-PORT-105": 1,
+        "LINUX-EXEC-TMP-101": 1,
+        "LINUX-INJECT-106": 1,
+        "LINUX-CRED-READ-104": 1
+      }
+    },
+    {
+      "scenario": "S8_lsass_access",
+      "platform": "windows",
+      "detected": true,
+      "alerts": 1,
+      "rule_hits": {
+        "FILE-MASS-WRITE-014": 1,
+        "FILE-CANARY-015": 1,
+        "NET-EXFIL-LARGE-017": 1,
+        "LINUX-C2-PORT-105": 1,
+        "LINUX-EXEC-TMP-101": 1,
+        "LINUX-INJECT-106": 1,
+        "LINUX-CRED-READ-104": 1,
+        "WIN-LSASS-ACCESS-004": 1
+      }
+    }
+  ],
+  "note": "E8 target is TPR>=0.85 at <=1 alert per two weeks on benign traffic; measured on a labelled harness because a 7-day pilot needs a fleet"
+}

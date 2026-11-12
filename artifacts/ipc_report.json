@@ -1,0 +1,38 @@
+{
+  "environment": {
+    "python": "3.12.8"
+  },
+  "ping": {
+    "calls": 500,
+    "ms_p50": 0.132,
+    "ms_p95": 0.218,
+    "calls_per_s": 6631.0
+  },
+  "health": {
+    "calls": 200,
+    "ms_p50": 1.267,
+    "ms_p95": 1.884
+  },
+  "stats": {
+    "calls": 100,
+    "ms_p50": 0.374,
+    "ms_p95": 0.576
+  },
+  "concurrency": {
+    "clients": 10,
+    "calls_per_client": 50,
+    "ok_calls": 500,
+    "errors": [],
+    "elapsed_s": 0.11,
+    "calls_per_s": 4714.0
+  },
+  "authz": {
+    "forbidden_attempts": 100,
+    "forbidden": 100
+  },
+  "bad_tokens": {
+    "attempts": 50,
+    "rejected": 50
+  },
+  "oversized_request": "rejected:-32600"
+}

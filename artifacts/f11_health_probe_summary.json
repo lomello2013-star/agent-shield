@@ -1,0 +1,22 @@
+{
+  "runs": [
+    {
+      "seconds": 90,
+      "rate": 200,
+      "events": 16171,
+      "health_p50_ms": 4.11,
+      "health_max_ms": 24.7,
+      "stalled": false
+    },
+    {
+      "seconds": 120,
+      "rate": 1500,
+      "events": 127232,
+      "health_p50_ms": 1.87,
+      "health_max_ms": 28.83,
+      "stalled": false
+    }
+  ],
+  "conclusion": "health() latency does not degrade with volume (127k records: p50 1.87 ms); the soak hang at ~19 min is not explained by health verification alone",
+  "note": "the instrumented 1800 s soak keeps running and will dump thread stacks when it hangs"
+}

@@ -1,0 +1,124 @@
+{
+  "generated_at": "2026-11-12T21:18:39.284887+00:00",
+  "paths_measured": 4,
+  "alert_paths": 3,
+  "signal_paths": 1,
+  "total_events": 405,
+  "total_verdicts": 405,
+  "total_loss": 0,
+  "paths": [
+    {
+      "path": "process_vm_writev",
+      "source": "linux.memory",
+      "level": "alert",
+      "mechanism": "tracepoint sys_enter_process_vm_writev",
+      "rules": "rules: LINUX-INJECT-106",
+      "measured": true,
+      "events": 100,
+      "verdicts": 100,
+      "control_events": 0,
+      "loss": 0,
+      "duplicates": false,
+      "latency_pipeline_ms_p50": 0.114
+    },
+    {
+      "path": "ptrace POKE*",
+      "source": "linux.ptrace",
+      "level": "alert",
+      "mechanism": "tracepoint sys_enter_ptrace (POKETEXT/POKEDATA/POKEUSR)",
+      "rules": "rules: LINUX-INJECT-106",
+      "measured": true,
+      "events": 100,
+      "verdicts": 100,
+      "control_events": 0,
+      "loss": 0,
+      "duplicates": false,
+      "latency_pipeline_ms_p50": 0.111
+    },
+    {
+      "path": "/proc/<pid>/mem",
+      "source": "linux.procmem",
+      "level": "alert",
+      "mechanism": "LSM file_open, writable opens",
+      "rules": "rules: LINUX-INJECT-106",
+      "measured": true,
+      "events": 100,
+      "verdicts": 100,
+      "control_events": 0,
+      "loss": 0,
+      "duplicates": false,
+      "latency_pipeline_ms_p50": 0.292
+    },
+    {
+      "path": "mprotect PROT_EXEC",
+      "source": "linux.mprotect",
+      "level": "signal",
+      "mechanism": "LSM file_mprotect, new EXEC on anonymous memory",
+      "rules": "rules: LINUX-EXEC-MEM-107",
+      "measured": true,
+      "events": 105,
+      "verdicts": 105,
+      "control_events": 0,
+      "loss": 0,
+      "duplicates": false,
+      "latency_pipeline_ms_p50": 0.194
+    }
+  ],
+  "rule_layers": [
+    {
+      "layer": 0,
+      "rule": "LINUX-EXEC-MEM-107",
+      "grouping": "none",
+      "alerts": 105,
+      "false_positives_measured": "JIT noise: 5 non-helper events in the run",
+      "verdict": "signal only (medium), never an alert alone"
+    },
+    {
+      "layer": 1,
+      "rule": "LINUX-EXEC-CORR-108",
+      "grouping": "actor.pid",
+      "alerts": 5,
+      "false_positives_measured": "JIT-only phase: 0 alerts",
+      "verdict": "alert on injection, quiet on JIT"
+    },
+    {
+      "layer": 2,
+      "rule": "LINUX-EXEC-CORR-109",
+      "grouping": "process_tree",
+      "alerts": 1,
+      "false_positives_measured": "legit supervisor+JIT: 1 alert(s); benign JIT: 0",
+      "verdict": "catches parent-writes-child-executes, known FP class"
+    },
+    {
+      "layer": 3,
+      "rule": "LINUX-EXEC-CORR-110",
+      "grouping": "process_tree + provenance",
+      "alerts": 1,
+      "false_positives_measured": "trusted supervisor: 0 alert(s); path from kernel: 20, fallback: 0",
+      "verdict": "preferred: FP removed, detection kept"
+    }
+  ],
+  "gaps": [
+    {
+      "gap": "mprotect without correlation",
+      "why": "JIT and injection share the pattern; the signal alone is not an alert"
+    },
+    {
+      "gap": "dlopen / LD_PRELOAD",
+      "why": "loads code into the attacker's own process; not a cross-process write, different detection (module load)"
+    },
+    {
+      "gap": "/dev/mem",
+      "why": "requires root and is usually disabled; not measured"
+    },
+    {
+      "gap": "Windows T1055",
+      "why": "ETW-TI requires elevation (blocker D); not measured"
+    },
+    {
+      "gap": "argv[0] spoofing",
+      "why": "provenance uses mm->exe_file, so a renamed argv is invisible by design; documented as a non-goal"
+    }
+  ],
+  "verdict": "4/4 measured paths verified; rule ladder measured through provenance; Windows T1055 still unmeasured (elevation required)"
+}

@@ -1,0 +1,226 @@
+{
+  "generated_at": "2026-11-12T21:18:39.722497+00:00",
+  "A_jit_only": {
+    "scenario": "A_jit_only",
+    "verdicts": [
+      {
+        "rule": "LINUX-EXEC-MEM-107",
+        "severity": "medium"
+      },
+      {
+        "rule": "LINUX-EXEC-MEM-107",
+        "severity": "medium"
+      },
+      {
+        "rule": "LINUX-EXEC-MEM-107",
+        "severity": "medium"
+      },
+      {
+        "rule": "LINUX-EXEC-MEM-107",
+        "severity": "medium"
+      },
+      {
+        "rule": "LINUX-EXEC-MEM-107",
+        "severity": "medium"
+      }
+    ],
+    "alerts": [],
+    "alert_count": 0
+  },
+  "B_untrusted_known": {
+    "scenario": "B_untrusted_known",
+    "verdicts": [
+      {
+        "rule": "LINUX-INJECT-106",
+        "severity": "high"
+      },
+      {
+        "rule": "LINUX-INJECT-106",
+        "severity": "high"
+      },
+      {
+        "rule": "LINUX-INJECT-106",
+        "severity": "high"
+      },
+      {
+        "rule": "LINUX-INJECT-106",
+        "severity": "high"
+      },
+      {
+        "rule": "LINUX-INJECT-106",
+        "severity": "high"
+      },
+      {
+        "rule": "LINUX-EXEC-MEM-107",
+        "severity": "medium"
+      },
+      {
+        "rule": "LINUX-EXEC-CORR-109",
+        "severity": "low"
+      },
+      {
+        "rule": "LINUX-EXEC-CORR-110",
+        "severity": "high"
+      },
+      {
+        "rule": "LINUX-EXEC-MEM-107",
+        "severity": "medium"
+      },
+      {
+        "rule": "LINUX-EXEC-MEM-107",
+        "severity": "medium"
+      },
+      {
+        "rule": "LINUX-EXEC-MEM-107",
+        "severity": "medium"
+      },
+      {
+        "rule": "LINUX-EXEC-MEM-107",
+        "severity": "medium"
+      }
+    ],
+    "alerts": [
+      {
+        "rule": "LINUX-INJECT-106",
+        "severity": "high",
+        "actions": [
+          "suspend"
+        ]
+      },
+      {
+        "rule": "LINUX-INJECT-106",
+        "severity": "high",
+        "actions": [
+          "suspend"
+        ]
+      },
+      {
+        "rule": "LINUX-INJECT-106",
+        "severity": "high",
+        "actions": [
+          "suspend"
+        ]
+      },
+      {
+        "rule": "LINUX-INJECT-106",
+        "severity": "high",
+        "actions": [
+          "suspend"
+        ]
+      },
+      {
+        "rule": "LINUX-INJECT-106",
+        "severity": "high",
+        "actions": [
+          "suspend"
+        ]
+      },
+      {
+        "rule": "LINUX-EXEC-CORR-110",
+        "severity": "high",
+        "actions": [
+          "suspend"
+        ]
+      }
+    ],
+    "alert_count": 6
+  },
+  "C_unknown_provenance": {
+    "scenario": "C_unknown_provenance",
+    "verdicts": [
+      {
+        "rule": "LINUX-INJECT-106",
+        "severity": "high"
+      },
+      {
+        "rule": "LINUX-INJECT-106",
+        "severity": "high"
+      },
+      {
+        "rule": "LINUX-INJECT-106",
+        "severity": "high"
+      },
+      {
+        "rule": "LINUX-INJECT-106",
+        "severity": "high"
+      },
+      {
+        "rule": "LINUX-INJECT-106",
+        "severity": "high"
+      },
+      {
+        "rule": "LINUX-EXEC-MEM-107",
+        "severity": "medium"
+      },
+      {
+        "rule": "LINUX-EXEC-CORR-109",
+        "severity": "low"
+      },
+      {
+        "rule": "LINUX-EXEC-MEM-107",
+        "severity": "medium"
+      },
+      {
+        "rule": "LINUX-EXEC-MEM-107",
+        "severity": "medium"
+      },
+      {
+        "rule": "LINUX-EXEC-MEM-107",
+        "severity": "medium"
+      },
+      {
+        "rule": "LINUX-EXEC-MEM-107",
+        "severity": "medium"
+      }
+    ],
+    "alerts": [
+      {
+        "rule": "LINUX-INJECT-106",
+        "severity": "high",
+        "actions": [
+          "suspend"
+        ]
+      },
+      {
+        "rule": "LINUX-INJECT-106",
+        "severity": "high",
+        "actions": [
+          "suspend"
+        ]
+      },
+      {
+        "rule": "LINUX-INJECT-106",
+        "severity": "high",
+        "actions": [
+          "suspend"
+        ]
+      },
+      {
+        "rule": "LINUX-INJECT-106",
+        "severity": "high",
+        "actions": [
+          "suspend"
+        ]
+      },
+      {
+        "rule": "LINUX-INJECT-106",
+        "severity": "high",
+        "actions": [
+          "suspend"
+        ]
+      }
+    ],
+    "alert_count": 5
+  },
+  "rule_severities": {
+    "LINUX-EXEC-CORR-109": "low",
+    "LINUX-EXEC-CORR-110": "high"
+  },
+  "checks": {
+    "A_no_corr110_alert": true,
+    "B_corr110_alerts": true,
+    "C_no_corr110_alert": true,
+    "C_write_still_detected": true,
+    "C_still_visible_as_signal": true
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "duration_s": 180.0,
+  "modes": [
+    {
+      "mode": "full",
+      "exit_code": 0,
+      "crashed": false,
+      "stdout": [
+        "OK mode=full fed=32065 lost=0 errors=[]"
+      ],
+      "stderr": []
+    },
+    {
+      "mode": "no_audit",
+      "exit_code": 0,
+      "crashed": false,
+      "stdout": [
+        "OK mode=no_audit fed=31854 lost=0 errors=[]"
+      ],
+      "stderr": []
+    },
+    {
+      "mode": "no_validate",
+      "exit_code": 1,
+      "crashed": false,
+      "stdout": [],
+      "stderr": [
+        "  Field required [type=missing, input_value={'schema_version': '3.0',...': '10', 'arch': 'x64'}}, input_type=dict]",
+        "    For further information visit https://errors.pydantic.dev/2.13/v/missing"
+      ]
+    },
+    {
+      "mode": "no_rss",
+      "exit_code": 0,
+      "crashed": false,
+      "stdout": [
+        "OK mode=no_rss fed=31410 lost=0 errors=[]"
+      ],
+      "stderr": []
+    }
+  ],
+  "crashed_modes": [],
+  "clean_modes": [
+    "full",
+    "no_audit",
+    "no_validate",
+    "no_rss"
+  ],
+  "note": "a mode that never crashes points at the component it disables"
+}

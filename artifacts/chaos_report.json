@@ -1,0 +1,54 @@
+{
+  "environment": {
+    "python": "3.12.8"
+  },
+  "baseline": {
+    "submitted": 2000,
+    "submit_s": 0.635,
+    "tick_ms_p50": 3.285,
+    "tick_ms_p95": 48.545,
+    "health_http_ms_p50": 3.109,
+    "health_http_ms_p95": 16.223,
+    "verdicts": 49,
+    "containments": 49,
+    "alerts": 5,
+    "lost": 0,
+    "ledger_ok": true
+  },
+  "source_death": {
+    "detection_s": 0.204,
+    "timeout_s": 0.2,
+    "detected": true,
+    "status_after": "degraded",
+    "note": "measured from the last heartbeat; worst case = timeout + tick period"
+  },
+  "bad_config": {
+    "accepted": false,
+    "safe_mode": true,
+    "lkg_unchanged": true,
+    "status": "safe"
+  },
+  "audit_tamper": {
+    "detected": true,
+    "detect_ms": 1.758,
+    "status": "safe"
+  },
+  "clock_jump": {
+    "logged": true,
+    "events": 1
+  },
+  "storm": {
+    "submitted": 5000,
+    "backlog_before_drain": 5000,
+    "spilled_pending_before_drain": 3564,
+    "lost": 0,
+    "ledger_ok": true,
+    "received_total": 7001,
+    "delivered": 7001
+  },
+  "shutdown_ms": 489.759,
+  "final": {
+    "lost_total": 0,
+    "quarantined_records": 0
+  }
+}

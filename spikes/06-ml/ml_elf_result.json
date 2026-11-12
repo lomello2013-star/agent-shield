@@ -1,0 +1,107 @@
+{
+  "dataset": "EMBER2024 ELF",
+  "train_shards": 52,
+  "test_shards": 12,
+  "train_n": 52000,
+  "test_n": 12000,
+  "test_pos": 6000,
+  "test_neg": 6000,
+  "dims": 533,
+  "test_weeks": [
+    "52",
+    "53",
+    "54",
+    "55",
+    "56",
+    "57",
+    "58",
+    "59",
+    "60",
+    "61",
+    "62",
+    "63"
+  ],
+  "load_s": 9.2,
+  "train_s": 20.6,
+  "predict_all_s": 0.14,
+  "auc": 0.98918,
+  "operating_points": [
+    {
+      "target_fpr": 0.0005,
+      "threshold": 0.999773,
+      "tp": 3762,
+      "fp": 4,
+      "fpr_measured": 0.00067,
+      "tpr": 0.627,
+      "tpr_ci95": [
+        0.6147,
+        0.6392
+      ]
+    },
+    {
+      "target_fpr": 0.001,
+      "threshold": 0.999737,
+      "tp": 3872,
+      "fp": 6,
+      "fpr_measured": 0.001,
+      "tpr": 0.64533,
+      "tpr_ci95": [
+        0.6331,
+        0.6573
+      ]
+    },
+    {
+      "target_fpr": 0.005,
+      "threshold": 0.999065,
+      "tp": 4592,
+      "fp": 30,
+      "fpr_measured": 0.005,
+      "tpr": 0.76533,
+      "tpr_ci95": [
+        0.7544,
+        0.7759
+      ]
+    },
+    {
+      "target_fpr": 0.01,
+      "threshold": 0.990061,
+      "tp": 5250,
+      "fp": 60,
+      "fpr_measured": 0.01,
+      "tpr": 0.875,
+      "tpr_ci95": [
+        0.8664,
+        0.8831
+      ]
+    },
+    {
+      "target_fpr": 0.02,
+      "threshold": 0.943009,
+      "tp": 5566,
+      "fp": 120,
+      "fpr_measured": 0.02,
+      "tpr": 0.92767,
+      "tpr_ci95": [
+        0.9208,
+        0.934
+      ]
+    },
+    {
+      "target_fpr": 0.05,
+      "threshold": 0.675257,
+      "tp": 5712,
+      "fp": 300,
+      "fpr_measured": 0.05,
+      "tpr": 0.952,
+      "tpr_ci95": [
+        0.9463,
+        0.9571
+      ]
+    }
+  ],
+  "latency_single_row_ms": {
+    "p50": 0.155,
+    "p95": 0.184,
+    "max": 0.312
+  }
+}

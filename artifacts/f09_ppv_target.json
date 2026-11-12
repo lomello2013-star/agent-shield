@@ -1,0 +1,75 @@
+{
+  "model": "aidf-pe-ember-v2",
+  "prevalence": 0.001,
+  "target_ppv": 0.5,
+  "curve": [
+    {
+      "target_fpr": 0.0005,
+      "threshold": 0.893748,
+      "tpr": 0.67242,
+      "fpr": 0.00052,
+      "ppv_at_prevalence": 0.5642,
+      "meets_target": true
+    },
+    {
+      "target_fpr": 0.001,
+      "threshold": 0.88246,
+      "tpr": 0.71617,
+      "fpr": 0.001,
+      "ppv_at_prevalence": 0.4176,
+      "meets_target": false
+    },
+    {
+      "target_fpr": 0.005,
+      "threshold": 0.795089,
+      "tpr": 0.85497,
+      "fpr": 0.00501,
+      "ppv_at_prevalence": 0.1459,
+      "meets_target": false
+    },
+    {
+      "target_fpr": 0.01,
+      "threshold": 0.727612,
+      "tpr": 0.90136,
+      "fpr": 0.01002,
+      "ppv_at_prevalence": 0.0826,
+      "meets_target": false
+    }
+  ],
+  "chosen": {
+    "target_fpr": 0.0005,
+    "threshold": 0.893748,
+    "tpr": 0.67242,
+    "fpr": 0.00052,
+    "ppv_at_prevalence": 0.5642,
+    "meets_target": true
+  },
+  "looser_point_rejected": [
+    {
+      "target_fpr": 0.001,
+      "threshold": 0.88246,
+      "tpr": 0.71617,
+      "fpr": 0.001,
+      "ppv_at_prevalence": 0.4176,
+      "meets_target": false
+    },
+    {
+      "target_fpr": 0.005,
+      "threshold": 0.795089,
+      "tpr": 0.85497,
+      "fpr": 0.00501,
+      "ppv_at_prevalence": 0.1459,
+      "meets_target": false
+    },
+    {
+      "target_fpr": 0.01,
+      "threshold": 0.727612,
+      "tpr": 0.90136,
+      "fpr": 0.01002,
+      "ppv_at_prevalence": 0.0826,
+      "meets_target": false
+    }
+  ],
+  "conclusion": "E9 достигается при FPR <= 0.05 % (threshold 0.893748), TPR при этом 0.67242",
+  "note": "PPV считается по TPR/FPR в рабочей точке при prevalence 1/1000, а не по confidence"
+}

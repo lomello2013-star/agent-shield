@@ -1,0 +1,341 @@
+{
+  "environment": {
+    "python": "3.12.8",
+    "duration_s": 600.0,
+    "rate_per_s": 200.0
+  },
+  "load": {
+    "events_fed": 115744,
+    "ticks": 27308,
+    "tick_ms_p50": 0.302,
+    "tick_ms_p95": 1.394,
+    "tick_ms_max": 57.624
+  },
+  "health": {
+    "http_calls": 300,
+    "ms_p50": 0.372,
+    "ms_p95": 4.592
+  },
+  "memory": {
+    "rss_start_mb": 33.4,
+    "rss_end_mb": 59.3,
+    "growth_pct": 77.54
+  },
+  "faults": {
+    "source_death": {
+      "detected": true,
+      "detection_s": 1.51
+    },
+    "bad_config": {
+      "accepted": false,
+      "safe_mode": true,
+      "lkg_unchanged": true
+    },
+    "storm": {
+      "submitted": 3000,
+      "spilled": 0,
+      "lost": 0,
+      "ledger_ok": true
+    },
+    "clock_jump": {
+      "logged": true
+    }
+  },
+  "final": {
+    "lost": 0,
+    "ledger_ok": true,
+    "verdicts": 2840,
+    "alerts": 2840,
+    "containments": 2840,
+    "audit_chain_ok": true,
+    "integrity_ok": true,
+    "shutdown_ms": 73.829
+  },
+  "samples_tail": [
+    {
+      "t": 591.4,
+      "status": "safe",
+      "rss_mb": 59.3,
+      "verdicts": 2799,
+      "lost": 0,
+      "backlog": 1
+    },
+    {
+      "t": 593.4,
+      "status": "safe",
+      "rss_mb": 59.3,
+      "verdicts": 2808,
+      "lost": 0,
+      "backlog": 3
+    },
+    {
+      "t": 595.4,
+      "status": "safe",
+      "rss_mb": 59.3,
+      "verdicts": 2818,
+      "lost": 0,
+      "backlog": 3
+    },
+    {
+      "t": 597.4,
+      "status": "safe",
+      "rss_mb": 59.3,
+      "verdicts": 2827,
+      "lost": 0,
+      "backlog": 3
+    },
+    {
+      "t": 599.4,
+      "status": "safe",
+      "rss_mb": 59.3,
+      "verdicts": 2837,
+      "lost": 0,
+      "backlog": 4
+    }
+  ],
+  "samples": [
+    {
+      "t": 0.0,
+      "status": "ok",
+      "rss_mb": 33.4,
+      "verdicts": 0,
+      "lost": 0,
+      "backlog": 1
+    },
+    {
+      "t": 20.0,
+      "status": "ok",
+      "rss_mb": 35.3,
+      "verdicts": 96,
+      "lost": 0,
+      "backlog": 2
+    },
+    {
+      "t": 40.0,
+      "status": "ok",
+      "rss_mb": 36.1,
+      "verdicts": 184,
+      "lost": 0,
+      "backlog": 2
+    },
+    {
+      "t": 60.0,
+      "status": "safe",
+      "rss_mb": 36.6,
+      "verdicts": 280,
+      "lost": 0,
+      "backlog": 4
+    },
+    {
+      "t": 80.1,
+      "status": "safe",
+      "rss_mb": 37.1,
+      "verdicts": 375,
+      "lost": 0,
+      "backlog": 1
+    },
+    {
+      "t": 100.2,
+      "status": "safe",
+      "rss_mb": 58.7,
+      "verdicts": 543,
+      "lost": 0,
+      "backlog": 1
+    },
+    {
+      "t": 120.3,
+      "status": "safe",
+      "rss_mb": 58.7,
+      "verdicts": 638,
+      "lost": 0,
+      "backlog": 3
+    },
+    {
+      "t": 140.3,
+      "status": "safe",
+      "rss_mb": 58.7,
+      "verdicts": 734,
+      "lost": 0,
+      "backlog": 2
+    },
+    {
+      "t": 160.3,
+      "status": "safe",
+      "rss_mb": 58.7,
+      "verdicts": 830,
+      "lost": 0,
+      "backlog": 1
+    },
+    {
+      "t": 180.3,
+      "status": "safe",
+      "rss_mb": 58.7,
+      "verdicts": 925,
+      "lost": 0,
+      "backlog": 0
+    },
+    {
+      "t": 200.4,
+      "status": "safe",
+      "rss_mb": 58.7,
+      "verdicts": 1012,
+      "lost": 0,
+      "backlog": 1
+    },
+    {
+      "t": 220.5,
+      "status": "safe",
+      "rss_mb": 58.8,
+      "verdicts": 1098,
+      "lost": 0,
+      "backlog": 2
+    },
+    {
+      "t": 240.5,
+      "status": "safe",
+      "rss_mb": 58.8,
+      "verdicts": 1191,
+      "lost": 0,
+      "backlog": 3
+    },
+    {
+      "t": 260.6,
+      "status": "safe",
+      "rss_mb": 58.8,
+      "verdicts": 1267,
+      "lost": 0,
+      "backlog": 1
+    },
+    {
+      "t": 280.6,
+      "status": "safe",
+      "rss_mb": 58.8,
+      "verdicts": 1361,
+      "lost": 0,
+      "backlog": 3
+    },
+    {
+      "t": 300.7,
+      "status": "safe",
+      "rss_mb": 58.8,
+      "verdicts": 1455,
+      "lost": 0,
+      "backlog": 3
+    },
+    {
+      "t": 320.8,
+      "status": "safe",
+      "rss_mb": 58.8,
+      "verdicts": 1545,
+      "lost": 0,
+      "backlog": 1
+    },
+    {
+      "t": 341.0,
+      "status": "safe",
+      "rss_mb": 58.8,
+      "verdicts": 1616,
+      "lost": 0,
+      "backlog": 2
+    },
+    {
+      "t": 361.0,
+      "status": "safe",
+      "rss_mb": 58.8,
+      "verdicts": 1698,
+      "lost": 0,
+      "backlog": 4
+    },
+    {
+      "t": 381.1,
+      "status": "safe",
+      "rss_mb": 58.8,
+      "verdicts": 1793,
+      "lost": 0,
+      "backlog": 3
+    },
+    {
+      "t": 401.1,
+      "status": "safe",
+      "rss_mb": 58.9,
+      "verdicts": 1889,
+      "lost": 0,
+      "backlog": 1
+    },
+    {
+      "t": 421.1,
+      "status": "safe",
+      "rss_mb": 58.9,
+      "verdicts": 1986,
+      "lost": 0,
+      "backlog": 1
+    },
+    {
+      "t": 441.1,
+      "status": "safe",
+      "rss_mb": 59.1,
+      "verdicts": 2082,
+      "lost": 0,
+      "backlog": 2
+    },
+    {
+      "t": 461.2,
+      "status": "safe",
+      "rss_mb": 59.1,
+      "verdicts": 2177,
+      "lost": 0,
+      "backlog": 2
+    },
+    {
+      "t": 481.2,
+      "status": "safe",
+      "rss_mb": 59.3,
+      "verdicts": 2272,
+      "lost": 0,
+      "backlog": 2
+    },
+    {
+      "t": 501.2,
+      "status": "safe",
+      "rss_mb": 59.3,
+      "verdicts": 2369,
+      "lost": 0,
+      "backlog": 1
+    },
+    {
+      "t": 521.2,
+      "status": "safe",
+      "rss_mb": 59.3,
+      "verdicts": 2464,
+      "lost": 0,
+      "backlog": 1
+    },
+    {
+      "t": 541.2,
+      "status": "safe",
+      "rss_mb": 59.3,
+      "verdicts": 2560,
+      "lost": 0,
+      "backlog": 3
+    },
+    {
+      "t": 561.3,
+      "status": "safe",
+      "rss_mb": 59.3,
+      "verdicts": 2656,
+      "lost": 0,
+      "backlog": 3
+    },
+    {
+      "t": 581.4,
+      "status": "safe",
+      "rss_mb": 59.3,
+      "verdicts": 2752,
+      "lost": 0,
+      "backlog": 2
+    }
+  ],
+  "rss_growth_last_60s_pct": 0.0,
+  "rss_plateau": true,
+  "errors": []
+}

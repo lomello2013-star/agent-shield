@@ -1,0 +1,40 @@
+[package]
+name = "aidf-core"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.88"
+description = "Rust port of AIDefender core modules (F19)"
+license = "Proprietary"
+publish = false
+
+[lib]
+name = "aidf_core"
+path = "src/lib.rs"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+uuid = { version = "1", features = ["v4", "serde"] }
+regex = "1"
+fancy-regex = "0.20"
+chrono = { version = "0.4", features = ["serde"] }
+aes-gcm = "0.10"
+ed25519-dalek = { version = "2", features = ["rand_core"] }
+rand_core = { version = "0.6", features = ["getrandom"] }
+serde-pickle = "1.2"
+hmac = "0.12"
+sha2 = "0.10"
+tract-onnx = "0.23"
+interprocess = "2.4"
+ort = "2.0.0-rc.15"
+
+[target.'cfg(windows)'.dependencies]
+libloading = "0.8"
+windows-sys = { version = "0.61", features = ["Win32_Foundation", "Win32_Storage_FileSystem", "Win32_System_Pipes", "Win32_Security"] }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+libc = "0.2"
+
+[profile.release]
+codegen-units = 1
+lto = true

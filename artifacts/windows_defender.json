@@ -1,0 +1,52 @@
+{
+  "environment": {
+    "python": "3.12.8",
+    "platform": "win32"
+  },
+  "log": {
+    "log": "Microsoft-Windows-Windows Defender/Operational",
+    "event_ids": [
+      5001,
+      5007,
+      5010,
+      5012,
+      1116,
+      1117
+    ],
+    "last_record_id": 2831,
+    "calls": 2,
+    "last_query_ms": 21.19
+  },
+  "events_read": 200,
+  "second_poll_fresh": 0,
+  "by_event_id": {
+    "1116": 4,
+    "1117": 4,
+    "5001": 1,
+    "5007": 191
+  },
+  "by_classification": {
+    "benign": 191,
+    "n/a": 9
+  },
+  "by_action": {
+    "config_unclassified": 95,
+    "config_benign": 90,
+    "config_policy_weak": 6,
+    "rtp_disabled": 1,
+    "detected": 4,
+    "action_taken": 4
+  },
+  "verdicts_before_classification": 200,
+  "verdicts": 1,
+  "rule_hits": {
+    "WIN-DEFENDER-TAMPER-009": 1
+  },
+  "poll_ms": 21.19,
+  "pipeline_ms_p50": 0.038,
+  "pipeline_ms_p95": 0.065,
+  "loss": 0,
+  "ledger_ok": true,
+  "audit_chain_ok": true,
+  "note": "real Defender log records, readable without elevation; 1116/1117 are detections (observe-only), 5001/5007/5010/5012 are tamper signals"
+}

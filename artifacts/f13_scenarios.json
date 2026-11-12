@@ -1,0 +1,149 @@
+{
+  "harness": "labelled scenarios (NOT red-team)",
+  "scenarios": 10,
+  "detected": 10,
+  "prevented": 10,
+  "by_class": {
+    "E1_E2_mass": {
+      "total": 2,
+      "detected": 2,
+      "prevented": 2,
+      "alerted": 2,
+      "detection_pct": 100.0,
+      "prevention_pct": 100.0
+    },
+    "E3_E4_targeted": {
+      "total": 5,
+      "detected": 5,
+      "prevented": 5,
+      "alerted": 5,
+      "detection_pct": 100.0,
+      "prevention_pct": 100.0
+    },
+    "E5_fileless": {
+      "total": 3,
+      "detected": 3,
+      "prevented": 3,
+      "alerted": 3,
+      "detection_pct": 100.0,
+      "prevention_pct": 100.0
+    }
+  },
+  "results": [
+    {
+      "scenario": "R1_mass_encrypt",
+      "class": "E1_E2_mass",
+      "technique": "T1486",
+      "detected": true,
+      "prevented": true,
+      "alerted": true,
+      "rules": [
+        "FILE-MASS-WRITE-014"
+      ]
+    },
+    {
+      "scenario": "R2_canary_delete",
+      "class": "E1_E2_mass",
+      "technique": "T1485",
+      "detected": true,
+      "prevented": true,
+      "alerted": true,
+      "rules": [
+        "FILE-CANARY-015"
+      ]
+    },
+    {
+      "scenario": "T1_lsass",
+      "class": "E3_E4_targeted",
+      "technique": "T1003",
+      "detected": true,
+      "prevented": true,
+      "alerted": true,
+      "rules": [
+        "WIN-LSASS-ACCESS-004"
+      ]
+    },
+    {
+      "scenario": "T2_cred_read",
+      "class": "E3_E4_targeted",
+      "technique": "T1003",
+      "detected": true,
+      "prevented": true,
+      "alerted": true,
+      "rules": [
+        "LINUX-CRED-READ-104"
+      ]
+    },
+    {
+      "scenario": "T3_injection",
+      "class": "E3_E4_targeted",
+      "technique": "T1055",
+      "detected": true,
+      "prevented": true,
+      "alerted": true,
+      "rules": [
+        "LINUX-INJECT-106"
+      ]
+    },
+    {
+      "scenario": "T4_service_persist",
+      "class": "E3_E4_targeted",
+      "technique": "T1543",
+      "detected": true,
+      "prevented": true,
+      "alerted": true,
+      "rules": [
+        "WIN-SERVICE-CREATE-007"
+      ]
+    },
+    {
+      "scenario": "T5_runkey",
+      "class": "E3_E4_targeted",
+      "technique": "T1547",
+      "detected": true,
+      "prevented": true,
+      "alerted": true,
+      "rules": [
+        "WIN-RUNKEY-005"
+      ]
+    },
+    {
+      "scenario": "F1_ps_encoded",
+      "class": "E5_fileless",
+      "technique": "T1027",
+      "detected": true,
+      "prevented": true,
+      "alerted": true,
+      "rules": [
+        "WIN-PS-ENCODED-002"
+      ]
+    },
+    {
+      "scenario": "F2_tmp_exec",
+      "class": "E5_fileless",
+      "technique": "T1059",
+      "detected": true,
+      "prevented": true,
+      "alerted": true,
+      "rules": [
+        "LINUX-EXEC-TMP-101"
+      ]
+    },
+    {
+      "scenario": "F3_wmi_subscription",
+      "class": "E5_fileless",
+      "technique": "T1546",
+      "detected": true,
+      "prevented": true,
+      "alerted": true,
+      "rules": [
+        "WIN-WMI-SUBSCRIPTION-018"
+      ]
+    }
+  ],
+  "e6_rootkit": {
+    "status": "unmeasurable",
+    "why": "requires kernel visibility (minifilter/ELAM or eBPF kernel hooks beyond observation); blocked by signature/elevation (A/B/D)"
+  },
+  "note": "detection = verdict produced; prevention = gate produced a containment action (reversible). Harness scenarios are authored, so this is a regression suite, not an effectiveness proof"
+}

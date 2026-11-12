@@ -1,0 +1,34 @@
+{
+  "generated_at": "2026-11-12T21:29:36.651890+00:00",
+  "slice": "heartbeat+ingest+gate+rules+modelpack+selfprotect+response",
+  "rust": {
+    "tests_passed": 109,
+    "failed": 0,
+    "fmt": "clean",
+    "clippy_warnings": 0
+  },
+  "modules": {
+    "policy": 8,
+    "clock": 4,
+    "counters": 6,
+    "heartbeat": 11,
+    "ingest": 9,
+    "gate": 19,
+    "rules": 13,
+    "modelpack": 10,
+    "selfprotect": 14,
+    "response": 12,
+    "sha256_unit": 3
+  },
+  "ported": 10,
+  "total": 12,
+  "not_ported": [
+    "ml (ONNX backend)",
+    "ipc (authkey/pickle-compatible transport)"
+  ],
+  "limitations": [
+    "rules: key fixtures, not the whole rules_cases.py set",
+    "response: suspend path compiled but not measured on a real foreign process",
+    "hand-written SHA-256 is tested but not audited"
+  ]
+}

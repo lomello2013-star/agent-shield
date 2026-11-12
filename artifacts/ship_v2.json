@@ -1,0 +1,38 @@
+{
+  "export": {
+    "convert_s": 5.32,
+    "onnx_mb": 5.21,
+    "max_abs_diff": 0.039778,
+    "rows_over_1e-4": 4,
+    "rows_checked": 500
+  },
+  "calibration": {
+    "rows_calibration": 25000,
+    "rows_evaluation": 25000,
+    "brier_raw": 0.033697,
+    "brier_calibrated": 0.028522,
+    "ece_raw": 0.05328,
+    "ece_calibrated": 0.00363,
+    "knots": 98
+  },
+  "pack": {
+    "signed": true,
+    "code": "ok",
+    "pack": "spikes\\06-ml\\pe_v2_pack.json"
+  },
+  "shadow": {
+    "threshold": 0.732139,
+    "scored": 2000,
+    "tp": 896,
+    "fp": 6,
+    "alerts": 902,
+    "empirical_fpr": 0.005988,
+    "latency_ms_p50": 0.075,
+    "latency_ms_p95": 0.181,
+    "mean_confidence": 0.5403,
+    "actions_taken": 0
+  },
+  "total_s": 14.51,
+  "generated_at": "2026-11-12T13:43:58.951925+00:00",
+  "note": "offline training; runtime only verifies the signed pack and runs inference"
+}

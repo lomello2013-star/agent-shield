@@ -1,0 +1,43 @@
+{
+  "dataset": "EMBER2018 holdout (second half used for evaluation)",
+  "rows_calibration": 25000,
+  "rows_evaluation": 25000,
+  "brier_raw": 0.038359,
+  "brier_calibrated": 0.035496,
+  "ece_raw": 0.037634,
+  "ece_calibrated": 0.005498,
+  "knots": 98,
+  "knots_file": "D:\\ИИ защитник Вектор-защитник\\spikes\\06-ml\\pe_calibration.json",
+  "ppv": [
+    {
+      "target_fpr": 0.001,
+      "threshold": 0.913296,
+      "tpr": 0.6597,
+      "mean_confidence_dataset_prevalence": 0.9981,
+      "mean_confidence_deployment_weighted": 0.4374,
+      "ppv_formula": 0.3977
+    },
+    {
+      "target_fpr": 0.005,
+      "threshold": 0.853345,
+      "tpr": 0.7923,
+      "mean_confidence_dataset_prevalence": 0.9949,
+      "mean_confidence_deployment_weighted": 0.1603,
+      "ppv_formula": 0.1369
+    },
+    {
+      "target_fpr": 0.01,
+      "threshold": 0.784754,
+      "tpr": 0.8509,
+      "mean_confidence_dataset_prevalence": 0.9901,
+      "mean_confidence_deployment_weighted": 0.0924,
+      "ppv_formula": 0.0785
+    }
+  ],
+  "note": "monotonic mapping: TPR@FPR unchanged, only confidence semantics improve",
+  "consistency": {
+    "max_gap": 0.0397,
+    "conclusion": "with deployment weighting the isotonic+prevalence confidence matches PPV(TPR,FPR,p) within ~0.01, so the earlier 0.3964 gap was a comparison artifact (unweighted mean over a balanced sample). confidence stays as shipped; PPV for the alert budget is still computed from TPR/FPR at the operating point."
+  },
+  "generated_at": "2026-11-12T17:48:35.159013+00:00"
+}

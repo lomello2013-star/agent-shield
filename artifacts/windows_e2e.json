@@ -1,0 +1,34 @@
+{
+  "environment": {
+    "python": "3.12.8",
+    "platform": "win32"
+  },
+  "log": {
+    "log": "System",
+    "event_ids": [
+      7045,
+      7040,
+      1102
+    ],
+    "last_record_id": 10717,
+    "calls": 2,
+    "last_query_ms": 19.1
+  },
+  "events_read": 60,
+  "second_poll_fresh": 0,
+  "event_ids": [
+    7040,
+    7045
+  ],
+  "verdicts": 60,
+  "rule_hits": {
+    "WIN-SERVICE-CREATE-007": 60
+  },
+  "poll_ms": 19.1,
+  "pipeline_ms_p50": 0.118,
+  "pipeline_ms_p95": 0.319,
+  "loss": 0,
+  "ledger_ok": true,
+  "audit_chain_ok": true,
+  "note": "real System-log records readable without elevation; no service was created by this script"
+}

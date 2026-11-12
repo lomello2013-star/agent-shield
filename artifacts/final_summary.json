@@ -1,0 +1,175 @@
+{
+  "generated_at": "2026-11-12T21:18:44.071722+00:00",
+  "measured": 16,
+  "partial": 1,
+  "blocked": 2,
+  "items": [
+    {
+      "stage": "0",
+      "item": "Спайки 1–4, 6, 7 измерены",
+      "value": "Secure Boot=1, 0 EV; WDAC FBR 31,6 %; AMSI p95 12,68 µs; ML PE 0,854@1 %; 19 minifilters",
+      "source": "artifacts/stage*.json, DEVLOG",
+      "status": "measured"
+    },
+    {
+      "stage": "0",
+      "item": "Спайк 5 (драйвер)",
+      "value": "19 minifilters; 19 BugCheck/90 д; нет подписи и WDK",
+      "source": "DEVLOG этап 0.5",
+      "status": "blocked: human (A/B)"
+    },
+    {
+      "stage": "1",
+      "item": "R2 тихий отказ",
+      "value": "59.5 с",
+      "source": "stage1_report.json",
+      "status": "measured"
+    },
+    {
+      "stage": "1",
+      "item": "R3 MTTR",
+      "value": "110.5 мс",
+      "source": "stage1_report.json",
+      "status": "measured"
+    },
+    {
+      "stage": "1",
+      "item": "R6 откат",
+      "value": "1.0",
+      "source": "stage1_report.json",
+      "status": "measured"
+    },
+    {
+      "stage": "1",
+      "item": "R8 потери (100k)",
+      "value": "0 потерь на 100000",
+      "source": "stage1_report.json",
+      "status": "measured"
+    },
+    {
+      "stage": "1",
+      "item": "R9 fail-safe",
+      "value": "reject 100/100, destructive 0",
+      "source": "stage1_report.json",
+      "status": "measured"
+    },
+    {
+      "stage": "1",
+      "item": "R1/R4 доступность",
+      "value": "soak 47399 событий, RSS +0.39 %/60 с, плато True",
+      "source": "soak_report.json",
+      "status": "partially measured: нужен многочасовой прогон"
+    },
+    {
+      "stage": "2",
+      "item": "WDAC audit, false block политики A",
+      "value": "46.0 %",
+      "source": "stage2_report.json",
+      "status": "measured (audit)"
+    },
+    {
+      "stage": "2",
+      "item": "Живые события 3076",
+      "value": "0 событий 3076",
+      "source": "stage2_report.json",
+      "status": "blocked: нужна элевация (D)"
+    },
+    {
+      "stage": "4",
+      "item": "Сквозной конвейер",
+      "value": "7705.0 записей/с, потерь 0",
+      "source": "stage4_report.json",
+      "status": "measured"
+    },
+    {
+      "stage": "5",
+      "item": "Покрытие обнаружения/предотвращения",
+      "value": "100.0 % / 100.0 %",
+      "source": "stage5_report.json",
+      "status": "measured (авторские фикстуры)"
+    },
+    {
+      "stage": "7",
+      "item": "Suspend / contain",
+      "value": "p95 0.157 мс / 4.257 мс",
+      "source": "stage7_report.json",
+      "status": "measured"
+    },
+    {
+      "stage": "8",
+      "item": "Модель PE v2 и E7",
+      "value": "TPR 0.67242 @0,05 % FPR; 0.90136 @1 %",
+      "source": "pe_v2_report.json",
+      "status": "measured; цель E7 0,95 @0,05 % не достигнута"
+    },
+    {
+      "stage": "9",
+      "item": "T1055 Linux (4 пути)",
+      "value": "4 путей, 3 alert / 1 signal, потерь 0",
+      "source": "t1055_coverage.json",
+      "status": "measured"
+    },
+    {
+      "stage": "9",
+      "item": "Провенанс из ядра",
+      "value": "из ядра 20, fallback 0",
+      "source": "linux_provenance.json",
+      "status": "measured"
+    },
+    {
+      "stage": "11",
+      "item": "Аудит-журнал",
+      "value": "1077.0 записей/с, verify 21.886 мс",
+      "source": "stage11_report.json",
+      "status": "measured"
+    },
+    {
+      "stage": "11",
+      "item": "Корреляция (pid/tree/provenance)",
+      "value": "corr 5, JIT 0",
+      "source": "linux_corr.json, linux_tree*.json, linux_provenance.json",
+      "status": "measured; FP-класс задокументирован"
+    },
+    {
+      "stage": "12",
+      "item": "Хаос-инъекции",
+      "value": "потерь 0, spilled 16500, safe mode ok",
+      "source": "stage12_chaos.json",
+      "status": "measured"
+    }
+  ],
+  "blockers": [
+    {
+      "id": "A",
+      "what": "EV-сертификат + Hardware Dev Center",
+      "why": "подпись драйвера; без неё ядро не мержится"
+    },
+    {
+      "id": "B",
+      "what": "Windows тест-VM с WDK/testsigning",
+      "why": "спайк 5 и драйвер остаются открытыми"
+    },
+    {
+      "id": "C",
+      "what": "Linux-VM с Secure Boot/fapolicyd",
+      "why": "проверка политик целостности не выполнена"
+    },
+    {
+      "id": "D",
+      "what": "Окно с admin",
+      "why": "RTP, WDAC enforce, ETW-TI, Windows T1055 — не измерены"
+    },
+    {
+      "id": "E",
+      "what": "Разрешение на rustup",
+      "why": "Rust-порт контрактов отложен (D2: Python 3.12)"
+    }
+  ],
+  "not_proven": [
+    "E7 (0,95 @0,05 % FPR): измерено 0,6724 — потолок статики",
+    "R1/R4 (многочасовая доступность): 5-минутный soak с плато, не сутки",
+    "Windows T1055: нет элевации",
+    "Драйвер/ядро: нет подписи и WDK",
+    "Эффективность (red-team): матрица покрытия — не доказательство"
+  ]
+}

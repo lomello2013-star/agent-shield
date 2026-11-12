@@ -1,0 +1,58 @@
+{
+  "data": {
+    "train": 150000,
+    "malicious": 18304,
+    "test": 50000
+  },
+  "runs": [
+    {
+      "name": "A_baseline",
+      "train_s": 125.7,
+      "auc": 0.99277,
+      "tpr_at_fpr_0.0005": 0.6724,
+      "fpr_measured_0.0005": 0.00052,
+      "tpr_at_fpr_0.001": 0.7162,
+      "fpr_measured_0.001": 0.001,
+      "tpr_at_fpr_0.005": 0.855,
+      "fpr_measured_0.005": 0.00501,
+      "tpr_at_fpr_0.01": 0.9014,
+      "fpr_measured_0.01": 0.01002
+    },
+    {
+      "name": "B_deeper",
+      "train_s": 180.8,
+      "auc": 0.99294,
+      "tpr_at_fpr_0.0005": 0.6096,
+      "fpr_measured_0.0005": 0.00052,
+      "tpr_at_fpr_0.001": 0.7281,
+      "fpr_measured_0.001": 0.001,
+      "tpr_at_fpr_0.005": 0.8611,
+      "fpr_measured_0.005": 0.00501,
+      "tpr_at_fpr_0.01": 0.9082,
+      "fpr_measured_0.01": 0.01002
+    },
+    {
+      "name": "C_hard_negative",
+      "train_s": 122.4,
+      "hard_rows_added": 0,
+      "auc": 0.99277,
+      "tpr_at_fpr_0.0005": 0.6724,
+      "fpr_measured_0.0005": 0.00052,
+      "tpr_at_fpr_0.001": 0.7162,
+      "fpr_measured_0.001": 0.001,
+      "tpr_at_fpr_0.005": 0.855,
+      "fpr_measured_0.005": 0.00501,
+      "tpr_at_fpr_0.01": 0.9014,
+      "fpr_measured_0.01": 0.01002
+    }
+  ],
+  "best": {
+    "name": "A_baseline",
+    "tpr_at_fpr_0.0005": 0.6724,
+    "shipped_v2": 0.6724,
+    "target": 0.95,
+    "improved": false,
+    "target_met": false
+  },
+  "conclusion": "ни один из трёх приёмов не сдвинул хвост существенно — потолок статики подтверждён на этих данных"
+}

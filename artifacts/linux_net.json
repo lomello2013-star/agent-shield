@@ -1,0 +1,32 @@
+{
+  "environment": {
+    "python": "3.14.4",
+    "kernel": "6.18.54.1-microsoft-standard-WSL2"
+  },
+  "c2_connects": 200,
+  "benign_connects": 200,
+  "events": 400,
+  "ppid_events": 400,
+  "ports_seen": {
+    "4444": 200,
+    "8080": 200
+  },
+  "verdicts": 200,
+  "rule_hits": {
+    "LINUX-C2-PORT-105": 200
+  },
+  "elapsed_s": 0.25,
+  "latency_kernel_to_user_ms": {
+    "p50": 0.328,
+    "p95": 1.164
+  },
+  "latency_pipeline_ms": {
+    "p50": 0.12,
+    "p95": 0.327
+  },
+  "loss": 0,
+  "ledger_ok": true,
+  "audit_chain_ok": true,
+  "benign_verdicts": 0,
+  "note": "cgroup/connect4 observer; port 4444 alerts, port 8080 is only an event"
+}

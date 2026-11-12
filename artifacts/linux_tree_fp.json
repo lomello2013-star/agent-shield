@@ -1,0 +1,26 @@
+{
+  "environment": {
+    "python": "3.14.4",
+    "kernel": "6.18.54.1-microsoft-standard-WSL2"
+  },
+  "submitted": {
+    "linux.memory": 5,
+    "linux.mprotect": 11
+  },
+  "adapter_errors": [],
+  "legit_supervisor_plus_jit": {
+    "helper": "{\"writes\":5,\"parent\":1580}\n{\"execs\":5,\"child\":1581}",
+    "tree_alerts": 1,
+    "pid_alerts": 0
+  },
+  "benign_jit_only": {
+    "helper": "{\"mprotects\":5}",
+    "tree_alerts": 0,
+    "pid_alerts": 0
+  },
+  "known_fp": true,
+  "loss": 0,
+  "ledger_ok": true,
+  "audit_chain_ok": true,
+  "note": "tree correlation cannot separate a legitimate attach+JIT from injection by event pattern alone; provenance is required"
+}

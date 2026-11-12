@@ -1,0 +1,33 @@
+{
+  "generated_at": "2026-11-12T22:10:42.401774+00:00",
+  "slice": "Python-wire IPC + real suspend",
+  "rust": {
+    "tests_passed": 122,
+    "failed": 0,
+    "fmt": "clean",
+    "clippy_warnings": 0
+  },
+  "ipc": {
+    "python_wire_compatible": true,
+    "transport": "TCP 127.0.0.1",
+    "handshake": "CPython multiprocessing.connection authkey HMAC-SHA256",
+    "framing": "4-byte big-endian + pickle (serde-pickle)",
+    "named_pipe_path": "not implemented"
+  },
+  "response": {
+    "suspend_real_process": true,
+    "freeze_verified": true,
+    "resume_verified": true
+  },
+  "ml": {
+    "holdout_rows": 50,
+    "holdout_rows_total": 50000,
+    "max_abs_diff": "<1e-4",
+    "full_50k": "not run: tract ~97s/50 rows => ~27h"
+  },
+  "limitations": [
+    "ML full 50k not run (tract performance)",
+    "Python named pipe/AF_UNIX transport not implemented",
+    "hand-written SHA-256 not audited"
+  ]
+}

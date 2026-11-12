@@ -1,0 +1,30 @@
+{
+  "generated_at": "2026-11-12T22:18:36.360420+00:00",
+  "slice": "full 50k ML holdout via ort",
+  "rust": {
+    "tests_passed": 124,
+    "failed": 0,
+    "fmt": "clean",
+    "clippy_warnings": 0
+  },
+  "ml": {
+    "backend": "ort 2.0.0-rc.15 / ONNX Runtime",
+    "rows": 50000,
+    "features": 2381,
+    "max_abs_diff": 0.0,
+    "duration_s": 7.52,
+    "python_reference": "onnxruntime 1.28.0"
+  },
+  "ipc": {
+    "python_wire_compatible": true,
+    "transport": "TCP 127.0.0.1",
+    "named_pipe_path": "not implemented"
+  },
+  "response": {
+    "suspend_real_process": true
+  },
+  "remaining": [
+    "named pipe/AF_UNIX Python transport",
+    "hand-written SHA-256 audit"
+  ]
+}

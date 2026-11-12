@@ -1,0 +1,85 @@
+{
+  "generated_at": "2026-11-12T23:07:50.868625+00:00",
+  "checks": [
+    {
+      "check": "status/tests-step-ok",
+      "ok": true,
+      "detail": "tests step result from the previous full run"
+    },
+    {
+      "check": "status/soak-events",
+      "ok": false,
+      "detail": "artifact says 118294"
+    },
+    {
+      "check": "status/t1055-paths",
+      "ok": true,
+      "detail": "artifact says 4 (3/1)"
+    },
+    {
+      "check": "status/t1055-totals",
+      "ok": true,
+      "detail": "artifact says 405 / 405 / 0"
+    },
+    {
+      "check": "status/pe-v2-tpr",
+      "ok": true,
+      "detail": "artifact says 0.67242"
+    },
+    {
+      "check": "status/this-run-column",
+      "ok": true,
+      "detail": "freshness column must mark artifacts from this run"
+    },
+    {
+      "check": "t1055-md/paths",
+      "ok": true,
+      "detail": "measured path count in the generated doc"
+    },
+    {
+      "check": "t1055-md/layers",
+      "ok": true,
+      "detail": "rule ladder section present"
+    },
+    {
+      "check": "matrix/detection",
+      "ok": true,
+      "detail": "expected 100.0"
+    },
+    {
+      "check": "matrix/prevention",
+      "ok": true,
+      "detail": "expected 100.0"
+    },
+    {
+      "check": "devlog/entries",
+      "ok": true,
+      "detail": "79 entries"
+    },
+    {
+      "check": "devlog/recent-fields",
+      "ok": true,
+      "detail": "last 10 entries carry the required fields"
+    },
+    {
+      "check": "devlog/field-coverage",
+      "ok": true,
+      "detail": "60/79 entries (76%) carry all five fields; older entries are disclosed, not rewritten"
+    },
+    {
+      "check": "devlog/no-false-auto-review",
+      "ok": true,
+      "detail": "0 entries claim approval without an isolated reviewer"
+    },
+    {
+      "check": "devlog/auto-review-disclosed",
+      "ok": true,
+      "detail": "30 entries disclose pending review"
+    }
+  ],
+  "passed": 14,
+  "failed": [
+    "status/soak-events"
+  ],
+  "note": "only numbers that appear verbatim in the generated docs are checked; prose is not validated"
+}

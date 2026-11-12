@@ -1,0 +1,32 @@
+{
+  "environment": {
+    "python": "3.14.4",
+    "kernel": "6.18.54.1-microsoft-standard-WSL2"
+  },
+  "events": 200,
+  "ppid_events": 200,
+  "sensitive_reads": 200,
+  "benign_reads": 200,
+  "paths_seen": {
+    "/etc/shadow": 200
+  },
+  "verdicts": 200,
+  "rule_hits": {
+    "LINUX-CRED-READ-104": 200
+  },
+  "elapsed_s": 0.18,
+  "events_per_s": 1124.0,
+  "latency_kernel_to_user_ms": {
+    "p50": 0.68,
+    "p95": 2.111
+  },
+  "latency_pipeline_ms": {
+    "p50": 0.143,
+    "p95": 0.32
+  },
+  "loss": 0,
+  "ledger_ok": true,
+  "audit_chain_ok": true,
+  "benign_leak": false,
+  "note": "real LSM file_open events; benign /etc/hostname reads must not appear"
+}

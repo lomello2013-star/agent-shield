@@ -1,0 +1,37 @@
+# Byte-compiled / caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Virtualenv / local config
+.venv/
+venv/
+.env
+
+# Secrets: never commit private keys or role tokens
+secrets/
+
+# Generated diagnostics / huge soak logs
+artifacts/_stdout/
+artifacts/_tmp/
+artifacts/soak_partial.json
+artifacts/rust_ml_holdout_state.json
+*.log
+
+# Rust build output
+rust/target/
+rust/unix_ipc_test/target/
+
+# Large external datasets / training caches
+spikes/artifacts/data/
+spikes/06-ml/*.npz
+
+# Python packaging
+*.egg-info/
+dist/
+build/

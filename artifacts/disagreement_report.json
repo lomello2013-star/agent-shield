@@ -1,0 +1,62 @@
+{
+  "rows": 5000,
+  "thresholds": {
+    "v1": 0.740246,
+    "v2": 0.730393
+  },
+  "alerts": {
+    "v1": 2207,
+    "v2": 2272
+  },
+  "disagreements": 199,
+  "groups": {
+    "v2_only_tp": {
+      "n": 119,
+      "v1_score_mean": 0.5849,
+      "v2_score_mean": 0.8128,
+      "delta_mean": 0.2279,
+      "delta_min": 0.0058,
+      "delta_max": 0.7895
+    },
+    "v1_only_tp": {
+      "n": 54,
+      "v1_score_mean": 0.839,
+      "v2_score_mean": 0.6243,
+      "delta_mean": -0.2147,
+      "delta_min": -0.551,
+      "delta_max": -0.0413
+    },
+    "v2_only_fp": {
+      "n": 13,
+      "v1_score_mean": 0.6123,
+      "v2_score_mean": 0.7823,
+      "delta_mean": 0.1699,
+      "delta_min": 0.0248,
+      "delta_max": 0.3363
+    },
+    "v1_only_fp": {
+      "n": 13,
+      "v1_score_mean": 0.7912,
+      "v2_score_mean": 0.4601,
+      "delta_mean": -0.3311,
+      "delta_min": -0.7479,
+      "delta_max": -0.0391
+    }
+  },
+  "net_detection_gain": 65,
+  "net_fp_change": 0,
+  "near_threshold_share": 0.5025,
+  "feature_lead_indices": [
+    626,
+    617,
+    825,
+    2362,
+    2360,
+    2354,
+    2364,
+    2376,
+    616,
+    2370
+  ],
+  "verdict": "v2 wins: more true positives, no extra false positives"
+}

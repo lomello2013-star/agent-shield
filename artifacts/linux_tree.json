@@ -1,0 +1,22 @@
+{
+  "environment": {
+    "python": "3.14.4",
+    "kernel": "6.18.54.1-microsoft-standard-WSL2"
+  },
+  "helper_output": [
+    "{\"writes\":5,\"parent\":1538}",
+    "{\"execs\":5,\"child\":1539}"
+  ],
+  "submitted": {
+    "linux.memory": 5,
+    "linux.mprotect": 5
+  },
+  "adapter_errors": [],
+  "pid_group_alerts": 0,
+  "tree_group_alerts": 1,
+  "tree_beats_pid": true,
+  "loss": 0,
+  "ledger_ok": true,
+  "audit_chain_ok": true,
+  "note": "parent writes, child executes: pid grouping cannot see it, tree grouping can"
+}

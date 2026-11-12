@@ -1,0 +1,65 @@
+{
+  "train_n": 150000,
+  "train_mal": 18304,
+  "test_n": 50000,
+  "test_pos": 25050,
+  "auc": 0.99277,
+  "train_s": 136.6,
+  "trees": 700,
+  "operating_points": [
+    {
+      "target_fpr": 0.0005,
+      "threshold": 0.893748,
+      "tp": 16844,
+      "fp": 13,
+      "fpr_measured": 0.00052,
+      "tpr": 0.67242,
+      "tpr_ci95": [
+        0.6666,
+        0.6782
+      ]
+    },
+    {
+      "target_fpr": 0.001,
+      "threshold": 0.88246,
+      "tp": 17940,
+      "fp": 25,
+      "fpr_measured": 0.001,
+      "tpr": 0.71617,
+      "tpr_ci95": [
+        0.7106,
+        0.7217
+      ]
+    },
+    {
+      "target_fpr": 0.005,
+      "threshold": 0.795089,
+      "tp": 21417,
+      "fp": 125,
+      "fpr_measured": 0.00501,
+      "tpr": 0.85497,
+      "tpr_ci95": [
+        0.8506,
+        0.8593
+      ]
+    },
+    {
+      "target_fpr": 0.01,
+      "threshold": 0.727612,
+      "tp": 22579,
+      "fp": 250,
+      "fpr_measured": 0.01002,
+      "tpr": 0.90136,
+      "tpr_ci95": [
+        0.8976,
+        0.905
+      ]
+    }
+  ],
+  "baseline": {
+    "tpr_at_fpr_0.05": 0.535,
+    "tpr_at_fpr_0.1": 0.649,
+    "tpr_at_fpr_1.0": 0.854
+  },
+  "generated_at": "2026-11-12T13:43:20Z"
+}

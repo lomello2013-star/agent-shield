@@ -1,0 +1,22 @@
+{
+  "in_scope": [
+    {"id": "T1059", "name": "Command and Scripting Interpreter", "layer": "L2"},
+    {"id": "T1027", "name": "Obfuscated Files or Information", "layer": "L2"},
+    {"id": "T1566", "name": "Phishing", "layer": "L1"},
+    {"id": "T1003", "name": "OS Credential Dumping", "layer": "L3"},
+    {"id": "T1547", "name": "Boot or Logon Autostart Execution", "layer": "L1"},
+    {"id": "T1053", "name": "Scheduled Task/Job", "layer": "L1"},
+    {"id": "T1543", "name": "Create or Modify System Process", "layer": "L1"},
+    {"id": "T1070", "name": "Indicator Removal", "layer": "L1"},
+    {"id": "T1562", "name": "Impair Defenses", "layer": "L8"},
+    {"id": "T1055", "name": "Process Injection", "layer": "L3"},
+    {"id": "T1036", "name": "Masquerading", "layer": "L1"},
+    {"id": "T1021", "name": "Remote Services", "layer": "L4"},
+    {"id": "T1071", "name": "Application Layer Protocol", "layer": "L4"},
+    {"id": "T1486", "name": "Data Encrypted for Impact", "layer": "L6"},
+    {"id": "T1485", "name": "Data Destruction", "layer": "L5"},
+    {"id": "T1204", "name": "User Execution", "layer": "L0"},
+    {"id": "T1041", "name": "Exfiltration Over C2 Channel", "layer": "L4"},
+    {"id": "T1546", "name": "Event Triggered Execution", "layer": "L1"}
+  ]
+}

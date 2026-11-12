@@ -1,0 +1,41 @@
+{
+  "append": [
+    {
+      "records": 2000,
+      "fsync_every": 1,
+      "append_ms_p50": 0.7777,
+      "append_ms_p95": 1.12,
+      "records_per_s": 1206.0,
+      "total_s": 1.66,
+      "file_kb": 632.6
+    },
+    {
+      "records": 20000,
+      "fsync_every": 64,
+      "append_ms_p50": 0.0157,
+      "append_ms_p95": 0.031,
+      "records_per_s": 26662.0,
+      "total_s": 0.75,
+      "file_kb": 6365.0
+    },
+    {
+      "records": 20000,
+      "fsync_every": 256,
+      "append_ms_p50": 0.0157,
+      "append_ms_p95": 0.027,
+      "records_per_s": 45181.0,
+      "total_s": 0.44,
+      "file_kb": 6365.0
+    }
+  ],
+  "verify": {
+    "records": 20000,
+    "full_verify_ms": 221.953,
+    "incremental_idle_ms": 0.164,
+    "incremental_100_new_ms": 0.1891,
+    "full_ok": true,
+    "incremental_ok": true,
+    "speedup_idle_x": 1353.4
+  },
+  "note": "fsync_every>1 trades durability of up to N-1 tail records for throughput; the chain stays valid because unacknowledged records are not sealed"
+}

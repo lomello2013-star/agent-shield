@@ -1,0 +1,27 @@
+{
+  "generated_at": "2026-11-12T21:16:30.649958+00:00",
+  "slice": "policy+clock+counters",
+  "rust": {
+    "tests_passed": 21,
+    "failed": 0,
+    "fmt": "clean",
+    "clippy_warnings": 0
+  },
+  "python_parity": {
+    "tests_passed": 17,
+    "failed": 0
+  },
+  "fingerprint": "d8ae913401ead8b0d549dbae9d0efb299020b24e49b87a9385ab7071446ea759",
+  "canonical_json": "{\"DRIVER_SIGNED_BY_HUMAN\":true,\"FAIL_SAFE_ON_TIMEOUT\":\"reject\",\"KERNEL_CODE_REVIEW_REQUIRED\":true,\"MODELS_TRAIN_ON_DEVICE\":false}",
+  "toolchain": {
+    "rustc": "1.100.0",
+    "cargo": "1.100.0",
+    "target": "x86_64-pc-windows-msvc",
+    "linker": "rust-lld + Windows SDK 10.0.26100.0"
+  },
+  "limitations": [
+    "first slice only",
+    "hand-written SHA-256 is tested but not audited",
+    "run-tests.ps1 is Windows-only"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "generated_at": "2026-11-12T21:42:39.280183+00:00",
+  "slice": "parity harness: rules + ML holdout",
+  "rust": {
+    "tests_passed": 120,
+    "failed": 0,
+    "fmt": "clean",
+    "clippy_warnings": 0
+  },
+  "ported": 12,
+  "total": 12,
+  "rules": {
+    "fixtures": 28,
+    "fixture_hits": 28,
+    "benign_quiet": 28
+  },
+  "ml": {
+    "holdout_rows": 50,
+    "features": 2381,
+    "max_abs_diff": "<1e-4",
+    "python": "onnxruntime"
+  },
+  "limitations": [
+    "IPC transport is not wire-compatible with Python multiprocessing.connection (authkey + pickle framing)",
+    "ML parity covers 50 of 50k holdout rows; full run is a load test",
+    "response suspend path compiled but not measured on a foreign process",
+    "hand-written SHA-256 is tested but not audited"
+  ]
+}

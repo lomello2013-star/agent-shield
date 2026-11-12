@@ -1,0 +1,30 @@
+{
+  "generated_at": "2026-11-12T21:18:39.394636+00:00",
+  "ok": true,
+  "steps": [
+    {
+      "label": "t1055 coverage matrix",
+      "script": "t1055_coverage.py",
+      "ok": true,
+      "tail": [
+        "}"
+      ]
+    },
+    {
+      "label": "stage summary",
+      "script": "final_summary.py",
+      "ok": true,
+      "tail": [
+        "{\"measured\": 16, \"partial\": 1, \"blocked\": 2}"
+      ]
+    },
+    {
+      "label": "devlog audit",
+      "script": "devlog_audit.py",
+      "ok": true,
+      "tail": [
+        "{\"entries\": 71, \"complete\": 52, \"incomplete\": 19, \"completeness_pct\": 73.2, \"missing_artifacts\": [\"dev_keys.json\"]}"
+      ]
+    }
+  ]
+}

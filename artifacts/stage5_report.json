@@ -1,0 +1,53 @@
+{
+  "rules": 28,
+  "lint_problems": [],
+  "coverage": {
+    "techniques_in_scope": 18,
+    "detected": 18,
+    "prevented": 18,
+    "detection_pct": 100.0,
+    "prevention_pct": 100.0,
+    "detection_target_pct": 90.0,
+    "prevention_target_pct": 70.0,
+    "passes_detection": true,
+    "passes_prevention": true,
+    "gaps_detection": [],
+    "gaps_prevention": [],
+    "untested_rules": []
+  },
+  "smoke_detections": {
+    "WIN-EXEC-TEMP-001": [
+      "WIN-EXEC-TEMP-001"
+    ],
+    "WIN-LSASS-ACCESS-004": [
+      "WIN-LSASS-ACCESS-004"
+    ],
+    "NET-SMB-LATERAL-012": [
+      "NET-SMB-LATERAL-012"
+    ],
+    "WIN-RUNKEY-005": [
+      "WIN-RUNKEY-005"
+    ],
+    "WIN-LOG-CLEAR-008": [
+      "WIN-LOG-CLEAR-008"
+    ]
+  },
+  "throughput": {
+    "events": 20000,
+    "elapsed_s": 1.143,
+    "events_per_s": 17491.0,
+    "verdicts": 12000,
+    "latency_ms_p50": 0.0502,
+    "latency_ms_p95": 0.099,
+    "latency_ms_p99": 0.1475,
+    "latency_ms_max": 10.7225,
+    "budget_ms": 5.0,
+    "within_fast_budget": true
+  },
+  "matrix_markdown": "D:\\ИИ защитник Вектор-защитник\\docs\\coverage-matrix.md",
+  "environment": {
+    "python": "3.12.8",
+    "cpu": 8
+  },
+  "note": "scenario detection is authored-fixture smoke, not a holdout; E11 real validation requires red-team (stage 12)"
+}

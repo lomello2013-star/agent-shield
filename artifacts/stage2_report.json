@@ -1,0 +1,343 @@
+{
+  "host": "DESKTOP-JHQB492",
+  "measured_at": "2026-11-12T15:19:44.2306022+03:00",
+  "inventory": 150,
+  "signed": 125,
+  "unsigned": 25,
+  "with_tbs": 125,
+  "policies": {
+    "A_ms_signed_only": {
+      "false_block": {
+        "total": 150,
+        "blocked": 69,
+        "false_block_rate": 0.46,
+        "false_block_rate_pct": 46.0,
+        "target_pct": 0.1,
+        "within_target": false,
+        "blocked_examples": [
+          "C:\\Program Files (x86)\\Microsoft Visual C++ 2022\\ScreenConnect.WindowsClient.exe",
+          "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\coverage.exe",
+          "C:\\Program Files\\CrystalDiskInfo\\DiskInfo64.exe",
+          "C:\\Program Files (x86)\\DjVuLibre\\djvused.exe",
+          "C:\\Program Files\\Comfy Desktop\\resources\\app.asar.unpacked\\node_modules\\node-pty\\third_party\\conpty\\1.23.251008001\\win10-x64\\OpenConsole.exe",
+          "C:\\Program Files (x86)\\DjVuLibre\\djvmcvt.exe",
+          "C:\\Users\\lomel\\AppData\\Local\\Programs\\MSI Afterburner\\7857c4e10655f806d32a00c5d6f8c489.exe",
+          "C:\\Program Files\\NVIDIA Corporation\\FrameViewSDK\\FvContainer\\FvContainer.exe",
+          "C:\\Program Files\\NVIDIA Corporation\\NvContainer\\nvcontainer.exe",
+          "C:\\Users\\lomel\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\com.docker.sailor.exe"
+        ]
+      },
+      "coverage": {
+        "total": 150,
+        "covered": 81,
+        "coverage": 0.54,
+        "coverage_pct": 54.0,
+        "target_pct": 99.5,
+        "passes_gate": false
+      }
+    },
+    "B_all_observed_publishers": {
+      "false_block": {
+        "total": 150,
+        "blocked": 25,
+        "false_block_rate": 0.166667,
+        "false_block_rate_pct": 16.6667,
+        "target_pct": 0.1,
+        "within_target": false,
+        "blocked_examples": [
+          "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\coverage.exe",
+          "C:\\Program Files (x86)\\DjVuLibre\\djvused.exe",
+          "C:\\Program Files (x86)\\DjVuLibre\\djvmcvt.exe",
+          "C:\\Users\\lomel\\AppData\\Local\\Programs\\MSI Afterburner\\7857c4e10655f806d32a00c5d6f8c489.exe",
+          "C:\\Users\\lomel\\AppData\\Local\\Programs\\koda-app\\resources\\elevate.exe",
+          "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\ct2-openai-gpt2-converter.exe",
+          "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\setuptools\\gui.exe",
+          "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\setuptools\\cli-32.exe",
+          "C:\\Program Files (x86)\\DjVuLibre\\djvudump.exe",
+          "C:\\Users\\lomel\\AppData\\Local\\Programs\\koda-app\\resources\\voice-ffmpeg\\win32-x64\\ffmpeg.exe"
+        ]
+      },
+      "coverage": {
+        "total": 150,
+        "covered": 125,
+        "coverage": 0.833333,
+        "coverage_pct": 83.3333,
+        "target_pct": 99.5,
+        "passes_gate": false
+      }
+    },
+    "C_publishers_plus_paths": {
+      "false_block": {
+        "total": 150,
+        "blocked": 18,
+        "false_block_rate": 0.12,
+        "false_block_rate_pct": 12.0,
+        "target_pct": 0.1,
+        "within_target": false,
+        "blocked_examples": [
+          "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\coverage.exe",
+          "C:\\Users\\lomel\\AppData\\Local\\Programs\\MSI Afterburner\\7857c4e10655f806d32a00c5d6f8c489.exe",
+          "C:\\Users\\lomel\\AppData\\Local\\Programs\\koda-app\\resources\\elevate.exe",
+          "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\ct2-openai-gpt2-converter.exe",
+          "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\setuptools\\gui.exe",
+          "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\setuptools\\cli-32.exe",
+          "C:\\Users\\lomel\\AppData\\Local\\Programs\\koda-app\\resources\\voice-ffmpeg\\win32-x64\\ffmpeg.exe",
+          "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\accelerate-launch.exe",
+          "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\setuptools\\gui-arm64.exe",
+          "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\ct2-fairseq-converter.exe"
+        ]
+      },
+      "coverage": {
+        "total": 150,
+        "covered": 132,
+        "coverage": 0.88,
+        "coverage_pct": 88.0,
+        "target_pct": 99.5,
+        "passes_gate": false
+      }
+    },
+    "D_plus_unsigned_hashes": {
+      "false_block": {
+        "total": 150,
+        "blocked": 0,
+        "false_block_rate": 0.0,
+        "false_block_rate_pct": 0.0,
+        "target_pct": 0.1,
+        "within_target": true,
+        "blocked_examples": []
+      },
+      "coverage": {
+        "total": 150,
+        "covered": 150,
+        "coverage": 1.0,
+        "coverage_pct": 100.0,
+        "target_pct": 99.5,
+        "passes_gate": true
+      }
+    }
+  },
+  "holdout": {
+    "design": 75,
+    "evaluation": 75,
+    "note": "allowlist designed on half the inventory, scored on the other half",
+    "policies": {
+      "E_holdout_ms_only": {
+        "false_block": {
+          "total": 75,
+          "blocked": 36,
+          "false_block_rate": 0.48,
+          "false_block_rate_pct": 48.0,
+          "target_pct": 0.1,
+          "within_target": false,
+          "blocked_examples": [
+            "C:\\Program Files (x86)\\Common Files\\Steam\\steamservice.exe",
+            "C:\\Program Files (x86)\\Crypto Pro\\CSP\\wipefile.exe",
+            "C:\\Program Files (x86)\\DjVuLibre\\cpaldjvu.exe",
+            "C:\\Program Files (x86)\\DjVuLibre\\djvudump.exe",
+            "C:\\Program Files (x86)\\DjVuLibre\\djvused.exe",
+            "C:\\Program Files (x86)\\Microsoft Visual C++ 2022\\ScreenConnect.ClientService.exe",
+            "C:\\Program Files\\AdGuardVpn\\AdGuardVpn.Launcher.Arm64.exe",
+            "C:\\Program Files\\AdGuardVpn\\Drivers\\x64\\AdguardNetRegSock.exe",
+            "C:\\Program Files\\Comfy Desktop\\resources\\app.asar.unpacked\\node_modules\\7zip-bin\\win\\arm64\\7za.exe",
+            "C:\\Program Files\\Comfy Desktop\\resources\\app.asar.unpacked\\node_modules\\node-pty\\prebuilds\\win32-arm64\\conpty\\OpenConsole.exe"
+          ]
+        },
+        "coverage": {
+          "total": 75,
+          "covered": 39,
+          "coverage": 0.52,
+          "coverage_pct": 52.0,
+          "target_pct": 99.5,
+          "passes_gate": false
+        }
+      },
+      "F_holdout_publishers": {
+        "false_block": {
+          "total": 75,
+          "blocked": 16,
+          "false_block_rate": 0.213333,
+          "false_block_rate_pct": 21.3333,
+          "target_pct": 0.1,
+          "within_target": false,
+          "blocked_examples": [
+            "C:\\Program Files (x86)\\DjVuLibre\\cpaldjvu.exe",
+            "C:\\Program Files (x86)\\DjVuLibre\\djvudump.exe",
+            "C:\\Program Files (x86)\\DjVuLibre\\djvused.exe",
+            "C:\\Program Files\\Common Files\\microsoft shared\\ink\\mip.exe",
+            "C:\\Program Files\\Windows Defender\\MpCmdRun.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\koda-app\\resources\\elevate.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\koda-app\\Uninstall Koda Desktop.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\Microsoft VS Code\\bin\\copilot-shim\\copilot.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\pip\\_vendor\\distlib\\w32.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\pythonwin\\Pythonwin.exe"
+          ]
+        },
+        "coverage": {
+          "total": 75,
+          "covered": 59,
+          "coverage": 0.786667,
+          "coverage_pct": 78.6667,
+          "target_pct": 99.5,
+          "passes_gate": false
+        }
+      },
+      "G_holdout_publishers_plus_paths": {
+        "false_block": {
+          "total": 75,
+          "blocked": 11,
+          "false_block_rate": 0.146667,
+          "false_block_rate_pct": 14.6667,
+          "target_pct": 0.1,
+          "within_target": false,
+          "blocked_examples": [
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\koda-app\\resources\\elevate.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\koda-app\\Uninstall Koda Desktop.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\Microsoft VS Code\\bin\\copilot-shim\\copilot.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\pip\\_vendor\\distlib\\w32.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\pythonwin\\Pythonwin.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\setuptools\\gui-64.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\setuptools\\gui.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\accelerate-launch.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\clear_comtypes_cache.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\coverage.exe"
+          ]
+        },
+        "coverage": {
+          "total": 75,
+          "covered": 64,
+          "coverage": 0.853333,
+          "coverage_pct": 85.3333,
+          "target_pct": 99.5,
+          "passes_gate": false
+        }
+      },
+      "H_holdout_publishers_paths_hashes": {
+        "false_block": {
+          "total": 75,
+          "blocked": 11,
+          "false_block_rate": 0.146667,
+          "false_block_rate_pct": 14.6667,
+          "target_pct": 0.1,
+          "within_target": false,
+          "blocked_examples": [
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\koda-app\\resources\\elevate.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\koda-app\\Uninstall Koda Desktop.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\Microsoft VS Code\\bin\\copilot-shim\\copilot.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\pip\\_vendor\\distlib\\w32.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\pythonwin\\Pythonwin.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\setuptools\\gui-64.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\setuptools\\gui.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\accelerate-launch.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\clear_comtypes_cache.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\coverage.exe"
+          ]
+        },
+        "coverage": {
+          "total": 75,
+          "covered": 64,
+          "coverage": 0.853333,
+          "coverage_pct": 85.3333,
+          "target_pct": 99.5,
+          "passes_gate": false
+        }
+      },
+      "I_holdout_any_signed_plus_paths": {
+        "false_block": {
+          "total": 75,
+          "blocked": 10,
+          "false_block_rate": 0.133333,
+          "false_block_rate_pct": 13.3333,
+          "target_pct": 0.1,
+          "within_target": false,
+          "blocked_examples": [
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\koda-app\\resources\\elevate.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\koda-app\\Uninstall Koda Desktop.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\pip\\_vendor\\distlib\\w32.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\pythonwin\\Pythonwin.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\setuptools\\gui-64.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\setuptools\\gui.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\accelerate-launch.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\clear_comtypes_cache.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\coverage.exe",
+            "C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\ct2-openai-gpt2-converter.exe"
+          ]
+        },
+        "coverage": {
+          "total": 75,
+          "covered": 65,
+          "coverage": 0.866667,
+          "coverage_pct": 86.6667,
+          "target_pct": 99.5,
+          "passes_gate": false
+        }
+      },
+      "J_allow_user_writable_risk": {
+        "false_block": {
+          "total": 75,
+          "blocked": 0,
+          "false_block_rate": 0.0,
+          "false_block_rate_pct": 0.0,
+          "target_pct": 0.1,
+          "within_target": true,
+          "blocked_examples": []
+        },
+        "coverage": {
+          "total": 75,
+          "covered": 75,
+          "coverage": 1.0,
+          "coverage_pct": 100.0,
+          "target_pct": 99.5,
+          "passes_gate": true
+        }
+      }
+    },
+    "risky_variants": {
+      "J_allow_user_writable_risk": {
+        "note": "allows user-writable AppData: low FBR but defeats default-deny",
+        "paths": [
+          "C:\\Users\\lomel\\AppData\\Local\\",
+          "C:\\Users\\lomel\\AppData\\Roaming\\"
+        ]
+      }
+    },
+    "best": {
+      "policy": "I_holdout_any_signed_plus_paths",
+      "false_block_pct": 13.3333,
+      "coverage_pct": 86.6667,
+      "target_pct": 10.0,
+      "target_fbr_met": false,
+      "coverage_target_pct": 99.5,
+      "coverage_met": false,
+      "risky_alternative": {
+        "policy": "J_allow_user_writable_risk",
+        "false_block_pct": 0.0,
+        "rejected_because": "allowing user-writable AppData defeats default-deny; a 0 % false-block rate achieved this way is not a policy win"
+      },
+      "conclusion": "on unseen inventory a sound policy floors at ~13 % FBR; the target needs a hash/update feed (pilot) rather than path widening"
+    }
+  },
+  "policy_xml": {
+    "path": "D:\\ИИ защитник Вектор-защитник\\artifacts\\wdac_audit_policy.xml",
+    "well_formed": true,
+    "audit_mode": true,
+    "signer_rules": 26,
+    "path_rules": 3,
+    "hash_rules": 25
+  },
+  "codeintegrity": {
+    "events_in_log_sample": 40,
+    "generic_parse_ok": 40,
+    "audit_events_3076_parsed": 0,
+    "non_audit_events": 40,
+    "note": "0 events of type 3076/3077: no audit policy is deployed (elevation blocker D); generic reader validates the parser against real event-log data",
+    "ids": [
+      "3089:17",
+      "3033:16",
+      "3116:1",
+      "3099:1",
+      "3084:2",
+      "3001:3"
+    ],
+    "examples": []
+  }
+}

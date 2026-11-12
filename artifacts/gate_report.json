@@ -1,0 +1,87 @@
+{
+  "environment": {
+    "python": "3.12.8"
+  },
+  "gate_decisions": {
+    "events": 20000,
+    "verdicts": 267,
+    "alerts": 1,
+    "containments": 267,
+    "budget_downgraded": 266,
+    "suppressed": 0,
+    "alerts_per_verdict": 0.0037
+  },
+  "budget_14d": {
+    "days": 14,
+    "verdicts": 336,
+    "alerts": 1,
+    "containments": 336,
+    "budget": 1,
+    "alerts_within_budget": true
+  },
+  "ppv": [
+    {
+      "model": "pe@0.1%FPR",
+      "tpr": 0.6656,
+      "fpr": 0.001,
+      "prevalence": 0.001,
+      "ppv": 0.3999,
+      "ppv_pct": 39.99,
+      "passes_ppv_50": false,
+      "required_fpr_for_50pct": 0.001332
+    },
+    {
+      "model": "pe@0.5%FPR",
+      "tpr": 0.8056,
+      "fpr": 0.005,
+      "prevalence": 0.001,
+      "ppv": 0.1389,
+      "ppv_pct": 13.89,
+      "passes_ppv_50": false,
+      "required_fpr_for_50pct": 0.001612
+    },
+    {
+      "model": "pe@1%FPR",
+      "tpr": 0.8616,
+      "fpr": 0.01,
+      "prevalence": 0.001,
+      "ppv": 0.0794,
+      "ppv_pct": 7.94,
+      "passes_ppv_50": false,
+      "required_fpr_for_50pct": 0.001723
+    },
+    {
+      "model": "elf@0.5%FPR",
+      "tpr": 0.936,
+      "fpr": 0.005,
+      "prevalence": 0.001,
+      "ppv": 0.1578,
+      "ppv_pct": 15.78,
+      "passes_ppv_50": false,
+      "required_fpr_for_50pct": 0.001872
+    }
+  ],
+  "e2e": {
+    "verdicts": 2,
+    "actions_attempted": 3,
+    "actions_executed": 3,
+    "results": [
+      {
+        "type": "quarantine",
+        "status": "executed"
+      },
+      {
+        "type": "suspend",
+        "status": "executed"
+      },
+      {
+        "type": "suspend",
+        "status": "executed"
+      }
+    ],
+    "quarantined": 1,
+    "e2e_ms": 4.926,
+    "contain_within_5s": true
+  },
+  "note": "containment is gated on rule verdicts only; ML stays shadow until calibration + FP budget are proven on a pilot"
+}

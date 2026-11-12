@@ -1,0 +1,41 @@
+{
+  "generated_at": "2026-11-12T23:26:33.801157+00:00",
+  "slice": "AF_UNIX + confirm.py + release benchmark",
+  "rust": {
+    "tests_passed": 133,
+    "failed": 0,
+    "fmt": "clean",
+    "clippy_warnings": 0
+  },
+  "ipc": {
+    "python_tcp": true,
+    "python_named_pipe": true,
+    "python_af_unix": true,
+    "af_unix_verified_in": "WSL Ubuntu, Python 3.14, mini-crate rust/unix_ipc_test"
+  },
+  "confirm": {
+    "ported": true,
+    "tests": 8
+  },
+  "bench": {
+    "gate": {
+      "alerts": 1,
+      "events": 100000,
+      "events_per_s": 2181543.704,
+      "seconds": 0.0458391
+    },
+    "ingest": {
+      "drained": 100000,
+      "events": 100000,
+      "ledger_ok": true,
+      "submit_s": 0.0292355,
+      "total_s": 0.0445184
+    },
+    "profile": "release",
+    "rules": {
+      "events": 10000,
+      "events_per_s": 24034.354,
+      "seconds": 0.4160711
+    }
+  }
+}

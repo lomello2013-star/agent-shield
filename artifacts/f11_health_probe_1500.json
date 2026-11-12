@@ -1,0 +1,14 @@
+{
+  "seconds": 120.0,
+  "rate": 1500.0,
+  "events_fed": 127232,
+  "health_calls": 239,
+  "health_ms_p50": 1.87,
+  "health_ms_max": 28.83,
+  "health_ms_last": 1.62,
+  "stalled": false,
+  "errors": [],
+  "lost": 0,
+  "log_records": null,
+  "note": "growing health latency / stall reproduces the soak hang; the caller is Daemon.health -> HashChainLog.verify(incremental=True)"
+}

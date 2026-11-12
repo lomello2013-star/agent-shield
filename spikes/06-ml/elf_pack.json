@@ -1,0 +1,17 @@
+{
+  "model_id": "aidf-elf-ember2024",
+  "version": "1.0.0",
+  "platform": "linux",
+  "format": "onnx",
+  "sha256": "0133eb3a2f9c014126b15c1fed158796ee8b435420ba2c4a02860b0b2757e884",
+  "dataset_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+  "metrics": {
+    "tpr_at_fpr_1pct": 0.875,
+    "tpr_at_fpr_0.5pct": 0.765
+  },
+  "limits": {
+    "max_input_mb": 200,
+    "shadow_only": true
+  },
+  "signature": "9468e8cb66c902ceb21d405e80abd6075ac0e828f0990cd0b584c65fd3de79fae967e906cddfe984a7c19b53fd7b9850e5e02eeec14f6e799f0ca736accd820c"
+}

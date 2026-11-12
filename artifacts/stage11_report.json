@@ -1,0 +1,54 @@
+{
+  "environment": {
+    "python": "3.12.8"
+  },
+  "hash_chain": {
+    "records": 2000,
+    "append_ms_p50": 0.882,
+    "append_ms_p95": 1.198,
+    "records_per_s": 1077.0,
+    "total_s": 1.86,
+    "verify_ms": 21.886,
+    "verify_ok": true,
+    "verify_records": 2000,
+    "bytes": 497783
+  },
+  "tamper_detection": {
+    "modes": {
+      "payload_edit": false,
+      "delete_middle": false,
+      "reorder": false,
+      "truncate_tail": false,
+      "forged_append": false
+    },
+    "tamper_modes": 5,
+    "detected": 5,
+    "detection_rate": 1.0,
+    "target": 1.0
+  },
+  "integrity": {
+    "files": 7,
+    "seal_ms": 5.698,
+    "verify_ms": 4.048,
+    "clean_ok": true,
+    "tamper_detected": true,
+    "modified": [
+      "base.json"
+    ],
+    "checked": 7
+  },
+  "self_test": {
+    "clean_ok": true,
+    "clean_ms": 1.014,
+    "tampered_ok": false,
+    "failed_after_tamper": [
+      "file_integrity"
+    ],
+    "checks": [
+      "immutable_policy",
+      "audit_chain",
+      "file_integrity"
+    ]
+  },
+  "note": "user-mode self-protection only: PPL/ELAM/fs-verity/IMA appraisal need signing and kernel components (blocked), so they are not claimed"
+}

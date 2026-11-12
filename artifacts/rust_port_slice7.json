@@ -1,0 +1,47 @@
+{
+  "generated_at": "2026-11-12T22:57:17.087753+00:00",
+  "slice": "named pipe + sha2 + gate/bench",
+  "rust": {
+    "tests_passed": 125,
+    "failed": 0,
+    "fmt": "clean",
+    "clippy_warnings": 0
+  },
+  "ipc": {
+    "python_named_pipe": true,
+    "python_tcp": true,
+    "named_pipe_message_mode": true
+  },
+  "crypto": {
+    "sha256": "sha2 crate; hand-written implementation removed"
+  },
+  "gate": {
+    "script": "rust/gate.ps1",
+    "artifact": "artifacts/rust_gate.json",
+    "ok": true
+  },
+  "bench": {
+    "gate": {
+      "alerts": 1,
+      "events": 100000,
+      "events_per_s": 483204.068,
+      "seconds": 0.2069519
+    },
+    "ingest": {
+      "drained": 100000,
+      "events": 100000,
+      "ledger_ok": true,
+      "submit_s": 0.0936977,
+      "total_s": 0.1194536
+    },
+    "profile": "debug (cargo run --bin bench)",
+    "rules": {
+      "events": 10000,
+      "events_per_s": 7568.379,
+      "seconds": 1.3212869
+    }
+  },
+  "notes": [
+    "rule regex cache needed: 60 -> 7568 events/s debug"
+  ]
+}

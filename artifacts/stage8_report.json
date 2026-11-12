@@ -1,0 +1,156 @@
+{
+  "environment": {
+    "python": "3.12.8",
+    "cpu": 8
+  },
+  "modelpack": {
+    "pe_pack_ok": true,
+    "elf_pack_ok": true,
+    "verify_ms": 8.572,
+    "tampered_artifact": "hash_mismatch",
+    "unsigned": "invalid_manifest",
+    "wrong_key": "signature_invalid",
+    "fail_closed": true,
+    "packs_written": [
+      "spikes/06-ml/pe_pack.json",
+      "spikes/06-ml/elf_pack.json"
+    ]
+  },
+  "pe_onnx_metrics": {
+    "model": "pe",
+    "rows": 10000,
+    "features": 2381,
+    "load_ms": 87.82,
+    "size_mb": 1.93,
+    "predict_10k_s": 0.097,
+    "rows_per_s": 103528.0,
+    "auc": 0.99016,
+    "operating_points": [
+      {
+        "target_fpr": 0.001,
+        "threshold": 0.912291,
+        "tpr": 0.6656,
+        "tpr_ci95": [
+          0.6524,
+          0.6786
+        ],
+        "fpr": 0.0012,
+        "tp": 3324,
+        "fp": 6
+      },
+      {
+        "target_fpr": 0.005,
+        "threshold": 0.838642,
+        "tpr": 0.8056,
+        "tpr_ci95": [
+          0.7944,
+          0.8163
+        ],
+        "fpr": 0.00519,
+        "tp": 4023,
+        "fp": 26
+      },
+      {
+        "target_fpr": 0.01,
+        "threshold": 0.766953,
+        "tpr": 0.8616,
+        "tpr_ci95": [
+          0.8518,
+          0.8709
+        ],
+        "fpr": 0.01019,
+        "tp": 4303,
+        "fp": 51
+      }
+    ],
+    "lightgbm_reference": {
+      "tpr_at_fpr_1pct": 0.854,
+      "tpr_at_fpr_0.1pct": 0.649
+    }
+  },
+  "elf_onnx_metrics": {
+    "model": "elf",
+    "rows": 3000,
+    "features": 533,
+    "load_ms": 38.68,
+    "size_mb": 1.26,
+    "predict_s": 0.025,
+    "operating_points": [
+      {
+        "target_fpr": 0.005,
+        "threshold": 0.946564,
+        "tpr": 0.936,
+        "tpr_ci95": [
+          0.9225,
+          0.9473
+        ],
+        "fpr": 0.00533
+      },
+      {
+        "target_fpr": 0.01,
+        "threshold": 0.917164,
+        "tpr": 0.9427,
+        "tpr_ci95": [
+          0.9297,
+          0.9533
+        ],
+        "fpr": 0.01067
+      },
+      {
+        "target_fpr": 0.02,
+        "threshold": 0.758442,
+        "tpr": 0.9547,
+        "tpr_ci95": [
+          0.9429,
+          0.9641
+        ],
+        "fpr": 0.02
+      }
+    ]
+  },
+  "shadow_pe": {
+    "threshold": 0.761644,
+    "scored": 2000,
+    "alerts": 857,
+    "empirical_fpr": 0.005988,
+    "latency_ms_p50": 0.056,
+    "latency_ms_p95": 0.125,
+    "shadow": true,
+    "actions_taken": 0
+  },
+  "export": [
+    {
+      "model": "pe",
+      "features": 2381,
+      "convert_s": 1.74,
+      "onnx_mb": 1.93,
+      "rows_checked": 500,
+      "max_abs_diff": 0.166103,
+      "rows_over_1e-4": 3,
+      "rows_over_pct": 0.6,
+      "parity_ok": true,
+      "latency_ms_p50": 0.052,
+      "latency_ms_p95": 0.064,
+      "providers": [
+        "CPUExecutionProvider"
+      ]
+    },
+    {
+      "model": "elf",
+      "features": 533,
+      "convert_s": 1.19,
+      "onnx_mb": 1.26,
+      "rows_checked": 500,
+      "max_abs_diff": 0.0,
+      "rows_over_1e-4": 0,
+      "rows_over_pct": 0.0,
+      "parity_ok": true,
+      "latency_ms_p50": 0.03,
+      "latency_ms_p95": 0.058,
+      "providers": [
+        "CPUExecutionProvider"
+      ]
+    }
+  ],
+  "note": "inference only; no on-device training (MODELS_TRAIN_ON_DEVICE=False, tested); shadow mode never executes actions"
+}

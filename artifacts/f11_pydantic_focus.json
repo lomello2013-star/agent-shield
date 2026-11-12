@@ -1,0 +1,106 @@
+{
+  "duration_s": 180.0,
+  "rate": 800.0,
+  "reps": 2,
+  "summary": {
+    "full": {
+      "runs": 2,
+      "crashes": 0
+    },
+    "no_audit": {
+      "runs": 2,
+      "crashes": 0
+    },
+    "no_rules": {
+      "runs": 2,
+      "crashes": 0
+    },
+    "no_rss": {
+      "runs": 2,
+      "crashes": 0
+    }
+  },
+  "results": [
+    {
+      "rep": 1,
+      "mode": "full",
+      "exit_code": 0,
+      "crashed": false,
+      "elapsed_s": 180.5,
+      "stdout_tail": [
+        "OK mode=full fed=101870 lost=0 errors=[]"
+      ]
+    },
+    {
+      "rep": 1,
+      "mode": "no_audit",
+      "exit_code": 0,
+      "crashed": false,
+      "elapsed_s": 180.8,
+      "stdout_tail": [
+        "OK mode=no_audit fed=74244 lost=0 errors=[]"
+      ]
+    },
+    {
+      "rep": 1,
+      "mode": "no_rules",
+      "exit_code": 0,
+      "crashed": false,
+      "elapsed_s": 180.5,
+      "stdout_tail": [
+        "OK mode=no_rules fed=100468 lost=0 errors=[]"
+      ]
+    },
+    {
+      "rep": 1,
+      "mode": "no_rss",
+      "exit_code": 0,
+      "crashed": false,
+      "elapsed_s": 180.5,
+      "stdout_tail": [
+        "OK mode=no_rss fed=101847 lost=0 errors=[]"
+      ]
+    },
+    {
+      "rep": 2,
+      "mode": "full",
+      "exit_code": 0,
+      "crashed": false,
+      "elapsed_s": 180.5,
+      "stdout_tail": [
+        "OK mode=full fed=101271 lost=0 errors=[]"
+      ]
+    },
+    {
+      "rep": 2,
+      "mode": "no_audit",
+      "exit_code": 0,
+      "crashed": false,
+      "elapsed_s": 180.5,
+      "stdout_tail": [
+        "OK mode=no_audit fed=93194 lost=0 errors=[]"
+      ]
+    },
+    {
+      "rep": 2,
+      "mode": "no_rules",
+      "exit_code": 0,
+      "crashed": false,
+      "elapsed_s": 180.3,
+      "stdout_tail": [
+        "OK mode=no_rules fed=75751 lost=0 errors=[]"
+      ]
+    },
+    {
+      "rep": 2,
+      "mode": "no_rss",
+      "exit_code": 0,
+      "crashed": false,
+      "elapsed_s": 181.5,
+      "stdout_tail": [
+        "OK mode=no_rss fed=102170 lost=0 errors=[]"
+      ]
+    }
+  ],
+  "note": "if 'full' crashes and 'no_validate' never does, the second validation in Pipeline.run_once is implicated"
+}

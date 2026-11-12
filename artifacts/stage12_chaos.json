@@ -1,0 +1,65 @@
+{
+  "environment": {
+    "python": "3.12.8"
+  },
+  "sources": {
+    "system_events": 80,
+    "defender_events": 80,
+    "verdicts_after_sources": 80,
+    "rule_hits": {
+      "WIN-SERVICE-CREATE-007": 80
+    },
+    "tick_ms_p50": 0.08,
+    "tick_ms_p95": 0.127,
+    "ingest_received": 160,
+    "lost": 0
+  },
+  "R2_silent_source": {
+    "timeout_s": 0.2,
+    "detection_s": 1.511,
+    "detected": true,
+    "note": "silence measured from a fresh beat of all sources"
+  },
+  "safe_mode": {
+    "accepted": false,
+    "safe_mode": true,
+    "lkg_unchanged": true
+  },
+  "R8_storm": {
+    "submitted": 20000,
+    "backlog_before_drain": 20000,
+    "spilled_before_drain": 16500,
+    "lost": 0,
+    "ledger_ok": true,
+    "received_total": 20160,
+    "delivered": 20160
+  },
+  "R10_tamper": {
+    "audit_chain_ok": false,
+    "detect_ms": 1.147
+  },
+  "R6_update": {
+    "active_before_failed_update": "B",
+    "regression_result": "rolled_back",
+    "active_after_rollback": "B",
+    "rolled_back": true,
+    "state_restored": true
+  },
+  "R3_watchdog": {
+    "restarted": true,
+    "mttr_ms": 10.8,
+    "target_ms": 30000,
+    "within_target": true
+  },
+  "clock_jump": {
+    "logged": true
+  },
+  "final": {
+    "lost": 0,
+    "ledger_ok": true,
+    "verdicts": 80,
+    "alerts": 80,
+    "containments": 80,
+    "integrity_ok": true
+  }
+}

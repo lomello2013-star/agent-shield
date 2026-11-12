@@ -1,0 +1,108 @@
+{
+  "rows_calibration": 3000,
+  "rows_evaluation": 3000,
+  "budgets": [
+    {
+      "budget_fpr": 0.001,
+      "single": {
+        "v1": {
+          "threshold": 0.904364,
+          "tpr": 0.7003,
+          "fpr": 0.00261
+        },
+        "v2": {
+          "threshold": 0.870343,
+          "tpr": 0.7561,
+          "fpr": 0.00131
+        }
+      },
+      "union": {
+        "tp": 1109,
+        "fp": 3,
+        "tpr": 0.7554,
+        "fpr": 0.00196,
+        "thresholds": [
+          0.914525,
+          0.89655
+        ],
+        "calibration_tpr": -1.0
+      },
+      "intersection": {
+        "tp": 998,
+        "fp": 3,
+        "tpr": 0.6798,
+        "fpr": 0.00196,
+        "thresholds": [
+          0.898458,
+          0.846073
+        ],
+        "calibration_tpr": 0.6636
+      },
+      "max_score": {
+        "threshold": 0.905222,
+        "tpr": 0.7554,
+        "fpr": 0.00261
+      },
+      "mean_score": {
+        "threshold": 0.867381,
+        "tpr": 0.7711,
+        "fpr": 0.00196
+      }
+    },
+    {
+      "budget_fpr": 0.01,
+      "single": {
+        "v1": {
+          "threshold": 0.739729,
+          "tpr": 0.8835,
+          "fpr": 0.01436
+        },
+        "v2": {
+          "threshold": 0.726394,
+          "tpr": 0.9067,
+          "fpr": 0.01175
+        }
+      },
+      "union": {
+        "tp": 1332,
+        "fp": 18,
+        "tpr": 0.9074,
+        "fpr": 0.01175,
+        "thresholds": [
+          0.848907,
+          0.738685
+        ],
+        "calibration_tpr": 0.9005
+      },
+      "intersection": {
+        "tp": 1316,
+        "fp": 16,
+        "tpr": 0.8965,
+        "fpr": 0.01044,
+        "thresholds": [
+          0.487572,
+          0.738685
+        ],
+        "calibration_tpr": 0.8812
+      },
+      "max_score": {
+        "threshold": 0.765477,
+        "tpr": 0.9108,
+        "fpr": 0.01371
+      },
+      "mean_score": {
+        "threshold": 0.699257,
+        "tpr": 0.9074,
+        "fpr": 0.00979
+      }
+    }
+  ],
+  "conclusion": {
+    "best_single_tpr_at_1pct": 0.9067,
+    "union_tpr": 0.9074,
+    "intersection_tpr": 0.8965,
+    "max_score_tpr": 0.9108,
+    "ensemble_beats_single": false,
+    "note": "thresholds tuned on the first 3000 rows, scored on the last 3000"
+  }
+}

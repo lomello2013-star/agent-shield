@@ -1,0 +1,227 @@
+{
+  "run_all": {
+    "steps": [
+      [
+        "tests",
+        true,
+        11.22
+      ],
+      [
+        "rules_and_coverage",
+        true,
+        0.21
+      ],
+      [
+        "schema_drift",
+        true,
+        0.04
+      ],
+      [
+        "immutable_policy",
+        true,
+        0.01
+      ],
+      [
+        "artifacts",
+        true,
+        0.0
+      ],
+      [
+        "windows_system_e2e",
+        true,
+        0.39
+      ],
+      [
+        "windows_defender_e2e",
+        true,
+        1.4
+      ],
+      [
+        "windows_chaos",
+        true,
+        17.85
+      ],
+      [
+        "linux_exec_e2e",
+        true,
+        8.31
+      ],
+      [
+        "linux_lsm_e2e",
+        true,
+        2.76
+      ],
+      [
+        "linux_net_e2e",
+        true,
+        2.42
+      ],
+      [
+        "linux_mem_e2e",
+        true,
+        13.7
+      ],
+      [
+        "linux_ptrace_e2e",
+        true,
+        13.54
+      ],
+      [
+        "linux_procmem_e2e",
+        true,
+        13.3
+      ],
+      [
+        "linux_mprotect_e2e",
+        true,
+        13.26
+      ],
+      [
+        "linux_corr_e2e",
+        true,
+        23.73
+      ],
+      [
+        "linux_tree_e2e",
+        true,
+        10.73
+      ],
+      [
+        "linux_tree_fp",
+        true,
+        16.88
+      ],
+      [
+        "linux_provenance",
+        true,
+        19.15
+      ],
+      [
+        "t1055_coverage",
+        true,
+        0.1
+      ],
+      [
+        "docs_consistency",
+        true,
+        0.12
+      ],
+      [
+        "final_summary",
+        true,
+        0.1
+      ]
+    ],
+    "passed": 22,
+    "total": 22,
+    "failed_required": [],
+    "total_s": 169.28,
+    "generated_at": "2026-11-12T14:49:08.252145+00:00"
+  },
+  "rules": {
+    "count": 28,
+    "prevention": 18,
+    "correlated": 3,
+    "windowed": 1,
+    "by_platform": {
+      "windows": 13,
+      "linux": 5,
+      "any": 10
+    }
+  },
+  "techniques": 1,
+  "schemas": {
+    "json_files": 21
+  },
+  "size": {
+    "core_files": 26,
+    "core_loc": 4544,
+    "test_files": 30,
+    "test_loc": 3910,
+    "script_files": 51,
+    "script_loc": 7077,
+    "bpf_files": 11
+  },
+  "devlog": {
+    "entries": 53,
+    "first": "2026-11-12 14:50",
+    "last": "2026-11-13 05:44",
+    "types": {
+      "code": 5,
+      "config": 1,
+      "decision": 2,
+      "docs": 1,
+      "escalation": 1,
+      "experiment": 43
+    }
+  },
+  "artifacts": {
+    "count": 42,
+    "names": [
+      "audit_bench.json",
+      "calibration_report.json",
+      "challenger_report.json",
+      "chaos_report.json",
+      "dev_keys.json",
+      "disagreement_report.json",
+      "docker_matrix.json",
+      "docs_consistency.json",
+      "ensemble_report.json",
+      "final_summary.json",
+      "gate_report.json",
+      "ipc_report.json",
+      "linux_corr.json",
+      "linux_e2e.json",
+      "linux_load.json",
+      "linux_lsm.json",
+      "linux_mem.json",
+      "linux_mprotect.json",
+      "linux_net.json",
+      "linux_procmem.json",
+      "linux_provenance.json",
+      "linux_ptrace.json",
+      "linux_tree.json",
+      "linux_tree_fp.json",
+      "pe_v2_report.json",
+      "report_metrics.json",
+      "run_all.json",
+      "ship_v2.json",
+      "soak_partial.json",
+      "soak_report.json",
+      "stage11_report.json",
+      "stage12_chaos.json",
+      "stage1_report.json",
+      "stage2_report.json",
+      "stage4_report.json",
+      "stage5_report.json",
+      "stage5_stdout.json",
+      "stage7_report.json",
+      "stage8_report.json",
+      "t1055_coverage.json",
+      "windows_defender.json",
+      "windows_e2e.json"
+    ]
+  },
+  "docs": [
+    "adr.md",
+    "ai-governance.md",
+    "architecture.md",
+    "auto-reviewer-spec.md",
+    "coverage-matrix.md",
+    "data-model-v3.md",
+    "effectiveness-metrics.md",
+    "hack-windows-register.md",
+    "learning-loop.md",
+    "operations.md",
+    "phases.md",
+    "reliability.md",
+    "risk-register.md",
+    "roadmap-future.md",
+    "self-protection.md",
+    "stage-summary.md",
+    "status.md",
+    "t1055-coverage.md",
+    "test-strategy.md",
+    "threat-model.md"
+  ]
+}

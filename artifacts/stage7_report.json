@@ -1,0 +1,65 @@
+{
+  "environment": {
+    "python": "3.12.8",
+    "platform": "win32"
+  },
+  "suspend_resume": {
+    "cycles": 20,
+    "freeze_verified": 20,
+    "freeze_rate": 1.0,
+    "suspend_ms_p50": 0.039,
+    "suspend_ms_p95": 0.157,
+    "resume_ms_p50": 0.04,
+    "resume_ms_p95": 0.071,
+    "target_ms": 5000,
+    "within_target": true
+  },
+  "quarantine": {
+    "files": 100,
+    "restored_intact": 100,
+    "integrity_rate": 1.0,
+    "put_ms_p50": 3.33,
+    "put_ms_p95": 4.095,
+    "restore_ms_p50": 3.503,
+    "restore_ms_p95": 4.514,
+    "target_rollback_rate": 1.0
+  },
+  "contain_latency": {
+    "cycles": 20,
+    "executed": 20,
+    "contain_ms_p50": 3.26,
+    "contain_ms_p95": 4.257,
+    "target_ms": 5000,
+    "within_target": true
+  },
+  "canary": {
+    "canaries": 5,
+    "clean_check_empty": true,
+    "check_ms": 0.557,
+    "deleted_detected": 1,
+    "detection_rate": 1
+  },
+  "refusals": {
+    "cases": [
+      {
+        "type": "terminate",
+        "status": "refused",
+        "error": "irreversible action requires human approval path"
+      },
+      {
+        "type": "suspend",
+        "status": "refused",
+        "error": "confirmation_required"
+      },
+      {
+        "type": "block_network",
+        "status": "failed",
+        "error": "action not supported in user-mode: block_network"
+      }
+    ],
+    "blocked": 3,
+    "total": 3,
+    "block_rate": 1.0
+  },
+  "note": "irreversible actions are refused by design; no human-approval bypass exists"
+}

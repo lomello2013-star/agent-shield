@@ -1,0 +1,154 @@
+{
+  "dataset": "EMBER2018 (vectorized features; test shards never trained on)",
+  "benign_train_files": [
+    "ember2018_train_1.json",
+    "ember2018_train_2.json",
+    "ember2018_train_3.json",
+    "ember2018_train_4.json"
+  ],
+  "malicious_train_files": [
+    "ember2018_train_45.json",
+    "ember2018_train_60.json",
+    "ember2018_train_70.json",
+    "ember2018_train_75.json",
+    "ember2018_train_80.json"
+  ],
+  "test_files": [
+    "ember2018_test_1.json",
+    "ember2018_test_2.json",
+    "ember2018_test_3.json",
+    "ember2018_test_4.json",
+    "ember2018_test_5.json"
+  ],
+  "train_n": 90000,
+  "train_mal": 8515,
+  "test_n": 50000,
+  "test_pos": 25050,
+  "test_neg": 24950,
+  "dims": 2381,
+  "trees": 400,
+  "load_s": 156.0,
+  "train_s": 71.2,
+  "predict_50k_s": 0.67,
+  "auc": 0.9895,
+  "operating_points": [
+    {
+      "target_fpr": 0.0005,
+      "threshold": 0.934594,
+      "tp": 13397,
+      "fp": 13,
+      "fpr_measured": 0.00052,
+      "tpr": 0.53481,
+      "tpr_ci95": [
+        0.5286,
+        0.541
+      ],
+      "fpr_ci95": [
+        0.0003,
+        0.00089
+      ]
+    },
+    {
+      "target_fpr": 0.001,
+      "threshold": 0.915536,
+      "tp": 16263,
+      "fp": 25,
+      "fpr_measured": 0.001,
+      "tpr": 0.64922,
+      "tpr_ci95": [
+        0.6433,
+        0.6551
+      ],
+      "fpr_ci95": [
+        0.00068,
+        0.00148
+      ]
+    },
+    {
+      "target_fpr": 0.002,
+      "threshold": 0.898388,
+      "tp": 17898,
+      "fp": 50,
+      "fpr_measured": 0.002,
+      "tpr": 0.71449,
+      "tpr_ci95": [
+        0.7089,
+        0.7201
+      ],
+      "fpr_ci95": [
+        0.00152,
+        0.00264
+      ]
+    },
+    {
+      "target_fpr": 0.005,
+      "threshold": 0.84231,
+      "tp": 20084,
+      "fp": 125,
+      "fpr_measured": 0.00501,
+      "tpr": 0.80176,
+      "tpr_ci95": [
+        0.7968,
+        0.8066
+      ],
+      "fpr_ci95": [
+        0.00421,
+        0.00597
+      ]
+    },
+    {
+      "target_fpr": 0.01,
+      "threshold": 0.775256,
+      "tp": 21399,
+      "fp": 250,
+      "fpr_measured": 0.01002,
+      "tpr": 0.85425,
+      "tpr_ci95": [
+        0.8498,
+        0.8586
+      ],
+      "fpr_ci95": [
+        0.00886,
+        0.01133
+      ]
+    },
+    {
+      "target_fpr": 0.02,
+      "threshold": 0.668387,
+      "tp": 22671,
+      "fp": 499,
+      "fpr_measured": 0.02,
+      "tpr": 0.90503,
+      "tpr_ci95": [
+        0.9013,
+        0.9086
+      ],
+      "fpr_ci95": [
+        0.01834,
+        0.02181
+      ]
+    },
+    {
+      "target_fpr": 0.05,
+      "threshold": 0.44557,
+      "tp": 23960,
+      "fp": 1248,
+      "fpr_measured": 0.05002,
+      "tpr": 0.95649,
+      "tpr_ci95": [
+        0.9539,
+        0.9589
+      ],
+      "fpr_ci95": [
+        0.04738,
+        0.05279
+      ]
+    }
+  ],
+  "latency_single_row_ms": {
+    "p50": 0.256,
+    "p95": 0.323,
+    "max": 1.326
+  },
+  "model_file_mb": 2.95
+}

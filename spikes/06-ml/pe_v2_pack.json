@@ -1,0 +1,19 @@
+{
+  "model_id": "aidf-pe-ember-v2",
+  "version": "2.0.0",
+  "platform": "windows",
+  "format": "onnx",
+  "sha256": "b33f42b9ce4481dbd596c721b8e179e987c0530755803f4663aa4884dfc9d1c9",
+  "dataset_hash": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+  "metrics": {
+    "tpr_at_fpr_0.05pct": 0.6724,
+    "tpr_at_fpr_1pct": 0.9014,
+    "auc": 0.99277
+  },
+  "limits": {
+    "shadow_only": true,
+    "features": 2381,
+    "calibration": "pe_v2_calibration.json"
+  },
+  "signature": "a23d14d0a5192d2147812c5dac2ea28b1b99ee249ed9872c17b2f9767abe5072898b1a3a5b0b86040e8e187e331fe5ce06cd4e0f6025ecb1560593d992aa970b"
+}

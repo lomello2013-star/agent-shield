@@ -1,0 +1,28 @@
+{
+  "environment": {
+    "python": "3.14.4",
+    "kernel": "6.18.54.1-microsoft-standard-WSL2",
+    "target": 10000
+  },
+  "events": 10000,
+  "elapsed_s": 13.39,
+  "events_per_s": 747.0,
+  "verdicts": 4773,
+  "rule_hits": {
+    "LINUX-EXEC-TMP-101": 4773
+  },
+  "backlog_max": 0,
+  "latency_kernel_to_user_ms": {
+    "p50": 0.198,
+    "p95": 5.59,
+    "max": 22.028
+  },
+  "latency_pipeline_ms": {
+    "p50": 7.487,
+    "p95": 13.874
+  },
+  "loss": 0,
+  "ledger_ok": true,
+  "audit_chain_ok": true,
+  "note": "real exec events under sustained load; every second exec comes from /tmp"
+}

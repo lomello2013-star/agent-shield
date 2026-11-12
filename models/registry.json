@@ -1,0 +1,29 @@
+{
+  "models": [
+    {
+      "model_id": "aidf-pe-ember",
+      "version": "1.0.0",
+      "role": "challenger",
+      "artifact": "D:\\\u0418\u0418 \u0437\u0430\u0449\u0438\u0442\u043d\u0438\u043a \u0412\u0435\u043a\u0442\u043e\u0440-\u0437\u0430\u0449\u0438\u0442\u043d\u0438\u043a\\spikes\\06-ml\\pe_model.onnx",
+      "pack_path": "D:\\\u0418\u0418 \u0437\u0430\u0449\u0438\u0442\u043d\u0438\u043a \u0412\u0435\u043a\u0442\u043e\u0440-\u0437\u0430\u0449\u0438\u0442\u043d\u0438\u043a\\spikes\\06-ml\\pe_pack.json",
+      "metrics": {
+        "tpr_at_fpr_1pct": 0.854,
+        "auc": 0.9895
+      },
+      "added_at": "2026-11-12T13:45:55.037490+00:00"
+    },
+    {
+      "model_id": "aidf-pe-ember-v2",
+      "version": "2.0.0",
+      "role": "champion",
+      "artifact": "D:\\\u0418\u0418 \u0437\u0430\u0449\u0438\u0442\u043d\u0438\u043a \u0412\u0435\u043a\u0442\u043e\u0440-\u0437\u0430\u0449\u0438\u0442\u043d\u0438\u043a\\spikes\\06-ml\\pe_v2_model.onnx",
+      "pack_path": "D:\\\u0418\u0418 \u0437\u0430\u0449\u0438\u0442\u043d\u0438\u043a \u0412\u0435\u043a\u0442\u043e\u0440-\u0437\u0430\u0449\u0438\u0442\u043d\u0438\u043a\\spikes\\06-ml\\pe_v2_pack.json",
+      "metrics": {
+        "tpr_at_fpr_1pct": 0.9014,
+        "tpr_at_fpr_0.05pct": 0.6724,
+        "auc": 0.99277
+      },
+      "added_at": "2026-11-12T13:45:55.086494+00:00"
+    }
+  ]
+}
