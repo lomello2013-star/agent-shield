@@ -2854,6 +2854,33 @@ parameters=2
 
 ---
 
+## [2026-11-14 01:25] Windows-VM установлена офлайн; неподписанная WDAC-политика на 26H2 не загружается [experiment]
+
+**Действие**: лабораторная Windows 11 VM установлена **без установщика** (образ применён офлайн через DISM, загрузчик создан `bcdboot`, ответы — в `Panther\unattend.xml`), проверены testsigning и попытка загрузить WDAC audit-политику.
+**Файлы**: `D:\vm\win11\AIDF-Win11.vhdx` (60 ГБ), `D:\vm\win11\answer.vhdx` (микро-VHD с `autounattend.xml`), `D:\vm\win11\unattend.iso`, `D:\iso\windows11-enterprise-eval-x64.iso` (7,66 ГБ, BITS, `sources\install.wim` читается).
+
+**Числа**:
+| Параметр | Значение |
+|---|---|
+| VM | `AIDFLAB`, **Windows 11 Enterprise Evaluation, build 26300** (10.0.26300), 4 ГБ RAM, 2 vCPU |
+| Установка | `dism /Apply-Image` — **9,4 мин**, `bcdboot` UEFI, offline-хайв: `BypassNRO`, ответы применяются |
+| Доступ | PowerShell Direct работает, IP **172.29.2.6**, пользователь `aidf` (админ) |
+| testsigning | **Yes** (`bcdedit /enum {current}`) |
+| Secure Boot в VM | **False** (нужен и для загрузки ISO 26H2, и для неподписанной политики) |
+| WDAC audit-политика | `.cip` лежит в `CiPolicies\Active`, но **не загружена**: `CiTool --list-policies` её не показывает, событий 3076/3077 — **0** |
+| Суточный soak на хосте | 10 402 с, 0 перезапусков, 100 % |
+
+**Вердикт: VM как полигон работает, но неподписанная WDAC-политика на Windows 11 26H2 не применяется даже при testsigning+SecureBoot Off.** Это измеренное ограничение платформы, а не ошибка конфигурации: политика не появляется в списке загруженных и не даёт audit-событий.
+**Decision**: WDAC-проверку в этой VM вести только с **подписанной** политикой либо генерировать политику внутри VM инструментом ConfigCI (ADK). Enforce без этого не запускать. Драйверная часть полигона готова (testsigning on) — следующий шаг по ней требует WDK.
+**Найденные дефекты**: 1) установка через ISO-загрузку упиралась в `18603 «не удалось загрузить ОС»` при Secure Boot Off; с SB On boot пошёл, а затем OOBE зависал — обошёл полностью офлайн-установкой; 2) ISO 26H2 без SB не грузится (особенность образа), поэтому порядок такой: ставим с SB On, потом выключаем SB; 3) `.cip` с именем-произвольным GUID не загружается — файл должен соответствовать политике (проверяется через `CiTool --list-policies`); 4) 64-МБ VHD с ответами нельзя путать с целевым диском (DiskID в unattend).
+**Ограничения (честно)**: 1) RAM 4 ГБ и 2 vCPU — минимум, не боевой профиль; 2) WDAC ни разу не дал audit-событий — цифр FBR в VM пока нет; 3) установка офлайн-методом не проверялась на «чистом» ISO без LabConfig-обхода; 4) Linux-VM ещё не создана; 5) VM не активирована (eval-редакция, 90 дней).
+**Проверка**: PowerShell Direct → `AIDFLAB`, build 26300, `testsigning Yes`, `secureboot False`, IP 172.29.2.6; `CiTool.exe --list-policies` → нашей политики нет; `Get-WinEvent CodeIntegrity/Operational` → 3076=0, 3077=0; `soak_progress.py` → 10 402 с, 100 %.
+**Статус**: Windows-VM установлена; WDAC в VM заблокирован неподписанной политикой
+**Actor**: agent
+**Run_id**: win11-vm-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,
