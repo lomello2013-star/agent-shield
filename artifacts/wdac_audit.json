@@ -1,0 +1,42 @@
+{
+  "sample": 120,
+  "source_pool": 120,
+  "publishers": {
+    "Microsoft Corporation": 106,
+    "": 5,
+    "Valve Corp.": 4,
+    "MetaQuotes Ltd.": 2,
+    "win.rar GmbH": 1,
+    "Johannes Schindelin": 1,
+    "Adguard Software Limited": 1
+  },
+  "allowlist_publishers": [
+    "Microsoft Corporation",
+    "Valve Corp.",
+    "MetaQuotes Ltd."
+  ],
+  "allowed": 112,
+  "blocked": 8,
+  "fbr_pct": 6.67,
+  "blocked_examples": [
+    "C:\\Program Files (x86)\\DjVuLibre\\djvutoxml.exe",
+    "C:\\Program Files\\WindowsApps\\microsoft.microsoftstickynotes_6.1.4.0_x64__8wekyb3d8bbwe\\Microsoft.Notes.exe",
+    "C:\\Program Files\\WindowsApps\\A025C540.Yandex.Music_4.54.8517.0_x64__vfvw9svesycw6\\Y.Music.exe",
+    "C:\\Program Files\\WinRAR\\Rar.exe",
+    "C:\\Program Files\\Git\\git-bash.exe",
+    "C:\\Program Files\\WindowsApps\\Microsoft.WindowsCamera_2026.2608.1.0_x64__8wekyb3d8bbwe\\WindowsCamera.exe",
+    "C:\\Program Files\\WindowsApps\\microsoft.windowscommunicationsapps_16005.14326.22342.0_x64__8wekyb3d8bbwe\\HxTsr.exe",
+    "C:\\Program Files\\AdGuardVpn\\AdGuardVpn.exe"
+  ],
+  "unsigned": 5,
+  "policy": {
+    "xml": "D:\\ИИ защитник Вектор-защитник\\artifacts\\wdac\\policy.xml",
+    "scan_path": "C:\\Program Files (x86)\\Common Files\\Steam",
+    "returncode": 0,
+    "stderr": "",
+    "cip": "D:\\ИИ защитник Вектор-защитник\\artifacts\\wdac\\policy.cip",
+    "convert_returncode": 0,
+    "convert_stderr": ""
+  },
+  "note": "FBR = share of real executables a publisher allowlist would block; measured before any policy deployment"
+}

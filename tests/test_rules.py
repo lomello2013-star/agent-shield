@@ -169,3 +169,17 @@ def test_every_rule_is_platform_scoped_or_justified_global():
         else:
             assert rule.id in GLOBAL_RULES_JUSTIFIED, (
                 f"{rule.id} is neither platform-scoped nor in the justified global set")
+
+
+def test_service_rule_ignores_state_change(make_event):
+    """P0-3: 7036 service_state is not service creation and must stay silent."""
+    ev = make_event(category="persistence.change", action="service_state",
+                    platform="windows")
+    assert RuleEngine([BY_ID["WIN-SERVICE-CREATE-007"]]).evaluate(ev) == []
+
+
+def test_service_rule_fires_on_change(make_event):
+    ev = make_event(category="persistence.change", action="service_change",
+                    platform="windows")
+    verdicts = RuleEngine([BY_ID["WIN-SERVICE-CREATE-007"]]).evaluate(ev)
+    assert any(v.rule_id == "WIN-SERVICE-CREATE-007" for v in verdicts)

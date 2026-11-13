@@ -1,0 +1,27 @@
+{
+  "admin": true,
+  "provider": "{F4E1897C-BB5D-5668-F1D8-040F4D8DD344}",
+  "start": {
+    "ok": false,
+    "returncode": 2147942405,
+    "stderr": "",
+    "etl": "D:\\ИИ защитник Вектор-защитник\\artifacts\\_etwti\\etwti.etl"
+  },
+  "injection": {
+    "child_pid": 8060,
+    "steps": {
+      "open_process": true,
+      "alloc": false
+    }
+  },
+  "stop": {
+    "ok": true,
+    "returncode": 0,
+    "stderr": ""
+  },
+  "verdict": {
+    "injection_performed": false,
+    "etw_ti_events": 0,
+    "detected": false
+  }
+}

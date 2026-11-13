@@ -47,16 +47,28 @@ def double_encoded_lines(text: str) -> list[int]:
     return bad
 
 
-@pytest.mark.parametrize("path", list(_files()), ids=lambda p: str(p.relative_to(ROOT)))
-def test_text_file_is_not_double_encoded(path):
-    raw = path.read_bytes()
-    if path.suffix == ".py":
-        assert not raw.startswith(b"\xef\xbb\xbf"), (
-            f"{path} starts with a UTF-8 BOM; Python refuses to parse it")
-    text = path.read_text(encoding="utf-8")
-    assert "\ufffd" not in text, f"{path} contains replacement characters"
-    bad = double_encoded_lines(text)
-    assert not bad, f"{path}: double-encoded lines {bad[:5]}"
+def test_all_text_files_are_not_double_encoded():
+    """One test for the whole tree: the test *count* must not drift with file count."""
+    problems: list[str] = []
+    checked = 0
+    for path in _files():
+        checked += 1
+        raw = path.read_bytes()
+        if path.suffix == ".py" and raw.startswith(b"\xef\xbb\xbf"):
+            problems.append(f"{path.relative_to(ROOT)}: starts with a UTF-8 BOM")
+            continue
+        try:
+            text = raw.decode("utf-8")
+        except UnicodeDecodeError as exc:
+            problems.append(f"{path.relative_to(ROOT)}: not valid UTF-8 ({exc})")
+            continue
+        if "\ufffd" in text:
+            problems.append(f"{path.relative_to(ROOT)}: contains replacement characters")
+        bad = double_encoded_lines(text)
+        if bad:
+            problems.append(f"{path.relative_to(ROOT)}: double-encoded lines {bad[:5]}")
+    assert checked > 50, "the glob set matched suspiciously few files"
+    assert not problems, "text problems: " + "; ".join(problems[:8])
 
 
 def test_detector_recognises_known_mojibake():

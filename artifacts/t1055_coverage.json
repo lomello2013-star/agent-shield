@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-11-12T21:18:39.284887+00:00",
+  "generated_at": "2026-11-13T20:13:01.118276+00:00",
   "paths_measured": 4,
   "alert_paths": 3,
   "signal_paths": 1,
-  "total_events": 405,
-  "total_verdicts": 405,
+  "total_events": 425,
+  "total_verdicts": 425,
   "total_loss": 0,
   "paths": [
     {
@@ -19,7 +19,7 @@
       "control_events": 0,
       "loss": 0,
       "duplicates": false,
-      "latency_pipeline_ms_p50": 0.114
+      "latency_pipeline_ms_p50": 0.218
     },
     {
       "path": "ptrace POKE*",
@@ -33,7 +33,7 @@
       "control_events": 0,
       "loss": 0,
       "duplicates": false,
-      "latency_pipeline_ms_p50": 0.111
+      "latency_pipeline_ms_p50": 0.141
     },
     {
       "path": "/proc/<pid>/mem",
@@ -47,7 +47,7 @@
       "control_events": 0,
       "loss": 0,
       "duplicates": false,
-      "latency_pipeline_ms_p50": 0.292
+      "latency_pipeline_ms_p50": 0.137
     },
     {
       "path": "mprotect PROT_EXEC",
@@ -56,12 +56,12 @@
       "mechanism": "LSM file_mprotect, new EXEC on anonymous memory",
       "rules": "rules: LINUX-EXEC-MEM-107",
       "measured": true,
-      "events": 105,
-      "verdicts": 105,
+      "events": 125,
+      "verdicts": 125,
       "control_events": 0,
       "loss": 0,
       "duplicates": false,
-      "latency_pipeline_ms_p50": 0.194
+      "latency_pipeline_ms_p50": 0.142
     }
   ],
   "rule_layers": [
@@ -69,7 +69,7 @@
       "layer": 0,
       "rule": "LINUX-EXEC-MEM-107",
       "grouping": "none",
-      "alerts": 105,
+      "alerts": 125,
       "false_positives_measured": "JIT noise: 5 non-helper events in the run",
       "verdict": "signal only (medium), never an alert alone"
     },
@@ -86,7 +86,7 @@
       "rule": "LINUX-EXEC-CORR-109",
       "grouping": "process_tree",
       "alerts": 1,
-      "false_positives_measured": "legit supervisor+JIT: 1 alert(s); benign JIT: 0",
+      "false_positives_measured": "legit supervisor+JIT: 2 alert(s); benign JIT: 1",
       "verdict": "catches parent-writes-child-executes, known FP class"
     },
     {

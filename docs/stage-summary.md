@@ -1,6 +1,6 @@
 # Итоговый срез по этапам
 
-> Сгенерировано `scripts/final_summary.py` — 2026-11-12T21:18 UTC.
+> Сгенерировано `scripts/final_summary.py` — 2026-11-13T20:13 UTC.
 
 Измерено: **16**, частично: **1**, заблокировано: **2**.
 
@@ -13,7 +13,7 @@
 | 1 | R6 откат | 1.0 | `stage1_report.json` | measured |
 | 1 | R8 потери (100k) | 0 потерь на 100000 | `stage1_report.json` | measured |
 | 1 | R9 fail-safe | reject 100/100, destructive 0 | `stage1_report.json` | measured |
-| 1 | R1/R4 доступность | soak 47399 событий, RSS +0.39 %/60 с, плато True | `soak_report.json` | partially measured: нужен многочасовой прогон |
+| 1 | R1/R4 доступность | soak 35653 событий, RSS +0.0 %/60 с, плато True | `soak_report.json` | partially measured: нужен многочасовой прогон |
 | 2 | WDAC audit, false block политики A | 46.0 % | `stage2_report.json` | measured (audit) |
 | 2 | Живые события 3076 | 0 событий 3076 | `stage2_report.json` | blocked: нужна элевация (D) |
 | 4 | Сквозной конвейер | 7705.0 записей/с, потерь 0 | `stage4_report.json` | measured |
@@ -38,4 +38,4 @@
 - **B** — Windows тест-VM с WDK/testsigning: спайк 5 и драйвер остаются открытыми.
 - **C** — Linux-VM с Secure Boot/fapolicyd: проверка политик целостности не выполнена.
 - **D** — Окно с admin: RTP, WDAC enforce, ETW-TI, Windows T1055 — не измерены.
-- **E** — Разрешение на rustup: Rust-порт контрактов отложен (D2: Python 3.12).
+- **E** — Разрешение на rustup: закрыт: rustc/cargo 1.100.0, Rust-порт F19 сделан (133 теста).

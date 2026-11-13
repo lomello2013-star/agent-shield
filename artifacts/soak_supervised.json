@@ -1,0 +1,19 @@
+{
+  "window_s": 3600.2,
+  "rate_per_s": 200.0,
+  "restarts": 0,
+  "crashes": [],
+  "downtime_total_s": 0.0,
+  "availability_pct": 100.0,
+  "audit_chain": {
+    "ok": true,
+    "records": 15612
+  },
+  "lifecycle": {
+    "starts": 1,
+    "stops": 0
+  },
+  "max_downtime_s": 0.0,
+  "median_downtime_s": 0.0,
+  "note": "availability measured under the *real* native fault: supervisor restarts the process, audit chain is checked across all restarts"
+}

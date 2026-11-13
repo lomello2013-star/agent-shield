@@ -48,7 +48,11 @@ def run_command(argv: list[str], cwd: str = HERE, timeout: int = 600,
     completed = subprocess.run(argv, cwd=cwd, capture_output=True, text=True,
                                encoding="utf-8", errors="replace",
                                timeout=timeout, shell=shell, env=env)
-    return completed.returncode, completed.stdout, completed.stderr
+    # Child stderr may contain NUL bytes (native-crash probes); strip them so the
+    # generated status.md stays valid text (P0-6).
+    return (completed.returncode,
+            completed.stdout.replace("\x00", ""),
+            completed.stderr.replace("\x00", ""))
 
 
 def step_tests() -> Step:
@@ -107,10 +111,13 @@ def step_schema_drift() -> Step:
 def step_immutable() -> Step:
     s = Step("immutable_policy")
     try:
-        from core.policy import POLICY_FINGERPRINT, verify_immutable
-        verify_immutable()
+        from core.policy import POLICY_FINGERPRINT, load_contract, verify_immutable
+        verify_immutable()                     # live vs docs/policy-contract.json
+        contract = load_contract()
+        if contract.get("fingerprint") != POLICY_FINGERPRINT:
+            raise RuntimeError("fingerprint mismatch with docs/policy-contract.json")
         s.ok = True
-        s.detail = f"fingerprint={POLICY_FINGERPRINT[:12]}"
+        s.detail = f"fingerprint={POLICY_FINGERPRINT[:12]} contract=ok"
     except Exception as exc:
         s.ok, s.detail = False, str(exc)
     return s
@@ -135,7 +142,7 @@ def step_artifacts() -> Step:
                 "gate_report.json", "ipc_report.json", "linux_e2e.json",
                 "linux_lsm.json", "linux_net.json", "windows_e2e.json",
                 "windows_defender.json", "pe_v2_report.json", "ship_v2.json",
-                "calibration_report.json", "challenger_report.json", "disagreement_report.json", "ensemble_report.json", "linux_mem.json", "linux_ptrace.json", "linux_procmem.json", "linux_mprotect.json", "t1055_coverage.json", "linux_corr.json", "linux_tree.json", "linux_tree_fp.json", "linux_provenance.json", "final_summary.json", "f04_r2_margin.json", "f02_f03_measure.json", "f01_confidence.json", "f09_ppv_target.json", "f12_behavioral.json", "f13_scenarios.json"]
+                "calibration_report.json", "challenger_report.json", "disagreement_report.json", "ensemble_report.json", "linux_mem.json", "linux_ptrace.json", "linux_procmem.json", "linux_mprotect.json", "t1055_coverage.json", "linux_corr.json", "linux_tree.json", "linux_tree_fp.json", "linux_provenance.json", "final_summary.json", "f04_r2_margin.json", "f02_f03_measure.json", "f01_confidence.json", "f09_ppv_target.json", "f12_behavioral.json", "f13_scenarios.json", "supervisor_measure.json"]
     missing, broken = [], []
     for name in required:
         path = os.path.join(ART, name)
@@ -319,7 +326,8 @@ def main() -> int:
                          ("f01_confidence_gap", "f01_ppv_fit.py"),
                          ("f09_ppv_target", "f09_ppv_target.py"),
                          ("f12_behavioral", "f12_behavioral.py"),
-                         ("f13_scenarios", "f13_scenarios.py")):
+                         ("f13_scenarios", "f13_scenarios.py"),
+                         ("supervisor_measure", "supervisor_measure.py")):
         t0 = time.perf_counter()
         step = step_script(name, script)
         step.duration_s = round(time.perf_counter() - t0, 2)
@@ -367,6 +375,7 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
 
 
 

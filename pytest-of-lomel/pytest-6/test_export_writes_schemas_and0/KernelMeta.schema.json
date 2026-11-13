@@ -1,0 +1,45 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "irql": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Irql"
+    },
+    "callback_type": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Callback Type"
+    },
+    "trust": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Trust"
+    }
+  },
+  "title": "KernelMeta",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

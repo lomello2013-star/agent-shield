@@ -3,7 +3,7 @@
     "python": "3.14.4",
     "kernel": "6.18.54.1-microsoft-standard-WSL2"
   },
-  "helper_writes_reported": "{\"writes\":100,\"child\":1234}",
+  "helper_writes_reported": "{\"writes\":100,\"child\":1629}",
   "control_events": 0,
   "events": 100,
   "verdicts": 100,
@@ -11,12 +11,12 @@
     "LINUX-INJECT-106": 100
   },
   "latency_kernel_to_user_ms": {
-    "p50": 11.283,
-    "p95": 20.398
+    "p50": 29.316,
+    "p95": 44.682
   },
   "latency_pipeline_ms": {
-    "p50": 0.114,
-    "p95": 0.198
+    "p50": 0.218,
+    "p95": 0.478
   },
   "loss": 0,
   "ledger_ok": true,

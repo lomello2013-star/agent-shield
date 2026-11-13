@@ -1,6 +1,6 @@
 {
   "environment": {
-    "python": "3.12.8",
+    "python": "3.12.9",
     "platform": "win32"
   },
   "log": {
@@ -10,9 +10,9 @@
       7040,
       1102
     ],
-    "last_record_id": 10717,
+    "last_record_id": 11057,
     "calls": 2,
-    "last_query_ms": 19.1
+    "last_query_ms": 12.475
   },
   "events_read": 60,
   "second_poll_fresh": 0,
@@ -24,9 +24,9 @@
   "rule_hits": {
     "WIN-SERVICE-CREATE-007": 60
   },
-  "poll_ms": 19.1,
-  "pipeline_ms_p50": 0.118,
-  "pipeline_ms_p95": 0.319,
+  "poll_ms": 12.475,
+  "pipeline_ms_p50": 0.113,
+  "pipeline_ms_p95": 0.139,
   "loss": 0,
   "ledger_ok": true,
   "audit_chain_ok": true,

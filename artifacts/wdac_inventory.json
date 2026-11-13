@@ -1,0 +1,75 @@
+{
+  "roots": {
+    "C:\\Windows\\System32": 770,
+    "C:\\Windows\\SysWOW64": 340,
+    "C:\\Program Files": 824,
+    "C:\\Program Files (x86)": 480
+  },
+  "executables": 2414,
+  "signed": 1993,
+  "unsigned": 421,
+  "fbr_signature_required_pct": 17.44,
+  "allowlist_top5_publishers": [
+    "Microsoft Corporation",
+    "Johannes Schindelin",
+    "Valve Corp.",
+    "NVIDIA Corporation",
+    "Drip Artificial Inc"
+  ],
+  "fbr_top5_allowlist_pct": 20.46,
+  "publishers_top10": {
+    "Microsoft Corporation": 1820,
+    "": 420,
+    "Johannes Schindelin": 37,
+    "Valve Corp.": 27,
+    "NVIDIA Corporation": 19,
+    "Drip Artificial Inc": 17,
+    "CRYPTO-PRO LLC": 15,
+    "YANDEX LLC": 14,
+    "Adguard Software Limited": 11,
+    "MetaQuotes Ltd.": 6
+  },
+  "blocked_examples": [
+    "C:\\Program Files\\AdGuardVpn\\AdGuardVpn.exe",
+    "C:\\Program Files\\AdGuardVpn\\AdGuardVpn.Launcher.Arm64.exe",
+    "C:\\Program Files\\AdGuardVpn\\AdGuardVpn.Launcher.exe",
+    "C:\\Program Files\\AdGuardVpn\\AdGuardVpn.Tools.exe",
+    "C:\\Program Files\\AdGuardVpn\\AdGuardVpnSvc.exe",
+    "C:\\Program Files\\AdGuardVpn\\Drivers\\arm64\\AdguardNetRegSock.exe",
+    "C:\\Program Files\\AdGuardVpn\\Drivers\\arm64\\AdguardNetRegWfp.exe",
+    "C:\\Program Files\\AdGuardVpn\\Drivers\\x64\\AdguardNetRegSock.exe",
+    "C:\\Program Files\\AdGuardVpn\\Drivers\\x64\\AdguardNetRegWfp.exe",
+    "C:\\Program Files\\AdGuardVpn\\Drivers\\x86\\AdguardNetRegSock.exe"
+  ],
+  "policies": [
+    {
+      "root": "C:\\Windows\\System32",
+      "xml": "D:\\ИИ защитник Вектор-защитник\\artifacts\\wdac_full\\policy_0.xml",
+      "returncode": 0,
+      "bytes": 47834,
+      "stderr": ""
+    },
+    {
+      "root": "C:\\Windows\\SysWOW64",
+      "xml": "D:\\ИИ защитник Вектор-защитник\\artifacts\\wdac_full\\policy_1.xml",
+      "returncode": 0,
+      "bytes": 17242,
+      "stderr": ""
+    },
+    {
+      "root": "C:\\Program Files",
+      "xml": "D:\\ИИ защитник Вектор-защитник\\artifacts\\wdac_full\\policy_2.xml",
+      "returncode": 0,
+      "bytes": 693864,
+      "stderr": ""
+    },
+    {
+      "root": "C:\\Program Files (x86)",
+      "xml": "D:\\ИИ защитник Вектор-защитник\\artifacts\\wdac_full\\policy_3.xml",
+      "returncode": 0,
+      "bytes": 1389638,
+      "stderr": ""
+    }
+  ],
+  "note": "FBR variants are computed on every .exe of the four roots; DLLs are not included (a full UMCI policy would also cover them)"
+}

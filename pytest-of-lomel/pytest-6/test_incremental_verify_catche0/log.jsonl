@@ -1,0 +1,6 @@
+{"seq": 1, "ts": "2026-11-13T19:51:19.573550+00:00", "type": "a", "payload": {"i": 0}, "prev": "0000000000000000000000000000000000000000000000000000000000000000", "hash": "e22fa8be5cca4a45093320524d135c3e775584bd128fe24eb34cf3b241141bc3"}
+{"seq": 2, "ts": "2026-11-13T19:51:19.594034+00:00", "type": "a", "payload": {"i": 1}, "prev": "e22fa8be5cca4a45093320524d135c3e775584bd128fe24eb34cf3b241141bc3", "hash": "bc484c7de6dcbdbf400fdbf7ccbeefefd05a808e03e7672d510c2183201a75eb"}
+{"seq": 3, "ts": "2026-11-13T19:51:19.616272+00:00", "type": "a", "payload": {"i": 2}, "prev": "bc484c7de6dcbdbf400fdbf7ccbeefefd05a808e03e7672d510c2183201a75eb", "hash": "d60bb7ca5b48efb382efdff77603d14a5cbe581cd282bf54fe148327a186d5ac"}
+{"seq": 4, "ts": "2026-11-13T19:51:19.626157+00:00", "type": "a", "payload": {"i": 3}, "prev": "d60bb7ca5b48efb382efdff77603d14a5cbe581cd282bf54fe148327a186d5ac", "hash": "42df72ab47bf7314a17d19d9f4c85abf989c64769d4988e24c9e53aba2cb1b8d"}
+{"seq": 5, "ts": "2026-11-13T19:51:19.638478+00:00", "type": "a", "payload": {"i": 4}, "prev": "42df72ab47bf7314a17d19d9f4c85abf989c64769d4988e24c9e53aba2cb1b8d", "hash": "2478ddcff2184f26f0d40dfdf22c148ae4136df4233242595ab16fac8a9462c0"}
+{"forged": true}

@@ -1,0 +1,120 @@
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.7_7000.785.2325.0_x86__8wekyb3d8bbwe\RestartAgent.exe
+C:\Windows\System32\wiawow64.exe
+C:\Program Files (x86)\DjVuLibre\djvutoxml.exe
+C:\Windows\System32\DataStoreCacheDumpTool.exe
+C:\Program Files (x86)\ForexClub MT4\metaeditor.exe
+C:\Program Files\RUXIM\DTUDriver.exe
+C:\Windows\System32\dmclient.exe
+C:\Program Files\WindowsApps\MicrosoftCorporationII.WindowsSubsystemForLinux_3.0.3.0_x64__8wekyb3d8bbwe\wsl.exe
+C:\Windows\System32\fveprompt.exe
+C:\Windows\System32\getmac.exe
+C:\Program Files (x86)\Steam\gameoverlayui64.exe
+C:\Windows\System32\prproc.exe
+C:\Program Files\WindowsApps\microsoft.microsoftstickynotes_6.1.4.0_x64__8wekyb3d8bbwe\Microsoft.Notes.exe
+C:\Windows\System32\typeperf.exe
+C:\Windows\System32\cmd.exe
+C:\Windows\System32\driverquery.exe
+C:\Windows\System32\TSTheme.exe
+C:\Windows\System32\dllhost.exe
+C:\Windows\System32\tscon.exe
+C:\Windows\System32\WerFault.exe
+C:\Windows\System32\tabcal.exe
+C:\Program Files\Windows Media Player\wmplayer.exe
+C:\Program Files (x86)\Windows NT\Accessories\wordpad.exe
+C:\Windows\System32\slui.exe
+C:\Windows\System32\SystemPropertiesPerformance.exe
+C:\Program Files (x86)\Windows Media Player\wmprph.exe
+C:\Program Files\WindowsApps\Microsoft.WindowsAppRuntime.1.8_8000.994.2142.0_x64__8wekyb3d8bbwe\DeploymentAgent.exe
+C:\Windows\System32\MuiUnattend.exe
+C:\Windows\System32\Microsoft.Uev.CscUnpinTool.exe
+C:\Windows\System32\WWAHost.exe
+C:\Windows\System32\SpatialAudioLicenseSrv.exe
+C:\Windows\System32\Spectrum.exe
+C:\Windows\System32\hvsievaluator.exe
+C:\Windows\System32\reset.exe
+C:\Windows\System32\diskpart.exe
+C:\Windows\System32\bdechangepin.exe
+C:\Program Files (x86)\MSI Afterburner\Redist\vc_redist.x64.exe
+C:\Windows\System32\fodhelper.exe
+C:\Windows\System32\SpaceAgent.exe
+C:\Program Files (x86)\Steam\bin\fossilize-replay64.exe
+C:\Windows\System32\BitLockerDeviceEncryption.exe
+C:\Program Files\WindowsApps\Microsoft.WindowsAppRuntime.2_2.5.1.0_x64__8wekyb3d8bbwe\RestartAgent.exe
+C:\Windows\System32\UevAppMonitor.exe
+C:\Program Files\WindowsApps\A025C540.Yandex.Music_4.54.8517.0_x64__vfvw9svesycw6\Y.Music.exe
+C:\Windows\System32\RMActivate_isv.exe
+C:\Program Files\WindowsApps\Microsoft.WindowsAppRuntime.2_2.6.5.0_x64__8wekyb3d8bbwe\RestartAgent.exe
+C:\Windows\System32\RMActivate_ssp_isv.exe
+C:\Windows\System32\SyncAppvPublishingServer.exe
+C:\Windows\System32\rdpinit.exe
+C:\Windows\System32\ftp.exe
+C:\Windows\System32\CheckNetIsolation.exe
+C:\Windows\System32\plasrv.exe
+C:\Windows\System32\spoolsv.exe
+C:\Program Files\WSL\wslservice.exe
+C:\Windows\System32\mblctr.exe
+C:\Windows\System32\ie4ushowIE.exe
+C:\Windows\System32\wsl.exe
+C:\Program Files\WindowsApps\Microsoft.OutlookForWindows_1.2026.915.300_x64__8wekyb3d8bbwe\olkFullTrustExecutor.exe
+C:\Windows\System32\desktopimgdownldr.exe
+C:\Windows\System32\MicrosoftEdgeDevTools.exe
+C:\Windows\System32\BitLockerWizardElev.exe
+C:\Windows\System32\find.exe
+C:\Windows\System32\CloudNotifications.exe
+C:\Windows\System32\PasswordOnWakeSettingFlyout.exe
+C:\Windows\System32\msfeedssync.exe
+C:\Windows\System32\waitfor.exe
+C:\Windows\System32\hdwwiz.exe
+C:\Windows\System32\dpnsvr.exe
+C:\Windows\System32\raserver.exe
+C:\Windows\System32\SysResetErr.exe
+C:\Program Files\Windows Defender Advanced Threat Protection\SenseCM.exe
+C:\Windows\System32\DeviceEject.exe
+C:\Windows\System32\UPPrinterInstaller.exe
+C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe
+C:\Program Files (x86)\Common Files\Steam\steamservice.exe
+C:\Windows\System32\UpgradeResultsUI.exe
+C:\Windows\System32\reg.exe
+C:\Windows\System32\comp.exe
+C:\Windows\System32\EoAExperiences.exe
+C:\Program Files\Windows NT\Accessories\wordpad.exe
+C:\Program Files\WinRAR\Rar.exe
+C:\Windows\System32\SyncHost.exe
+C:\Windows\System32\PresentationHost.exe
+C:\Windows\System32\msinfo32.exe
+C:\Windows\System32\SnippingTool.exe
+C:\Program Files\MetaTrader 5\terminal64.exe
+C:\Windows\System32\vds.exe
+C:\Program Files\Windows Defender Advanced Threat Protection\SenseIdentity.exe
+C:\Program Files\Windows Defender Advanced Threat Protection\SenseSampleUploader.exe
+C:\Windows\System32\finger.exe
+C:\Windows\System32\RuntimeBroker.exe
+C:\Windows\System32\directxdatabaseupdater.exe
+C:\Windows\System32\AppHostRegistrationVerifier.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.6_6000.519.329.0_x86__8wekyb3d8bbwe\DeploymentAgent.exe
+C:\Windows\System32\fhmanagew.exe
+C:\Windows\System32\GamePanel.exe
+C:\Program Files\Git\git-bash.exe
+C:\Windows\System32\icacls.exe
+C:\Windows\System32\CertEnrollCtrl.exe
+C:\Windows\System32\Utilman.exe
+C:\Program Files\WindowsApps\Microsoft.WindowsCamera_2026.2608.1.0_x64__8wekyb3d8bbwe\WindowsCamera.exe
+C:\Windows\System32\sc.exe
+C:\Windows\System32\vssadmin.exe
+C:\Windows\System32\CameraSettingsUIHost.exe
+C:\Program Files\WindowsApps\microsoft.windowscommunicationsapps_16005.14326.22342.0_x64__8wekyb3d8bbwe\HxTsr.exe
+C:\Windows\System32\ktmutil.exe
+C:\Windows\System32\WSReset.exe
+C:\Program Files\WindowsApps\Microsoft.OutlookForWindows_1.2026.915.300_x64__8wekyb3d8bbwe\olkMcpServer.exe
+C:\Windows\System32\RemotePosWorker.exe
+C:\Program Files\WSL\msal.wsl.proxy.exe
+C:\Windows\System32\convertvhd.exe
+C:\Program Files\WindowsApps\Microsoft.WindowsAppRuntime.1.8_8000.994.2142.0_x86__8wekyb3d8bbwe\DeploymentAgent.exe
+C:\Program Files (x86)\Steam\bin\secure_desktop_capture.exe
+C:\Windows\System32\audiodg.exe
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2611.32041.0_x64__8wekyb3d8bbwe\m365copilotwindowsucprovider.exe
+C:\Program Files\Microsoft Update Health Tools\uhssvc.exe
+C:\Windows\System32\LicensingUI.exe
+C:\Windows\System32\newdev.exe
+C:\Windows\System32\grpconv.exe
+C:\Program Files\AdGuardVpn\AdGuardVpn.exe

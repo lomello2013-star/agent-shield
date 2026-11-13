@@ -1,8 +1,8 @@
 {
   "harness": "labelled scenarios (NOT red-team)",
   "scenarios": 10,
-  "detected": 10,
-  "prevented": 10,
+  "detected": 9,
+  "prevented": 9,
   "by_class": {
     "E1_E2_mass": {
       "total": 2,
@@ -14,11 +14,11 @@
     },
     "E3_E4_targeted": {
       "total": 5,
-      "detected": 5,
-      "prevented": 5,
-      "alerted": 5,
-      "detection_pct": 100.0,
-      "prevention_pct": 100.0
+      "detected": 4,
+      "prevented": 4,
+      "alerted": 4,
+      "detection_pct": 80.0,
+      "prevention_pct": 80.0
     },
     "E5_fileless": {
       "total": 3,
@@ -89,12 +89,10 @@
       "scenario": "T4_service_persist",
       "class": "E3_E4_targeted",
       "technique": "T1543",
-      "detected": true,
-      "prevented": true,
-      "alerted": true,
-      "rules": [
-        "WIN-SERVICE-CREATE-007"
-      ]
+      "detected": false,
+      "prevented": false,
+      "alerted": false,
+      "rules": []
     },
     {
       "scenario": "T5_runkey",

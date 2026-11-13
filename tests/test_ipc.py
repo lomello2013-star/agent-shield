@@ -189,3 +189,19 @@ def test_daemon_registry_quarantine_without_store_is_error():
     response = reg.dispatch({"jsonrpc": "2.0", "id": 1, "method": "quarantine",
                              "params": {"path": "x"}}, "operator")
     assert response["error"]["code"] == INTERNAL_ERROR
+
+
+def test_recv_frame_enforces_size_before_unpickle():
+    """P0-5: an oversized frame is rejected before deserialization."""
+    from multiprocessing import Pipe
+
+    srv = RpcServer(address="x", authkey=b"k", tokens={}, registry=make_registry(),
+                    max_message=1024)
+    parent, child = Pipe()
+    try:
+        child.send({"id": 1, "method": "ping", "blob": "x" * 5000})
+        with pytest.raises(OSError):
+            srv._recv_frame(parent)
+    finally:
+        parent.close()
+        child.close()

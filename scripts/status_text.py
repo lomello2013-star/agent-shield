@@ -53,7 +53,7 @@ NOT_PROVEN = [
 BLOCKERS = [
     "A) EV-сертификат + Hardware Dev Center (подпись драйвера).",
     "B) Windows тест-VM с WDK/testsigning. C) Linux-VM с Secure Boot/fapolicyd.",
-    "D) Окно с admin (RTP, WDAC audit, ETW-TI). E) Разрешение на rustup (Rust-порт).",
+    "D) Окно с admin (RTP, WDAC audit, ETW-TI). E) rustup — закрыт (Rust-порт F19 сделан).",
 ]
 
 
@@ -139,6 +139,8 @@ def render(steps, artifacts: dict, now: datetime, art_dir: str,
               f"| F09: PPV на пороге алерта | {get('f09_ppv_target.json','chosen','ppv_at_prevalence')} при FPR {get('f09_ppv_target.json','chosen','fpr')} (TPR {get('f09_ppv_target.json','chosen','tpr')}) | f09 |",
               f"| F12: поведенческий TPR / benign-алерты | {get('f12_behavioral.json','behavioural_tpr')} / {get('f12_behavioral.json','benign_alerts')} | f12 |",
               f"| F13: сценарии E1–E5 (detect/prevent) | {get('f13_scenarios.json','detected')} / {get('f13_scenarios.json','prevented')} из {get('f13_scenarios.json','scenarios')} | f13 |",
+              f"| Супервизор: перезапуск после kill | медиана {get('supervisor_measure.json','median_restart_latency_ms')} мс, цепочка {get('supervisor_measure.json','audit_chain','ok')} ({get('supervisor_measure.json','audit_chain','records')} записей) | supervisor |",
+              f"| Доступность под супервизором | {get('soak_supervised.json','availability_pct')} % за {get('soak_supervised.json','window_s')} с, перезапусков {get('soak_supervised.json','restarts')} | soak_supervised |",
               ""]
 
     lines += [TEXT["freshness"], "",

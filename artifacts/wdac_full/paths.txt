@@ -1,0 +1,2414 @@
+C:\Windows\System32\agentactivationruntimestarter.exe
+C:\Windows\System32\AgentService.exe
+C:\Windows\System32\AggregatorHost.exe
+C:\Windows\System32\aitstatic.exe
+C:\Windows\System32\alg.exe
+C:\Windows\System32\AppHostRegistrationVerifier.exe
+C:\Windows\System32\appidcertstorecheck.exe
+C:\Windows\System32\appidpolicyconverter.exe
+C:\Windows\System32\appidtel.exe
+C:\Windows\System32\ApplicationFrameHost.exe
+C:\Windows\System32\ApplySettingsTemplateCatalog.exe
+C:\Windows\System32\ApplyTrustOffline.exe
+C:\Windows\System32\ApproveChildRequest.exe
+C:\Windows\System32\AppVClient.exe
+C:\Windows\System32\AppVDllSurrogate.exe
+C:\Windows\System32\appverif.exe
+C:\Windows\System32\AppVNice.exe
+C:\Windows\System32\AppVShNotify.exe
+C:\Windows\System32\ARP.EXE
+C:\Windows\System32\AssignedAccessGuard.exe
+C:\Windows\System32\at.exe
+C:\Windows\System32\AtBroker.exe
+C:\Windows\System32\attrib.exe
+C:\Windows\System32\audiodg.exe
+C:\Windows\System32\auditpol.exe
+C:\Windows\System32\AuthHost.exe
+C:\Windows\System32\autochk.exe
+C:\Windows\System32\autoconv.exe
+C:\Windows\System32\autofmt.exe
+C:\Windows\System32\AxInstUI.exe
+C:\Windows\System32\baaupdate.exe
+C:\Windows\System32\backgroundTaskHost.exe
+C:\Windows\System32\BackgroundTransferHost.exe
+C:\Windows\System32\bash.exe
+C:\Windows\System32\bcdboot.exe
+C:\Windows\System32\bcdedit.exe
+C:\Windows\System32\bdechangepin.exe
+C:\Windows\System32\BdeHdCfg.exe
+C:\Windows\System32\BdeUISrv.exe
+C:\Windows\System32\bdeunlock.exe
+C:\Windows\System32\BioIso.exe
+C:\Windows\System32\BitLockerDeviceEncryption.exe
+C:\Windows\System32\BitLockerWizard.exe
+C:\Windows\System32\BitLockerWizardElev.exe
+C:\Windows\System32\bitsadmin.exe
+C:\Windows\System32\bootcfg.exe
+C:\Windows\System32\bootim.exe
+C:\Windows\System32\bootsect.exe
+C:\Windows\System32\bridgeunattend.exe
+C:\Windows\System32\browserexport.exe
+C:\Windows\System32\browser_broker.exe
+C:\Windows\System32\bthudtask.exe
+C:\Windows\System32\ByteCodeGenerator.exe
+C:\Windows\System32\cacls.exe
+C:\Windows\System32\calc.exe
+C:\Windows\System32\CameraSettingsUIHost.exe
+C:\Windows\System32\CastSrv.exe
+C:\Windows\System32\CertEnrollCtrl.exe
+C:\Windows\System32\certreq.exe
+C:\Windows\System32\certutil.exe
+C:\Windows\System32\change.exe
+C:\Windows\System32\changepk.exe
+C:\Windows\System32\charmap.exe
+C:\Windows\System32\CheckNetIsolation.exe
+C:\Windows\System32\chglogon.exe
+C:\Windows\System32\chgport.exe
+C:\Windows\System32\chgusr.exe
+C:\Windows\System32\chkdsk.exe
+C:\Windows\System32\chkntfs.exe
+C:\Windows\System32\choice.exe
+C:\Windows\System32\CIDiag.exe
+C:\Windows\System32\cipher.exe
+C:\Windows\System32\cleanmgr.exe
+C:\Windows\System32\cliconfg.exe
+C:\Windows\System32\clip.exe
+C:\Windows\System32\clipesu.exe
+C:\Windows\System32\ClipESUConsumer.exe
+C:\Windows\System32\ClipRenew.exe
+C:\Windows\System32\ClipUp.exe
+C:\Windows\System32\CloudExperienceHostBroker.exe
+C:\Windows\System32\CloudNotifications.exe
+C:\Windows\System32\cmd.exe
+C:\Windows\System32\cmdkey.exe
+C:\Windows\System32\cmdl32.exe
+C:\Windows\System32\cmmon32.exe
+C:\Windows\System32\cmstp.exe
+C:\Windows\System32\cofire.exe
+C:\Windows\System32\colorcpl.exe
+C:\Windows\System32\comp.exe
+C:\Windows\System32\compact.exe
+C:\Windows\System32\CompatTelRunner.exe
+C:\Windows\System32\CompMgmtLauncher.exe
+C:\Windows\System32\CompPkgSrv.exe
+C:\Windows\System32\ComputerDefaults.exe
+C:\Windows\System32\conhost.exe
+C:\Windows\System32\consent.exe
+C:\Windows\System32\control.exe
+C:\Windows\System32\convert.exe
+C:\Windows\System32\convertvhd.exe
+C:\Windows\System32\coredpussvr.exe
+C:\Windows\System32\CredentialEnrollmentManager.exe
+C:\Windows\System32\CredentialUIBroker.exe
+C:\Windows\System32\credwiz.exe
+C:\Windows\System32\cscript.exe
+C:\Windows\System32\csrss.exe
+C:\Windows\System32\ctfmon.exe
+C:\Windows\System32\cttune.exe
+C:\Windows\System32\cttunesvr.exe
+C:\Windows\System32\curl.exe
+C:\Windows\System32\CustomInstallExec.exe
+C:\Windows\System32\CustomShellHost.exe
+C:\Windows\System32\dasHost.exe
+C:\Windows\System32\DataExchangeHost.exe
+C:\Windows\System32\DataStoreCacheDumpTool.exe
+C:\Windows\System32\DataUsageLiveTileTask.exe
+C:\Windows\System32\dccw.exe
+C:\Windows\System32\dcomcnfg.exe
+C:\Windows\System32\ddodiag.exe
+C:\Windows\System32\Defrag.exe
+C:\Windows\System32\deploymentcsphelper.exe
+C:\Windows\System32\desktopimgdownldr.exe
+C:\Windows\System32\DeviceCensus.exe
+C:\Windows\System32\DeviceCredentialDeployment.exe
+C:\Windows\System32\DeviceEject.exe
+C:\Windows\System32\DeviceEnroller.exe
+C:\Windows\System32\DevicePairingWizard.exe
+C:\Windows\System32\DeviceProperties.exe
+C:\Windows\System32\DFDWiz.exe
+C:\Windows\System32\dfrgui.exe
+C:\Windows\System32\dialer.exe
+C:\Windows\System32\directxdatabaseupdater.exe
+C:\Windows\System32\diskpart.exe
+C:\Windows\System32\diskperf.exe
+C:\Windows\System32\diskraid.exe
+C:\Windows\System32\DiskSnapshot.exe
+C:\Windows\System32\Dism.exe
+C:\Windows\System32\dispdiag.exe
+C:\Windows\System32\DisplaySwitch.exe
+C:\Windows\System32\djoin.exe
+C:\Windows\System32\dllhost.exe
+C:\Windows\System32\dllhst3g.exe
+C:\Windows\System32\dmcertinst.exe
+C:\Windows\System32\dmcfghost.exe
+C:\Windows\System32\dmclient.exe
+C:\Windows\System32\DmNotificationBroker.exe
+C:\Windows\System32\DmOmaCpMo.exe
+C:\Windows\System32\dnscacheugc.exe
+C:\Windows\System32\doskey.exe
+C:\Windows\System32\dpapimig.exe
+C:\Windows\System32\DpiScaling.exe
+C:\Windows\System32\dpnsvr.exe
+C:\Windows\System32\driverquery.exe
+C:\Windows\System32\drvinst.exe
+C:\Windows\System32\DsmUserTask.exe
+C:\Windows\System32\dsregcmd.exe
+C:\Windows\System32\dstokenclean.exe
+C:\Windows\System32\DTUHandler.exe
+C:\Windows\System32\dusmtask.exe
+C:\Windows\System32\dvdplay.exe
+C:\Windows\System32\dwm.exe
+C:\Windows\System32\DWWIN.EXE
+C:\Windows\System32\dxdiag.exe
+C:\Windows\System32\dxgiadaptercache.exe
+C:\Windows\System32\Dxpserver.exe
+C:\Windows\System32\Eap3Host.exe
+C:\Windows\System32\EaseOfAccessDialog.exe
+C:\Windows\System32\easinvoker.exe
+C:\Windows\System32\EASPolicyManagerBrokerHost.exe
+C:\Windows\System32\EDPCleanup.exe
+C:\Windows\System32\edpnotify.exe
+C:\Windows\System32\EduPrintProv.exe
+C:\Windows\System32\efsui.exe
+C:\Windows\System32\EhStorAuthn.exe
+C:\Windows\System32\EM.exe
+C:\Windows\System32\EoAExperiences.exe
+C:\Windows\System32\esentutl.exe
+C:\Windows\System32\eudcedit.exe
+C:\Windows\System32\eventcreate.exe
+C:\Windows\System32\eventvwr.exe
+C:\Windows\System32\expand.exe
+C:\Windows\System32\extrac32.exe
+C:\Windows\System32\fc.exe
+C:\Windows\System32\fclip.exe
+C:\Windows\System32\fhmanagew.exe
+C:\Windows\System32\FileHistory.exe
+C:\Windows\System32\find.exe
+C:\Windows\System32\findstr.exe
+C:\Windows\System32\finger.exe
+C:\Windows\System32\fixmapi.exe
+C:\Windows\System32\fltMC.exe
+C:\Windows\System32\fodhelper.exe
+C:\Windows\System32\Fondue.exe
+C:\Windows\System32\fontdrvhost.exe
+C:\Windows\System32\fontview.exe
+C:\Windows\System32\forfiles.exe
+C:\Windows\System32\fsavailux.exe
+C:\Windows\System32\FsIso.exe
+C:\Windows\System32\fsquirt.exe
+C:\Windows\System32\fsutil.exe
+C:\Windows\System32\ftp.exe
+C:\Windows\System32\fvenotify.exe
+C:\Windows\System32\fveprompt.exe
+C:\Windows\System32\FXSCOVER.exe
+C:\Windows\System32\FXSSVC.exe
+C:\Windows\System32\FXSUNATD.exe
+C:\Windows\System32\GameBarPresenceWriter.exe
+C:\Windows\System32\GameInputSvc.exe
+C:\Windows\System32\GamePanel.exe
+C:\Windows\System32\GenValObj.exe
+C:\Windows\System32\getmac.exe
+C:\Windows\System32\gpresult.exe
+C:\Windows\System32\gpscript.exe
+C:\Windows\System32\gpupdate.exe
+C:\Windows\System32\grpconv.exe
+C:\Windows\System32\hcsdiag.exe
+C:\Windows\System32\hdwwiz.exe
+C:\Windows\System32\help.exe
+C:\Windows\System32\hnsdiag.exe
+C:\Windows\System32\HOSTNAME.EXE
+C:\Windows\System32\hvax64.exe
+C:\Windows\System32\hvc.exe
+C:\Windows\System32\hvix64.exe
+C:\Windows\System32\hvsievaluator.exe
+C:\Windows\System32\icacls.exe
+C:\Windows\System32\IcsEntitlementHost.exe
+C:\Windows\System32\icsunattend.exe
+C:\Windows\System32\ie4uinit.exe
+C:\Windows\System32\ie4ushowIE.exe
+C:\Windows\System32\IESettingSync.exe
+C:\Windows\System32\ieUnatt.exe
+C:\Windows\System32\iexpress.exe
+C:\Windows\System32\immersivetpmvscmgrsvr.exe
+C:\Windows\System32\InfDefaultInstall.exe
+C:\Windows\System32\InputSwitchToastHandler.exe
+C:\Windows\System32\iotstartup.exe
+C:\Windows\System32\ipconfig.exe
+C:\Windows\System32\iscsicli.exe
+C:\Windows\System32\iscsicpl.exe
+C:\Windows\System32\isoburn.exe
+C:\Windows\System32\klist.exe
+C:\Windows\System32\ksetup.exe
+C:\Windows\System32\ktmutil.exe
+C:\Windows\System32\label.exe
+C:\Windows\System32\LanguageComponentsInstallerComHandler.exe
+C:\Windows\System32\LaunchTM.exe
+C:\Windows\System32\LaunchWinApp.exe
+C:\Windows\System32\LegacyNetUXHost.exe
+C:\Windows\System32\LicenseManagerShellext.exe
+C:\Windows\System32\licensingdiag.exe
+C:\Windows\System32\LicensingUI.exe
+C:\Windows\System32\LocationNotificationWindows.exe
+C:\Windows\System32\Locator.exe
+C:\Windows\System32\LockAppHost.exe
+C:\Windows\System32\LockScreenContentServer.exe
+C:\Windows\System32\lodctr.exe
+C:\Windows\System32\logagent.exe
+C:\Windows\System32\logman.exe
+C:\Windows\System32\logoff.exe
+C:\Windows\System32\LogonUI.exe
+C:\Windows\System32\lpkinstall.exe
+C:\Windows\System32\lpksetup.exe
+C:\Windows\System32\lpremove.exe
+C:\Windows\System32\LsaIso.exe
+C:\Windows\System32\lsass.exe
+C:\Windows\System32\Magnify.exe
+C:\Windows\System32\makecab.exe
+C:\Windows\System32\manage-bde.exe
+C:\Windows\System32\mavinject.exe
+C:\Windows\System32\MbaeParserTask.exe
+C:\Windows\System32\mblctr.exe
+C:\Windows\System32\MBR2GPT.EXE
+C:\Windows\System32\mcbuilder.exe
+C:\Windows\System32\MCU.exe
+C:\Windows\System32\MDEServer.exe
+C:\Windows\System32\MDMAgent.exe
+C:\Windows\System32\MDMAppInstaller.exe
+C:\Windows\System32\MdmDiagnosticsTool.exe
+C:\Windows\System32\MdRes.exe
+C:\Windows\System32\MdSched.exe
+C:\Windows\System32\mfpmp.exe
+C:\Windows\System32\Microsoft.Uev.CscUnpinTool.exe
+C:\Windows\System32\Microsoft.Uev.SyncController.exe
+C:\Windows\System32\microsoft.windows.softwarelogo.showdesktop.exe
+C:\Windows\System32\MicrosoftEdgeBCHost.exe
+C:\Windows\System32\MicrosoftEdgeCP.exe
+C:\Windows\System32\MicrosoftEdgeDevTools.exe
+C:\Windows\System32\MicrosoftEdgeSH.exe
+C:\Windows\System32\mmc.exe
+C:\Windows\System32\mmgaserver.exe
+C:\Windows\System32\mobsync.exe
+C:\Windows\System32\mountvol.exe
+C:\Windows\System32\MoUsoCoreWorker.exe
+C:\Windows\System32\mpnotify.exe
+C:\Windows\System32\MpSigStub.exe
+C:\Windows\System32\MRINFO.EXE
+C:\Windows\System32\MRT.exe
+C:\Windows\System32\MSchedExe.exe
+C:\Windows\System32\msconfig.exe
+C:\Windows\System32\msdt.exe
+C:\Windows\System32\msdtc.exe
+C:\Windows\System32\msfeedssync.exe
+C:\Windows\System32\msg.exe
+C:\Windows\System32\mshta.exe
+C:\Windows\System32\msiexec.exe
+C:\Windows\System32\msinfo32.exe
+C:\Windows\System32\mspaint.exe
+C:\Windows\System32\msra.exe
+C:\Windows\System32\MsSpellCheckingHost.exe
+C:\Windows\System32\mstsc.exe
+C:\Windows\System32\mtstocom.exe
+C:\Windows\System32\MuiUnattend.exe
+C:\Windows\System32\MultiDigiMon.exe
+C:\Windows\System32\MusNotification.exe
+C:\Windows\System32\MusNotificationUx.exe
+C:\Windows\System32\MusNotifyIcon.exe
+C:\Windows\System32\Narrator.exe
+C:\Windows\System32\nbtstat.exe
+C:\Windows\System32\ndadmin.exe
+C:\Windows\System32\NDKPing.exe
+C:\Windows\System32\net.exe
+C:\Windows\System32\net1.exe
+C:\Windows\System32\netbtugc.exe
+C:\Windows\System32\netcfg.exe
+C:\Windows\System32\NetCfgNotifyObjectHost.exe
+C:\Windows\System32\NetEvtFwdr.exe
+C:\Windows\System32\NetHost.exe
+C:\Windows\System32\netiougc.exe
+C:\Windows\System32\Netplwiz.exe
+C:\Windows\System32\netsh.exe
+C:\Windows\System32\NETSTAT.EXE
+C:\Windows\System32\newdev.exe
+C:\Windows\System32\NgcIso.exe
+C:\Windows\System32\nltest.exe
+C:\Windows\System32\nmbind.exe
+C:\Windows\System32\nmscrub.exe
+C:\Windows\System32\notepad.exe
+C:\Windows\System32\nslookup.exe
+C:\Windows\System32\ntoskrnl.exe
+C:\Windows\System32\ntprint.exe
+C:\Windows\System32\nvdebugdump.exe
+C:\Windows\System32\nvidia-pcc.exe
+C:\Windows\System32\nvidia-smi.exe
+C:\Windows\System32\nvspinfo.exe
+C:\Windows\System32\odbcad32.exe
+C:\Windows\System32\odbcconf.exe
+C:\Windows\System32\ofdeploy.exe
+C:\Windows\System32\omadmclient.exe
+C:\Windows\System32\omadmprc.exe
+C:\Windows\System32\OOBE-Maintenance.exe
+C:\Windows\System32\openfiles.exe
+C:\Windows\System32\OpenWith.exe
+C:\Windows\System32\OptionalFeatures.exe
+C:\Windows\System32\osk.exe
+C:\Windows\System32\pacjsworker.exe
+C:\Windows\System32\PackagedCWALauncher.exe
+C:\Windows\System32\PackageInspector.exe
+C:\Windows\System32\PasswordOnWakeSettingFlyout.exe
+C:\Windows\System32\PATHPING.EXE
+C:\Windows\System32\pcalua.exe
+C:\Windows\System32\pcaui.exe
+C:\Windows\System32\pcwrun.exe
+C:\Windows\System32\perfmon.exe
+C:\Windows\System32\phoneactivate.exe
+C:\Windows\System32\PickerHost.exe
+C:\Windows\System32\PinEnrollmentBroker.exe
+C:\Windows\System32\PING.EXE
+C:\Windows\System32\PkgMgr.exe
+C:\Windows\System32\PktMon.exe
+C:\Windows\System32\plasrv.exe
+C:\Windows\System32\PnPUnattend.exe
+C:\Windows\System32\pnputil.exe
+C:\Windows\System32\poqexec.exe
+C:\Windows\System32\pospaymentsworker.exe
+C:\Windows\System32\powercfg.exe
+C:\Windows\System32\PresentationHost.exe
+C:\Windows\System32\PresentationSettings.exe
+C:\Windows\System32\prevhost.exe
+C:\Windows\System32\print.exe
+C:\Windows\System32\PrintBrmUi.exe
+C:\Windows\System32\printfilterpipelinesvc.exe
+C:\Windows\System32\PrintIsolationHost.exe
+C:\Windows\System32\printui.exe
+C:\Windows\System32\proquota.exe
+C:\Windows\System32\provlaunch.exe
+C:\Windows\System32\provtool.exe
+C:\Windows\System32\ProximityUxHost.exe
+C:\Windows\System32\prproc.exe
+C:\Windows\System32\psr.exe
+C:\Windows\System32\pwlauncher.exe
+C:\Windows\System32\qappsrv.exe
+C:\Windows\System32\qprocess.exe
+C:\Windows\System32\query.exe
+C:\Windows\System32\quickassist.exe
+C:\Windows\System32\quser.exe
+C:\Windows\System32\qwinsta.exe
+C:\Windows\System32\rasautou.exe
+C:\Windows\System32\rasdial.exe
+C:\Windows\System32\raserver.exe
+C:\Windows\System32\rasphone.exe
+C:\Windows\System32\rdpclip.exe
+C:\Windows\System32\rdpinit.exe
+C:\Windows\System32\rdpinput.exe
+C:\Windows\System32\RdpSa.exe
+C:\Windows\System32\RdpSaProxy.exe
+C:\Windows\System32\RdpSaUacHelper.exe
+C:\Windows\System32\rdpshell.exe
+C:\Windows\System32\rdpsign.exe
+C:\Windows\System32\rdrleakdiag.exe
+C:\Windows\System32\readCloudDataSettings.exe
+C:\Windows\System32\ReAgentc.exe
+C:\Windows\System32\recdisc.exe
+C:\Windows\System32\recover.exe
+C:\Windows\System32\RecoveryDrive.exe
+C:\Windows\System32\refsutil.exe
+C:\Windows\System32\reg.exe
+C:\Windows\System32\regedt32.exe
+C:\Windows\System32\regini.exe
+C:\Windows\System32\Register-CimProvider.exe
+C:\Windows\System32\regsvr32.exe
+C:\Windows\System32\rekeywiz.exe
+C:\Windows\System32\relog.exe
+C:\Windows\System32\RelPost.exe
+C:\Windows\System32\RemoteAppLifetimeManager.exe
+C:\Windows\System32\RemotePosWorker.exe
+C:\Windows\System32\repair-bde.exe
+C:\Windows\System32\replace.exe
+C:\Windows\System32\reset.exe
+C:\Windows\System32\ResetEngine.exe
+C:\Windows\System32\resmon.exe
+C:\Windows\System32\rgnupdt.exe
+C:\Windows\System32\RMActivate.exe
+C:\Windows\System32\RMActivate_isv.exe
+C:\Windows\System32\RMActivate_ssp.exe
+C:\Windows\System32\RMActivate_ssp_isv.exe
+C:\Windows\System32\RmClient.exe
+C:\Windows\System32\rmttpmvscmgrsvr.exe
+C:\Windows\System32\Robocopy.exe
+C:\Windows\System32\ROUTE.EXE
+C:\Windows\System32\RpcPing.exe
+C:\Windows\System32\rrinstaller.exe
+C:\Windows\System32\rstrui.exe
+C:\Windows\System32\runas.exe
+C:\Windows\System32\rundll32.exe
+C:\Windows\System32\runexehelper.exe
+C:\Windows\System32\RunLegacyCPLElevated.exe
+C:\Windows\System32\runonce.exe
+C:\Windows\System32\RuntimeBroker.exe
+C:\Windows\System32\rwinsta.exe
+C:\Windows\System32\sc.exe
+C:\Windows\System32\schtasks.exe
+C:\Windows\System32\ScriptRunner.exe
+C:\Windows\System32\sdbinst.exe
+C:\Windows\System32\sdchange.exe
+C:\Windows\System32\sdclt.exe
+C:\Windows\System32\sdiagnhost.exe
+C:\Windows\System32\SearchFilterHost.exe
+C:\Windows\System32\SearchIndexer.exe
+C:\Windows\System32\SearchProtocolHost.exe
+C:\Windows\System32\SecEdit.exe
+C:\Windows\System32\secinit.exe
+C:\Windows\System32\securekernel.exe
+C:\Windows\System32\SecurityHealthHost.exe
+C:\Windows\System32\SecurityHealthService.exe
+C:\Windows\System32\SecurityHealthSystray.exe
+C:\Windows\System32\SensorDataService.exe
+C:\Windows\System32\services.exe
+C:\Windows\System32\sessionmsg.exe
+C:\Windows\System32\sethc.exe
+C:\Windows\System32\setspn.exe
+C:\Windows\System32\SettingSyncHost.exe
+C:\Windows\System32\setupcl.exe
+C:\Windows\System32\setupugc.exe
+C:\Windows\System32\setx.exe
+C:\Windows\System32\sfc.exe
+C:\Windows\System32\ShellAppRuntime.exe
+C:\Windows\System32\shrpubw.exe
+C:\Windows\System32\shutdown.exe
+C:\Windows\System32\sigverif.exe
+C:\Windows\System32\SIHClient.exe
+C:\Windows\System32\sihost.exe
+C:\Windows\System32\SlideToShutDown.exe
+C:\Windows\System32\slui.exe
+C:\Windows\System32\smartscreen.exe
+C:\Windows\System32\smss.exe
+C:\Windows\System32\SndVol.exe
+C:\Windows\System32\SnippingTool.exe
+C:\Windows\System32\snmptrap.exe
+C:\Windows\System32\sort.exe
+C:\Windows\System32\SpaceAgent.exe
+C:\Windows\System32\spaceman.exe
+C:\Windows\System32\SpatialAudioLicenseSrv.exe
+C:\Windows\System32\Spectrum.exe
+C:\Windows\System32\spoolsv.exe
+C:\Windows\System32\SppExtComObj.Exe
+C:\Windows\System32\sppsvc.exe
+C:\Windows\System32\srdelayed.exe
+C:\Windows\System32\SrTasks.exe
+C:\Windows\System32\stordiag.exe
+C:\Windows\System32\subst.exe
+C:\Windows\System32\svchost.exe
+C:\Windows\System32\sxstrace.exe
+C:\Windows\System32\SyncAppvPublishingServer.exe
+C:\Windows\System32\SyncHost.exe
+C:\Windows\System32\SysResetErr.exe
+C:\Windows\System32\systeminfo.exe
+C:\Windows\System32\SystemPropertiesAdvanced.exe
+C:\Windows\System32\SystemPropertiesComputerName.exe
+C:\Windows\System32\SystemPropertiesDataExecutionPrevention.exe
+C:\Windows\System32\SystemPropertiesHardware.exe
+C:\Windows\System32\SystemPropertiesPerformance.exe
+C:\Windows\System32\SystemPropertiesProtection.exe
+C:\Windows\System32\SystemPropertiesRemote.exe
+C:\Windows\System32\systemreset.exe
+C:\Windows\System32\SystemSettingsAdminFlows.exe
+C:\Windows\System32\SystemSettingsBroker.exe
+C:\Windows\System32\SystemSettingsRemoveDevice.exe
+C:\Windows\System32\SystemUWPLauncher.exe
+C:\Windows\System32\systray.exe
+C:\Windows\System32\tabcal.exe
+C:\Windows\System32\takeown.exe
+C:\Windows\System32\TapiUnattend.exe
+C:\Windows\System32\tar.exe
+C:\Windows\System32\taskhostw.exe
+C:\Windows\System32\taskkill.exe
+C:\Windows\System32\tasklist.exe
+C:\Windows\System32\Taskmgr.exe
+C:\Windows\System32\tcblaunch.exe
+C:\Windows\System32\tcmsetup.exe
+C:\Windows\System32\TCPSVCS.EXE
+C:\Windows\System32\ThumbnailExtractionHost.exe
+C:\Windows\System32\TieringEngineService.exe
+C:\Windows\System32\timeout.exe
+C:\Windows\System32\TokenBrokerCookies.exe
+C:\Windows\System32\TpmInit.exe
+C:\Windows\System32\TpmTool.exe
+C:\Windows\System32\tpmvscmgr.exe
+C:\Windows\System32\tpmvscmgrsvr.exe
+C:\Windows\System32\tracerpt.exe
+C:\Windows\System32\TRACERT.EXE
+C:\Windows\System32\tscon.exe
+C:\Windows\System32\tsdiscon.exe
+C:\Windows\System32\tskill.exe
+C:\Windows\System32\TSTheme.exe
+C:\Windows\System32\TSWbPrxy.exe
+C:\Windows\System32\TsWpfWrp.exe
+C:\Windows\System32\ttdinject.exe
+C:\Windows\System32\tttracer.exe
+C:\Windows\System32\typeperf.exe
+C:\Windows\System32\tzsync.exe
+C:\Windows\System32\tzutil.exe
+C:\Windows\System32\UCPDMgr.exe
+C:\Windows\System32\ucsvc.exe
+C:\Windows\System32\UevAgentPolicyGenerator.exe
+C:\Windows\System32\UevAppMonitor.exe
+C:\Windows\System32\UevTemplateBaselineGenerator.exe
+C:\Windows\System32\UevTemplateConfigItemGenerator.exe
+C:\Windows\System32\UIMgrBroker.exe
+C:\Windows\System32\unlodctr.exe
+C:\Windows\System32\unregmp2.exe
+C:\Windows\System32\upfc.exe
+C:\Windows\System32\UpgradeResultsUI.exe
+C:\Windows\System32\upnpcont.exe
+C:\Windows\System32\UPPrinterInstaller.exe
+C:\Windows\System32\UserAccountBroker.exe
+C:\Windows\System32\UserAccountControlSettings.exe
+C:\Windows\System32\userinit.exe
+C:\Windows\System32\UsoClient.exe
+C:\Windows\System32\usocoreworker.exe
+C:\Windows\System32\UtcDecoderHost.exe
+C:\Windows\System32\Utilman.exe
+C:\Windows\System32\VaultCmd.exe
+C:\Windows\System32\vds.exe
+C:\Windows\System32\vdsldr.exe
+C:\Windows\System32\verclsid.exe
+C:\Windows\System32\verifier.exe
+C:\Windows\System32\verifiergui.exe
+C:\Windows\System32\vfpctrl.exe
+C:\Windows\System32\vmcompute.exe
+C:\Windows\System32\vmconnect.exe
+C:\Windows\System32\vmms.exe
+C:\Windows\System32\vmplatformca.exe
+C:\Windows\System32\vmsp.exe
+C:\Windows\System32\vmwp.exe
+C:\Windows\System32\vssadmin.exe
+C:\Windows\System32\VSSVC.exe
+C:\Windows\System32\vulkaninfo-1-999-0-0-0.exe
+C:\Windows\System32\vulkaninfo.exe
+C:\Windows\System32\w32tm.exe
+C:\Windows\System32\WaaSMedicAgent.exe
+C:\Windows\System32\waitfor.exe
+C:\Windows\System32\WallpaperHost.exe
+C:\Windows\System32\wbadmin.exe
+C:\Windows\System32\wbengine.exe
+C:\Windows\System32\wecutil.exe
+C:\Windows\System32\WerFault.exe
+C:\Windows\System32\WerFaultSecure.exe
+C:\Windows\System32\wermgr.exe
+C:\Windows\System32\wevtutil.exe
+C:\Windows\System32\wextract.exe
+C:\Windows\System32\WFS.exe
+C:\Windows\System32\where.exe
+C:\Windows\System32\whoami.exe
+C:\Windows\System32\wiaacmgr.exe
+C:\Windows\System32\wiawow64.exe
+C:\Windows\System32\wifitask.exe
+C:\Windows\System32\wimserv.exe
+C:\Windows\System32\WinBioDataModelOOBE.exe
+C:\Windows\System32\Windows.Media.BackgroundPlayback.exe
+C:\Windows\System32\Windows.WARP.JITService.exe
+C:\Windows\System32\WindowsActionDialog.exe
+C:\Windows\System32\WindowsUpdateElevatedInstaller.exe
+C:\Windows\System32\wininit.exe
+C:\Windows\System32\winload.exe
+C:\Windows\System32\winlogon.exe
+C:\Windows\System32\winresume.exe
+C:\Windows\System32\winrs.exe
+C:\Windows\System32\winrshost.exe
+C:\Windows\System32\WinRTNetMUAHostServer.exe
+C:\Windows\System32\WinSAT.exe
+C:\Windows\System32\winver.exe
+C:\Windows\System32\wkspbroker.exe
+C:\Windows\System32\wksprt.exe
+C:\Windows\System32\wlanext.exe
+C:\Windows\System32\wlrmdr.exe
+C:\Windows\System32\WMPDMC.exe
+C:\Windows\System32\WorkFolders.exe
+C:\Windows\System32\wowreg32.exe
+C:\Windows\System32\WpcMon.exe
+C:\Windows\System32\WpcTok.exe
+C:\Windows\System32\WPDShextAutoplay.exe
+C:\Windows\System32\wpnpinst.exe
+C:\Windows\System32\wpr.exe
+C:\Windows\System32\write.exe
+C:\Windows\System32\wscadminui.exe
+C:\Windows\System32\WSCollect.exe
+C:\Windows\System32\wscript.exe
+C:\Windows\System32\wsl.exe
+C:\Windows\System32\wslconfig.exe
+C:\Windows\System32\WSManHTTPConfig.exe
+C:\Windows\System32\wsmprovhost.exe
+C:\Windows\System32\wsqmcons.exe
+C:\Windows\System32\WSReset.exe
+C:\Windows\System32\wuapihost.exe
+C:\Windows\System32\wuauclt.exe
+C:\Windows\System32\WUDFCompanionHost.exe
+C:\Windows\System32\WUDFHost.exe
+C:\Windows\System32\wusa.exe
+C:\Windows\System32\WWAHost.exe
+C:\Windows\System32\XblGameSaveTask.exe
+C:\Windows\System32\xcopy.exe
+C:\Windows\System32\xwizard.exe
+C:\Windows\System32\AppV\AppVStreamingUX.exe
+C:\Windows\System32\Boot\winload.exe
+C:\Windows\System32\Boot\winresume.exe
+C:\Windows\System32\Com\comrepl.exe
+C:\Windows\System32\Com\MigRegDB.exe
+C:\Windows\System32\DiagSvcs\DiagnosticsHub.StandardCollector.Service.exe
+C:\Windows\System32\Dism\DismHost.exe
+C:\Windows\System32\drivers\NVIDIA Corporation\Drs\dbInstaller.exe
+C:\Windows\System32\DriverStore\FileRepository\cui_dch.inf_amd64_38cfab2b652e4701\GfxDownloadWrapper.exe
+C:\Windows\System32\DriverStore\FileRepository\cui_dch.inf_amd64_38cfab2b652e4701\igfxCUIService.exe
+C:\Windows\System32\DriverStore\FileRepository\cui_dch.inf_amd64_38cfab2b652e4701\igfxCUIServiceN.exe
+C:\Windows\System32\DriverStore\FileRepository\cui_dch.inf_amd64_38cfab2b652e4701\igfxEM.exe
+C:\Windows\System32\DriverStore\FileRepository\cui_dch.inf_amd64_38cfab2b652e4701\igfxEMN.exe
+C:\Windows\System32\DriverStore\FileRepository\cui_dch.inf_amd64_38cfab2b652e4701\igfxext.exe
+C:\Windows\System32\DriverStore\FileRepository\cui_dch.inf_amd64_38cfab2b652e4701\igfxextN.exe
+C:\Windows\System32\DriverStore\FileRepository\cui_dch.inf_amd64_38cfab2b652e4701\igfxSDK.exe
+C:\Windows\System32\DriverStore\FileRepository\dal.inf_amd64_af50fdb80983f7bc\jhi_service.exe
+C:\Windows\System32\DriverStore\FileRepository\hdxrt4.inf_amd64_bddc6d6d7c8d269e\AERTSr64.exe
+C:\Windows\System32\DriverStore\FileRepository\hdxrt4.inf_amd64_bddc6d6d7c8d269e\CreateRtkToastLnk.exe
+C:\Windows\System32\DriverStore\FileRepository\hdxrt4.inf_amd64_bddc6d6d7c8d269e\CXAPOAgent64.exe
+C:\Windows\System32\DriverStore\FileRepository\hdxrt4.inf_amd64_bddc6d6d7c8d269e\DTSAudioService64.exe
+C:\Windows\System32\DriverStore\FileRepository\hdxrt4.inf_amd64_bddc6d6d7c8d269e\DTSU2PAuSrv64.exe
+C:\Windows\System32\DriverStore\FileRepository\hdxrt4.inf_amd64_bddc6d6d7c8d269e\FMAPP.exe
+C:\Windows\System32\DriverStore\FileRepository\hdxrt4.inf_amd64_bddc6d6d7c8d269e\RAVBg64.exe
+C:\Windows\System32\DriverStore\FileRepository\hdxrt4.inf_amd64_bddc6d6d7c8d269e\RAVCpl64.exe
+C:\Windows\System32\DriverStore\FileRepository\hdxrt4.inf_amd64_bddc6d6d7c8d269e\RtkAudioService64.exe
+C:\Windows\System32\DriverStore\FileRepository\hdxrt4.inf_amd64_bddc6d6d7c8d269e\RtkNGUI64.exe
+C:\Windows\System32\DriverStore\FileRepository\hdxrt4.inf_amd64_bddc6d6d7c8d269e\RtlUpd64.exe
+C:\Windows\System32\DriverStore\FileRepository\hdxrt4.inf_amd64_bddc6d6d7c8d269e\vncutil64.exe
+C:\Windows\System32\DriverStore\FileRepository\iclsclient.inf_amd64_fc84dfa25a6a7727\lib\IntelPTTEKRecertification.exe
+C:\Windows\System32\DriverStore\FileRepository\iclsclient.inf_amd64_fc84dfa25a6a7727\lib\PlatformLicenseManagerService.exe
+C:\Windows\System32\DriverStore\FileRepository\iclsclient.inf_amd64_fc84dfa25a6a7727\lib\TPMProvisioningService.exe
+C:\Windows\System32\DriverStore\FileRepository\igcc_dch.inf_amd64_c2ac023763d5d3ad\OneApp.IGCC.WinService.exe
+C:\Windows\System32\DriverStore\FileRepository\mewmiprov.inf_amd64_d51901c26227fb29\WMIRegistrationService.exe
+C:\Windows\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_da865124972e1f80\dbInstaller.exe
+C:\Windows\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_da865124972e1f80\MCU.exe
+C:\Windows\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_da865124972e1f80\nvdebugdump.exe
+C:\Windows\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_da865124972e1f80\nvdispco64.exe
+C:\Windows\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_da865124972e1f80\nvidia-pcc.exe
+C:\Windows\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_da865124972e1f80\nvidia-smi.exe
+C:\Windows\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_da865124972e1f80\nvngx_update.exe
+C:\Windows\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_da865124972e1f80\NvOSC.exe
+C:\Windows\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_da865124972e1f80\nvsmartmaxapp.exe
+C:\Windows\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_da865124972e1f80\nvsmartmaxapp64.exe
+C:\Windows\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_da865124972e1f80\vulkaninfo-x64.exe
+C:\Windows\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_da865124972e1f80\vulkaninfo-x86.exe
+C:\Windows\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_da865124972e1f80\Display.NvContainer\NVDisplay.Container.exe
+C:\Windows\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_da865124972e1f80\Display.NvContainer\nvgwls.exe
+C:\Windows\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_da865124972e1f80\NvCamera\FreqTransfer32.exe
+C:\Windows\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_da865124972e1f80\NvCamera\FreqTransfer64.exe
+C:\Windows\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_da865124972e1f80\NvCamera\HighresBlender32.exe
+C:\Windows\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_da865124972e1f80\NvCamera\HighresBlender64.exe
+C:\Windows\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_da865124972e1f80\NvCamera\NvCameraEnable.exe
+C:\Windows\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_da865124972e1f80\NvCamera\NvImageConvert32.exe
+C:\Windows\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_da865124972e1f80\NvCamera\NvImageConvert64.exe
+C:\Windows\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_da865124972e1f80\NvCamera\ReShadeFXC32.exe
+C:\Windows\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_da865124972e1f80\NvCamera\ReShadeFXC64.exe
+C:\Windows\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_da865124972e1f80\NvCamera\SphericalEquirect32.exe
+C:\Windows\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_da865124972e1f80\NvCamera\SphericalEquirect64.exe
+C:\Windows\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_da865124972e1f80\NVWMI\nvWmi64.exe
+C:\Windows\System32\F12\IEChooser.exe
+C:\Windows\System32\IME\IMEJP\IMJPDCT.EXE
+C:\Windows\System32\IME\IMEJP\IMJPSET.EXE
+C:\Windows\System32\IME\IMEJP\IMJPUEX.EXE
+C:\Windows\System32\IME\IMEJP\imjpuexc.exe
+C:\Windows\System32\IME\IMETC\IMTCLNWZ.EXE
+C:\Windows\System32\IME\IMETC\IMTCPROP.exe
+C:\Windows\System32\IME\SHARED\IMCCPHR.exe
+C:\Windows\System32\IME\SHARED\ImeBroker.exe
+C:\Windows\System32\IME\SHARED\imecfmui.exe
+C:\Windows\System32\IME\SHARED\IMEPADSV.EXE
+C:\Windows\System32\IME\SHARED\IMESEARCH.EXE
+C:\Windows\System32\IME\SHARED\IMEWDBLD.EXE
+C:\Windows\System32\InputMethod\CHS\ChsIME.exe
+C:\Windows\System32\InputMethod\CHT\ChtIME.exe
+C:\Windows\System32\lxss\wslhost.exe
+C:\Windows\System32\migwiz\mighost.exe
+C:\Windows\System32\oobe\audit.exe
+C:\Windows\System32\oobe\AuditShD.exe
+C:\Windows\System32\oobe\FirstLogonAnim.exe
+C:\Windows\System32\oobe\msoobe.exe
+C:\Windows\System32\oobe\oobeldr.exe
+C:\Windows\System32\oobe\Setup.exe
+C:\Windows\System32\oobe\UserOOBEBroker.exe
+C:\Windows\System32\oobe\windeploy.exe
+C:\Windows\System32\oobe\SetupPlatform\SetupPlatform.exe
+C:\Windows\System32\OpenSSH\scp.exe
+C:\Windows\System32\OpenSSH\sftp.exe
+C:\Windows\System32\OpenSSH\ssh-add.exe
+C:\Windows\System32\OpenSSH\ssh-agent.exe
+C:\Windows\System32\OpenSSH\ssh-keygen.exe
+C:\Windows\System32\OpenSSH\ssh-keyscan.exe
+C:\Windows\System32\OpenSSH\ssh-pkcs11-helper.exe
+C:\Windows\System32\OpenSSH\ssh-sk-helper.exe
+C:\Windows\System32\OpenSSH\ssh.exe
+C:\Windows\System32\PerceptionSimulation\PerceptionSimulationInput.exe
+C:\Windows\System32\PerceptionSimulation\PerceptionSimulationService.exe
+C:\Windows\System32\Speech\SpeechUX\SpeechUXWiz.exe
+C:\Windows\System32\Speech_OneCore\common\SpeechModelDownload.exe
+C:\Windows\System32\Speech_OneCore\common\SpeechRuntime.exe
+C:\Windows\System32\spool\tools\PrintBrm.exe
+C:\Windows\System32\spool\tools\PrintBrmEngine.exe
+C:\Windows\System32\Sysprep\sysprep.exe
+C:\Windows\System32\SystemResetPlatform\SystemResetPlatform.exe
+C:\Windows\System32\UNP\UNPUXHost.exe
+C:\Windows\System32\UNP\UNPUXLauncher.exe
+C:\Windows\System32\UNP\UpdateNotificationMgr.exe
+C:\Windows\System32\wbem\mofcomp.exe
+C:\Windows\System32\wbem\scrcons.exe
+C:\Windows\System32\wbem\unsecapp.exe
+C:\Windows\System32\wbem\wbemtest.exe
+C:\Windows\System32\wbem\WinMgmt.exe
+C:\Windows\System32\wbem\WMIADAP.exe
+C:\Windows\System32\wbem\WmiApSrv.exe
+C:\Windows\System32\wbem\WMIC.exe
+C:\Windows\System32\wbem\WmiPrvSE.exe
+C:\Windows\System32\WinBioPlugIns\FaceFodUninstaller.exe
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell_ise.exe
+C:\Windows\SysWOW64\agentactivationruntimestarter.exe
+C:\Windows\SysWOW64\appidtel.exe
+C:\Windows\SysWOW64\appverif.exe
+C:\Windows\SysWOW64\ARP.EXE
+C:\Windows\SysWOW64\at.exe
+C:\Windows\SysWOW64\AtBroker.exe
+C:\Windows\SysWOW64\attrib.exe
+C:\Windows\SysWOW64\auditpol.exe
+C:\Windows\SysWOW64\autochk.exe
+C:\Windows\SysWOW64\autoconv.exe
+C:\Windows\SysWOW64\autofmt.exe
+C:\Windows\SysWOW64\backgroundTaskHost.exe
+C:\Windows\SysWOW64\BackgroundTransferHost.exe
+C:\Windows\SysWOW64\bitsadmin.exe
+C:\Windows\SysWOW64\bootcfg.exe
+C:\Windows\SysWOW64\bthudtask.exe
+C:\Windows\SysWOW64\ByteCodeGenerator.exe
+C:\Windows\SysWOW64\cacls.exe
+C:\Windows\SysWOW64\calc.exe
+C:\Windows\SysWOW64\CameraSettingsUIHost.exe
+C:\Windows\SysWOW64\CertEnrollCtrl.exe
+C:\Windows\SysWOW64\certreq.exe
+C:\Windows\SysWOW64\certutil.exe
+C:\Windows\SysWOW64\charmap.exe
+C:\Windows\SysWOW64\CheckNetIsolation.exe
+C:\Windows\SysWOW64\chkdsk.exe
+C:\Windows\SysWOW64\chkntfs.exe
+C:\Windows\SysWOW64\choice.exe
+C:\Windows\SysWOW64\cipher.exe
+C:\Windows\SysWOW64\cleanmgr.exe
+C:\Windows\SysWOW64\cliconfg.exe
+C:\Windows\SysWOW64\clip.exe
+C:\Windows\SysWOW64\CloudNotifications.exe
+C:\Windows\SysWOW64\cmd.exe
+C:\Windows\SysWOW64\cmdkey.exe
+C:\Windows\SysWOW64\cmdl32.exe
+C:\Windows\SysWOW64\cmmon32.exe
+C:\Windows\SysWOW64\cmstp.exe
+C:\Windows\SysWOW64\colorcpl.exe
+C:\Windows\SysWOW64\comp.exe
+C:\Windows\SysWOW64\compact.exe
+C:\Windows\SysWOW64\ComputerDefaults.exe
+C:\Windows\SysWOW64\control.exe
+C:\Windows\SysWOW64\convert.exe
+C:\Windows\SysWOW64\CredentialUIBroker.exe
+C:\Windows\SysWOW64\credwiz.exe
+C:\Windows\SysWOW64\cscript.exe
+C:\Windows\SysWOW64\ctfmon.exe
+C:\Windows\SysWOW64\cttune.exe
+C:\Windows\SysWOW64\cttunesvr.exe
+C:\Windows\SysWOW64\curl.exe
+C:\Windows\SysWOW64\dccw.exe
+C:\Windows\SysWOW64\dcomcnfg.exe
+C:\Windows\SysWOW64\ddodiag.exe
+C:\Windows\SysWOW64\DevicePairingWizard.exe
+C:\Windows\SysWOW64\dfrgui.exe
+C:\Windows\SysWOW64\dialer.exe
+C:\Windows\SysWOW64\diskpart.exe
+C:\Windows\SysWOW64\diskperf.exe
+C:\Windows\SysWOW64\Dism.exe
+C:\Windows\SysWOW64\dllhost.exe
+C:\Windows\SysWOW64\dllhst3g.exe
+C:\Windows\SysWOW64\doskey.exe
+C:\Windows\SysWOW64\dpapimig.exe
+C:\Windows\SysWOW64\DpiScaling.exe
+C:\Windows\SysWOW64\dplaysvr.exe
+C:\Windows\SysWOW64\dpnsvr.exe
+C:\Windows\SysWOW64\driverquery.exe
+C:\Windows\SysWOW64\dtdump.exe
+C:\Windows\SysWOW64\dvdplay.exe
+C:\Windows\SysWOW64\DWWIN.EXE
+C:\Windows\SysWOW64\dxdiag.exe
+C:\Windows\SysWOW64\EaseOfAccessDialog.exe
+C:\Windows\SysWOW64\edpnotify.exe
+C:\Windows\SysWOW64\efsui.exe
+C:\Windows\SysWOW64\EhStorAuthn.exe
+C:\Windows\SysWOW64\esentutl.exe
+C:\Windows\SysWOW64\eudcedit.exe
+C:\Windows\SysWOW64\eventcreate.exe
+C:\Windows\SysWOW64\eventvwr.exe
+C:\Windows\SysWOW64\expand.exe
+C:\Windows\SysWOW64\explorer.exe
+C:\Windows\SysWOW64\extrac32.exe
+C:\Windows\SysWOW64\fc.exe
+C:\Windows\SysWOW64\find.exe
+C:\Windows\SysWOW64\findstr.exe
+C:\Windows\SysWOW64\finger.exe
+C:\Windows\SysWOW64\fixmapi.exe
+C:\Windows\SysWOW64\fltMC.exe
+C:\Windows\SysWOW64\Fondue.exe
+C:\Windows\SysWOW64\fontdrvhost.exe
+C:\Windows\SysWOW64\fontview.exe
+C:\Windows\SysWOW64\forfiles.exe
+C:\Windows\SysWOW64\fsquirt.exe
+C:\Windows\SysWOW64\fsutil.exe
+C:\Windows\SysWOW64\ftp.exe
+C:\Windows\SysWOW64\GameBarPresenceWriter.exe
+C:\Windows\SysWOW64\GamePanel.exe
+C:\Windows\SysWOW64\getmac.exe
+C:\Windows\SysWOW64\gpresult.exe
+C:\Windows\SysWOW64\gpscript.exe
+C:\Windows\SysWOW64\gpupdate.exe
+C:\Windows\SysWOW64\grpconv.exe
+C:\Windows\SysWOW64\hdwwiz.exe
+C:\Windows\SysWOW64\help.exe
+C:\Windows\SysWOW64\hh.exe
+C:\Windows\SysWOW64\HOSTNAME.EXE
+C:\Windows\SysWOW64\icacls.exe
+C:\Windows\SysWOW64\icsunattend.exe
+C:\Windows\SysWOW64\ieUnatt.exe
+C:\Windows\SysWOW64\iexpress.exe
+C:\Windows\SysWOW64\InfDefaultInstall.exe
+C:\Windows\SysWOW64\InputSwitchToastHandler.exe
+C:\Windows\SysWOW64\instnm.exe
+C:\Windows\SysWOW64\ipconfig.exe
+C:\Windows\SysWOW64\iscsicli.exe
+C:\Windows\SysWOW64\iscsicpl.exe
+C:\Windows\SysWOW64\isoburn.exe
+C:\Windows\SysWOW64\ktmutil.exe
+C:\Windows\SysWOW64\label.exe
+C:\Windows\SysWOW64\LaunchTM.exe
+C:\Windows\SysWOW64\LaunchWinApp.exe
+C:\Windows\SysWOW64\lodctr.exe
+C:\Windows\SysWOW64\logagent.exe
+C:\Windows\SysWOW64\logman.exe
+C:\Windows\SysWOW64\Magnify.exe
+C:\Windows\SysWOW64\makecab.exe
+C:\Windows\SysWOW64\mavinject.exe
+C:\Windows\SysWOW64\mcbuilder.exe
+C:\Windows\SysWOW64\mfpmp.exe
+C:\Windows\SysWOW64\mmc.exe
+C:\Windows\SysWOW64\mmgaserver.exe
+C:\Windows\SysWOW64\mobsync.exe
+C:\Windows\SysWOW64\mountvol.exe
+C:\Windows\SysWOW64\MRINFO.EXE
+C:\Windows\SysWOW64\msdt.exe
+C:\Windows\SysWOW64\msfeedssync.exe
+C:\Windows\SysWOW64\mshta.exe
+C:\Windows\SysWOW64\msiexec.exe
+C:\Windows\SysWOW64\msinfo32.exe
+C:\Windows\SysWOW64\mspaint.exe
+C:\Windows\SysWOW64\msra.exe
+C:\Windows\SysWOW64\mstsc.exe
+C:\Windows\SysWOW64\mtstocom.exe
+C:\Windows\SysWOW64\MuiUnattend.exe
+C:\Windows\SysWOW64\ndadmin.exe
+C:\Windows\SysWOW64\net.exe
+C:\Windows\SysWOW64\net1.exe
+C:\Windows\SysWOW64\netbtugc.exe
+C:\Windows\SysWOW64\NetCfgNotifyObjectHost.exe
+C:\Windows\SysWOW64\netiougc.exe
+C:\Windows\SysWOW64\Netplwiz.exe
+C:\Windows\SysWOW64\netsh.exe
+C:\Windows\SysWOW64\NETSTAT.EXE
+C:\Windows\SysWOW64\newdev.exe
+C:\Windows\SysWOW64\notepad.exe
+C:\Windows\SysWOW64\nslookup.exe
+C:\Windows\SysWOW64\ntprint.exe
+C:\Windows\SysWOW64\odbcad32.exe
+C:\Windows\SysWOW64\odbcconf.exe
+C:\Windows\SysWOW64\OneDriveSetup.exe
+C:\Windows\SysWOW64\openfiles.exe
+C:\Windows\SysWOW64\OpenWith.exe
+C:\Windows\SysWOW64\OposHost.exe
+C:\Windows\SysWOW64\PackagedCWALauncher.exe
+C:\Windows\SysWOW64\PasswordOnWakeSettingFlyout.exe
+C:\Windows\SysWOW64\PATHPING.EXE
+C:\Windows\SysWOW64\pcaui.exe
+C:\Windows\SysWOW64\perfhost.exe
+C:\Windows\SysWOW64\perfmon.exe
+C:\Windows\SysWOW64\PickerHost.exe
+C:\Windows\SysWOW64\PING.EXE
+C:\Windows\SysWOW64\PkgMgr.exe
+C:\Windows\SysWOW64\poqexec.exe
+C:\Windows\SysWOW64\powercfg.exe
+C:\Windows\SysWOW64\PresentationHost.exe
+C:\Windows\SysWOW64\prevhost.exe
+C:\Windows\SysWOW64\print.exe
+C:\Windows\SysWOW64\printui.exe
+C:\Windows\SysWOW64\proquota.exe
+C:\Windows\SysWOW64\provlaunch.exe
+C:\Windows\SysWOW64\psr.exe
+C:\Windows\SysWOW64\quickassist.exe
+C:\Windows\SysWOW64\rasautou.exe
+C:\Windows\SysWOW64\rasdial.exe
+C:\Windows\SysWOW64\raserver.exe
+C:\Windows\SysWOW64\rasphone.exe
+C:\Windows\SysWOW64\RdpSa.exe
+C:\Windows\SysWOW64\RdpSaProxy.exe
+C:\Windows\SysWOW64\RdpSaUacHelper.exe
+C:\Windows\SysWOW64\rdrleakdiag.exe
+C:\Windows\SysWOW64\ReAgentc.exe
+C:\Windows\SysWOW64\recover.exe
+C:\Windows\SysWOW64\reg.exe
+C:\Windows\SysWOW64\regedit.exe
+C:\Windows\SysWOW64\regedt32.exe
+C:\Windows\SysWOW64\regini.exe
+C:\Windows\SysWOW64\Register-CimProvider.exe
+C:\Windows\SysWOW64\regsvr32.exe
+C:\Windows\SysWOW64\rekeywiz.exe
+C:\Windows\SysWOW64\relog.exe
+C:\Windows\SysWOW64\replace.exe
+C:\Windows\SysWOW64\resmon.exe
+C:\Windows\SysWOW64\RMActivate.exe
+C:\Windows\SysWOW64\RMActivate_isv.exe
+C:\Windows\SysWOW64\RMActivate_ssp.exe
+C:\Windows\SysWOW64\RMActivate_ssp_isv.exe
+C:\Windows\SysWOW64\RmClient.exe
+C:\Windows\SysWOW64\Robocopy.exe
+C:\Windows\SysWOW64\ROUTE.EXE
+C:\Windows\SysWOW64\RpcPing.exe
+C:\Windows\SysWOW64\rrinstaller.exe
+C:\Windows\SysWOW64\runas.exe
+C:\Windows\SysWOW64\rundll32.exe
+C:\Windows\SysWOW64\RunLegacyCPLElevated.exe
+C:\Windows\SysWOW64\runonce.exe
+C:\Windows\SysWOW64\sc.exe
+C:\Windows\SysWOW64\schtasks.exe
+C:\Windows\SysWOW64\sdbinst.exe
+C:\Windows\SysWOW64\sdchange.exe
+C:\Windows\SysWOW64\sdiagnhost.exe
+C:\Windows\SysWOW64\SearchFilterHost.exe
+C:\Windows\SysWOW64\SearchIndexer.exe
+C:\Windows\SysWOW64\SearchProtocolHost.exe
+C:\Windows\SysWOW64\SecEdit.exe
+C:\Windows\SysWOW64\secinit.exe
+C:\Windows\SysWOW64\sethc.exe
+C:\Windows\SysWOW64\SettingSyncHost.exe
+C:\Windows\SysWOW64\setup16.exe
+C:\Windows\SysWOW64\setupugc.exe
+C:\Windows\SysWOW64\setx.exe
+C:\Windows\SysWOW64\sfc.exe
+C:\Windows\SysWOW64\shrpubw.exe
+C:\Windows\SysWOW64\shutdown.exe
+C:\Windows\SysWOW64\SndVol.exe
+C:\Windows\SysWOW64\sort.exe
+C:\Windows\SysWOW64\SpatialAudioLicenseSrv.exe
+C:\Windows\SysWOW64\srdelayed.exe
+C:\Windows\SysWOW64\stordiag.exe
+C:\Windows\SysWOW64\subst.exe
+C:\Windows\SysWOW64\svchost.exe
+C:\Windows\SysWOW64\sxstrace.exe
+C:\Windows\SysWOW64\SyncHost.exe
+C:\Windows\SysWOW64\systeminfo.exe
+C:\Windows\SysWOW64\SystemPropertiesAdvanced.exe
+C:\Windows\SysWOW64\SystemPropertiesComputerName.exe
+C:\Windows\SysWOW64\SystemPropertiesDataExecutionPrevention.exe
+C:\Windows\SysWOW64\SystemPropertiesHardware.exe
+C:\Windows\SysWOW64\SystemPropertiesPerformance.exe
+C:\Windows\SysWOW64\SystemPropertiesProtection.exe
+C:\Windows\SysWOW64\SystemPropertiesRemote.exe
+C:\Windows\SysWOW64\SystemUWPLauncher.exe
+C:\Windows\SysWOW64\systray.exe
+C:\Windows\SysWOW64\takeown.exe
+C:\Windows\SysWOW64\TapiUnattend.exe
+C:\Windows\SysWOW64\tar.exe
+C:\Windows\SysWOW64\taskkill.exe
+C:\Windows\SysWOW64\tasklist.exe
+C:\Windows\SysWOW64\Taskmgr.exe
+C:\Windows\SysWOW64\tcmsetup.exe
+C:\Windows\SysWOW64\TCPSVCS.EXE
+C:\Windows\SysWOW64\ThumbnailExtractionHost.exe
+C:\Windows\SysWOW64\timeout.exe
+C:\Windows\SysWOW64\TokenBrokerCookies.exe
+C:\Windows\SysWOW64\TpmInit.exe
+C:\Windows\SysWOW64\TpmTool.exe
+C:\Windows\SysWOW64\tracerpt.exe
+C:\Windows\SysWOW64\TRACERT.EXE
+C:\Windows\SysWOW64\TSTheme.exe
+C:\Windows\SysWOW64\TsWpfWrp.exe
+C:\Windows\SysWOW64\ttdinject.exe
+C:\Windows\SysWOW64\tttracer.exe
+C:\Windows\SysWOW64\typeperf.exe
+C:\Windows\SysWOW64\tzutil.exe
+C:\Windows\SysWOW64\unlodctr.exe
+C:\Windows\SysWOW64\unregmp2.exe
+C:\Windows\SysWOW64\upnpcont.exe
+C:\Windows\SysWOW64\user.exe
+C:\Windows\SysWOW64\UserAccountBroker.exe
+C:\Windows\SysWOW64\UserAccountControlSettings.exe
+C:\Windows\SysWOW64\userinit.exe
+C:\Windows\SysWOW64\Utilman.exe
+C:\Windows\SysWOW64\verclsid.exe
+C:\Windows\SysWOW64\verifiergui.exe
+C:\Windows\SysWOW64\vulkaninfo-1-999-0-0-0.exe
+C:\Windows\SysWOW64\vulkaninfo.exe
+C:\Windows\SysWOW64\w32tm.exe
+C:\Windows\SysWOW64\waitfor.exe
+C:\Windows\SysWOW64\wecutil.exe
+C:\Windows\SysWOW64\WerFault.exe
+C:\Windows\SysWOW64\WerFaultSecure.exe
+C:\Windows\SysWOW64\wermgr.exe
+C:\Windows\SysWOW64\wevtutil.exe
+C:\Windows\SysWOW64\wextract.exe
+C:\Windows\SysWOW64\where.exe
+C:\Windows\SysWOW64\whoami.exe
+C:\Windows\SysWOW64\wiaacmgr.exe
+C:\Windows\SysWOW64\Windows.Media.BackgroundPlayback.exe
+C:\Windows\SysWOW64\Windows.WARP.JITService.exe
+C:\Windows\SysWOW64\winrs.exe
+C:\Windows\SysWOW64\winrshost.exe
+C:\Windows\SysWOW64\WinRTNetMUAHostServer.exe
+C:\Windows\SysWOW64\winver.exe
+C:\Windows\SysWOW64\wlanext.exe
+C:\Windows\SysWOW64\wowreg32.exe
+C:\Windows\SysWOW64\WPDShextAutoplay.exe
+C:\Windows\SysWOW64\write.exe
+C:\Windows\SysWOW64\wscadminui.exe
+C:\Windows\SysWOW64\wscript.exe
+C:\Windows\SysWOW64\WSManHTTPConfig.exe
+C:\Windows\SysWOW64\wsmprovhost.exe
+C:\Windows\SysWOW64\wusa.exe
+C:\Windows\SysWOW64\WWAHost.exe
+C:\Windows\SysWOW64\xcopy.exe
+C:\Windows\SysWOW64\xwizard.exe
+C:\Windows\SysWOW64\Com\comrepl.exe
+C:\Windows\SysWOW64\Com\MigRegDB.exe
+C:\Windows\SysWOW64\Dism\DismHost.exe
+C:\Windows\SysWOW64\F12\IEChooser.exe
+C:\Windows\SysWOW64\IME\IMEJP\IMJPDCT.EXE
+C:\Windows\SysWOW64\IME\IMEJP\IMJPSET.EXE
+C:\Windows\SysWOW64\IME\IMEJP\IMJPUEX.EXE
+C:\Windows\SysWOW64\IME\IMEJP\imjpuexc.exe
+C:\Windows\SysWOW64\IME\IMETC\IMTCLNWZ.EXE
+C:\Windows\SysWOW64\IME\IMETC\IMTCPROP.exe
+C:\Windows\SysWOW64\IME\SHARED\IMCCPHR.exe
+C:\Windows\SysWOW64\IME\SHARED\imecfmui.exe
+C:\Windows\SysWOW64\IME\SHARED\IMEPADSV.EXE
+C:\Windows\SysWOW64\IME\SHARED\IMESEARCH.EXE
+C:\Windows\SysWOW64\IME\SHARED\IMEWDBLD.EXE
+C:\Windows\SysWOW64\InstallShield\setup.exe
+C:\Windows\SysWOW64\InstallShield\_isdel.exe
+C:\Windows\SysWOW64\Speech_OneCore\Common\SpeechModelDownload.exe
+C:\Windows\SysWOW64\wbem\mofcomp.exe
+C:\Windows\SysWOW64\wbem\WinMgmt.exe
+C:\Windows\SysWOW64\wbem\WMIADAP.exe
+C:\Windows\SysWOW64\wbem\WMIC.exe
+C:\Windows\SysWOW64\wbem\WmiPrvSE.exe
+C:\Windows\SysWOW64\WindowsPowerShell\v1.0\powershell.exe
+C:\Windows\SysWOW64\WindowsPowerShell\v1.0\powershell_ise.exe
+C:\Program Files\AdGuardVpn\AdGuardVpn.exe
+C:\Program Files\AdGuardVpn\AdGuardVpn.Launcher.Arm64.exe
+C:\Program Files\AdGuardVpn\AdGuardVpn.Launcher.exe
+C:\Program Files\AdGuardVpn\AdGuardVpn.Tools.exe
+C:\Program Files\AdGuardVpn\AdGuardVpnSvc.exe
+C:\Program Files\AdGuardVpn\Drivers\arm64\AdguardNetRegSock.exe
+C:\Program Files\AdGuardVpn\Drivers\arm64\AdguardNetRegWfp.exe
+C:\Program Files\AdGuardVpn\Drivers\x64\AdguardNetRegSock.exe
+C:\Program Files\AdGuardVpn\Drivers\x64\AdguardNetRegWfp.exe
+C:\Program Files\AdGuardVpn\Drivers\x86\AdguardNetRegSock.exe
+C:\Program Files\AdGuardVpn\Drivers\x86\AdguardNetRegWfp.exe
+C:\Program Files\Comfy Desktop\Comfy Desktop.exe
+C:\Program Files\Comfy Desktop\Uninstall Comfy Desktop.exe
+C:\Program Files\Comfy Desktop\resources\elevate.exe
+C:\Program Files\Comfy Desktop\resources\app.asar.unpacked\node_modules\7zip-bin\win\arm64\7za.exe
+C:\Program Files\Comfy Desktop\resources\app.asar.unpacked\node_modules\7zip-bin\win\ia32\7za.exe
+C:\Program Files\Comfy Desktop\resources\app.asar.unpacked\node_modules\7zip-bin\win\x64\7za.exe
+C:\Program Files\Comfy Desktop\resources\app.asar.unpacked\node_modules\node-pty\build\Release\conpty\OpenConsole.exe
+C:\Program Files\Comfy Desktop\resources\app.asar.unpacked\node_modules\node-pty\prebuilds\win32-arm64\winpty-agent.exe
+C:\Program Files\Comfy Desktop\resources\app.asar.unpacked\node_modules\node-pty\prebuilds\win32-arm64\conpty\OpenConsole.exe
+C:\Program Files\Comfy Desktop\resources\app.asar.unpacked\node_modules\node-pty\prebuilds\win32-x64\winpty-agent.exe
+C:\Program Files\Comfy Desktop\resources\app.asar.unpacked\node_modules\node-pty\prebuilds\win32-x64\conpty\OpenConsole.exe
+C:\Program Files\Comfy Desktop\resources\app.asar.unpacked\node_modules\node-pty\third_party\conpty\1.23.251008001\win10-arm64\OpenConsole.exe
+C:\Program Files\Comfy Desktop\resources\app.asar.unpacked\node_modules\node-pty\third_party\conpty\1.23.251008001\win10-x64\OpenConsole.exe
+C:\Program Files\Comfy Desktop\resources\bootstrap-python\python.exe
+C:\Program Files\Comfy Desktop\resources\bootstrap-python\pythonw.exe
+C:\Program Files\Comfy Desktop\resources\bootstrap-python\uv.exe
+C:\Program Files\Comfy Desktop\resources\bootstrap-python\Scripts\cffi-gen-src.exe
+C:\Program Files\Common Files\Crypto Pro\Shared\cadescom_enrollctrl.exe
+C:\Program Files\Common Files\microsoft shared\ink\InputPersonalization.exe
+C:\Program Files\Common Files\microsoft shared\ink\mip.exe
+C:\Program Files\Common Files\microsoft shared\ink\ShapeCollector.exe
+C:\Program Files\Common Files\microsoft shared\ink\TabTip.exe
+C:\Program Files\Common Files\microsoft shared\MSInfo\msinfo32.exe
+C:\Program Files\CPUID\HWMonitor\HWMonitor.exe
+C:\Program Files\CPUID\HWMonitor\unins000.exe
+C:\Program Files\Crypto Pro\CSP\certmgr.exe
+C:\Program Files\Crypto Pro\CSP\csptest.exe
+C:\Program Files\CrystalDiskInfo\DiskInfo64.exe
+C:\Program Files\CrystalDiskInfo\unins000.exe
+C:\Program Files\CrystalDiskInfo\CdiResource\AlertMail.exe
+C:\Program Files\CrystalDiskInfo\CdiResource\AlertMail4.exe
+C:\Program Files\CrystalDiskInfo\CdiResource\AlertMail48.exe
+C:\Program Files\CrystalDiskInfo\CdiResource\opus\opusdec.exe
+C:\Program Files\dotnet\dotnet.exe
+C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.20\createdump.exe
+C:\Program Files\Git\git-bash.exe
+C:\Program Files\Git\git-cmd.exe
+C:\Program Files\Git\unins000.exe
+C:\Program Files\Git\bin\bash.exe
+C:\Program Files\Git\bin\git.exe
+C:\Program Files\Git\bin\sh.exe
+C:\Program Files\Git\cmd\git-gui.exe
+C:\Program Files\Git\cmd\git-lfs.exe
+C:\Program Files\Git\cmd\git-receive-pack.exe
+C:\Program Files\Git\cmd\git-upload-pack.exe
+C:\Program Files\Git\cmd\git.exe
+C:\Program Files\Git\cmd\gitk.exe
+C:\Program Files\Git\cmd\scalar.exe
+C:\Program Files\Git\cmd\tig.exe
+C:\Program Files\Git\ucrt64\bin\adig.exe
+C:\Program Files\Git\ucrt64\bin\ahost.exe
+C:\Program Files\Git\ucrt64\bin\antiword.exe
+C:\Program Files\Git\ucrt64\bin\blocked-file-util.exe
+C:\Program Files\Git\ucrt64\bin\brotli.exe
+C:\Program Files\Git\ucrt64\bin\bunzip2.exe
+C:\Program Files\Git\ucrt64\bin\bzcat.exe
+C:\Program Files\Git\ucrt64\bin\bzip2.exe
+C:\Program Files\Git\ucrt64\bin\bzip2recover.exe
+C:\Program Files\Git\ucrt64\bin\connect.exe
+C:\Program Files\Git\ucrt64\bin\create-shortcut.exe
+C:\Program Files\Git\ucrt64\bin\curl.exe
+C:\Program Files\Git\ucrt64\bin\docx-strip-pii.exe
+C:\Program Files\Git\ucrt64\bin\docx2txt.exe
+C:\Program Files\Git\ucrt64\bin\edit_test.exe
+C:\Program Files\Git\ucrt64\bin\edit_test_dll.exe
+C:\Program Files\Git\ucrt64\bin\envsubst.exe
+C:\Program Files\Git\ucrt64\bin\gettext.exe
+C:\Program Files\Git\ucrt64\bin\git-askpass.exe
+C:\Program Files\Git\ucrt64\bin\git-askyesno.exe
+C:\Program Files\Git\ucrt64\bin\git-credential-helper-selector.exe
+C:\Program Files\Git\ucrt64\bin\git-credential-manager.exe
+C:\Program Files\Git\ucrt64\bin\git-lfs.exe
+C:\Program Files\Git\ucrt64\bin\git-receive-pack.exe
+C:\Program Files\Git\ucrt64\bin\git-upload-archive.exe
+C:\Program Files\Git\ucrt64\bin\git-upload-pack.exe
+C:\Program Files\Git\ucrt64\bin\git.exe
+C:\Program Files\Git\ucrt64\bin\lzmadec.exe
+C:\Program Files\Git\ucrt64\bin\lzmainfo.exe
+C:\Program Files\Git\ucrt64\bin\odt2txt.exe
+C:\Program Files\Git\ucrt64\bin\openssl.exe
+C:\Program Files\Git\ucrt64\bin\p11-kit.exe
+C:\Program Files\Git\ucrt64\bin\pdftotext.exe
+C:\Program Files\Git\ucrt64\bin\pkcs1-conv.exe
+C:\Program Files\Git\ucrt64\bin\printf_gettext.exe
+C:\Program Files\Git\ucrt64\bin\printf_ngettext.exe
+C:\Program Files\Git\ucrt64\bin\proxy-lookup.exe
+C:\Program Files\Git\ucrt64\bin\psl.exe
+C:\Program Files\Git\ucrt64\bin\scalar.exe
+C:\Program Files\Git\ucrt64\bin\sexp-conv.exe
+C:\Program Files\Git\ucrt64\bin\tclsh.exe
+C:\Program Files\Git\ucrt64\bin\tclsh86.exe
+C:\Program Files\Git\ucrt64\bin\trust.exe
+C:\Program Files\Git\ucrt64\bin\unxz.exe
+C:\Program Files\Git\ucrt64\bin\WhoUses.exe
+C:\Program Files\Git\ucrt64\bin\wintoast.exe
+C:\Program Files\Git\ucrt64\bin\wish.exe
+C:\Program Files\Git\ucrt64\bin\wish86.exe
+C:\Program Files\Git\ucrt64\bin\xmlwf.exe
+C:\Program Files\Git\ucrt64\bin\xz.exe
+C:\Program Files\Git\ucrt64\bin\xzcat.exe
+C:\Program Files\Git\ucrt64\bin\xzdec.exe
+C:\Program Files\Git\ucrt64\lib\p11-kit\p11-kit-remote.exe
+C:\Program Files\Git\ucrt64\lib\p11-kit\p11-kit-server.exe
+C:\Program Files\Git\ucrt64\libexec\git-core\git-credential-wincred.exe
+C:\Program Files\Git\ucrt64\libexec\git-core\git-daemon.exe
+C:\Program Files\Git\ucrt64\libexec\git-core\git-http-backend.exe
+C:\Program Files\Git\ucrt64\libexec\git-core\git-http-fetch.exe
+C:\Program Files\Git\ucrt64\libexec\git-core\git-http-push.exe
+C:\Program Files\Git\ucrt64\libexec\git-core\git-imap-send.exe
+C:\Program Files\Git\ucrt64\libexec\git-core\git-remote-ftp.exe
+C:\Program Files\Git\ucrt64\libexec\git-core\git-remote-ftps.exe
+C:\Program Files\Git\ucrt64\libexec\git-core\git-remote-http.exe
+C:\Program Files\Git\ucrt64\libexec\git-core\git-remote-https.exe
+C:\Program Files\Git\ucrt64\libexec\git-core\git-sh-i18n--envsubst.exe
+C:\Program Files\Git\ucrt64\libexec\git-core\git.exe
+C:\Program Files\Git\ucrt64\libexec\git-core\headless-git.exe
+C:\Program Files\Git\ucrt64\libexec\git-core\scalar.exe
+C:\Program Files\Git\ucrt64\share\git\compat-bash.exe
+C:\Program Files\Git\ucrt64\share\git\edit-git-bash.exe
+C:\Program Files\Git\ucrt64\share\git\git-wrapper.exe
+C:\Program Files\Git\usr\bin\arch.exe
+C:\Program Files\Git\usr\bin\awk.exe
+C:\Program Files\Git\usr\bin\b2sum.exe
+C:\Program Files\Git\usr\bin\base32.exe
+C:\Program Files\Git\usr\bin\base64.exe
+C:\Program Files\Git\usr\bin\basename.exe
+C:\Program Files\Git\usr\bin\basenc.exe
+C:\Program Files\Git\usr\bin\bash.exe
+C:\Program Files\Git\usr\bin\bunzip2.exe
+C:\Program Files\Git\usr\bin\bzcat.exe
+C:\Program Files\Git\usr\bin\bzip2.exe
+C:\Program Files\Git\usr\bin\bzip2recover.exe
+C:\Program Files\Git\usr\bin\captoinfo.exe
+C:\Program Files\Git\usr\bin\cat.exe
+C:\Program Files\Git\usr\bin\chattr.exe
+C:\Program Files\Git\usr\bin\chcon.exe
+C:\Program Files\Git\usr\bin\chgrp.exe
+C:\Program Files\Git\usr\bin\chmod.exe
+C:\Program Files\Git\usr\bin\chown.exe
+C:\Program Files\Git\usr\bin\chroot.exe
+C:\Program Files\Git\usr\bin\cksum.exe
+C:\Program Files\Git\usr\bin\clear.exe
+C:\Program Files\Git\usr\bin\cmp.exe
+C:\Program Files\Git\usr\bin\column.exe
+C:\Program Files\Git\usr\bin\comm.exe
+C:\Program Files\Git\usr\bin\cp.exe
+C:\Program Files\Git\usr\bin\csplit.exe
+C:\Program Files\Git\usr\bin\cut.exe
+C:\Program Files\Git\usr\bin\cygcheck.exe
+C:\Program Files\Git\usr\bin\cygpath.exe
+C:\Program Files\Git\usr\bin\cygwin-console-helper.exe
+C:\Program Files\Git\usr\bin\d2u.exe
+C:\Program Files\Git\usr\bin\dash.exe
+C:\Program Files\Git\usr\bin\date.exe
+C:\Program Files\Git\usr\bin\dd.exe
+C:\Program Files\Git\usr\bin\df.exe
+C:\Program Files\Git\usr\bin\diff.exe
+C:\Program Files\Git\usr\bin\diff3.exe
+C:\Program Files\Git\usr\bin\dir.exe
+C:\Program Files\Git\usr\bin\dircolors.exe
+C:\Program Files\Git\usr\bin\dirmngr-client.exe
+C:\Program Files\Git\usr\bin\dirmngr.exe
+C:\Program Files\Git\usr\bin\dirname.exe
+C:\Program Files\Git\usr\bin\dos2unix.exe
+C:\Program Files\Git\usr\bin\du.exe
+C:\Program Files\Git\usr\bin\dumpsexp.exe
+C:\Program Files\Git\usr\bin\echo.exe
+C:\Program Files\Git\usr\bin\env.exe
+C:\Program Files\Git\usr\bin\ex.exe
+C:\Program Files\Git\usr\bin\expand.exe
+C:\Program Files\Git\usr\bin\expr.exe
+C:\Program Files\Git\usr\bin\factor.exe
+C:\Program Files\Git\usr\bin\false.exe
+C:\Program Files\Git\usr\bin\file.exe
+C:\Program Files\Git\usr\bin\find.exe
+C:\Program Files\Git\usr\bin\fmt.exe
+C:\Program Files\Git\usr\bin\fold.exe
+C:\Program Files\Git\usr\bin\funzip.exe
+C:\Program Files\Git\usr\bin\gawk-5.4.1.exe
+C:\Program Files\Git\usr\bin\gawk.exe
+C:\Program Files\Git\usr\bin\gdbmtool.exe
+C:\Program Files\Git\usr\bin\gdbm_dump.exe
+C:\Program Files\Git\usr\bin\gdbm_load.exe
+C:\Program Files\Git\usr\bin\gencat.exe
+C:\Program Files\Git\usr\bin\getconf.exe
+C:\Program Files\Git\usr\bin\getfacl.exe
+C:\Program Files\Git\usr\bin\getopt.exe
+C:\Program Files\Git\usr\bin\gkill.exe
+C:\Program Files\Git\usr\bin\gmondump.exe
+C:\Program Files\Git\usr\bin\gpg-agent.exe
+C:\Program Files\Git\usr\bin\gpg-card.exe
+C:\Program Files\Git\usr\bin\gpg-connect-agent.exe
+C:\Program Files\Git\usr\bin\gpg-error.exe
+C:\Program Files\Git\usr\bin\gpg-mail-tube.exe
+C:\Program Files\Git\usr\bin\gpg-wks-client.exe
+C:\Program Files\Git\usr\bin\gpg-wks-server.exe
+C:\Program Files\Git\usr\bin\gpg.exe
+C:\Program Files\Git\usr\bin\gpgconf.exe
+C:\Program Files\Git\usr\bin\gpgparsemail.exe
+C:\Program Files\Git\usr\bin\gpgscm.exe
+C:\Program Files\Git\usr\bin\gpgsm.exe
+C:\Program Files\Git\usr\bin\gpgsplit.exe
+C:\Program Files\Git\usr\bin\gpgtar.exe
+C:\Program Files\Git\usr\bin\gpgv.exe
+C:\Program Files\Git\usr\bin\grep.exe
+C:\Program Files\Git\usr\bin\groups.exe
+C:\Program Files\Git\usr\bin\gzip.exe
+C:\Program Files\Git\usr\bin\head.exe
+C:\Program Files\Git\usr\bin\hmac256.exe
+C:\Program Files\Git\usr\bin\hostid.exe
+C:\Program Files\Git\usr\bin\hostname.exe
+C:\Program Files\Git\usr\bin\iconv.exe
+C:\Program Files\Git\usr\bin\id.exe
+C:\Program Files\Git\usr\bin\infocmp.exe
+C:\Program Files\Git\usr\bin\infotocap.exe
+C:\Program Files\Git\usr\bin\install.exe
+C:\Program Files\Git\usr\bin\join.exe
+C:\Program Files\Git\usr\bin\kbxutil.exe
+C:\Program Files\Git\usr\bin\kill.exe
+C:\Program Files\Git\usr\bin\ldd.exe
+C:\Program Files\Git\usr\bin\ldh.exe
+C:\Program Files\Git\usr\bin\less.exe
+C:\Program Files\Git\usr\bin\link.exe
+C:\Program Files\Git\usr\bin\ln.exe
+C:\Program Files\Git\usr\bin\locale.exe
+C:\Program Files\Git\usr\bin\locate.exe
+C:\Program Files\Git\usr\bin\logname.exe
+C:\Program Files\Git\usr\bin\ls.exe
+C:\Program Files\Git\usr\bin\lsattr.exe
+C:\Program Files\Git\usr\bin\mac2unix.exe
+C:\Program Files\Git\usr\bin\md5sum.exe
+C:\Program Files\Git\usr\bin\minidumper.exe
+C:\Program Files\Git\usr\bin\mintty.exe
+C:\Program Files\Git\usr\bin\mkdir.exe
+C:\Program Files\Git\usr\bin\mkfifo.exe
+C:\Program Files\Git\usr\bin\mkgroup.exe
+C:\Program Files\Git\usr\bin\mknod.exe
+C:\Program Files\Git\usr\bin\mkpasswd.exe
+C:\Program Files\Git\usr\bin\mktemp.exe
+C:\Program Files\Git\usr\bin\mount.exe
+C:\Program Files\Git\usr\bin\mpicalc.exe
+C:\Program Files\Git\usr\bin\mv.exe
+C:\Program Files\Git\usr\bin\nano.exe
+C:\Program Files\Git\usr\bin\nettle-hash.exe
+C:\Program Files\Git\usr\bin\nettle-lfib-stream.exe
+C:\Program Files\Git\usr\bin\nettle-pbkdf2.exe
+C:\Program Files\Git\usr\bin\newgrp.exe
+C:\Program Files\Git\usr\bin\nice.exe
+C:\Program Files\Git\usr\bin\nl.exe
+C:\Program Files\Git\usr\bin\nohup.exe
+C:\Program Files\Git\usr\bin\nproc.exe
+C:\Program Files\Git\usr\bin\numfmt.exe
+C:\Program Files\Git\usr\bin\od.exe
+C:\Program Files\Git\usr\bin\openssl.exe
+C:\Program Files\Git\usr\bin\p11-kit.exe
+C:\Program Files\Git\usr\bin\passwd.exe
+C:\Program Files\Git\usr\bin\paste.exe
+C:\Program Files\Git\usr\bin\patch.exe
+C:\Program Files\Git\usr\bin\pathchk.exe
+C:\Program Files\Git\usr\bin\perl.exe
+C:\Program Files\Git\usr\bin\perl5.42.3.exe
+C:\Program Files\Git\usr\bin\pinentry-w32.exe
+C:\Program Files\Git\usr\bin\pinentry.exe
+C:\Program Files\Git\usr\bin\pinky.exe
+C:\Program Files\Git\usr\bin\pkcs1-conv.exe
+C:\Program Files\Git\usr\bin\pldd.exe
+C:\Program Files\Git\usr\bin\pluginviewer.exe
+C:\Program Files\Git\usr\bin\pr.exe
+C:\Program Files\Git\usr\bin\printenv.exe
+C:\Program Files\Git\usr\bin\printf.exe
+C:\Program Files\Git\usr\bin\profiler.exe
+C:\Program Files\Git\usr\bin\ps.exe
+C:\Program Files\Git\usr\bin\psl.exe
+C:\Program Files\Git\usr\bin\ptx.exe
+C:\Program Files\Git\usr\bin\pwd.exe
+C:\Program Files\Git\usr\bin\readlink.exe
+C:\Program Files\Git\usr\bin\realpath.exe
+C:\Program Files\Git\usr\bin\rebase.exe
+C:\Program Files\Git\usr\bin\regtool.exe
+C:\Program Files\Git\usr\bin\reset.exe
+C:\Program Files\Git\usr\bin\rm.exe
+C:\Program Files\Git\usr\bin\rmdir.exe
+C:\Program Files\Git\usr\bin\rnano.exe
+C:\Program Files\Git\usr\bin\runcon.exe
+C:\Program Files\Git\usr\bin\rview.exe
+C:\Program Files\Git\usr\bin\rvim.exe
+C:\Program Files\Git\usr\bin\scp.exe
+C:\Program Files\Git\usr\bin\sdiff.exe
+C:\Program Files\Git\usr\bin\sed.exe
+C:\Program Files\Git\usr\bin\seq.exe
+C:\Program Files\Git\usr\bin\setfacl.exe
+C:\Program Files\Git\usr\bin\setmetamode.exe
+C:\Program Files\Git\usr\bin\sexp-conv.exe
+C:\Program Files\Git\usr\bin\sftp.exe
+C:\Program Files\Git\usr\bin\sh.exe
+C:\Program Files\Git\usr\bin\sha1sum.exe
+C:\Program Files\Git\usr\bin\sha224sum.exe
+C:\Program Files\Git\usr\bin\sha256sum.exe
+C:\Program Files\Git\usr\bin\sha384sum.exe
+C:\Program Files\Git\usr\bin\sha512sum.exe
+C:\Program Files\Git\usr\bin\shred.exe
+C:\Program Files\Git\usr\bin\shuf.exe
+C:\Program Files\Git\usr\bin\sleep.exe
+C:\Program Files\Git\usr\bin\sort.exe
+C:\Program Files\Git\usr\bin\split.exe
+C:\Program Files\Git\usr\bin\ssh-add.exe
+C:\Program Files\Git\usr\bin\ssh-agent.exe
+C:\Program Files\Git\usr\bin\ssh-keygen.exe
+C:\Program Files\Git\usr\bin\ssh-keyscan.exe
+C:\Program Files\Git\usr\bin\ssh-pageant.exe
+C:\Program Files\Git\usr\bin\ssh.exe
+C:\Program Files\Git\usr\bin\ssp.exe
+C:\Program Files\Git\usr\bin\stat.exe
+C:\Program Files\Git\usr\bin\stdbuf.exe
+C:\Program Files\Git\usr\bin\strace.exe
+C:\Program Files\Git\usr\bin\stty.exe
+C:\Program Files\Git\usr\bin\sum.exe
+C:\Program Files\Git\usr\bin\sync.exe
+C:\Program Files\Git\usr\bin\tabs.exe
+C:\Program Files\Git\usr\bin\tac.exe
+C:\Program Files\Git\usr\bin\tail.exe
+C:\Program Files\Git\usr\bin\tar.exe
+C:\Program Files\Git\usr\bin\tee.exe
+C:\Program Files\Git\usr\bin\test.exe
+C:\Program Files\Git\usr\bin\tic.exe
+C:\Program Files\Git\usr\bin\tig.exe
+C:\Program Files\Git\usr\bin\timeout.exe
+C:\Program Files\Git\usr\bin\toe.exe
+C:\Program Files\Git\usr\bin\touch.exe
+C:\Program Files\Git\usr\bin\tput.exe
+C:\Program Files\Git\usr\bin\tr.exe
+C:\Program Files\Git\usr\bin\true.exe
+C:\Program Files\Git\usr\bin\truncate.exe
+C:\Program Files\Git\usr\bin\trust.exe
+C:\Program Files\Git\usr\bin\tset.exe
+C:\Program Files\Git\usr\bin\tsort.exe
+C:\Program Files\Git\usr\bin\tty.exe
+C:\Program Files\Git\usr\bin\tzset.exe
+C:\Program Files\Git\usr\bin\u2d.exe
+C:\Program Files\Git\usr\bin\umount.exe
+C:\Program Files\Git\usr\bin\uname.exe
+C:\Program Files\Git\usr\bin\unexpand.exe
+C:\Program Files\Git\usr\bin\uniq.exe
+C:\Program Files\Git\usr\bin\unix2dos.exe
+C:\Program Files\Git\usr\bin\unix2mac.exe
+C:\Program Files\Git\usr\bin\unlink.exe
+C:\Program Files\Git\usr\bin\unzip.exe
+C:\Program Files\Git\usr\bin\unzipsfx.exe
+C:\Program Files\Git\usr\bin\users.exe
+C:\Program Files\Git\usr\bin\vdir.exe
+C:\Program Files\Git\usr\bin\view.exe
+C:\Program Files\Git\usr\bin\vim.exe
+C:\Program Files\Git\usr\bin\vimdiff.exe
+C:\Program Files\Git\usr\bin\watchgnupg.exe
+C:\Program Files\Git\usr\bin\wc.exe
+C:\Program Files\Git\usr\bin\which.exe
+C:\Program Files\Git\usr\bin\who.exe
+C:\Program Files\Git\usr\bin\whoami.exe
+C:\Program Files\Git\usr\bin\winpty-agent.exe
+C:\Program Files\Git\usr\bin\winpty-debugserver.exe
+C:\Program Files\Git\usr\bin\winpty.exe
+C:\Program Files\Git\usr\bin\xargs.exe
+C:\Program Files\Git\usr\bin\xxd.exe
+C:\Program Files\Git\usr\bin\yat2m.exe
+C:\Program Files\Git\usr\bin\yes.exe
+C:\Program Files\Git\usr\bin\zipinfo.exe
+C:\Program Files\Git\usr\bin\[.exe
+C:\Program Files\Git\usr\lib\awk\grcat.exe
+C:\Program Files\Git\usr\lib\awk\pwcat.exe
+C:\Program Files\Git\usr\lib\gnupg\gpg-auth.exe
+C:\Program Files\Git\usr\lib\gnupg\gpg-check-pattern.exe
+C:\Program Files\Git\usr\lib\gnupg\gpg-pair-tool.exe
+C:\Program Files\Git\usr\lib\gnupg\gpg-preset-passphrase.exe
+C:\Program Files\Git\usr\lib\gnupg\gpg-protect-tool.exe
+C:\Program Files\Git\usr\lib\gnupg\keyboxd.exe
+C:\Program Files\Git\usr\lib\gnupg\scdaemon.exe
+C:\Program Files\Git\usr\lib\ssh\sftp-server.exe
+C:\Program Files\Git\usr\lib\ssh\ssh-keysign.exe
+C:\Program Files\Git\usr\lib\ssh\ssh-pkcs11-helper.exe
+C:\Program Files\Git\usr\lib\ssh\ssh-sk-helper.exe
+C:\Program Files\Git\usr\lib\tar\rmt.exe
+C:\Program Files\Git\usr\libexec\frcode.exe
+C:\Program Files\Git\usr\libexec\getprocaddr32.exe
+C:\Program Files\Git\usr\libexec\getprocaddr64.exe
+C:\Program Files\Git\usr\libexec\lessecho.exe
+C:\Program Files\Git\usr\libexec\p11-kit\p11-kit-remote.exe
+C:\Program Files\Git\usr\libexec\p11-kit\p11-kit-server.exe
+C:\Program Files\Hyper-V\InspectVhdDialog.exe
+C:\Program Files\Hyper-V\VMCreate.exe
+C:\Program Files\Hyper-V\VMImport.exe
+C:\Program Files\Hyper-V\6.2\InspectVhdDialog6.2.exe
+C:\Program Files\Hyper-V\6.2\vmconnect6.2.exe
+C:\Program Files\Hyper-V\6.3\InspectVhdDialog6.3.exe
+C:\Program Files\Hyper-V\6.3\vmconnect6.3.exe
+C:\Program Files\Internet Explorer\ExtExport.exe
+C:\Program Files\Internet Explorer\iediagcmd.exe
+C:\Program Files\Internet Explorer\ieinstal.exe
+C:\Program Files\Internet Explorer\ielowutil.exe
+C:\Program Files\Internet Explorer\iexplore.exe
+C:\Program Files\MetaTrader 5\MetaEditor64.exe
+C:\Program Files\MetaTrader 5\metatester64.exe
+C:\Program Files\MetaTrader 5\terminal64.exe
+C:\Program Files\MetaTrader 5\uninstall.exe
+C:\Program Files\Microsoft Update Health Tools\expediteupdater.exe
+C:\Program Files\Microsoft Update Health Tools\uhssvc.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\DDConfigCA.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Microsoft.VisualStudio.Extensibility.Finalizer.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\PerfWatson2.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\StorePID.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\VSFinalizer.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\VSHiveStub.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\VSInitializer.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\VSIXInstaller.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\VSLaunchBrowser.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\vsn.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\VSNgenRunner.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\VsRegEdit.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\VSWebHandler.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\VSWebLauncher.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\NuGet\NuGet.Build.Tasks.Console.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\BuildNotificationApp.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\EndTask.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\TF.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\TFSBuild.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\TfsDeleteProject.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\TFSSecurity.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\vsDiffMerge.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\witadmin.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\Terminal\ServiceHub\winpty-agent.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\Terminal\ServiceHub\os64\OpenConsole.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\PrivateAssemblies\CheckHyperVHost.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Controller\Microsoft.ServiceHub.Controller.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.AnyCPU\ServiceHub.Host.AnyCPU.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.AnyCPU\ServiceHub.LiveUnitTesting.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.AnyCPU\ServiceHub.RoslynCodeAnalysisService.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.AnyCPU\ServiceHub.RoslynCodeAnalysisServiceS.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.AnyCPU\ServiceHub.SettingsHost.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.AnyCPU\ServiceHub.TestWindowStoreHost.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.AnyCPU\ServiceHub.ThreadedWaitDialog.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.AnyCPU\ServiceHub.VSDetouredHost.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.dotnet.x64\net10.0-windows10.0.19041.0\ServiceHub.DataWarehouseHost.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.dotnet.x64\net10.0-windows10.0.19041.0\ServiceHub.Host.dotnet.x64.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.dotnet.x64\net10.0-windows10.0.19041.0\ServiceHub.IdentityHost.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.dotnet.x64\net10.0-windows10.0.19041.0\ServiceHub.IndexingService.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.dotnet.x64\net10.0-windows10.0.19041.0\ServiceHub.LiveUnitTesting.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.dotnet.x64\net10.0-windows10.0.19041.0\ServiceHub.LiveUnitTesting.RemoteSyncManager.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.dotnet.x64\net10.0-windows10.0.19041.0\ServiceHub.RoslynCodeAnalysisService.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.dotnet.x64\net10.0-windows10.0.19041.0\ServiceHub.RoslynCodeAnalysisServiceS.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.dotnet.x64\net10.0-windows10.0.19041.0\ServiceHub.TestWindowStoreHost.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.dotnet.x64\net10.0-windows10.0.19041.0\ServiceHub.ThreadedWaitDialog.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.dotnet.x64\net10.0-windows10.0.19041.0\ServiceHub.VSDetouredHost.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.dotnet.x64\net8.0-windows8.0\ServiceHub.DataWarehouseHost.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.dotnet.x64\net8.0-windows8.0\ServiceHub.Host.dotnet.x64.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.dotnet.x64\net8.0-windows8.0\ServiceHub.IdentityHost.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.dotnet.x64\net8.0-windows8.0\ServiceHub.IndexingService.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.dotnet.x64\net8.0-windows8.0\ServiceHub.LiveUnitTesting.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.dotnet.x64\net8.0-windows8.0\ServiceHub.LiveUnitTesting.RemoteSyncManager.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.dotnet.x64\net8.0-windows8.0\ServiceHub.RoslynCodeAnalysisService.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.dotnet.x64\net8.0-windows8.0\ServiceHub.RoslynCodeAnalysisServiceS.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.dotnet.x64\net8.0-windows8.0\ServiceHub.TestWindowStoreHost.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.dotnet.x64\net8.0-windows8.0\ServiceHub.VSDetouredHost.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.Extensibility.amd64\net10.0-windows10.0.19041.0\ServiceHub.Host.Extensibility.x64.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.Extensibility.amd64\net8.0-windows8.0\ServiceHub.Host.Extensibility.x64.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.netfx.x64\ServiceHub.DataWarehouseHost.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.netfx.x64\ServiceHub.Host.netfx.x64.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.netfx.x64\ServiceHub.IntellicodeModelService.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.netfx.x86\ServiceHub.DataWarehouseHost.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.netfx.x86\ServiceHub.Host.netfx.x86.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\ServiceHub\Hosts\ServiceHub.Host.netfx.x86\ServiceHub.IdentityHost.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\errlook.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\guidgen.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\makehm.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\dotnet\net10.0\runtime\dotnet.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\dotnet\net10.0\runtime\shared\Microsoft.NETCore.App\10.0.15\createdump.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\dotnet\net8.0\runtime\dotnet.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\dotnet\net8.0\runtime\shared\Microsoft.NETCore.App\8.0.34\createdump.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Msbuild\Current\Bin\MSBuild.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Msbuild\Current\Bin\MSBuildTaskHost.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Msbuild\Current\Bin\Tracker.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Msbuild\Current\Bin\amd64\MSBuild.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Msbuild\Current\Bin\amd64\MSBuildTaskHost.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Msbuild\Current\Bin\amd64\Tracker.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Msbuild\Current\Bin\arm64\Tracker.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Team Tools\DiagnosticsHub\Collector\VSDiagnostics.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\Team Tools\Static Analysis Tools\FxCop\FxCopCmd.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Redist\MSVC\14.44.35112\vc_redist.x64.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Redist\MSVC\14.44.35112\vc_redist.x86.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Redist\MSVC\v143\vc_redist.x64.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Redist\MSVC\v143\vc_redist.x86.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\bscmake.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\cl.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\cvtres.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\dumpbin.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\editbin.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\ifc.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\lib.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\link.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\ml64.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\mspdbcmf.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\mspdbsrv.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\nmake.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\pgocvt.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\pgomgr.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\pgosweep.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\undname.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\vcperf.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\vctip.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\xdcmake.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\onecore\pgosweep.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x86\bscmake.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x86\cl.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x86\cvtres.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x86\dumpbin.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x86\editbin.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x86\ifc.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x86\lib.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x86\link.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x86\ml.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x86\mspdbcmf.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x86\mspdbsrv.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x86\nmake.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x86\pgocvt.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x86\pgomgr.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x86\undname.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x86\vctip.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x86\xdcmake.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x64\bscmake.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x64\cl.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x64\cvtres.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x64\dumpbin.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x64\editbin.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x64\ifc.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x64\lib.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x64\link.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x64\ml64.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x64\mspdbcmf.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x64\mspdbsrv.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x64\nmake.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x64\pgocvt.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x64\pgomgr.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x64\undname.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x64\vctip.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x64\xdcmake.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x86\bscmake.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x86\cl.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x86\cvtres.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x86\dumpbin.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x86\editbin.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x86\ifc.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x86\lib.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x86\link.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x86\ml.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x86\mspdbcmf.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x86\mspdbsrv.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x86\nmake.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x86\pgocvt.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x86\pgomgr.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x86\pgosweep.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x86\undname.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x86\vcperf.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x86\vctip.exe
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\Hostx86\x86\xdcmake.exe
+C:\Program Files\NVIDIA Corporation\FrameViewSDK\nvfvsdksvc_x64.exe
+C:\Program Files\NVIDIA Corporation\FrameViewSDK\bin\nvrla.exe
+C:\Program Files\NVIDIA Corporation\FrameViewSDK\bin\PresentMon_x64.exe
+C:\Program Files\NVIDIA Corporation\FrameViewSDK\FvContainer\FvContainer.exe
+C:\Program Files\NVIDIA Corporation\FrameViewSDK\FvContainer\FvContainer.System.exe
+C:\Program Files\NVIDIA Corporation\FrameViewSDK\SDK\FvSDKTestClient_Public.exe
+C:\Program Files\NVIDIA Corporation\Installer2\InstallerCore\SETUP.EXE
+C:\Program Files\NVIDIA Corporation\NvContainer\nvcontainer.exe
+C:\Program Files\NVIDIA Corporation\NVIDIA App\7z.exe
+C:\Program Files\NVIDIA Corporation\NVIDIA App\DarkModeCheck.exe
+C:\Program Files\NVIDIA Corporation\NVIDIA App\CEF\NVIDIA App.exe
+C:\Program Files\NVIDIA Corporation\NVIDIA App\CEF\NVIDIA Overlay.exe
+C:\Program Files\NVIDIA Corporation\NVIDIA App\CEF\NvidiaAppPermissionOc\NVIDIA App Permission.exe
+C:\Program Files\NVIDIA Corporation\NVIDIA App\McpServer\NvAppMcpServer.exe
+C:\Program Files\NVIDIA Corporation\NVIDIA App\NvBackend\ApplicationOntology\NvOAWrapperCache.exe
+C:\Program Files\NVIDIA Corporation\NVIDIA App\NvBackend\ApplicationOntology\OAWrapper.exe
+C:\Program Files\NVIDIA Corporation\NVIDIA App\NvCpl\nvSmartMaxapp.exe
+C:\Program Files\NVIDIA Corporation\NVIDIA App\NvCpl\nvSmartMaxapp64.exe
+C:\Program Files\NVIDIA Corporation\NVIDIA App\ShadowPlay\nvsphelper64.exe
+C:\Program Files\Realtek\Audio\HDA\AERTSr64.exe
+C:\Program Files\Realtek\Audio\HDA\CreateRtkToastLnk.exe
+C:\Program Files\Realtek\Audio\HDA\CXAPOAgent64.exe
+C:\Program Files\Realtek\Audio\HDA\DTSAudioService64.exe
+C:\Program Files\Realtek\Audio\HDA\DTSU2PAuSrv64.exe
+C:\Program Files\Realtek\Audio\HDA\FMAPP.exe
+C:\Program Files\Realtek\Audio\HDA\RAVBg64.exe
+C:\Program Files\Realtek\Audio\HDA\RAVCpl64.exe
+C:\Program Files\Realtek\Audio\HDA\RtkAudioService64.exe
+C:\Program Files\Realtek\Audio\HDA\RtkNGUI64.exe
+C:\Program Files\Realtek\Audio\HDA\RtlUpd64.exe
+C:\Program Files\Realtek\Audio\HDA\vncutil64.exe
+C:\Program Files\RUXIM\DTUDriver.exe
+C:\Program Files\RUXIM\PLUGScheduler.exe
+C:\Program Files\RUXIM\RUXIMICS.exe
+C:\Program Files\RUXIM\RUXIMIH.exe
+C:\Program Files\Windows Defender\ConfigSecurityPolicy.exe
+C:\Program Files\Windows Defender\MpCmdRun.exe
+C:\Program Files\Windows Defender\MsMpEng.exe
+C:\Program Files\Windows Defender\NisSrv.exe
+C:\Program Files\Windows Defender\Offline\OfflineScannerShell.exe
+C:\Program Files\Windows Defender Advanced Threat Protection\MsSense.exe
+C:\Program Files\Windows Defender Advanced Threat Protection\SenseAP.exe
+C:\Program Files\Windows Defender Advanced Threat Protection\SenseAPToast.exe
+C:\Program Files\Windows Defender Advanced Threat Protection\SenseCM.exe
+C:\Program Files\Windows Defender Advanced Threat Protection\SenseDlpProcessor.exe
+C:\Program Files\Windows Defender Advanced Threat Protection\SenseGPParser.exe
+C:\Program Files\Windows Defender Advanced Threat Protection\SenseIdentity.exe
+C:\Program Files\Windows Defender Advanced Threat Protection\SenseImdsCollector.exe
+C:\Program Files\Windows Defender Advanced Threat Protection\SenseIR.exe
+C:\Program Files\Windows Defender Advanced Threat Protection\SenseNdr.exe
+C:\Program Files\Windows Defender Advanced Threat Protection\SenseSampleUploader.exe
+C:\Program Files\Windows Defender Advanced Threat Protection\SenseTracer.exe
+C:\Program Files\Windows Defender Advanced Threat Protection\SenseTVM.exe
+C:\Program Files\Windows Defender Advanced Threat Protection\Classification\SenseCE.exe
+C:\Program Files\Windows Mail\wab.exe
+C:\Program Files\Windows Mail\wabmig.exe
+C:\Program Files\Windows Media Player\setup_wm.exe
+C:\Program Files\Windows Media Player\wmlaunch.exe
+C:\Program Files\Windows Media Player\wmpconfig.exe
+C:\Program Files\Windows Media Player\wmplayer.exe
+C:\Program Files\Windows Media Player\wmpnetwk.exe
+C:\Program Files\Windows Media Player\wmpnscfg.exe
+C:\Program Files\Windows Media Player\wmprph.exe
+C:\Program Files\Windows Media Player\wmpshare.exe
+C:\Program Files\Windows NT\Accessories\wordpad.exe
+C:\Program Files\Windows Photo Viewer\ImagingDevices.exe
+C:\Program Files\Windows Security\BrowserCore\BrowserCore.exe
+C:\Program Files\WindowsApps\A025C540.Yandex.Music_4.54.8517.0_x64__vfvw9svesycw6\Y.Music.exe
+C:\Program Files\WindowsApps\AppKitchenLab.FloatingClock-TimerStopwatch_2.0.0.0_x64__etryp43esfzt4\app\Floating Clock Timer Stopwatch.exe
+C:\Program Files\WindowsApps\AppKitchenLab.FloatingClock-TimerStopwatch_2.0.0.0_x64__etryp43esfzt4\app\resources\WindowsStoreProxy.exe
+C:\Program Files\WindowsApps\appup.intelgraphicsexperience_1.100.5688.0_x64__8j3eq9eme6ctt\IGCC.exe
+C:\Program Files\WindowsApps\appup.intelgraphicsexperience_1.100.5688.0_x64__8j3eq9eme6ctt\GCP.ML.BackgroundSysTray\IGCCTray.exe
+C:\Program Files\WindowsApps\CanonicalGroupLimited.Ubuntu_2604.1.75.0_x64__79rhkp1fndgsc\ubuntu.exe
+C:\Program Files\WindowsApps\microsoft.549981c3f5f10_4.2308.1005.0_x64__8wekyb3d8bbwe\Cortana.exe
+C:\Program Files\WindowsApps\Microsoft.BingSearch_1.2.162.0_x64__8wekyb3d8bbwe\BingWebSearch.exe
+C:\Program Files\WindowsApps\Microsoft.BingWeather_4.54.63045.0_x64__8wekyb3d8bbwe\Microsoft.Msn.Weather.exe
+C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_1.29.380.0_x64__8wekyb3d8bbwe\AppInstaller.exe
+C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_1.29.380.0_x64__8wekyb3d8bbwe\AppInstallerProtocolShim.exe
+C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_1.29.380.0_x64__8wekyb3d8bbwe\AppInstallerPythonRedirector.exe
+C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_1.29.380.0_x64__8wekyb3d8bbwe\AuthenticationManager.exe
+C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_1.29.380.0_x64__8wekyb3d8bbwe\WindowsPackageManagerServer.exe
+C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_1.29.380.0_x64__8wekyb3d8bbwe\winget.exe
+C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_1.29.380.0_x64__8wekyb3d8bbwe\DotNet\ConfigurationRemotingServer.exe
+C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_1.29.380.0_x64__8wekyb3d8bbwe\DotNet\createdump.exe
+C:\Program Files\WindowsApps\Microsoft.DesktopAppInstaller_1.29.380.0_x64__8wekyb3d8bbwe\DotNet\WinGetMCPServer.exe
+C:\Program Files\WindowsApps\Microsoft.GetHelp_10.2409.41132.0_x64__8wekyb3d8bbwe\createdump.exe
+C:\Program Files\WindowsApps\Microsoft.GetHelp_10.2409.41132.0_x64__8wekyb3d8bbwe\GetHelp.exe
+C:\Program Files\WindowsApps\microsoft.getstarted_10.2312.1.0_x64__8wekyb3d8bbwe\WhatsNew.Store.exe
+C:\Program Files\WindowsApps\microsoft.microsoft3dviewer_7.2602.8012.0_x64__8wekyb3d8bbwe\3DViewer.exe
+C:\Program Files\WindowsApps\microsoft.microsoft3dviewer_7.2602.8012.0_x64__8wekyb3d8bbwe\View3D.ResourceResolver.exe
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2607.58021.0_x64__8wekyb3d8bbwe\M365Copilot.exe
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2607.58021.0_x64__8wekyb3d8bbwe\m365copilotwindowsucprovider.exe
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2607.58021.0_x64__8wekyb3d8bbwe\m365copilot_autostarter.exe
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2607.58021.0_x64__8wekyb3d8bbwe\m365copilot_widget.exe
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2607.58021.0_x64__8wekyb3d8bbwe\RestartAgent.exe
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2607.58021.0_x64__8wekyb3d8bbwe\WebViewHost.exe
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2607.58021.0_x64__8wekyb3d8bbwe\shared\Microsoft.NETCore.App\8.0.29\createdump.exe
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2611.32041.0_x64__8wekyb3d8bbwe\M365Copilot.exe
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2611.32041.0_x64__8wekyb3d8bbwe\m365copilotwindowsucprovider.exe
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2611.32041.0_x64__8wekyb3d8bbwe\m365copilot_autostarter.exe
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2611.32041.0_x64__8wekyb3d8bbwe\m365copilot_widget.exe
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2611.32041.0_x64__8wekyb3d8bbwe\RestartAgent.exe
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2611.32041.0_x64__8wekyb3d8bbwe\WebViewHost.exe
+C:\Program Files\WindowsApps\Microsoft.MicrosoftOfficeHub_19.2611.32041.0_x64__8wekyb3d8bbwe\shared\Microsoft.NETCore.App\8.0.33\createdump.exe
+C:\Program Files\WindowsApps\Microsoft.MicrosoftSolitaireCollection_4.27.9181.0_x64__8wekyb3d8bbwe\Microsoft.MicrosoftSolitaireCollection.exe
+C:\Program Files\WindowsApps\Microsoft.MicrosoftSolitaireCollection_4.27.9181.0_x64__8wekyb3d8bbwe\Solitaire.exe
+C:\Program Files\WindowsApps\microsoft.microsoftstickynotes_6.1.4.0_x64__8wekyb3d8bbwe\Microsoft.Notes.exe
+C:\Program Files\WindowsApps\microsoft.mixedreality.portal_2000.21051.1282.0_x64__8wekyb3d8bbwe\MixedRealityPortal.Brokered.exe
+C:\Program Files\WindowsApps\microsoft.mixedreality.portal_2000.21051.1282.0_x64__8wekyb3d8bbwe\MixedRealityPortal.exe
+C:\Program Files\WindowsApps\microsoft.mspaint_6.2410.13017.0_x64__8wekyb3d8bbwe\PaintStudio.View.exe
+C:\Program Files\WindowsApps\microsoft.office.onenote_16001.14326.22594.0_x64__8wekyb3d8bbwe\onenoteim.exe
+C:\Program Files\WindowsApps\microsoft.office.onenote_16001.14326.22594.0_x64__8wekyb3d8bbwe\onenoteshare.exe
+C:\Program Files\WindowsApps\Microsoft.OutlookForWindows_1.2026.915.300_x64__8wekyb3d8bbwe\olk.exe
+C:\Program Files\WindowsApps\Microsoft.OutlookForWindows_1.2026.915.300_x64__8wekyb3d8bbwe\olkBg.exe
+C:\Program Files\WindowsApps\Microsoft.OutlookForWindows_1.2026.915.300_x64__8wekyb3d8bbwe\olkexthost.exe
+C:\Program Files\WindowsApps\Microsoft.OutlookForWindows_1.2026.915.300_x64__8wekyb3d8bbwe\olkFullTrustExecutor.exe
+C:\Program Files\WindowsApps\Microsoft.OutlookForWindows_1.2026.915.300_x64__8wekyb3d8bbwe\olkMcpServer.exe
+C:\Program Files\WindowsApps\Microsoft.OutlookForWindows_1.2026.915.300_x64__8wekyb3d8bbwe\olkPushNotificationBackgroundTask.exe
+C:\Program Files\WindowsApps\Microsoft.OutlookForWindows_1.2026.915.300_x64__8wekyb3d8bbwe\relaunchNativeHost.exe
+C:\Program Files\WindowsApps\Microsoft.OutlookForWindows_1.2026.915.300_x64__8wekyb3d8bbwe\xpdAgent.exe
+C:\Program Files\WindowsApps\microsoft.people_10.2202.100.0_x64__8wekyb3d8bbwe\PeopleApp.exe
+C:\Program Files\WindowsApps\microsoft.screensketch_10.2008.3001.0_x64__8wekyb3d8bbwe\ScreenSketch.exe
+C:\Program Files\WindowsApps\microsoft.skypeapp_15.150.3125.0_x64__kzf8qxf38zg5c\Skype\MsixBackgroundTasksExecutor.exe
+C:\Program Files\WindowsApps\microsoft.skypeapp_15.150.3125.0_x64__kzf8qxf38zg5c\Skype\Skype.exe
+C:\Program Files\WindowsApps\Microsoft.StorePurchaseApp_22609.1401.1.0_x64__8wekyb3d8bbwe\PurchaseDesktopExtension.exe
+C:\Program Files\WindowsApps\Microsoft.StorePurchaseApp_22609.1401.1.0_x64__8wekyb3d8bbwe\StoreExperienceHost.exe
+C:\Program Files\WindowsApps\microsoft.wallet_2.4.18324.0_x64__8wekyb3d8bbwe\Microsoft.Wallet.exe
+C:\Program Files\WindowsApps\Microsoft.Windows.DevHome_0.2101.858.0_x64__8wekyb3d8bbwe\createdump.exe
+C:\Program Files\WindowsApps\Microsoft.Windows.DevHome_0.2101.858.0_x64__8wekyb3d8bbwe\FileExplorerGitIntegration.exe
+C:\Program Files\WindowsApps\Microsoft.Windows.DevHome_0.2101.858.0_x64__8wekyb3d8bbwe\FileExplorerSourceControlIntegration.exe
+C:\Program Files\WindowsApps\Microsoft.Windows.DevHome_0.2101.858.0_x64__8wekyb3d8bbwe\WindowsAdvancedSettings.exe
+C:\Program Files\WindowsApps\Microsoft.Windows.Photos_2026.11090.22001.0_x64__8wekyb3d8bbwe\Photos.AutoPlay.exe
+C:\Program Files\WindowsApps\Microsoft.Windows.Photos_2026.11090.22001.0_x64__8wekyb3d8bbwe\Photos.exe
+C:\Program Files\WindowsApps\Microsoft.WindowsAlarms_11.2607.6.0_x64__8wekyb3d8bbwe\Time.exe
+C:\Program Files\WindowsApps\Microsoft.WindowsAlarms_11.2607.6.0_x64__8wekyb3d8bbwe\ClockWidgets\ClockWidgets.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.2_2000.802.31.0_x64__8wekyb3d8bbwe\DeploymentAgent.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.2_2000.802.31.0_x64__8wekyb3d8bbwe\RestartAgent.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.2_2000.802.31.0_x86__8wekyb3d8bbwe\DeploymentAgent.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.2_2000.802.31.0_x86__8wekyb3d8bbwe\RestartAgent.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.3_3000.934.1904.0_x64__8wekyb3d8bbwe\DeploymentAgent.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.3_3000.934.1904.0_x64__8wekyb3d8bbwe\RestartAgent.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.3_3000.934.1904.0_x86__8wekyb3d8bbwe\DeploymentAgent.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.3_3000.934.1904.0_x86__8wekyb3d8bbwe\RestartAgent.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.4_4000.1309.2056.0_x64__8wekyb3d8bbwe\DeploymentAgent.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.4_4000.1309.2056.0_x64__8wekyb3d8bbwe\RestartAgent.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.4_4000.1309.2056.0_x86__8wekyb3d8bbwe\DeploymentAgent.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.4_4000.1309.2056.0_x86__8wekyb3d8bbwe\RestartAgent.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.5_5001.373.1736.0_x64__8wekyb3d8bbwe\DeploymentAgent.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.5_5001.373.1736.0_x64__8wekyb3d8bbwe\RestartAgent.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.5_5001.373.1736.0_x86__8wekyb3d8bbwe\DeploymentAgent.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.5_5001.373.1736.0_x86__8wekyb3d8bbwe\RestartAgent.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.6_6000.519.329.0_x64__8wekyb3d8bbwe\DeploymentAgent.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.6_6000.519.329.0_x64__8wekyb3d8bbwe\RestartAgent.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.6_6000.519.329.0_x86__8wekyb3d8bbwe\DeploymentAgent.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.6_6000.519.329.0_x86__8wekyb3d8bbwe\RestartAgent.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.7_7000.785.2325.0_x64__8wekyb3d8bbwe\DeploymentAgent.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.7_7000.785.2325.0_x64__8wekyb3d8bbwe\RestartAgent.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.7_7000.785.2325.0_x86__8wekyb3d8bbwe\DeploymentAgent.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.7_7000.785.2325.0_x86__8wekyb3d8bbwe\RestartAgent.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.8_8000.806.2252.0_x64__8wekyb3d8bbwe\DeploymentAgent.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.8_8000.806.2252.0_x64__8wekyb3d8bbwe\RestartAgent.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.8_8000.806.2252.0_x86__8wekyb3d8bbwe\DeploymentAgent.exe
+C:\Program Files\WindowsApps\microsoft.windowsappruntime.1.8_8000.806.2252.0_x86__8wekyb3d8bbwe\RestartAgent.exe
+C:\Program Files\WindowsApps\Microsoft.WindowsAppRuntime.1.8_8000.994.2142.0_x64__8wekyb3d8bbwe\DeploymentAgent.exe
+C:\Program Files\WindowsApps\Microsoft.WindowsAppRuntime.1.8_8000.994.2142.0_x64__8wekyb3d8bbwe\RestartAgent.exe
+C:\Program Files\WindowsApps\Microsoft.WindowsAppRuntime.1.8_8000.994.2142.0_x86__8wekyb3d8bbwe\DeploymentAgent.exe
+C:\Program Files\WindowsApps\Microsoft.WindowsAppRuntime.1.8_8000.994.2142.0_x86__8wekyb3d8bbwe\RestartAgent.exe
+C:\Program Files\WindowsApps\Microsoft.WindowsAppRuntime.2_2.5.1.0_x64__8wekyb3d8bbwe\DeploymentAgent.exe
+C:\Program Files\WindowsApps\Microsoft.WindowsAppRuntime.2_2.5.1.0_x64__8wekyb3d8bbwe\RestartAgent.exe
+C:\Program Files\WindowsApps\Microsoft.WindowsAppRuntime.2_2.5.1.0_x86__8wekyb3d8bbwe\DeploymentAgent.exe
+C:\Program Files\WindowsApps\Microsoft.WindowsAppRuntime.2_2.5.1.0_x86__8wekyb3d8bbwe\RestartAgent.exe
+C:\Program Files\WindowsApps\Microsoft.WindowsAppRuntime.2_2.6.5.0_x64__8wekyb3d8bbwe\DeploymentAgent.exe
+C:\Program Files\WindowsApps\Microsoft.WindowsAppRuntime.2_2.6.5.0_x64__8wekyb3d8bbwe\RestartAgent.exe
+C:\Program Files\WindowsApps\Microsoft.WindowsAppRuntime.2_2.6.5.0_x86__8wekyb3d8bbwe\DeploymentAgent.exe
+C:\Program Files\WindowsApps\Microsoft.WindowsAppRuntime.2_2.6.5.0_x86__8wekyb3d8bbwe\RestartAgent.exe
+C:\Program Files\WindowsApps\Microsoft.WindowsCalculator_11.2607.0.0_x64__8wekyb3d8bbwe\CalculatorApp.exe
+C:\Program Files\WindowsApps\Microsoft.WindowsCamera_2026.2608.1.0_x64__8wekyb3d8bbwe\WindowsCamera.exe
+C:\Program Files\WindowsApps\microsoft.windowscommunicationsapps_16005.14326.22342.0_x64__8wekyb3d8bbwe\HxAccounts.exe
+C:\Program Files\WindowsApps\microsoft.windowscommunicationsapps_16005.14326.22342.0_x64__8wekyb3d8bbwe\HxCalendarAppImm.exe
+C:\Program Files\WindowsApps\microsoft.windowscommunicationsapps_16005.14326.22342.0_x64__8wekyb3d8bbwe\HxOutlook.exe
+C:\Program Files\WindowsApps\microsoft.windowscommunicationsapps_16005.14326.22342.0_x64__8wekyb3d8bbwe\HxTsr.exe
+C:\Program Files\WindowsApps\Microsoft.WindowsFeedbackHub_1.2608.17301.0_x64__8wekyb3d8bbwe\PilotshubApp.exe
+C:\Program Files\WindowsApps\microsoft.windowsmaps_11.2506.3.0_x64__8wekyb3d8bbwe\Maps.exe
+C:\Program Files\WindowsApps\microsoft.windowssoundrecorder_10.2103.28.0_x64__8wekyb3d8bbwe\SoundRec.exe
+C:\Program Files\WindowsApps\Microsoft.WindowsStore_22609.1401.13.0_x64__8wekyb3d8bbwe\store.exe
+C:\Program Files\WindowsApps\Microsoft.WindowsStore_22609.1401.13.0_x64__8wekyb3d8bbwe\StoreDesktopExtension.exe
+C:\Program Files\WindowsApps\Microsoft.WindowsStore_22609.1401.13.0_x64__8wekyb3d8bbwe\WinStore.App.exe
+C:\Program Files\WindowsApps\microsoft.xbox.tcui_1.24.10001.0_x64__8wekyb3d8bbwe\TCUI-App.exe
+C:\Program Files\WindowsApps\microsoft.xboxapp_48.104.4001.0_x64__8wekyb3d8bbwe\XboxApp.exe
+C:\Program Files\WindowsApps\microsoft.xboxgameoverlay_1.54.4001.0_x64__8wekyb3d8bbwe\GameBar.exe
+C:\Program Files\WindowsApps\Microsoft.XboxGamingOverlay_7.326.11042.0_x64__8wekyb3d8bbwe\GameBar.exe
+C:\Program Files\WindowsApps\Microsoft.XboxGamingOverlay_7.326.11042.0_x64__8wekyb3d8bbwe\GameBarElevatedFT.exe
+C:\Program Files\WindowsApps\Microsoft.XboxGamingOverlay_7.326.11042.0_x64__8wekyb3d8bbwe\GameBarFTServer.exe
+C:\Program Files\WindowsApps\microsoft.xboxidentityprovider_12.130.16001.0_x64__8wekyb3d8bbwe\XboxIdp.exe
+C:\Program Files\WindowsApps\microsoft.xboxspeechtotextoverlay_1.21.13002.0_x64__8wekyb3d8bbwe\SpeechToTextOverlay64-Retail.exe
+C:\Program Files\WindowsApps\Microsoft.YourPhone_1.25072.81.0_x64__8wekyb3d8bbwe\createdump.exe
+C:\Program Files\WindowsApps\Microsoft.YourPhone_1.25072.81.0_x64__8wekyb3d8bbwe\PhoneExperienceHost.exe
+C:\Program Files\WindowsApps\Microsoft.YourPhone_1.25072.81.0_x64__8wekyb3d8bbwe\YourPhoneAppProxy.exe
+C:\Program Files\WindowsApps\Microsoft.ZuneMusic_11.2609.11.0_x64__8wekyb3d8bbwe\Microsoft.Media.Player.exe
+C:\Program Files\WindowsApps\Microsoft.ZuneVideo_10.26091.10011.0_x64__8wekyb3d8bbwe\Video.UI.exe
+C:\Program Files\WindowsApps\MicrosoftCorporationII.WindowsSubsystemForLinux_3.0.3.0_x64__8wekyb3d8bbwe\wsl.exe
+C:\Program Files\WindowsApps\MicrosoftWindows.CrossDevice_0.25072.59.0_x64__cw5n1h2txyewy\CrossDeviceSettingsHost.exe
+C:\Program Files\WindowsApps\PythonSoftwareFoundation.PythonManager_26.3.240.0_x64__3847v3x7pw1km\py-manager.exe
+C:\Program Files\WindowsApps\PythonSoftwareFoundation.PythonManager_26.3.240.0_x64__3847v3x7pw1km\py.exe
+C:\Program Files\WindowsApps\PythonSoftwareFoundation.PythonManager_26.3.240.0_x64__3847v3x7pw1km\pymanager.exe
+C:\Program Files\WindowsApps\PythonSoftwareFoundation.PythonManager_26.3.240.0_x64__3847v3x7pw1km\pyshellext.exe
+C:\Program Files\WindowsApps\PythonSoftwareFoundation.PythonManager_26.3.240.0_x64__3847v3x7pw1km\python.exe
+C:\Program Files\WindowsApps\PythonSoftwareFoundation.PythonManager_26.3.240.0_x64__3847v3x7pw1km\python3.exe
+C:\Program Files\WindowsApps\PythonSoftwareFoundation.PythonManager_26.3.240.0_x64__3847v3x7pw1km\pythonw.exe
+C:\Program Files\WindowsApps\PythonSoftwareFoundation.PythonManager_26.3.240.0_x64__3847v3x7pw1km\pythonw3.exe
+C:\Program Files\WindowsApps\PythonSoftwareFoundation.PythonManager_26.3.240.0_x64__3847v3x7pw1km\pyw-manager.exe
+C:\Program Files\WindowsApps\PythonSoftwareFoundation.PythonManager_26.3.240.0_x64__3847v3x7pw1km\pyw.exe
+C:\Program Files\WindowsApps\PythonSoftwareFoundation.PythonManager_26.3.240.0_x64__3847v3x7pw1km\pywmanager.exe
+C:\Program Files\WindowsApps\PythonSoftwareFoundation.PythonManager_26.3.240.0_x64__3847v3x7pw1km\templates\launcher-32.exe
+C:\Program Files\WindowsApps\PythonSoftwareFoundation.PythonManager_26.3.240.0_x64__3847v3x7pw1km\templates\launcher-64.exe
+C:\Program Files\WindowsApps\PythonSoftwareFoundation.PythonManager_26.3.240.0_x64__3847v3x7pw1km\templates\launcher-arm64.exe
+C:\Program Files\WindowsApps\PythonSoftwareFoundation.PythonManager_26.3.240.0_x64__3847v3x7pw1km\templates\launcherw-32.exe
+C:\Program Files\WindowsApps\PythonSoftwareFoundation.PythonManager_26.3.240.0_x64__3847v3x7pw1km\templates\launcherw-64.exe
+C:\Program Files\WindowsApps\PythonSoftwareFoundation.PythonManager_26.3.240.0_x64__3847v3x7pw1km\templates\launcherw-arm64.exe
+C:\Program Files\WinRAR\Rar.exe
+C:\Program Files\WinRAR\RarExtInstaller.exe
+C:\Program Files\WinRAR\Uninstall.exe
+C:\Program Files\WinRAR\UnRAR.exe
+C:\Program Files\WinRAR\WinRAR.exe
+C:\Program Files\WSL\container.exe
+C:\Program Files\WSL\msal.wsl.proxy.exe
+C:\Program Files\WSL\msrdc.exe
+C:\Program Files\WSL\wsl.exe
+C:\Program Files\WSL\wslc.exe
+C:\Program Files\WSL\wslcsession.exe
+C:\Program Files\WSL\wslg.exe
+C:\Program Files\WSL\wslhost.exe
+C:\Program Files\WSL\wslrelay.exe
+C:\Program Files\WSL\wslservice.exe
+C:\Program Files\WSL\wslsettings\createdump.exe
+C:\Program Files\WSL\wslsettings\RestartAgent.exe
+C:\Program Files\WSL\wslsettings\wslsettings.exe
+C:\Program Files\Yandex\YandexBrowser\Application\browser.exe
+C:\Program Files\Yandex\YandexBrowser\Application\browser_proxy.exe
+C:\Program Files\Yandex\YandexBrowser\Application\clidmgr.exe
+C:\Program Files\Yandex\YandexBrowser\Application\old_browser_proxy.exe
+C:\Program Files\Yandex\YandexBrowser\Application\yandex_browser_ie_proxy32.exe
+C:\Program Files\Yandex\YandexBrowser\Application\26.10.0.1854\notification_helper.exe
+C:\Program Files\Yandex\YandexBrowser\Application\26.10.0.1854\service_update.exe
+C:\Program Files\Yandex\YandexBrowser\Application\26.10.0.1854\Installer\setup.exe
+C:\Program Files\Yandex\YandexBrowser\Application\26.10.0.1854\Installer\yndxstp.exe
+C:\Program Files\Yandex\YandexBrowser\Application\26.10.3.771\notification_helper.exe
+C:\Program Files\Yandex\YandexBrowser\Application\26.10.3.771\service_update.exe
+C:\Program Files\Yandex\YandexBrowser\Application\26.10.3.771\Installer\setup.exe
+C:\Program Files\Yandex\YandexBrowser\Application\26.10.3.771\Installer\yndxstp.exe
+C:\Program Files (x86)\Common Files\Crypto Pro\Shared\cadescom_enrollctrl.exe
+C:\Program Files (x86)\Common Files\Crypto Pro\Shared\cpinstance.exe
+C:\Program Files (x86)\Common Files\Crypto Pro\Shared\cptools.exe
+C:\Program Files (x86)\Common Files\Crypto Pro\Shared\ocspview.exe
+C:\Program Files (x86)\Common Files\Crypto Pro\Shared\tspview.exe
+C:\Program Files (x86)\Common Files\Microsoft Shared\ink\pipanel.exe
+C:\Program Files (x86)\Common Files\Microsoft Shared\ink\TabTip32.exe
+C:\Program Files (x86)\Common Files\Microsoft Shared\MSEnv\VSLauncher.exe
+C:\Program Files (x86)\Common Files\Microsoft Shared\MSInfo\msinfo32.exe
+C:\Program Files (x86)\Common Files\Steam\drivers.exe
+C:\Program Files (x86)\Common Files\Steam\secure_desktop_capture.exe
+C:\Program Files (x86)\Common Files\Steam\steamerrorreporter.exe
+C:\Program Files (x86)\Common Files\Steam\steamservice.exe
+C:\Program Files (x86)\Common Files\Steam\steamxboxutil64.exe
+C:\Program Files (x86)\Crypto Pro\CAdES Browser Plug-in\nmcades.exe
+C:\Program Files (x86)\Crypto Pro\CSP\certmgr.exe
+C:\Program Files (x86)\Crypto Pro\CSP\cpverify.exe
+C:\Program Files (x86)\Crypto Pro\CSP\csptest.exe
+C:\Program Files (x86)\Crypto Pro\CSP\genkpim.exe
+C:\Program Files (x86)\Crypto Pro\CSP\oauth2client.exe
+C:\Program Files (x86)\Crypto Pro\CSP\wipefile.exe
+C:\Program Files (x86)\DjVuLibre\bzz.exe
+C:\Program Files (x86)\DjVuLibre\c44.exe
+C:\Program Files (x86)\DjVuLibre\cjb2.exe
+C:\Program Files (x86)\DjVuLibre\cpaldjvu.exe
+C:\Program Files (x86)\DjVuLibre\csepdjvu.exe
+C:\Program Files (x86)\DjVuLibre\ddjvu.exe
+C:\Program Files (x86)\DjVuLibre\djview.exe
+C:\Program Files (x86)\DjVuLibre\djvm.exe
+C:\Program Files (x86)\DjVuLibre\djvmcvt.exe
+C:\Program Files (x86)\DjVuLibre\djvudump.exe
+C:\Program Files (x86)\DjVuLibre\djvuextract.exe
+C:\Program Files (x86)\DjVuLibre\djvumake.exe
+C:\Program Files (x86)\DjVuLibre\djvups.exe
+C:\Program Files (x86)\DjVuLibre\djvused.exe
+C:\Program Files (x86)\DjVuLibre\djvutoxml.exe
+C:\Program Files (x86)\DjVuLibre\djvutxt.exe
+C:\Program Files (x86)\DjVuLibre\djvuxmlparser.exe
+C:\Program Files (x86)\DjVuLibre\uninst.exe
+C:\Program Files (x86)\DjVuLibre\vcredist_x86.exe
+C:\Program Files (x86)\ForexClub MT4\metaeditor.exe
+C:\Program Files (x86)\ForexClub MT4\terminal.exe
+C:\Program Files (x86)\ForexClub MT4\uninstall.exe
+C:\Program Files (x86)\Internet Explorer\ExtExport.exe
+C:\Program Files (x86)\Internet Explorer\ieinstal.exe
+C:\Program Files (x86)\Internet Explorer\ielowutil.exe
+C:\Program Files (x86)\Internet Explorer\iexplore.exe
+C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+C:\Program Files (x86)\Microsoft\Edge\Application\msedge_proxy.exe
+C:\Program Files (x86)\Microsoft\Edge\Application\pwahelper.exe
+C:\Program Files (x86)\Microsoft\Edge\Application\157.0.4341.46\cookie_exporter.exe
+C:\Program Files (x86)\Microsoft\Edge\Application\157.0.4341.46\elevation_service.exe
+C:\Program Files (x86)\Microsoft\Edge\Application\157.0.4341.46\identity_helper.exe
+C:\Program Files (x86)\Microsoft\Edge\Application\157.0.4341.46\msedge.exe
+C:\Program Files (x86)\Microsoft\Edge\Application\157.0.4341.46\msedge_proxy.exe
+C:\Program Files (x86)\Microsoft\Edge\Application\157.0.4341.46\msedge_pwa_launcher.exe
+C:\Program Files (x86)\Microsoft\Edge\Application\157.0.4341.46\notification_click_helper.exe
+C:\Program Files (x86)\Microsoft\Edge\Application\157.0.4341.46\notification_helper.exe
+C:\Program Files (x86)\Microsoft\Edge\Application\157.0.4341.46\passkey_authenticator_plugin.exe
+C:\Program Files (x86)\Microsoft\Edge\Application\157.0.4341.46\platform_experiences_helper.exe
+C:\Program Files (x86)\Microsoft\Edge\Application\157.0.4341.46\pwahelper.exe
+C:\Program Files (x86)\Microsoft\Edge\Application\157.0.4341.46\BHO\ie_to_edge_stub.exe
+C:\Program Files (x86)\Microsoft\Edge\Application\157.0.4341.46\Installer\setup.exe
+C:\Program Files (x86)\Microsoft\Edge\Application\PlatformExperiencesHelper\platform_experiences_helper.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\157.0.4341.46\cookie_exporter.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\157.0.4341.46\copilotapp.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\157.0.4341.46\elevation_service.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\157.0.4341.46\identity_helper.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\157.0.4341.46\mscopilot.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\157.0.4341.46\msedge.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\157.0.4341.46\msedgewebview2.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\157.0.4341.46\msedge_proxy.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\157.0.4341.46\msedge_pwa_launcher.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\157.0.4341.46\notification_helper.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\157.0.4341.46\platform_experiences_helper.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\157.0.4341.46\pwahelper.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\157.0.4341.46\BHO\ie_to_edge_stub.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\157.0.4341.46\Installer\copilot_setup.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\157.0.4341.46\Installer\setup.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\Optimized\cookie_exporter.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\Optimized\copilotapp.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\Optimized\elevation_service.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\Optimized\identity_helper.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\Optimized\mscopilot.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\Optimized\msedge.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\Optimized\msedgewebview2.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\Optimized\msedge_proxy.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\Optimized\msedge_pwa_launcher.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\Optimized\notification_helper.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\Optimized\platform_experiences_helper.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\Optimized\pwahelper.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\Optimized\BHO\ie_to_edge_stub.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\Optimized\Installer\copilot_setup.exe
+C:\Program Files (x86)\Microsoft\EdgeCore\Optimized\Installer\setup.exe
+C:\Program Files (x86)\Microsoft\EdgeUpdate\CopilotUpdate.exe
+C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe
+C:\Program Files (x86)\Microsoft\EdgeUpdate\1.3.315.17\CopilotUpdate.exe
+C:\Program Files (x86)\Microsoft\EdgeUpdate\1.3.315.17\MicrosoftEdgeComRegisterShellARM64.exe
+C:\Program Files (x86)\Microsoft\EdgeUpdate\1.3.315.17\MicrosoftEdgeUpdate.exe
+C:\Program Files (x86)\Microsoft\EdgeUpdate\1.3.315.17\MicrosoftEdgeUpdateBroker.exe
+C:\Program Files (x86)\Microsoft\EdgeUpdate\1.3.315.17\MicrosoftEdgeUpdateComRegisterShell64.exe
+C:\Program Files (x86)\Microsoft\EdgeUpdate\1.3.315.17\MicrosoftEdgeUpdateCore.exe
+C:\Program Files (x86)\Microsoft\EdgeUpdate\1.3.315.17\MicrosoftEdgeUpdateOnDemand.exe
+C:\Program Files (x86)\Microsoft\EdgeUpdate\1.3.315.17\MicrosoftEdgeUpdateSetup.exe
+C:\Program Files (x86)\Microsoft\EdgeUpdate\Download\{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}\157.0.4341.46\MicrosoftEdge_X64_157.0.4341.46_157.0.4341.42.exe
+C:\Program Files (x86)\Microsoft\EdgeUpdate\Download\{C50565E9-CCCF-44B4-BA15-5AC5C6569197}\148.0.3967.96\MicrosoftEdge_X64_148.0.3967.96.exe
+C:\Program Files (x86)\Microsoft\EdgeUpdate\Download\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}\157.0.4341.46\MicrosoftEdge_X64_157.0.4341.46_157.0.4341.42.exe
+C:\Program Files (x86)\Microsoft\EdgeUpdate\Download\{F3C4FE00-EFD5-403B-9569-398A20F1BA4A}\1.3.315.17\MicrosoftEdgeUpdateSetup_X86_1.3.315.17.exe
+C:\Program Files (x86)\Microsoft\EdgeWebView\Application\157.0.4341.46\cookie_exporter.exe
+C:\Program Files (x86)\Microsoft\EdgeWebView\Application\157.0.4341.46\elevation_service.exe
+C:\Program Files (x86)\Microsoft\EdgeWebView\Application\157.0.4341.46\identity_helper.exe
+C:\Program Files (x86)\Microsoft\EdgeWebView\Application\157.0.4341.46\msedgewebview2.exe
+C:\Program Files (x86)\Microsoft\EdgeWebView\Application\157.0.4341.46\msedge_proxy.exe
+C:\Program Files (x86)\Microsoft\EdgeWebView\Application\157.0.4341.46\notification_helper.exe
+C:\Program Files (x86)\Microsoft\EdgeWebView\Application\157.0.4341.46\platform_experiences_helper.exe
+C:\Program Files (x86)\Microsoft\EdgeWebView\Application\157.0.4341.46\BHO\ie_to_edge_stub.exe
+C:\Program Files (x86)\Microsoft\EdgeWebView\Application\157.0.4341.46\Installer\setup.exe
+C:\Program Files (x86)\Microsoft Visual C++ 2022\ScreenConnect.ClientService.exe
+C:\Program Files (x86)\Microsoft Visual C++ 2022\ScreenConnect.WindowsBackstageShell.exe
+C:\Program Files (x86)\Microsoft Visual C++ 2022\ScreenConnect.WindowsClient.exe
+C:\Program Files (x86)\Microsoft Visual C++ 2022\ScreenConnect.WindowsFileManager.exe
+C:\Program Files (x86)\Microsoft Visual Studio\Installer\feedback.exe
+C:\Program Files (x86)\Microsoft Visual Studio\Installer\InstallCleanup.exe
+C:\Program Files (x86)\Microsoft Visual Studio\Installer\Microsoft.VisualStudio.Setup.ToastNotification.exe
+C:\Program Files (x86)\Microsoft Visual Studio\Installer\setup.exe
+C:\Program Files (x86)\Microsoft Visual Studio\Installer\VSInstallerElevationService.exe
+C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe
+C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe
+C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.windows.exe
+C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installershell.exe
+C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_layout.exe
+C:\Program Files (x86)\Microsoft Visual Studio\Installer\Feedback\dump64.exe
+C:\Program Files (x86)\Microsoft Visual Studio\Installer\Feedback\dump64a.exe
+C:\Program Files (x86)\Microsoft Visual Studio\Installer\resources\app\layout\setup.exe
+C:\Program Files (x86)\Microsoft Visual Studio\Installer\resources\app\ServiceHub\Services\Microsoft.VisualStudio.Setup.Service\BackgroundDownload.exe
+C:\Program Files (x86)\Microsoft Visual Studio\Installer\resources\app\ServiceHub\Services\Microsoft.VisualStudio.Setup.Service\CheckHyperVHost.exe
+C:\Program Files (x86)\Microsoft Visual Studio\Installer\resources\app\ServiceHub\Services\Microsoft.VisualStudio.Setup.Service\VSHiveStub.exe
+C:\Program Files (x86)\Microsoft Visual Studio\Installer\resources\app\ServiceHub\Services\Microsoft.VisualStudio.Setup.Service\VSIXAutoUpdate.exe
+C:\Program Files (x86)\Microsoft Visual Studio\Installer\resources\app\ServiceHub\Services\Microsoft.VisualStudio.Setup.Service\VSIXConfigurationUpdater.exe
+C:\Program Files (x86)\Microsoft Visual Studio\Installer\resources\app\ServiceHub\Services\Microsoft.VisualStudio.Setup.Service\VSIXInstaller.exe
+C:\Program Files (x86)\Microsoft Visual Studio\Installer\resources\app\ServiceHub\Services\Microsoft.VisualStudio.Setup.Service\VsixInstaller\VSHiveStub.exe
+C:\Program Files (x86)\Microsoft Visual Studio\Installer\resources\app\ServiceHub\Services\Microsoft.VisualStudio.Setup.Service\VsixInstaller\VSIXAutoUpdate.exe
+C:\Program Files (x86)\Microsoft Visual Studio\Installer\resources\app\ServiceHub\Services\Microsoft.VisualStudio.Setup.Service\VsixInstaller\VSIXInstaller.exe
+C:\Program Files (x86)\Microsoft Visual Studio\Shared\Common\DiagnosticsHub.Collection.Service\StandardCollector.Service.exe
+C:\Program Files (x86)\Microsoft Visual Studio\Shared\GitHubProtocolHandler\Microsoft.VisualStudio.GitHubProtocolHandler.exe
+C:\Program Files (x86)\Microsoft Visual Studio\Shared\VsWebProtocolSelector\Microsoft.VisualStudio.VsWebProtocolSelector.exe
+C:\Program Files (x86)\MSI Afterburner\MSIAfterburner.exe
+C:\Program Files (x86)\MSI Afterburner\Uninstall.exe
+C:\Program Files (x86)\MSI Afterburner\Bundle\OCScanner\gpu_stressor.exe
+C:\Program Files (x86)\MSI Afterburner\Bundle\OCScanner\MSIOCScanner_x64.exe
+C:\Program Files (x86)\MSI Afterburner\Redist\RTSSSetup.exe
+C:\Program Files (x86)\MSI Afterburner\Redist\VCRedistWebSetup.exe
+C:\Program Files (x86)\MSI Afterburner\Redist\vc_redist.x64.exe
+C:\Program Files (x86)\MSI Afterburner\Redist\vc_redist.x86.exe
+C:\Program Files (x86)\MSI Afterburner\SDK\Samples\SharedMemory\MACMSharedMemorySample\Release\MACMSharedMemorySample.exe
+C:\Program Files (x86)\MSI Afterburner\SDK\Samples\SharedMemory\MAHMSharedMemorySample\Release\MAHMSharedMemorySample.exe
+C:\Program Files (x86)\Steam\gameoverlayui64.exe
+C:\Program Files (x86)\Steam\steam.exe
+C:\Program Files (x86)\Steam\steamerrorreporter.exe
+C:\Program Files (x86)\Steam\steamerrorreporter64.exe
+C:\Program Files (x86)\Steam\steamsysinfo.exe
+C:\Program Files (x86)\Steam\streaming_client.exe
+C:\Program Files (x86)\Steam\uninstall.exe
+C:\Program Files (x86)\Steam\WriteMiniDump.exe
+C:\Program Files (x86)\Steam\bin\drivers.exe
+C:\Program Files (x86)\Steam\bin\fossilize-replay.exe
+C:\Program Files (x86)\Steam\bin\fossilize-replay64.exe
+C:\Program Files (x86)\Steam\bin\gldriverquery.exe
+C:\Program Files (x86)\Steam\bin\gldriverquery64.exe
+C:\Program Files (x86)\Steam\bin\secure_desktop_capture.exe
+C:\Program Files (x86)\Steam\bin\SteamService.exe
+C:\Program Files (x86)\Steam\bin\steamxboxutil.exe
+C:\Program Files (x86)\Steam\bin\steamxboxutil64.exe
+C:\Program Files (x86)\Steam\bin\steam_monitor.exe
+C:\Program Files (x86)\Steam\bin\vulkandriverquery.exe
+C:\Program Files (x86)\Steam\bin\vulkandriverquery64.exe
+C:\Program Files (x86)\Steam\bin\x64launcher.exe
+C:\Program Files (x86)\Steam\bin\x86launcher.exe
+C:\Program Files (x86)\Steam\bin\cef\cef.win64\steamwebhelper.exe
+C:\Program Files (x86)\Steam\bin\cef\cef.win7x64\steamwebhelper.exe
+C:\Program Files (x86)\Steam\bin\hardwareupdater\hardwareupdater.exe
+C:\Program Files (x86)\Steam\steamapps\common\Android Simulator Demo\AndroidSimulator.exe
+C:\Program Files (x86)\Steam\steamapps\common\Android Simulator Demo\AndroidSimulator\Binaries\Win64\AndroidSimulator.exe
+C:\Program Files (x86)\Steam\steamapps\common\Android Simulator Demo\Engine\Extras\Redist\en-us\UEPrereqSetup_x64.exe
+C:\Program Files (x86)\Steam\steamapps\common\Banker Simulator\Banker Simulator.exe
+C:\Program Files (x86)\Steam\steamapps\common\Banker Simulator\UnityCrashHandler64.exe
+C:\Program Files (x86)\Steam\steamapps\common\Diplomacy is Not an Option Shareware\Diplomacy is Not an Option Shareware.exe
+C:\Program Files (x86)\Steam\steamapps\common\Diplomacy is Not an Option Shareware\UnityCrashHandler64.exe
+C:\Program Files (x86)\Steam\steamapps\common\My Hotel\My Hotel.exe
+C:\Program Files (x86)\Steam\steamapps\common\My Hotel\UnityCrashHandler64.exe
+C:\Program Files (x86)\Steam\steamapps\common\ShopTitan\ShopTitan.exe
+C:\Program Files (x86)\Steam\steamapps\common\ShopTitan\UnityCrashHandler64.exe
+C:\Program Files (x86)\Steam\steamapps\common\Steamworks Shared\_CommonRedist\DirectX\Jun2010\DXSETUP.exe
+C:\Program Files (x86)\Steam\steamapps\common\Steamworks Shared\_CommonRedist\vcredist\2019\VC_redist.x64.exe
+C:\Program Files (x86)\Steam\steamapps\common\Steamworks Shared\_CommonRedist\vcredist\2019\VC_redist.x86.exe
+C:\Program Files (x86)\Steam\steamapps\common\Steamworks Shared\_CommonRedist\vcredist\2022\VC_redist.x64.exe
+C:\Program Files (x86)\Steam\steamapps\common\Steamworks Shared\_CommonRedist\vcredist\2022\VC_redist.x86.exe
+C:\Program Files (x86)\Wartales\Wartales.exe
+C:\Program Files (x86)\Wartales\Uninstall\unins000.exe
+C:\Program Files (x86)\Windows Kits\10\App Certification Kit\aitstatic.exe
+C:\Program Files (x86)\Windows Kits\10\App Certification Kit\appcert.exe
+C:\Program Files (x86)\Windows Kits\10\App Certification Kit\appcertui.exe
+C:\Program Files (x86)\Windows Kits\10\App Certification Kit\makeappx.exe
+C:\Program Files (x86)\Windows Kits\10\App Certification Kit\microsoft.windows.softwarelogo.appxlauncher.exe
+C:\Program Files (x86)\Windows Kits\10\App Certification Kit\microsoft.windows.softwarelogo.taskengine.exe
+C:\Program Files (x86)\Windows Kits\10\App Certification Kit\rmlogotest.exe
+C:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\accevent.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\adpcmencode3.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\betest.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\cameraprofiletool.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\cert2spc.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\certmgr.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\ComparePackage.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\computerhardwareids.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\convert-moftoprovider.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\cppwinrt.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\ctrpp.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\DeployUtil.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\dxc.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\dxcapsviewer.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\espexe.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\extidgen.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\filetypeverifier.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\filtdump.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\filtreg.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\ftquery.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\fxc.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\gamesaveutil.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\genmanifest.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\graphedt.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\ifilttst.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\inspect.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\isxps.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\jsconstraintdebug.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\makeappx.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\makecat.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\MakeCert.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\makepri.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\mbidgenerator.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\mc.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\mdmerge.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\mftrace.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\midl.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\midlc.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\midlrt.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\mt.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\muirct.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\oleview.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\PackageEditor.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\pktextract.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\pvk2pfx.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\rc.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\regwinmd.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\signtool.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\SkTool.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\TB3x.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\topoedit.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\tracefmt.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\tracelog.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\tracepdb.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\traceview.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\tracewpp.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\uuidgen.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\veiid.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\vsdiagview.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\vshadow.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\vssagent.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\vsstrace.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\vstorcontrol.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\vswriter.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\WinAppDeployCmd.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\winmdidl.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\wsddebug_client.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\wsddebug_host.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\wstracedump.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\wstraceutil.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\wsutil.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\xpsanalyzer.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\xpsconverter.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\AccChecker\AccCheckConsole.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\AccChecker\acccheckui.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\UIAVerify\VisualUIAVerifyNative.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\accevent.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\adpcmencode3.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\betest.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\cameraprofiletool.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\cert2spc.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\certmgr.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\ComparePackage.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\computerhardwareids.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\convert-moftoprovider.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\cppwinrt.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\ctrpp.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\DeployUtil.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\dxc.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\dxcapsviewer.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\espexe.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\extidgen.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\filetypeverifier.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\filtdump.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\filtreg.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\ftquery.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\fxc.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\gamesaveutil.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\genmanifest.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\graphedt.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\ifilttst.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\inspect.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\isxps.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\jsconstraintdebug.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\makeappx.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\makecat.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\MakeCert.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\makepri.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\mbidgenerator.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\mc.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\mdmerge.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\mftrace.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\midl.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\midlc.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\midlrt.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\mt.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\muirct.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\oleview.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\PackageEditor.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\pktextract.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\pvk2pfx.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\rc.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\regwinmd.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\signtool.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\SkTool.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\TB3x.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\topoedit.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\tracefmt.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\tracelog.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\tracepdb.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\traceview.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\tracewpp.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\uuidgen.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\veiid.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\vsdiagview.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\vshadow.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\vssagent.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\vsstrace.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\vstorcontrol.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\vswriter.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\WinAppDeployCmd.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\winmdidl.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\wsdcodegen.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\wsddebug_client.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\wsddebug_host.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\wstracedump.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\wstraceutil.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\wsutil.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\xpsanalyzer.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\xpsconverter.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\AccChecker\AccCheckConsole.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\AccChecker\acccheckui.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\UIAVerify\VisualUIAVerifyNative.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\accevent.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\adpcmencode3.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\betest.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\cameraprofiletool.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\cert2spc.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\certmgr.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\ComparePackage.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\computerhardwareids.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\convert-moftoprovider.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\cppwinrt.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\ctrpp.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\DeployUtil.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\dxc.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\dxcapsviewer.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\espexe.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\extidgen.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\filetypeverifier.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\filtdump.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\filtreg.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\ftquery.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\fxc.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\gc.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\genmanifest.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\graphedt.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\ifilttst.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\inspect.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\isxps.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\makeappx.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\makecat.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\MakeCert.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\makepri.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\mbidgenerator.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\mc.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\mdmerge.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\mftrace.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\midl.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\midlc.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\midlrt.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\MsiCert.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\MsiDb.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\MsiFiler.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\MsiInfo.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\Msimerg.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\MsiMsp.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\MsiTran.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\mt.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\muirct.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\oleview.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\PackageEditor.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\pktextract.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\pvk2pfx.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\rc.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\regwinmd.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\signtool.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\TB3x.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\topoedit.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\tracefmt.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\tracelog.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\tracepdb.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\traceview.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\tracewpp.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\uicc.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\uuidgen.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\vsdiagview.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\vshadow.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\vssagent.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\vsstrace.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\vstorcontrol.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\vswriter.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\WiLogUtl.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\WinAppDeployCmd.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\winmdidl.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\wsdcodegen.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\wsddebug_client.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\wsddebug_host.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\wstracedump.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\wstraceutil.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\wsutil.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\xpsanalyzer.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\xpsconverter.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\AccChecker\AccCheckConsole.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\AccChecker\acccheckui.exe
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x86\UIAVerify\VisualUIAVerifyNative.exe
+C:\Program Files (x86)\Windows Kits\10\Redist\D3D\arm64\dxc.exe
+C:\Program Files (x86)\Windows Kits\10\Redist\D3D\x64\dxc.exe
+C:\Program Files (x86)\Windows Kits\10\Redist\D3D\x86\dxc.exe
+C:\Program Files (x86)\Windows Kits\10\Testing\Runtimes\TAEF\Conduit.Broker.Host.exe
+C:\Program Files (x86)\Windows Kits\10\Testing\Runtimes\TAEF\Conduit.Broker.Service.exe
+C:\Program Files (x86)\Windows Kits\10\Testing\Runtimes\TAEF\TE.exe
+C:\Program Files (x86)\Windows Kits\10\Testing\Runtimes\TAEF\TE.ProcessHost.exe
+C:\Program Files (x86)\Windows Kits\10\Testing\Runtimes\TAEF\TE.ProcessHost.UAP.exe
+C:\Program Files (x86)\Windows Kits\10\Testing\Runtimes\TAEF\Wex.Services.exe
+C:\Program Files (x86)\Windows Kits\10\Testing\Runtimes\TAEF\MinTe\Conduit.Broker.Host.exe
+C:\Program Files (x86)\Windows Kits\10\Testing\Runtimes\TAEF\MinTe\Conduit.Broker.Service.exe
+C:\Program Files (x86)\Windows Kits\10\Testing\Runtimes\TAEF\MinTe\TE.exe
+C:\Program Files (x86)\Windows Kits\10\Testing\Runtimes\TAEF\MinTe\TE.ProcessHost.exe
+C:\Program Files (x86)\Windows Kits\10\Testing\Runtimes\TAEF\MinTe\TE.ProcessHost.UAP.exe
+C:\Program Files (x86)\Windows Kits\10\Testing\Runtimes\TAEF\x64\Conduit.Broker.Host.exe
+C:\Program Files (x86)\Windows Kits\10\Testing\Runtimes\TAEF\x64\Conduit.Broker.Service.exe
+C:\Program Files (x86)\Windows Kits\10\Testing\Runtimes\TAEF\x64\TE.exe
+C:\Program Files (x86)\Windows Kits\10\Testing\Runtimes\TAEF\x64\TE.ProcessHost.exe
+C:\Program Files (x86)\Windows Kits\10\Testing\Runtimes\TAEF\x64\TE.ProcessHost.UAP.exe
+C:\Program Files (x86)\Windows Kits\10\Testing\Runtimes\TAEF\x64\Wex.Services.exe
+C:\Program Files (x86)\Windows Kits\10\Testing\Runtimes\TAEF\x64\MinTe\Conduit.Broker.Host.exe
+C:\Program Files (x86)\Windows Kits\10\Testing\Runtimes\TAEF\x64\MinTe\Conduit.Broker.Service.exe
+C:\Program Files (x86)\Windows Kits\10\Testing\Runtimes\TAEF\x64\MinTe\TE.exe
+C:\Program Files (x86)\Windows Kits\10\Testing\Runtimes\TAEF\x64\MinTe\TE.ProcessHost.exe
+C:\Program Files (x86)\Windows Kits\10\Testing\Runtimes\TAEF\x64\MinTe\TE.ProcessHost.UAP.exe
+C:\Program Files (x86)\Windows Kits\10\Testing\Runtimes\TAEF\x64\MinTe\Wex.Services.exe
+C:\Program Files (x86)\Windows Mail\wab.exe
+C:\Program Files (x86)\Windows Mail\wabmig.exe
+C:\Program Files (x86)\Windows Media Player\setup_wm.exe
+C:\Program Files (x86)\Windows Media Player\wmlaunch.exe
+C:\Program Files (x86)\Windows Media Player\wmpconfig.exe
+C:\Program Files (x86)\Windows Media Player\wmplayer.exe
+C:\Program Files (x86)\Windows Media Player\wmprph.exe
+C:\Program Files (x86)\Windows Media Player\wmpshare.exe
+C:\Program Files (x86)\Windows NT\Accessories\wordpad.exe
+C:\Program Files (x86)\Windows Photo Viewer\ImagingDevices.exe
+C:\Program Files (x86)\Yandex\YandexBrowser\26.10.3.771\service_update.exe

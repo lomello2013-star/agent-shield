@@ -1,0 +1,42 @@
+{
+  "duration_s": 600,
+  "results": [
+    {
+      "control": "baseline",
+      "exit_code": 0,
+      "crashed": false,
+      "elapsed_s": 601.6,
+      "last_progress_t": 599.2
+    },
+    {
+      "control": "no_faulthandler",
+      "exit_code": 0,
+      "crashed": false,
+      "elapsed_s": 601.5,
+      "last_progress_t": 599.1
+    },
+    {
+      "control": "no_rules",
+      "exit_code": 0,
+      "crashed": false,
+      "elapsed_s": 601.1,
+      "last_progress_t": 598.8
+    },
+    {
+      "control": "single_thread",
+      "exit_code": 3221225477,
+      "crashed": true,
+      "elapsed_s": 360.8,
+      "last_progress_t": null
+    }
+  ],
+  "crashed": [
+    "single_thread"
+  ],
+  "clean": [
+    "baseline",
+    "no_faulthandler",
+    "no_rules"
+  ],
+  "note": "one run per control is a data point, not proof: the crash is intermittent, so a clean control must be repeated to count"
+}

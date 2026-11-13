@@ -5,25 +5,23 @@
   },
   "helper_result": "{\"mprotects\":100}",
   "control_events": 0,
-  "events": 105,
-  "helper_events": 100,
+  "events": 125,
+  "helper_events": 120,
   "top_comms": {
-    "mprotect_helper": 100,
-    "WorkerThread": 3,
-    "MainThread": 1,
-    "V8Worker": 1
+    "mprotect_helper": 120,
+    "corr_helper": 5
   },
-  "verdicts": 105,
+  "verdicts": 125,
   "rule_hits": {
-    "LINUX-EXEC-MEM-107": 105
+    "LINUX-EXEC-MEM-107": 125
   },
   "latency_kernel_to_user_ms": {
-    "p50": 15.93,
-    "p95": 29.525
+    "p50": 10.749,
+    "p95": 25.085
   },
   "latency_pipeline_ms": {
-    "p50": 0.194,
-    "p95": 0.281
+    "p50": 0.142,
+    "p95": 0.247
   },
   "loss": 0,
   "ledger_ok": true,

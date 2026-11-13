@@ -14,6 +14,8 @@ import threading
 import time
 from dataclasses import dataclass, field
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from typing import Any
+from uuid import uuid4
 
 from core.clock import MonotonicClock
 from core.confirm import ConfirmationManager
@@ -50,7 +52,9 @@ class DaemonConfig:
 class Daemon:
     def __init__(self, root: str, config: DaemonConfig | None = None,
                  rules_path: str | None = None, serve_http: bool = False,
-                 host: HostContext | None = None, log_fsync_every: int = 1) -> None:
+                 host: HostContext | None = None, log_fsync_every: int = 1,
+                 collectors: list[Any] | None = None, response: Any | None = None,
+                 collect_interval_s: float = 0.0) -> None:
         self.root = os.path.abspath(root)
         os.makedirs(self.root, exist_ok=True)
         self.config = config or DaemonConfig()
@@ -93,11 +97,24 @@ class Daemon:
                                window_s=14 * 24 * 3600))
         self.confirmations = ConfirmationManager()
         self.response_quarantine = None          # set when the response layer is wired
+        # Response layer (stage 7): without it the gate's actions were only counted.
+        self.response = response
+        if response is not None and getattr(response, "quarantine", None) is not None:
+            self.response_quarantine = response.quarantine
+        # Real sources (stage 1): collectors are polled here instead of by the harness.
+        self.collectors = list(collectors or [])
+        self.collect_interval_s = float(collect_interval_s)
+        self.collected_count = 0
+        self.response_executed = 0
+        self.response_refused = 0
+        self.response_failed = 0
+        self.last_response_error = ""
         self.verdict_count = 0
         self.alert_count = 0
         self.containment_count = 0
         self._httpd: ThreadingHTTPServer | None = None
         self._http_thread: threading.Thread | None = None
+        self._collector_thread: threading.Thread | None = None
         self._serve_http = serve_http
         if apply_result.accepted:
             self.log.append("config_applied", {"fingerprint": apply_result.fingerprint})
@@ -107,6 +124,7 @@ class Daemon:
 
     # ---------------------------------------------------------------- lifecycle
     def start(self) -> None:
+        self._write_lifecycle("daemon_start")
         if self._serve_http and self._httpd is None:
             daemon = self
 
@@ -130,13 +148,56 @@ class Daemon:
             self._httpd = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
             self._http_thread = threading.Thread(target=self._httpd.serve_forever, daemon=True)
             self._http_thread.start()
+        self._start_collectors()
+
+    def _start_collectors(self) -> None:
+        """Poll configured collectors in the background (real sources, stage 1)."""
+        if not self.collectors or self.collect_interval_s <= 0:
+            return
+        thread = threading.Thread(target=self._collector_loop, daemon=True)
+        thread.start()
+        self._collector_thread = thread
+
+    def _collector_loop(self) -> None:
+        while not self._stop.is_set():
+            try:
+                self.collect_once()
+            except Exception as exc:      # a broken collector must not kill the daemon
+                self.log.append("collector_incident", {"error": f"{type(exc).__name__}: {exc}"})
+            self._stop.wait(self.collect_interval_s)
+
+    def collect_once(self) -> int:
+        """Pull one batch from every collector; returns how many records were submitted."""
+        submitted = 0
+        for collector in self.collectors:
+            name = str(getattr(collector, "name", "collector"))
+            records = collector.poll() or []
+            for raw in records:
+                payload = raw.to_raw() if hasattr(raw, "to_raw") else raw
+                if self.submit(name, payload):
+                    submitted += 1
+        self.collected_count += submitted
+        return submitted
 
     @property
     def port(self) -> int:
         return self._httpd.server_address[1] if self._httpd else 0
 
+    def _write_lifecycle(self, kind: str) -> None:
+        """Record start/stop in the hash chain; failure here must not break startup."""
+        try:
+            inherited = getattr(self.log, "_verified_seq", 0)
+            self.log.append(kind, {"pid": os.getpid(), "inherited_seq": inherited})
+            self.log.flush()
+        except Exception:            # audit is best-effort on lifecycle, not a blocker
+            pass
+
     def stop(self) -> None:
+        self._write_lifecycle("daemon_stop")
         self._stop.set()
+        if self._collector_thread is not None:
+            self._collector_thread.join(timeout=5)
+            self._collector_thread = None
         if self._httpd is not None:
             self._httpd.shutdown()
             self._httpd.server_close()
@@ -166,10 +227,40 @@ class Daemon:
                 self.alert_count += 1
             if decision.actions:
                 self.containment_count += 1
+                self._execute_actions(verdict, decision.actions)
             self.log.append("verdict", {"rule": verdict.rule_id, "severity": verdict.severity,
                                         "actions": list(decision.actions),
                                         "alert": decision.alert})
         return {"incidents": len(incidents), "verdicts": len(verdicts)}
+
+    def _execute_actions(self, verdict, actions) -> None:
+        """Hand gate actions to the response layer (fail-safe: refusals are recorded)."""
+        if self.response is None:
+            return
+        from schemas.v3 import Action
+        for action_type in actions:
+            action = Action(
+                action_id=uuid4(), trace_id=verdict.trace_id, verdict_id=verdict.verdict_id,
+                type=action_type, target=str(verdict.rule_id or ""),
+                reversible=action_type != "terminate", requires_confirmation=True,
+                confirmation_id=None, status="pending", platform_effect="", rollback=None)
+            try:
+                result = self.response.execute(action)
+            except Exception as exc:      # response must never break detection
+                self.response_failed += 1
+                self.last_response_error = f"{type(exc).__name__}: {exc}"
+                self.log.append("response_error", {"action": action_type,
+                                                   "error": self.last_response_error})
+                continue
+            status = getattr(result, "status", "failed")
+            if status == "executed":
+                self.response_executed += 1
+            elif status == "refused":
+                self.response_refused += 1
+            else:
+                self.response_failed += 1
+            self.log.append("response", {"action": action_type, "status": status,
+                                         "error": getattr(result, "error", "")})
 
     def run_for(self, seconds: float, interval_s: float = 0.05) -> None:
         end = time.monotonic() + seconds

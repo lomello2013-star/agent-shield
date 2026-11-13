@@ -12,8 +12,8 @@ Security properties:
 
 from __future__ import annotations
 
-import json
 import os
+import pickle
 import secrets
 import socket
 import sys
@@ -153,12 +153,30 @@ class RpcServer:
     def _send(self, conn, payload: dict) -> None:
         conn.send(payload)
 
+    def _recv_frame(self, conn) -> Any:
+        """Read one frame, enforcing the size limit *before* unpickling (P0-5)."""
+        raw = conn.recv_bytes(maxlength=self.max_message)
+        return pickle.loads(raw)
+
     def _handle(self, conn) -> None:
         role = None
         try:
             if not conn.poll(5.0):
                 return
-            hello = conn.recv()
+            try:
+                hello = self._recv_frame(conn)
+            except EOFError:
+                return
+            except OSError:
+                self._send(conn, {"jsonrpc": "2.0", "id": None,
+                                  "error": {"code": INVALID_REQUEST,
+                                            "message": "request too large"}})
+                return
+            except Exception:
+                self._send(conn, {"jsonrpc": "2.0", "id": None,
+                                  "error": {"code": PARSE_ERROR,
+                                            "message": "unreadable frame"}})
+                return
             if not isinstance(hello, dict) or hello.get("method") != "hello":
                 self._send(conn, {"jsonrpc": "2.0", "id": None,
                                   "error": {"code": UNAUTHORIZED, "message": "hello required"}})
@@ -173,17 +191,26 @@ class RpcServer:
                               "result": {"role": role, "methods": self.registry.methods_for(role)}})
             while not self._stop.is_set() and conn.poll(self.idle_timeout_s):
                 try:
-                    request = conn.recv()
+                    request = self._recv_frame(conn)
                 except EOFError:
+                    break
+                except OSError:
+                    # The limit is enforced by recv_bytes before unpickling; the
+                    # oversized frame leaves this connection unreadable.
+                    self._send(conn, {"jsonrpc": "2.0", "id": None,
+                                      "error": {"code": INVALID_REQUEST,
+                                                "message": "request too large"}})
                     break
                 except Exception:
                     self._send(conn, {"jsonrpc": "2.0", "id": None,
                                       "error": {"code": PARSE_ERROR, "message": "unreadable frame"}})
-                    break
-                if len(json.dumps(request, default=str)) > self.max_message:
-                    self._send(conn, {"jsonrpc": "2.0", "id": request.get("id"),
+                    continue
+                if not isinstance(request, dict):
+                    # a well-formed pickle can still carry a non-object frame; that must
+                    # be a protocol error, not a crash in dispatch
+                    self._send(conn, {"jsonrpc": "2.0", "id": None,
                                       "error": {"code": INVALID_REQUEST,
-                                                "message": "request too large"}})
+                                                "message": "request must be a JSON object"}})
                     continue
                 self._send(conn, self.registry.dispatch(request, role))
         except (EOFError, OSError):

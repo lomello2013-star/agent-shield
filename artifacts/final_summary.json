@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-12T21:18:44.071722+00:00",
+  "generated_at": "2026-11-13T20:13:06.599876+00:00",
   "measured": 16,
   "partial": 1,
   "blocked": 2,
@@ -56,7 +56,7 @@
     {
       "stage": "1",
       "item": "R1/R4 доступность",
-      "value": "soak 47399 событий, RSS +0.39 %/60 с, плато True",
+      "value": "soak 35653 событий, RSS +0.0 %/60 с, плато True",
       "source": "soak_report.json",
       "status": "partially measured: нужен многочасовой прогон"
     },
@@ -162,7 +162,7 @@
     {
       "id": "E",
       "what": "Разрешение на rustup",
-      "why": "Rust-порт контрактов отложен (D2: Python 3.12)"
+      "why": "закрыт: rustc/cargo 1.100.0, Rust-порт F19 сделан (133 теста)"
     }
   ],
   "not_proven": [

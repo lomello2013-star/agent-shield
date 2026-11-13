@@ -152,3 +152,28 @@ def test_health_does_not_rehash_manifest_on_every_call(tmp_path):
     d.health()
     assert calls["n"] == 2, "manifest must be re-verified after the interval"
     d.stop()
+
+
+def test_lifecycle_records_make_an_unclean_shutdown_visible(tmp_path):
+    """A start without a matching stop is evidence of a crash (F11 forensics)."""
+    import json
+
+    d = make_daemon(tmp_path)
+    d.start()
+    d.stop()
+    chain = d.log.path
+    lines = [json.loads(line) for line in open(chain, encoding="utf-8") if line.strip()]
+    kinds = [rec.get("type") for rec in lines]
+    assert "daemon_start" in kinds
+    assert "daemon_stop" in kinds
+
+    # simulate a crashed process: start again, never stop
+    d2 = make_daemon(tmp_path)
+    d2.start()
+    lines = [json.loads(line) for line in open(chain, encoding="utf-8") if line.strip()]
+    kinds = [rec.get("type") for rec in lines]
+    assert kinds.count("daemon_start") == 2
+    assert kinds.count("daemon_stop") == 1     # second start has no stop => crash
+    state = d2.log.verify()
+    assert state.ok is True
+    assert state.records >= 3

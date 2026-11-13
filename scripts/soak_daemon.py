@@ -106,6 +106,8 @@ def install_native_probe() -> None:
 
 def install_stack_dump() -> None:
     """If the run stalls, keep writing stack traces so the hang is diagnosable."""
+    if os.environ.get("AIDF_NO_FAULTHANDLER") == "1":
+        return          # control mode: exclude faulthandler from the run
     path = os.path.join(os.path.dirname(REPORT), "_stdout", "soak_stacks.txt")
     os.makedirs(os.path.dirname(path), exist_ok=True)
     fh = open(path, "a", encoding="utf-8", buffering=1)
@@ -129,6 +131,9 @@ def main() -> None:
     if os.environ.get("AIDF_NO_MANIFEST") == "1":
         # diagnostic: health() no longer re-hashes the whole data directory
         d.manifest.verify = lambda *a, **k: {"ok": True, "files": {}, "checked": 0}
+    if os.environ.get("AIDF_NO_RULES") == "1":
+        # control: exclude the regex engine (C code in python312.dll) from the run
+        d.pipeline.engine.evaluate = lambda ev: []
     d.start()
     stop = threading.Event()
     fed = [0]
@@ -187,7 +192,11 @@ def main() -> None:
     start = time.monotonic()
     ft = threading.Thread(target=feeder, daemon=True)
     st = threading.Thread(target=sampler, daemon=True)
-    ft.start(); st.start()
+    ft.start()
+    single_thread = os.environ.get("AIDF_SINGLE_THREAD") == "1"
+    if not single_thread:
+        st.start()
+    last_health = 0.0
 
     tick_lat = []
     faults: dict[str, object] = {}
@@ -199,6 +208,12 @@ def main() -> None:
         t0 = time.perf_counter()
         d.tick()
         tick_lat.append((time.perf_counter() - t0) * 1000)
+        if single_thread and time.monotonic() - last_health >= 2.0:
+            # control mode: health() runs on the main thread, no sampler thread exists
+            t0 = time.perf_counter()
+            d.health()
+            health_lat.append((time.perf_counter() - t0) * 1000)
+            last_health = time.monotonic()
 
         # fault 1: silence the source for 5 s (R2)
         if 30 <= elapsed < 30.02 and "source_death" not in faults:
@@ -257,7 +272,9 @@ def main() -> None:
         time.sleep(0.02)
 
     stop.set(); sample_stop.set()
-    ft.join(timeout=5); st.join(timeout=5)
+    ft.join(timeout=5)
+    if not single_thread:
+        st.join(timeout=5)
     health = d.health()
     rss_end = rss_mb()
     t0 = time.perf_counter()

@@ -1,23 +1,39 @@
 {
-  "rounds": 2,
+  "rounds": 4,
   "duration_s": 600,
   "crashes": 2,
-  "clean": 0,
+  "clean": 2,
   "results": [
     {
       "round": 1,
       "exit_code": 3221225477,
       "crashed": true,
-      "elapsed_s": 120.9,
+      "elapsed_s": 121.0,
       "last_progress_t": 118.3,
       "stderr_tail": []
     },
     {
       "round": 2,
+      "exit_code": 0,
+      "crashed": false,
+      "elapsed_s": 601.7,
+      "last_progress_t": 599.1,
+      "stderr_tail": []
+    },
+    {
+      "round": 3,
+      "exit_code": 0,
+      "crashed": false,
+      "elapsed_s": 601.6,
+      "last_progress_t": 599.2,
+      "stderr_tail": []
+    },
+    {
+      "round": 4,
       "exit_code": 3221225477,
       "crashed": true,
-      "elapsed_s": 480.8,
-      "last_progress_t": 479.2,
+      "elapsed_s": 120.8,
+      "last_progress_t": 118.3,
       "stderr_tail": []
     }
   ],

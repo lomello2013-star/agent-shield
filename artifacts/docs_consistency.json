@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-12T23:07:50.868625+00:00",
+  "generated_at": "2026-11-13T20:13:06.677042+00:00",
   "checks": [
     {
       "check": "status/tests-step-ok",
@@ -8,8 +8,8 @@
     },
     {
       "check": "status/soak-events",
-      "ok": false,
-      "detail": "artifact says 118294"
+      "ok": true,
+      "detail": "artifact says 35653"
     },
     {
       "check": "status/t1055-paths",
@@ -19,7 +19,7 @@
     {
       "check": "status/t1055-totals",
       "ok": true,
-      "detail": "artifact says 405 / 405 / 0"
+      "detail": "artifact says 425 / 425 / 0"
     },
     {
       "check": "status/pe-v2-tpr",
@@ -54,7 +54,7 @@
     {
       "check": "devlog/entries",
       "ok": true,
-      "detail": "79 entries"
+      "detail": "97 entries"
     },
     {
       "check": "devlog/recent-fields",
@@ -64,7 +64,7 @@
     {
       "check": "devlog/field-coverage",
       "ok": true,
-      "detail": "60/79 entries (76%) carry all five fields; older entries are disclosed, not rewritten"
+      "detail": "79/100 entries (79%) carry all five fields; older entries are disclosed, not rewritten"
     },
     {
       "check": "devlog/no-false-auto-review",
@@ -74,12 +74,10 @@
     {
       "check": "devlog/auto-review-disclosed",
       "ok": true,
-      "detail": "30 entries disclose pending review"
+      "detail": "32 entries disclose pending review"
     }
   ],
-  "passed": 14,
-  "failed": [
-    "status/soak-events"
-  ],
+  "passed": 15,
+  "failed": [],
   "note": "only numbers that appear verbatim in the generated docs are checked; prose is not validated"
 }

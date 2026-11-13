@@ -1,6 +1,6 @@
 {
   "environment": {
-    "python": "3.12.8"
+    "python": "3.12.9"
   },
   "sources": {
     "system_events": 80,
@@ -9,14 +9,14 @@
     "rule_hits": {
       "WIN-SERVICE-CREATE-007": 80
     },
-    "tick_ms_p50": 0.08,
-    "tick_ms_p95": 0.127,
+    "tick_ms_p50": 0.095,
+    "tick_ms_p95": 0.142,
     "ingest_received": 160,
     "lost": 0
   },
   "R2_silent_source": {
     "timeout_s": 0.2,
-    "detection_s": 1.511,
+    "detection_s": 1.515,
     "detected": true,
     "note": "silence measured from a fresh beat of all sources"
   },
@@ -36,7 +36,7 @@
   },
   "R10_tamper": {
     "audit_chain_ok": false,
-    "detect_ms": 1.147
+    "detect_ms": 0.183
   },
   "R6_update": {
     "active_before_failed_update": "B",
@@ -47,7 +47,7 @@
   },
   "R3_watchdog": {
     "restarted": true,
-    "mttr_ms": 10.8,
+    "mttr_ms": 10.7,
     "target_ms": 30000,
     "within_target": true
   },

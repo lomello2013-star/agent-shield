@@ -1,16 +1,18 @@
 {
-  "generated_at": "2026-11-12T21:18:39.385636+00:00",
-  "entries": 71,
-  "complete": 52,
-  "incomplete": 19,
-  "completeness_pct": 73.2,
+  "generated_at": "2026-11-13T20:13:01.239323+00:00",
+  "entries": 97,
+  "complete": 76,
+  "incomplete": 21,
+  "completeness_pct": 78.4,
   "by_type": {
-    "config": 1,
-    "experiment": 55,
+    "config": 3,
+    "experiment": 66,
     "escalation": 1,
     "decision": 2,
-    "code": 11,
-    "docs": 1
+    "code": 20,
+    "docs": 1,
+    "report": 2,
+    "auto_review": 2
   },
   "missing_artifacts": [
     "dev_keys.json"
@@ -152,8 +154,26 @@
       "missing": [
         "**Вердикт"
       ]
+    },
+    {
+      "time": "2026-11-13 22:50",
+      "title": "Внешнее ИИ-ревью (OpenCode, GLM-5.3-Flash) — общая оценка",
+      "missing": [
+        "**Действие",
+        "**Числа",
+        "**Проверка"
+      ]
+    },
+    {
+      "time": "2026-11-13 22:56",
+      "title": "Независимое ревью (deepseek-flash, субагент) — ESCALATE: числа не воспроизводятс",
+      "missing": [
+        "**Действие",
+        "**Числа",
+        "**Проверка"
+      ]
     }
   ],
-  "artifacts_on_disk": 57,
+  "artifacts_on_disk": 78,
   "note": "legacy entries are disclosed, not rewritten; new entries are enforced by docs_consistency (last 10 entries must carry all five fields)"
 }

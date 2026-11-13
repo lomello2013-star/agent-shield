@@ -4,14 +4,17 @@ IMMUTABLE: `requires human_acceptance`. CI must block a merge that touches these
 values unless a human-signed commit from the allowlist is attached (see
 docs/auto-reviewer-spec.md §4.2). The agent must never change them.
 
-The values below are the normative contract; `verify_immutable()` compares a
-snapshot against them and raises `PolicyViolation` on any deviation.
+The normative reference lives in the tracked, human-reviewed
+``docs/policy-contract.json``. ``verify_immutable()`` compares the live module
+globals against that contract (and its fingerprint), so editing this file alone
+cannot silently pass the check.
 """
 
 from __future__ import annotations
 
 import hashlib
 import json
+from pathlib import Path
 
 POLICY_VERSION = "1"
 
@@ -32,6 +35,8 @@ POLICY_FINGERPRINT = hashlib.sha256(
     json.dumps(IMMUTABLE_CONSTANTS, sort_keys=True, separators=(",", ":")).encode()
 ).hexdigest()
 
+CONTRACT_PATH = Path(__file__).resolve().parent.parent / "docs" / "policy-contract.json"
+
 
 class PolicyViolation(RuntimeError):
     """Raised when an immutable policy value deviates from the normative contract."""
@@ -42,22 +47,51 @@ def snapshot() -> dict[str, object]:
     return dict(IMMUTABLE_CONSTANTS)
 
 
-def verify_immutable(values: dict[str, object] | None = None) -> None:
-    """Verify that policy values still match the contract.
+def load_contract() -> dict:
+    """Load the tracked policy contract (external, human-reviewed reference)."""
+    if not CONTRACT_PATH.exists():
+        raise PolicyViolation(f"policy contract missing: {CONTRACT_PATH}")
+    try:
+        data = json.loads(CONTRACT_PATH.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise PolicyViolation(f"policy contract unreadable: {exc}") from exc
+    if not isinstance(data, dict) or not isinstance(data.get("constants"), dict):
+        raise PolicyViolation("policy contract malformed: 'constants' object required")
+    return data
+
+
+def verify_immutable(values: dict[str, object] | None = None,
+                     contract: dict | None = None) -> None:
+    """Verify policy values against the tracked contract.
 
     Args:
         values: mapping to check; defaults to the live module globals.
+        contract: contract mapping; defaults to ``docs/policy-contract.json``.
+
+    With no arguments this compares the live globals to the external contract and
+    its fingerprint, so editing this module alone is detected (no tautology).
 
     Raises:
-        PolicyViolation: if a key is missing or has a different value.
+        PolicyViolation: on a missing key, a changed value, or fingerprint drift.
     """
+    c = contract if contract is not None else load_contract()
+    expected = c["constants"]
     observed = snapshot() if values is None else dict(values)
-    missing = sorted(set(IMMUTABLE_CONSTANTS) - set(observed))
-    extra_changed = {k: observed[k] for k in IMMUTABLE_CONSTANTS
-                     if k in observed and observed[k] != IMMUTABLE_CONSTANTS[k]}
-    if missing or extra_changed:
+    problems: list[str] = []
+    missing = sorted(set(expected) - set(observed))
+    changed = {k: observed[k] for k in expected
+               if k in observed and observed[k] != expected[k]}
+    if missing:
+        problems.append(f"missing={missing}")
+    if changed:
+        problems.append(f"changed={changed}")
+    if values is None:
+        fingerprint = c.get("fingerprint")
+        if not fingerprint or fingerprint != POLICY_FINGERPRINT:
+            problems.append("fingerprint drifted from contract")
+    if problems:
         raise PolicyViolation(
-            f"immutable policy changed (missing={missing}, changed={extra_changed}); "
+            f"immutable policy changed ({', '.join(problems)}); "
             "human_acceptance required"
         )
 

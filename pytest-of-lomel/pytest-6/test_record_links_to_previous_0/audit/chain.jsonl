@@ -1,0 +1,2 @@
+{"seq": 1, "ts": "2026-11-12T12:00:00+00:00", "type": "a", "payload": {"x": 1}, "prev": "0000000000000000000000000000000000000000000000000000000000000000", "hash": "c94e1524f1ce9b143fabbf6ccdc38a09bab7af66c9b9d81f29c1112472fc8dc2"}
+{"seq": 2, "ts": "2026-11-12T12:00:00+00:00", "type": "b", "payload": {"x": 2}, "prev": "c94e1524f1ce9b143fabbf6ccdc38a09bab7af66c9b9d81f29c1112472fc8dc2", "hash": "f6d9bb00a491746bad5a28cd328344693e6462c56afd7e5c1b8e5fb1321625ee"}

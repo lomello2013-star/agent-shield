@@ -1,0 +1,121 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "pid": {
+      "minimum": 0,
+      "title": "Pid",
+      "type": "integer"
+    },
+    "ppid": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Ppid"
+    },
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "path": {
+      "title": "Path",
+      "type": "string"
+    },
+    "cmdline_hash": {
+      "title": "Cmdline Hash",
+      "type": "string"
+    },
+    "cmdline_redacted": {
+      "default": "",
+      "title": "Cmdline Redacted",
+      "type": "string"
+    },
+    "uid": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Uid"
+    },
+    "sid": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Sid"
+    },
+    "session": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Session"
+    },
+    "container_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Container Id"
+    },
+    "signature": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Signature"
+    },
+    "sha256": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Sha256"
+    }
+  },
+  "required": [
+    "pid",
+    "name",
+    "path",
+    "cmdline_hash"
+  ],
+  "title": "Actor",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

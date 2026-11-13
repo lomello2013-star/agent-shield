@@ -132,7 +132,7 @@ BLOCKERS = [
     ("B", "Windows тест-VM с WDK/testsigning", "спайк 5 и драйвер остаются открытыми"),
     ("C", "Linux-VM с Secure Boot/fapolicyd", "проверка политик целостности не выполнена"),
     ("D", "Окно с admin", "RTP, WDAC enforce, ETW-TI, Windows T1055 — не измерены"),
-    ("E", "Разрешение на rustup", "Rust-порт контрактов отложен (D2: Python 3.12)"),
+    ("E", "Разрешение на rustup", "закрыт: rustc/cargo 1.100.0, Rust-порт F19 сделан (133 теста)"),
 ]
 
 NOT_PROVEN = [

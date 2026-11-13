@@ -4,18 +4,18 @@
     "kernel": "6.18.54.1-microsoft-standard-WSL2"
   },
   "submitted": {
-    "linux.memory": 5,
-    "linux.mprotect": 11
+    "linux.memory": 15,
+    "linux.mprotect": 20
   },
   "adapter_errors": [],
   "legit_supervisor_plus_jit": {
-    "helper": "{\"writes\":5,\"parent\":1580}\n{\"execs\":5,\"child\":1581}",
-    "tree_alerts": 1,
+    "helper": "{\"writes\":5,\"parent\":2151}\n{\"execs\":5,\"child\":2152}",
+    "tree_alerts": 2,
     "pid_alerts": 0
   },
   "benign_jit_only": {
     "helper": "{\"mprotects\":5}",
-    "tree_alerts": 0,
+    "tree_alerts": 1,
     "pid_alerts": 0
   },
   "known_fp": true,

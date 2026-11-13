@@ -1,0 +1,61 @@
+{
+  "rounds": [
+    {
+      "round": 1,
+      "killed_pid": 10384,
+      "restarted": true,
+      "restart_latency_ms": 296.9,
+      "supervisor": {
+        "running": true,
+        "circuit_open": false,
+        "restarts": 1,
+        "recent_restarts": 1,
+        "last_exit_code": 1,
+        "last_delay_s": 0.5
+      }
+    },
+    {
+      "round": 2,
+      "killed_pid": 14940,
+      "restarted": true,
+      "restart_latency_ms": 273.2,
+      "supervisor": {
+        "running": true,
+        "circuit_open": false,
+        "restarts": 2,
+        "recent_restarts": 2,
+        "last_exit_code": 1,
+        "last_delay_s": 1.0
+      }
+    },
+    {
+      "round": 3,
+      "killed_pid": 14428,
+      "restarted": true,
+      "restart_latency_ms": 262.2,
+      "supervisor": {
+        "running": true,
+        "circuit_open": false,
+        "restarts": 3,
+        "recent_restarts": 3,
+        "last_exit_code": 1,
+        "last_delay_s": 2.0
+      }
+    }
+  ],
+  "restarts_observed": 3,
+  "max_restart_latency_ms": 296.9,
+  "median_restart_latency_ms": 273.2,
+  "startup_ms": 260.3,
+  "audit_chain": {
+    "ok": true,
+    "records": 12
+  },
+  "lifecycle": {
+    "starts": 4,
+    "stops": 0,
+    "unclean_restarts": 4
+  },
+  "audit_log": "C:\\Users\\lomel\\AppData\\Local\\Temp\\aidf_sup_3w4e8l3m\\audit\\chain.jsonl",
+  "note": "child is killed with kill(), i.e. no graceful shutdown — the same shape as a native crash; the supervisor is what keeps the service alive"
+}

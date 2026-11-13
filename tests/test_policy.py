@@ -38,6 +38,28 @@ def test_verify_immutable_rejects_missing_key():
         policy.verify_immutable(bad)
 
 
+def test_contract_matches_live_constants_and_fingerprint():
+    contract = policy.load_contract()
+    assert contract["constants"] == policy.snapshot()
+    assert contract["fingerprint"] == policy.POLICY_FINGERPRINT
+
+
+def test_verify_immutable_rejects_contract_fingerprint_drift():
+    """P0-2: verify against the external contract, not against a self-snapshot."""
+    contract = policy.load_contract()
+    contract["fingerprint"] = "0" * 64
+    with pytest.raises(policy.PolicyViolation):
+        policy.verify_immutable(contract=contract)
+
+
+def test_policy_fingerprint_matches_rust_contract():
+    """Cross-language guard: Rust pins the same fingerprint literal (P0-2)."""
+    source = pathlib.Path("rust/tests/policy.rs").read_text(encoding="utf-8")
+    match = re.search(r'PYTHON_FINGERPRINT:\s*&str\s*=\s*"([0-9a-f]{64})"', source)
+    assert match, "PYTHON_FINGERPRINT literal not found in rust/tests/policy.rs"
+    assert match.group(1) == policy.POLICY_FINGERPRINT
+
+
 def test_failure_decision_is_reject():
     assert policy.fail_safe_decision() == "reject"
 

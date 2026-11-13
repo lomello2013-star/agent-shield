@@ -61,17 +61,19 @@ kernel32.GetModuleFileNameW.restype = wt.DWORD
 HANDLER = None          # keep a reference so it is not garbage collected
 
 
-def _module_of(address: int) -> str:
+def _module_of(address: int) -> tuple[str, int, int]:
+    """Return (module path, module base, offset within the module)."""
     info = MEMORY_BASIC_INFORMATION()
     if kernel32.VirtualQuery(ctypes.c_void_p(address), ctypes.byref(info),
                              ctypes.sizeof(info)) == 0:
-        return "<unknown>"
-    base = info.AllocationBase
+        return "<unknown>", 0, 0
+    base = info.AllocationBase or 0
     if not base:
-        return "<no allocation base>"
+        return "<no allocation base>", 0, 0
     buf = ctypes.create_unicode_buffer(512)
     got = kernel32.GetModuleFileNameW(wt.HMODULE(base), buf, len(buf))
-    return buf.value if got else f"<mapped at {hex(base)}>"
+    name = buf.value if got else f"<mapped at {hex(base)}>"
+    return name, base, address - base
 
 
 def _handler(exception_info):
@@ -80,10 +82,16 @@ def _handler(exception_info):
                                 0xC0000374,            # heap corruption
                                 0xC0000409):           # stack buffer overrun
         address = record.ExceptionAddress or 0
+        module, base, offset = _module_of(address)
+        kind = {0: "read", 1: "write", 8: "execute"}.get(
+            record.ExceptionInformation[0], "unknown") if record.NumberParameters else "unknown"
+        bad_address = record.ExceptionInformation[1] if record.NumberParameters > 1 else 0
         lines = [
             f"native exception code=0x{record.ExceptionCode:08X}",
             f"exception address=0x{address:016X}",
-            f"module={_module_of(address)}",
+            f"module={module}",
+            f"module_base=0x{base:016X} offset=0x{offset:X}",
+            f"access={kind} at=0x{bad_address:016X}",
             f"parameters={record.NumberParameters}",
             f"time={datetime.now(timezone.utc).isoformat()}",
         ]

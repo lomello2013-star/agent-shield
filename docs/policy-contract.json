@@ -1,0 +1,10 @@
+{
+  "version": "1",
+  "constants": {
+    "FAIL_SAFE_ON_TIMEOUT": "reject",
+    "MODELS_TRAIN_ON_DEVICE": false,
+    "DRIVER_SIGNED_BY_HUMAN": true,
+    "KERNEL_CODE_REVIEW_REQUIRED": true
+  },
+  "fingerprint": "d8ae913401ead8b0d549dbae9d0efb299020b24e49b87a9385ab7071446ea759"
+}

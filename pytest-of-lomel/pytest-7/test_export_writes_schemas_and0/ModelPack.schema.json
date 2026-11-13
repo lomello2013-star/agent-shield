@@ -1,0 +1,66 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "model_id": {
+      "title": "Model Id",
+      "type": "string"
+    },
+    "version": {
+      "title": "Version",
+      "type": "string"
+    },
+    "platform": {
+      "enum": [
+        "windows",
+        "linux"
+      ],
+      "title": "Platform",
+      "type": "string"
+    },
+    "format": {
+      "enum": [
+        "onnx",
+        "gguf"
+      ],
+      "title": "Format",
+      "type": "string"
+    },
+    "sha256": {
+      "title": "Sha256",
+      "type": "string"
+    },
+    "dataset_hash": {
+      "title": "Dataset Hash",
+      "type": "string"
+    },
+    "metrics": {
+      "additionalProperties": {
+        "type": "number"
+      },
+      "title": "Metrics",
+      "type": "object"
+    },
+    "limits": {
+      "additionalProperties": true,
+      "title": "Limits",
+      "type": "object"
+    },
+    "signature": {
+      "minLength": 1,
+      "title": "Signature",
+      "type": "string"
+    }
+  },
+  "required": [
+    "model_id",
+    "version",
+    "platform",
+    "format",
+    "sha256",
+    "dataset_hash",
+    "signature"
+  ],
+  "title": "ModelPack",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}
