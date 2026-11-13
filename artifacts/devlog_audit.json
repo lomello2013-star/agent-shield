@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-11-13T21:36:53.753183+00:00",
-  "entries": 102,
-  "complete": 80,
+  "generated_at": "2026-11-13T21:42:53.838150+00:00",
+  "entries": 103,
+  "complete": 81,
   "incomplete": 22,
-  "completeness_pct": 78.4,
+  "completeness_pct": 78.6,
   "by_type": {
     "config": 4,
     "experiment": 66,
@@ -11,7 +11,7 @@
     "decision": 2,
     "code": 22,
     "docs": 1,
-    "report": 3,
+    "report": 4,
     "auto_review": 3
   },
   "missing_artifacts": [

@@ -33,7 +33,7 @@
 ПРОВЕРКИ (выполни сам, фиксируй точные числа; зависимости уже установлены):
 1. `python -m pytest -o addopts="" -q` — заявлено 655 passed / 1 skipped, но это может быть устаревшим. Запиши фактическое число и сверь с `docs/status.md` и `artifacts/run_all.json`. Уже найден дрейф: факт 661 passed / 0 skipped.
 2. `cargo test --manifest-path rust/Cargo.toml` — ожидается 133 passed.
-3. `python scripts/docs_consistency.py` — ожидается 15/15.
+3. `python scripts/docs_consistency.py` — ожидается 13/13 (строгий набор; все проверки реальные, пропуск источника = fail).
 4. Immutable: `python -c "from core.policy import verify_immutable; print(verify_immutable())"`
    — ожидается None; fingerprint d8ae913401ea…; core/policy.py не изменён.
 5. `python scripts/export_schemas.py` — идемпотентен; committed JSON = генерация

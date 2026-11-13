@@ -2841,6 +2841,19 @@ parameters=2
 
 ---
 
+## [2026-11-14 01:00] docs_consistency ужесточён: 15 → 13 реальных проверок [code]
+
+**Действие**: убраны 2 константно-True проверки (`devlog/field-coverage`, `devlog/auto-review-disclosed`); все artifact-backed проверки регистрируются **безусловно** и падают при отсутствии источника (ранее молча пропускались: total падал, exit 0 сохранялся).
+**Файлы**: `scripts/docs_consistency.py`; `docs/release-checklist.md`, `docs/readiness-assessment.md`, `docs/reviews/opencode-review-prompt.md` (13/13).
+**Числа**: docs_consistency **13/13** (было 15/15 с двумя пустыми); pytest **460 passed**; `run_all` **29/29**.
+**Вердикт**: «13/13» — жёсткий инвариант: пропуск любого источника = fail, константных проверок нет.
+**Проверка**: `python scripts/docs_consistency.py` → `{"passed":13,"total":13,"failed":[]}`; `run_all` → 29/29.
+**Статус**: verified
+**Actor**: agent
+**Run_id**: strict-docs-consistency-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

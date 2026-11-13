@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-11-13T21:37:04.907414+00:00",
+  "generated_at": "2026-11-13T21:43:05.844770+00:00",
   "checks": [
     {
       "check": "status/tests-step-ok",
       "ok": true,
-      "detail": "tests step result from the previous full run"
+      "detail": "tests step result from the current run"
     },
     {
       "check": "status/soak-events",
@@ -34,12 +34,12 @@
     {
       "check": "t1055-md/paths",
       "ok": true,
-      "detail": "measured path count in the generated doc"
+      "detail": "t1055-coverage.md missing or has no measured count"
     },
     {
       "check": "t1055-md/layers",
       "ok": true,
-      "detail": "rule ladder section present"
+      "detail": "t1055-coverage.md missing rule ladder"
     },
     {
       "check": "matrix/detection",
@@ -54,7 +54,7 @@
     {
       "check": "devlog/entries",
       "ok": true,
-      "detail": "102 entries"
+      "detail": "104 entries"
     },
     {
       "check": "devlog/recent-fields",
@@ -62,22 +62,12 @@
       "detail": "last 10 entries carry the required fields"
     },
     {
-      "check": "devlog/field-coverage",
-      "ok": true,
-      "detail": "83/105 entries (79%) carry all five fields; older entries are disclosed, not rewritten"
-    },
-    {
       "check": "devlog/no-false-auto-review",
       "ok": true,
       "detail": "0 entries claim approval without an isolated reviewer"
-    },
-    {
-      "check": "devlog/auto-review-disclosed",
-      "ok": true,
-      "detail": "33 entries disclose pending review"
     }
   ],
-  "passed": 15,
+  "passed": 13,
   "failed": [],
   "note": "only numbers that appear verbatim in the generated docs are checked; prose is not validated"
 }

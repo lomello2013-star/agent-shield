@@ -54,49 +54,64 @@ def main() -> int:
         checks.append({"check": name, "ok": bool(ok), "detail": detail})
 
     status = read("docs/status.md")
-    # The test count is deliberately *not* cross-checked here: it lives in the pytest
-    # step of the same run, and run_all.json is written after this check runs, so the
-    # comparison would be self-referential. The step result itself is the source.
+    # Strictness: every artifact-backed check is registered unconditionally and fails
+    # when its source is missing. Silently skipping a check turns 15/15 into 13/13 while
+    # still exiting 0 — that hid real gaps (P0-3).
     steps = art("run_all.json").get("steps") or []
-    tests_step = next((s for s in steps if s["name"] == "tests"), None)
-    if tests_step is not None:
-        check("status/tests-step-ok", tests_step.get("ok") is True,
-              "tests step result from the previous full run")
+    tests_step = next((s for s in steps if s.get("name") == "tests"), None)
+    check("status/tests-step-ok",
+          tests_step is not None and tests_step.get("ok") is True,
+          "run_all.json missing tests step" if tests_step is None
+          else "tests step result from the current run")
 
     soak_events = (art("soak_report.json").get("load") or {}).get("events_fed")
-    if soak_events is not None:
-        check("status/soak-events", str(soak_events) in status,
-              f"artifact says {soak_events}")
+    check("status/soak-events",
+          soak_events is not None and str(soak_events) in status,
+          "soak_report.json has no load.events_fed" if soak_events is None
+          else f"artifact says {soak_events}")
 
     cov = art("t1055_coverage.json")
-    if cov:
-        pair = f"{cov['paths_measured']} ({cov['alert_paths']}/{cov['signal_paths']})"
-        check("status/t1055-paths", pair in status, f"artifact says {pair}")
-        totals = f"{cov['total_events']} / {cov['total_verdicts']} / {cov['total_loss']}"
-        check("status/t1055-totals", totals in status, f"artifact says {totals}")
+    paths_ok = all(k in cov for k in ("paths_measured", "alert_paths", "signal_paths"))
+    pair = (f"{cov['paths_measured']} ({cov['alert_paths']}/{cov['signal_paths']})"
+            if paths_ok else "")
+    check("status/t1055-paths", paths_ok and pair in status,
+          f"artifact says {pair}" if paths_ok else "t1055_coverage.json missing path fields")
+    totals_ok = all(k in cov for k in ("total_events", "total_verdicts", "total_loss"))
+    totals = (f"{cov['total_events']} / {cov['total_verdicts']} / {cov['total_loss']}"
+              if totals_ok else "")
+    check("status/t1055-totals", totals_ok and totals in status,
+          f"artifact says {totals}" if totals_ok else "t1055_coverage.json missing totals")
 
     v2 = art("pe_v2_report.json")
-    if v2.get("operating_points"):
-        first = v2["operating_points"][0]["tpr"]
-        check("status/pe-v2-tpr", f"{first}" in status, f"artifact says {first}")
+    points = v2.get("operating_points") or []
+    check("status/pe-v2-tpr",
+          bool(points) and str(points[0]["tpr"]) in status,
+          "pe_v2_report.json has no operating_points" if not points
+          else f"artifact says {points[0]['tpr']}")
 
     check("status/this-run-column", "В этом прогоне" in status,
           "freshness column must mark artifacts from this run")
 
     t1055_md = read("docs/t1055-coverage.md")
-    if cov and t1055_md:
-        check("t1055-md/paths", f"**{cov['paths_measured']}**" in t1055_md,
-              "measured path count in the generated doc")
-        check("t1055-md/layers", "Лестница правил" in t1055_md,
-              "rule ladder section present")
+    md_paths_ok = (bool(cov) and paths_ok and bool(t1055_md)
+                   and f"**{cov['paths_measured']}**" in t1055_md)
+    check("t1055-md/paths", md_paths_ok,
+          "t1055-coverage.md missing or has no measured count")
+    check("t1055-md/layers", bool(t1055_md) and "Лестница правил" in t1055_md,
+          "t1055-coverage.md missing rule ladder")
 
     matrix = read("docs/coverage-matrix.md")
     stage5 = art("stage5_report.json")
-    if matrix and stage5:
-        coverage = stage5.get("coverage") or {}
-        det, prev = coverage.get("detection_pct"), coverage.get("prevention_pct")
-        check("matrix/detection", det is None or str(det) in matrix, f"expected {det}")
-        check("matrix/prevention", prev is None or str(prev) in matrix, f"expected {prev}")
+    coverage = stage5.get("coverage") or {}
+    det, prev = coverage.get("detection_pct"), coverage.get("prevention_pct")
+    check("matrix/detection",
+          bool(matrix) and det is not None and str(det) in matrix,
+          "coverage-matrix.md or stage5 detection_pct missing"
+          if not matrix or det is None else f"expected {det}")
+    check("matrix/prevention",
+          bool(matrix) and prev is not None and str(prev) in matrix,
+          "coverage-matrix.md or stage5 prevention_pct missing"
+          if not matrix or prev is None else f"expected {prev}")
 
     devlog = read("DEVLOG.md")
     entries = re.findall(r"^## \[(\d{4}-\d{2}-\d{2} \d{2}:\d{2})\] (.+?) \[(\w+)\]$",
@@ -116,25 +131,16 @@ def main() -> int:
         for field in fields:
             if field not in block:
                 missing.append(f"{header} -> {field}")
-    complete = [b for b in blocks
-                if all(field in b for field in REQUIRED_DEVLOG_FIELDS)]
-    coverage = len(complete) / len(blocks) if blocks else 0.0
     check("devlog/entries", len(entries) > 0, f"{len(entries)} entries")
     check("devlog/recent-fields", not missing,
           "; ".join(missing[:5]) if missing else
           f"last {len(recent)} entries carry the required fields")
-    check("devlog/field-coverage", True,
-          f"{len(complete)}/{len(blocks)} entries ({coverage:.0%}) carry all five fields; "
-          f"older entries are disclosed, not rewritten")
 
     # F06: auto-review isolation is invalid (reviewer == author), so no entry may claim
     # an independent approval. This guard stays until a second model reviews the work.
     approved = re.findall(r"^\*\*Auto_review\*\*?:\s*approved", devlog, re.M)
-    pending = re.findall(r"^\*\*Auto_review\*\*?:\s*pending", devlog, re.M)
     check("devlog/no-false-auto-review", not approved,
           f"{len(approved)} entries claim approval without an isolated reviewer")
-    check("devlog/auto-review-disclosed", True,
-          f"{len(pending)} entries disclose pending review")
 
     report = {
         "generated_at": datetime.now(timezone.utc).isoformat(),

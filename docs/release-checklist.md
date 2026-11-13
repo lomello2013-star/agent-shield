@@ -43,7 +43,7 @@
 - [ ] `human_acceptance` для релиза.
 - [ ] Red-team и chaos перед релизом.
 - [x] DEVLOG ведётся; измерения сопровождаются артефактами (формат-полнота 67 %, legacy раскрыты).
-- [x] `docs/status.md` — валидный UTF-8 без NUL; `docs_consistency` **15/15**.
+- [x] `docs/status.md` — валидный UTF-8 без NUL; `docs_consistency` **13/13** (все проверки строгие).
 
 ## 6. Инфраструктура
 
@@ -63,5 +63,5 @@ python scripts\run_all.py
 python scripts\docs_consistency.py
 ```
 
-Критерий: все обязательные шаги зелёные, `docs_consistency` 15/15,
+Критерий: все обязательные шаги зелёные, `docs_consistency` 13/13,
 `docs/status.md` — валидный UTF-8 без NUL.

@@ -59,7 +59,7 @@
 - [ ] `python -m pytest -o addopts="" -q` → **454 passed, 0 skipped** (на 3.12.9; сверять с `docs/status.md`); любое расхождение — разобрать, а не списать.
 - [ ] `python scripts/run_all.py` → **29/29**, обязательных провалов нет. *Внимание:* `run_all` перегенерирует `docs/status.md` — это ожидаемо.
 - [ ] `cargo test --manifest-path rust/Cargo.toml` → **133 passed**.
-- [ ] `python scripts/docs_consistency.py` → **15/15**.
+- [ ] `python scripts/docs_consistency.py` → **13/13** (все проверки строгие; константно-True удалены).
 - [ ] `verify_immutable()` → `None`; fingerprint `d8ae913401ea…` не изменён; `core/policy.py` не тронут.
 - [ ] `python scripts/export_schemas.py` идемпотентен; committed JSON = генерация (drift-guard зелёный).
 - [ ] **Авто-ревью изоляция:** подтвердить, что `reviewer_model != author_model` и `temperature=0`; если нет — зафиксировать, что вердикт недействителен (сейчас так и есть).
