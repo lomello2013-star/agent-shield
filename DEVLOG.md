@@ -2810,6 +2810,20 @@ parameters=2
 
 ---
 
+## [2026-11-14 00:30] Confirmation-путь (a) + ML ModelPack-гейт [code]
+
+**Действие**: 1) демон создаёт `Confirmation` на каждое действие и исполняет его только после `confirm` (IPC-метод `confirm`, роли operator/admin); таймаут → reject и удаление из `pending_actions`; счётчик pending в health/stats. 2) `OnnxModel` требует подписанный `ModelPack` + публичный ключ **до** загрузки; `allow_unsigned=True` — только для evaluation-скриптов (stage8/ship_v2/registry/ensemble/disagreement).
+**Файлы**: `core/daemon.py`, `core/ipc.py`, `core/ml.py`, `tests/test_response.py`, `tests/test_daemon_wiring.py`, `tests/test_ml.py`, `scripts/*`.
+**Числа**: pytest **458 passed**; cargo **133 passed**; `run_all` **29/29**; `docs_consistency` **15/15**; `OnnxModel` без пака → `ValueError`; executor: pending→refused, approved→executed; демон: pending→`confirm`→executed.
+**Вердикт**: оба структурных пункта закрыты — сдерживание имеет путь подтверждения (не инертно), ML-загрузчик fail-closed.
+**Проверка**: `pytest -o addopts="" -q` → 458; `cargo test` → 133; `run_all` → 29/29; `test_onnx_model_requires_signed_pack`, `test_executor_executes_after_confirmation_approved`, `test_confirmation_path_executes_approved_action` — зелёные.
+**Auto_review**: pending (нужен повторный жёсткий P0).
+**Статус**: verified
+**Actor**: agent
+**Run_id**: confirmation-mlpack-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

@@ -121,6 +121,7 @@ class Daemon:
             budget=AlertBudget(per_window=int(self.config.thresholds.get("alert_budget", 1)),
                                window_s=14 * 24 * 3600))
         self.confirmations = ConfirmationManager()
+        self.pending_actions: dict[str, Any] = {}
         self.response_quarantine = None          # set when the response layer is wired
         # Response layer (stage 7): without it the gate's actions were only counted.
         self.response = response
@@ -246,6 +247,9 @@ class Daemon:
 
     def tick(self) -> dict:
         incidents = self.heartbeat.check()
+        for conf in self.confirmations.expire():
+            self.pending_actions.pop(conf.confirmation_id, None)
+            self.log.append("confirmation_timeout", {"id": conf.confirmation_id})
         jump = self.clock.detect_jump()
         if jump is not None:
             self.log.append("clock_jump", {"skew_s": round(jump.skew_s, 3)})
@@ -265,33 +269,76 @@ class Daemon:
         return {"incidents": len(incidents), "verdicts": len(verdicts)}
 
     def _execute_actions(self, verdict, actions) -> None:
-        """Hand gate actions to the response layer (fail-safe: refusals are recorded)."""
+        """Create a confirmation per action; execute only after operator approval."""
         if self.response is None:
             return
         from schemas.v3 import Action
         for action_type in actions:
+            destructive = action_type in {"terminate", "delete"}
+            level = ("critical_system" if destructive
+                     else "protected_dir" if action_type == "quarantine" else "normal")
+            confirmation = self.confirmations.request(
+                action_id=str(uuid4()), level=level, destructive=destructive)
             action = Action(
                 action_id=uuid4(), trace_id=verdict.trace_id, verdict_id=verdict.verdict_id,
                 type=action_type, target=str(verdict.rule_id or ""),
-                reversible=action_type != "terminate", requires_confirmation=True,
-                confirmation_id=None, status="pending", platform_effect="", rollback=None)
+                reversible=not destructive, requires_confirmation=True,
+                confirmation_id=confirmation.confirmation_id, status="pending",
+                platform_effect="", rollback=None)
+            self.pending_actions[confirmation.confirmation_id] = action
             try:
                 result = self.response.execute(action)
             except Exception as exc:      # response must never break detection
                 self.response_failed += 1
                 self.last_response_error = f"{type(exc).__name__}: {exc}"
                 self.log.append("response_error", {"action": action_type,
+                                                   "confirmation_id": confirmation.confirmation_id,
                                                    "error": self.last_response_error})
                 continue
             status = getattr(result, "status", "failed")
             if status == "executed":
+                self.pending_actions.pop(confirmation.confirmation_id, None)
                 self.response_executed += 1
             elif status == "refused":
                 self.response_refused += 1
             else:
                 self.response_failed += 1
             self.log.append("response", {"action": action_type, "status": status,
+                                         "confirmation_id": confirmation.confirmation_id,
                                          "error": getattr(result, "error", "")})
+
+    def confirm(self, confirmation_id: str, decision: str,
+                decided_by: str = "operator") -> dict:
+        """Resolve a pending confirmation; an approved action is executed exactly once."""
+        try:
+            conf = self.confirmations.resolve(confirmation_id, decision, decided_by)
+        except KeyError:
+            return {"confirmation_id": str(confirmation_id), "status": "unknown"}
+        action = self.pending_actions.pop(confirmation_id, None)
+        if conf.decision != "approved" or action is None:
+            self.log.append("confirmation", {"id": confirmation_id,
+                                             "decision": conf.decision})
+            return {"confirmation_id": confirmation_id,
+                    "status": conf.decision if action is not None else "approved_no_action"}
+        try:
+            result = self.response.execute(action)
+        except Exception as exc:          # response must never break the daemon
+            self.response_failed += 1
+            self.last_response_error = f"{type(exc).__name__}: {exc}"
+            self.log.append("response_error", {"action": action.type,
+                                               "error": self.last_response_error})
+            return {"confirmation_id": confirmation_id, "status": "failed"}
+        status = getattr(result, "status", "failed")
+        if status == "executed":
+            self.response_executed += 1
+        elif status == "refused":
+            self.response_refused += 1
+        else:
+            self.response_failed += 1
+        self.log.append("response", {"action": action.type, "status": status,
+                                     "confirmation_id": confirmation_id,
+                                     "error": getattr(result, "error", "")})
+        return {"confirmation_id": confirmation_id, "status": status}
 
     def run_for(self, seconds: float, interval_s: float = 0.05) -> None:
         end = time.monotonic() + seconds
@@ -323,6 +370,7 @@ class Daemon:
             "verdicts": self.verdict_count,
             "alerts": self.alert_count,
             "containments": self.containment_count,
+            "pending_confirmations": len(self.confirmations.pending()),
         }
 
     def _manifest_snapshot(self) -> dict:
@@ -340,7 +388,8 @@ class Daemon:
 
     def stats(self) -> dict:
         return {"pipeline": self.pipeline.stats(), "gate": self.gate.stats(self.host.host_id),
-                "audit": {"records": self.log.verify().records}}
+                "audit": {"records": self.log.verify().records},
+                "pending_confirmations": len(self.confirmations.pending())}
 
     # ------------------------------------------------------------------ checks
     def run_self_test(self) -> dict:

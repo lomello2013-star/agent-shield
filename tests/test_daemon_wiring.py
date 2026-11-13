@@ -117,3 +117,48 @@ def test_real_eventlog_collector_polls(tmp_path):
     assert collector.calls >= 1       # the real wevtutil poll actually ran
     assert submitted >= 0
     d.stop()
+
+
+class ApprovableResponse:
+    """Refuses while pending, executes after the confirmation is approved."""
+
+    def __init__(self, confirmations):
+        self.confirmations = confirmations
+        self.executed = []
+
+    def execute(self, action):
+        from core.response import ExecutionResult
+        if action.requires_confirmation and not self.confirmations.executable(
+                action.confirmation_id):
+            return ExecutionResult(action, "refused", "confirmation_not_approved")
+        self.executed.append(action)
+        return ExecutionResult(action, "executed", "")
+
+
+def test_confirmation_path_executes_approved_action(tmp_path):
+    d = make_daemon(tmp_path, collectors=[FakeCollector(records=1)])
+    response = ApprovableResponse(d.confirmations)
+    d.response = response
+    assert d.collect_once() == 1
+    d.tick()
+    assert d.pending_actions, "a reversible action must create a pending confirmation"
+    cid = next(iter(d.pending_actions))
+    assert response.executed == []
+    result = d.confirm(cid, "approved")
+    assert result["status"] == "executed"
+    assert len(response.executed) == 1
+    assert d.response_executed >= 1
+    d.stop()
+
+
+def test_confirmation_reject_does_not_execute(tmp_path):
+    d = make_daemon(tmp_path, collectors=[FakeCollector(records=1)])
+    response = ApprovableResponse(d.confirmations)
+    d.response = response
+    d.collect_once()
+    d.tick()
+    cid = next(iter(d.pending_actions))
+    result = d.confirm(cid, "rejected")
+    assert result["status"] == "rejected"
+    assert response.executed == []
+    d.stop()

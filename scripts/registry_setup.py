@@ -57,8 +57,8 @@ def entry_for(model_id: str, version: str, onnx: str, pack: str,
 def compare() -> dict:
     cache = np.load(os.path.join(ML, "pe_cache.npz"))
     X, y = cache["Xte"][:5000].astype(np.float32), cache["yte"][:5000]
-    v1 = OnnxModel(os.path.join(ML, "pe_model.onnx"))
-    v2 = OnnxModel(os.path.join(ML, "pe_v2_model.onnx"))
+    v1 = OnnxModel(os.path.join(ML, "pe_model.onnx"), allow_unsigned=True)
+    v2 = OnnxModel(os.path.join(ML, "pe_v2_model.onnx"), allow_unsigned=True)
     t0 = time.perf_counter()
     s1, s2 = v1.predict(X), v2.predict(X)
     elapsed = time.perf_counter() - t0

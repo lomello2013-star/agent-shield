@@ -64,8 +64,8 @@ def score_at(thresholds: tuple[float, float], s1, s2, y, mode: str) -> dict:
 def main() -> None:
     cache = np.load(os.path.join(ML, "pe_cache.npz"))
     X, y = cache["Xte"][:6000].astype(np.float32), cache["yte"][:6000]
-    v1 = OnnxModel(os.path.join(ML, "pe_model.onnx"))
-    v2 = OnnxModel(os.path.join(ML, "pe_v2_model.onnx"))
+    v1 = OnnxModel(os.path.join(ML, "pe_model.onnx"), allow_unsigned=True)
+    v2 = OnnxModel(os.path.join(ML, "pe_v2_model.onnx"), allow_unsigned=True)
     s1, s2 = v1.predict(X), v2.predict(X)
 
     cal = slice(0, 3000)          # threshold selection

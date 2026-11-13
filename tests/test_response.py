@@ -225,3 +225,27 @@ def test_suspend_resolves_same_image_child(monkeypatch):
     assert ctl.resume(100) == [100, 101]
     assert paused == [100, 101]
     assert resumed == [100, 101]
+
+
+def test_executor_executes_after_confirmation_approved():
+    """The real executor refuses while pending and runs once approved (P0 containment)."""
+    class FakeProcesses:
+        def __init__(self):
+            self.calls = []
+
+        def suspend(self, pid):
+            self.calls.append(pid)
+
+        def resume(self, pid):
+            pass
+
+    mgr = ConfirmationManager()
+    ctl = FakeProcesses()
+    ex = ResponseExecutor(mgr, processes=ctl)
+    conf = mgr.request("action-1")
+    action = make_action("suspend", target="123", requires_confirmation=True,
+                         confirmation_id=conf.confirmation_id)
+    assert ex.execute(action).status == "refused"
+    mgr.resolve(conf.confirmation_id, "approved")
+    assert ex.execute(action).status == "executed"
+    assert ctl.calls == [123]

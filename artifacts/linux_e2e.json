@@ -5,20 +5,20 @@
   },
   "events": 200,
   "ppid_events": 200,
-  "elapsed_s": 0.32,
-  "events_per_s": 626.0,
-  "verdicts": 133,
+  "elapsed_s": 0.27,
+  "events_per_s": 731.0,
+  "verdicts": 132,
   "rule_hits": {
-    "LINUX-EXEC-TMP-101": 133
+    "LINUX-EXEC-TMP-101": 132
   },
   "latency_kernel_to_user_ms": {
     "p50": 0.153,
-    "p95": 1.393,
-    "max": 4.807
+    "p95": 0.225,
+    "max": 0.866
   },
   "latency_pipeline_ms": {
-    "p50": 0.161,
-    "p95": 0.369
+    "p50": 0.157,
+    "p95": 0.31
   },
   "loss": 0,
   "ledger_ok": true,

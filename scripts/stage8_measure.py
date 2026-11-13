@@ -109,7 +109,7 @@ def measure_pack(priv_hex: str, pub_hex: str) -> dict:
 def measure_pe_onnx() -> dict:
     z = np.load(os.path.join(ML, "pe_cache.npz"))
     X, y = z["Xte"][:10000].astype(np.float32), z["yte"][:10000]
-    model = OnnxModel(os.path.join(ML, "pe_model.onnx"))
+    model = OnnxModel(os.path.join(ML, "pe_model.onnx"), allow_unsigned=True)
     t0 = time.perf_counter()
     scores = model.predict(X)
     elapsed = time.perf_counter() - t0
@@ -175,7 +175,7 @@ def measure_elf_onnx(limit_files: int = 3) -> dict:
                 y.append(int(rec.get("label", 0)))
     X = np.asarray(X, dtype=np.float32)
     y = np.asarray(y, dtype=np.int8)
-    model = OnnxModel(os.path.join(ML, "elf_model.onnx"))
+    model = OnnxModel(os.path.join(ML, "elf_model.onnx"), allow_unsigned=True)
     t0 = time.perf_counter()
     scores = model.predict(X)
     elapsed = time.perf_counter() - t0
@@ -198,7 +198,7 @@ def measure_elf_onnx(limit_files: int = 3) -> dict:
 def measure_shadow() -> dict:
     z = np.load(os.path.join(ML, "pe_cache.npz"))
     X, y = z["Xte"][:15000], z["yte"][:15000]
-    model = OnnxModel(os.path.join(ML, "pe_model.onnx"))
+    model = OnnxModel(os.path.join(ML, "pe_model.onnx"), allow_unsigned=True)
     scores = model.predict(X.astype(np.float32))
     benign = [float(s) for s, label in zip(scores, y) if label == 0]
     threshold = fpr_threshold(benign[:3000], 0.01)

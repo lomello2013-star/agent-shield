@@ -138,7 +138,7 @@ def sign_pack_signature(pack: dict, priv_hex: str) -> str:
 def shadow_run() -> dict:
     cache = np.load(os.path.join(ML, "pe_cache.npz"))
     X, y = cache["Xte"][:15000].astype(np.float32), cache["yte"][:15000]
-    model = OnnxModel(ONNX_PATH)
+    model = OnnxModel(ONNX_PATH, allow_unsigned=True)
     cal = IsotonicCalibrator.load(CAL_PATH)
     scores = model.predict(X)
     neg = scores[y == 0]

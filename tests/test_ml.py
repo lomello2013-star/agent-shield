@@ -97,7 +97,7 @@ def test_onnx_model_predicts_and_matches_lightgbm(tmp_path):
     path = tmp_path / "toy.onnx"
     path.write_bytes(onnx_model.SerializeToString())
 
-    model = OnnxModel(str(path))
+    model = OnnxModel(str(path), allow_unsigned=True)  # evaluation tooling, no pack
     assert model.load_ms >= 0 and model.size_mb > 0
     sample = X[:50]
     got = model.predict(sample)
@@ -111,6 +111,14 @@ def test_onnx_model_predicts_and_matches_lightgbm(tmp_path):
 def test_onnx_model_missing_file():
     with pytest.raises(FileNotFoundError):
         OnnxModel("does-not-exist.onnx")
+
+
+def test_onnx_model_requires_signed_pack(tmp_path):
+    """Runtime must refuse an unsigned ONNX artifact (supply-chain gate)."""
+    path = tmp_path / "m.onnx"
+    path.write_bytes(b"not-onnx")
+    with pytest.raises(ValueError, match="signed ModelPack"):
+        OnnxModel(str(path))
 
 
 def test_confidence_from_ppv_table_is_not_adjusted_twice(make_event):

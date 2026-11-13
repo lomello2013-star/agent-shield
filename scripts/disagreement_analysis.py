@@ -30,8 +30,8 @@ OUT = os.path.join(HERE, "artifacts", "disagreement_report.json")
 def main() -> None:
     cache = np.load(os.path.join(ML, "pe_cache.npz"))
     X, y = cache["Xte"][:5000].astype(np.float32), cache["yte"][:5000]
-    v1 = OnnxModel(os.path.join(ML, "pe_model.onnx"))
-    v2 = OnnxModel(os.path.join(ML, "pe_v2_model.onnx"))
+    v1 = OnnxModel(os.path.join(ML, "pe_model.onnx"), allow_unsigned=True)
+    v2 = OnnxModel(os.path.join(ML, "pe_v2_model.onnx"), allow_unsigned=True)
     s1, s2 = v1.predict(X), v2.predict(X)
     thr1 = fpr_threshold(list(s1[y == 0]), 0.01)
     thr2 = fpr_threshold(list(s2[y == 0]), 0.01)

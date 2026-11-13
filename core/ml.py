@@ -10,12 +10,14 @@ runtime only runs pre-trained, signed artifacts.
 
 from __future__ import annotations
 
+import json
 import os
 import time
 from dataclasses import dataclass, field
 
 import numpy as np
 
+from core.modelpack import verify_pack
 from schemas.v3 import Verdict
 
 SEVERITY_BANDS = ((0.99, "critical"), (0.9, "high"), (0.5, "medium"), (0.0, "low"))
@@ -43,11 +45,25 @@ class OnnxModel:
     input_name: str | None = None
     session: object | None = field(default=None, repr=False)
     load_ms: float = 0.0
+    pack_path: str | None = None
+    public_key: object | None = None      # Ed25519PublicKey
+    allow_unsigned: bool = False          # evaluation tooling only; runtime must not set it
 
     def __post_init__(self) -> None:
         import onnxruntime as ort
         if not os.path.exists(self.path):
             raise FileNotFoundError(self.path)
+        if not self.allow_unsigned:
+            if not self.pack_path:
+                raise ValueError("signed ModelPack required: pass pack_path "
+                                 "or allow_unsigned=True (evaluation only)")
+            if self.public_key is None:
+                raise ValueError("trusted public key required to load a model")
+            with open(self.pack_path, encoding="utf-8") as fh:
+                pack = json.load(fh)
+            result = verify_pack(pack, self.path, self.public_key)
+            if not result.ok:
+                raise ValueError(f"ModelPack rejected: {result.code} {result.detail}")
         t0 = time.perf_counter()
         self.session = ort.InferenceSession(self.path, providers=["CPUExecutionProvider"])
         self.load_ms = round((time.perf_counter() - t0) * 1000, 2)

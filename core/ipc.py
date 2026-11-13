@@ -300,6 +300,15 @@ def build_daemon_registry(daemon, kill_switch_add: Callable[[str], None] | None 
         daemon.log.append("kill_switch", {"rule_id": rule_id})
         return {"killed": rule_id}
 
+    def _confirm(params: dict) -> dict:
+        cid = params.get("confirmation_id")
+        decision = params.get("decision")
+        if not isinstance(cid, str) or not cid:
+            raise RpcError(INVALID_PARAMS, "confirmation_id is required")
+        if decision not in ("approved", "rejected"):
+            raise RpcError(INVALID_PARAMS, "decision must be approved|rejected")
+        return daemon.confirm(cid, decision, str(params.get("decided_by", "operator")))
+
     def _shutdown(_params: dict) -> dict:
         daemon.log.append("shutdown_requested", {})
         threading.Thread(target=daemon.stop, daemon=True).start()
@@ -315,6 +324,7 @@ def build_daemon_registry(daemon, kill_switch_add: Callable[[str], None] | None 
     registry.register("self_test", {"operator", "admin"}, _self_test)
     registry.register("immutable_check", {"operator", "admin"}, _immutable)
     registry.register("quarantine", {"operator", "admin"}, _quarantine)
+    registry.register("confirm", {"operator", "admin"}, _confirm)
     registry.register("kill_switch", {"admin"}, _kill_switch)
     registry.register("shutdown", {"admin"}, _shutdown)
     return registry
