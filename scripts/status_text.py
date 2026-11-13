@@ -6,6 +6,7 @@ class of corruption that hit `run_all.py` twice: PowerShell ANSI round-trips.
 
 from __future__ import annotations
 
+import json
 import os
 from datetime import datetime, timezone
 
@@ -55,6 +56,21 @@ BLOCKERS = [
     "B) Windows тест-VM с WDK/testsigning. C) Linux-VM с Secure Boot/fapolicyd.",
     "D) Окно с admin (RTP, WDAC audit, ETW-TI). E) rustup — закрыт (Rust-порт F19 сделан).",
 ]
+
+
+def _registry_champion() -> str:
+    """Source of truth is models/registry.json, not the stale challenger artifact."""
+    path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                        "models", "registry.json")
+    try:
+        with open(path, encoding="utf-8") as fh:
+            data = json.load(fh)
+        for model in data.get("models", []):
+            if model.get("role") == "champion":
+                return f"{model.get('model_id')} v{model.get('version')}"
+    except (OSError, ValueError):
+        pass
+    return "—"
 
 
 def render(steps, artifacts: dict, now: datetime, art_dir: str,
@@ -114,7 +130,7 @@ def render(steps, artifacts: dict, now: datetime, art_dir: str,
               f"| PE v2: ECE калибровки | {get('ship_v2.json','calibration','ece_raw')} → {get('ship_v2.json','calibration','ece_calibrated')} | ship_v2 |",
               f"| PE v2: подпись пака | {get('ship_v2.json','pack','signed')} ({get('ship_v2.json','pack','code')}) | ship_v2 |",
               f"| PE v2: shadow p95 | {get('ship_v2.json','shadow','latency_ms_p95')} мс | ship_v2 |",
-              f"| Champion / challenger | {get('challenger_report.json','registry','champion')} / v2 ΔTPR {get('challenger_report.json','v2_minus_v1_tpr_pp')} п.п. | registry |",
+              f"| Champion / challenger | {_registry_champion()} / v2 ΔTPR {get('challenger_report.json','v2_minus_v1_tpr_pp')} п.п. | registry |",
               f"| Совпадение алертов v1↔v2 | {get('challenger_report.json','alert_agreement_pct')} % | registry |",
               f"| v1↔v2: чистый прирост детекций | +{get('disagreement_report.json','net_detection_gain')} TP, ΔFP {get('disagreement_report.json','net_fp_change')} | disagreement |",
               f"| v1↔v2: доля расхождений у порога | {get('disagreement_report.json','near_threshold_share')} | disagreement |",

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-13T20:47:26.489760+00:00",
+  "generated_at": "2026-11-13T21:04:44.829424+00:00",
   "paths_measured": 4,
   "alert_paths": 3,
   "signal_paths": 1,
@@ -19,7 +19,7 @@
       "control_events": 0,
       "loss": 0,
       "duplicates": false,
-      "latency_pipeline_ms_p50": 0.129
+      "latency_pipeline_ms_p50": 0.113
     },
     {
       "path": "ptrace POKE*",
@@ -33,7 +33,7 @@
       "control_events": 0,
       "loss": 0,
       "duplicates": false,
-      "latency_pipeline_ms_p50": 0.118
+      "latency_pipeline_ms_p50": 0.215
     },
     {
       "path": "/proc/<pid>/mem",
@@ -47,7 +47,7 @@
       "control_events": 0,
       "loss": 0,
       "duplicates": false,
-      "latency_pipeline_ms_p50": 0.117
+      "latency_pipeline_ms_p50": 0.258
     },
     {
       "path": "mprotect PROT_EXEC",
@@ -61,7 +61,7 @@
       "control_events": 0,
       "loss": 0,
       "duplicates": false,
-      "latency_pipeline_ms_p50": 0.247
+      "latency_pipeline_ms_p50": 0.137
     }
   ],
   "rule_layers": [

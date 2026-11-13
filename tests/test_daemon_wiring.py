@@ -112,6 +112,8 @@ def test_real_eventlog_collector_polls(tmp_path):
     """The real collector is actually polled (may return 0 new records)."""
     cfg = DaemonConfig(sources=["win.eventlog"])
     d = Daemon(str(tmp_path / "d"), config=cfg, host=HOST)
+    collector = d.collectors[0]
     submitted = d.collect_once()      # must not raise; 0 is a valid result
+    assert collector.calls >= 1       # the real wevtutil poll actually ran
     assert submitted >= 0
     d.stop()

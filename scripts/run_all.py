@@ -352,23 +352,30 @@ def main() -> int:
 
     # The status document must exist before consistency can be checked, so it is
     # written twice: once with the measurement steps, then again with the check step.
+    # run_all.json is written *before* each pass: otherwise the freshness table reads
+    # the previous run's file and marks every artifact "not from this run" (P0-4).
+    def dump_summary() -> dict:
+        summary = {
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "steps": [{"name": s.name, "ok": s.ok, "required": s.required,
+                       "detail": s.detail, "duration_s": s.duration_s} for s in steps],
+            "passed": sum(1 for s in steps if s.ok),
+            "failed_required": [s.name for s in steps if s.required and not s.ok],
+            "total_s": round(time.perf_counter() - t_all, 2),
+            "status_doc": STATUS_MD,
+        }
+        with open(OUT_JSON, "w", encoding="utf-8") as fh:
+            json.dump(summary, fh, indent=2, ensure_ascii=False)
+        return summary
+
+    dump_summary()
     write_status(steps, artifacts, started_wall)
     t0 = time.perf_counter()
     step = step_script("docs_consistency", "docs_consistency.py")
     step.duration_s = round(time.perf_counter() - t0, 2)
     steps.append(step)
+    summary = dump_summary()
     write_status(steps, artifacts, started_wall)
-    summary = {
-        "generated_at": datetime.now(timezone.utc).isoformat(),
-        "steps": [{"name": s.name, "ok": s.ok, "required": s.required,
-                   "detail": s.detail, "duration_s": s.duration_s} for s in steps],
-        "passed": sum(1 for s in steps if s.ok),
-        "failed_required": [s.name for s in steps if s.required and not s.ok],
-        "total_s": round(time.perf_counter() - t_all, 2),
-        "status_doc": STATUS_MD,
-    }
-    with open(OUT_JSON, "w", encoding="utf-8") as fh:
-        json.dump(summary, fh, indent=2, ensure_ascii=False)
     print(json.dumps(summary, indent=2, ensure_ascii=False))
     return 1 if summary["failed_required"] else 0
 

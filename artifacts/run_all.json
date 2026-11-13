@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-11-13T20:47:32.127666+00:00",
+  "generated_at": "2026-11-13T21:04:50.490734+00:00",
   "steps": [
     {
       "name": "tests",
       "ok": true,
       "required": true,
-      "detail": "454 passed in 8.06s",
-      "duration_s": 8.84
+      "detail": "454 passed in 8.18s",
+      "duration_s": 8.96
     },
     {
       "name": "rules_and_coverage",
       "ok": true,
       "required": true,
       "detail": "rules=28 lint=0 detection=100.0% prevention=100.0%",
-      "duration_s": 0.17
+      "duration_s": 0.16
     },
     {
       "name": "schema_drift",
       "ok": true,
       "required": true,
       "detail": "in sync",
-      "duration_s": 0.04
+      "duration_s": 0.03
     },
     {
       "name": "immutable_policy",
@@ -34,14 +34,14 @@
       "ok": true,
       "required": true,
       "detail": "present=39/39",
-      "duration_s": 0.0
+      "duration_s": 0.01
     },
     {
       "name": "windows_system_e2e",
       "ok": true,
       "required": true,
       "detail": "events=60 verdicts=60",
-      "duration_s": 0.35
+      "duration_s": 0.37
     },
     {
       "name": "windows_defender_e2e",
@@ -55,91 +55,91 @@
       "ok": true,
       "required": true,
       "detail": "final_verdicts=80 loss=0",
-      "duration_s": 18.23
+      "duration_s": 17.91
     },
     {
       "name": "linux_exec_e2e",
       "ok": true,
       "required": false,
       "detail": "exit=0",
-      "duration_s": 11.32
+      "duration_s": 10.4
     },
     {
       "name": "linux_lsm_e2e",
       "ok": true,
       "required": false,
       "detail": "exit=0",
-      "duration_s": 2.5
+      "duration_s": 2.24
     },
     {
       "name": "linux_net_e2e",
       "ok": true,
       "required": false,
       "detail": "exit=0",
-      "duration_s": 2.34
+      "duration_s": 2.47
     },
     {
       "name": "linux_mem_e2e",
       "ok": true,
       "required": false,
       "detail": "exit=0",
-      "duration_s": 13.78
+      "duration_s": 13.6
     },
     {
       "name": "linux_ptrace_e2e",
       "ok": true,
       "required": false,
       "detail": "exit=0",
-      "duration_s": 13.63
+      "duration_s": 13.37
     },
     {
       "name": "linux_procmem_e2e",
       "ok": true,
       "required": false,
       "detail": "exit=0",
-      "duration_s": 13.23
+      "duration_s": 13.31
     },
     {
       "name": "linux_mprotect_e2e",
       "ok": true,
       "required": false,
       "detail": "exit=0",
-      "duration_s": 13.3
+      "duration_s": 13.2
     },
     {
       "name": "linux_corr_e2e",
       "ok": true,
       "required": false,
       "detail": "exit=0",
-      "duration_s": 23.5
+      "duration_s": 22.94
     },
     {
       "name": "linux_tree_e2e",
       "ok": true,
       "required": false,
       "detail": "exit=0",
-      "duration_s": 10.69
+      "duration_s": 10.84
     },
     {
       "name": "linux_tree_fp",
       "ok": true,
       "required": false,
       "detail": "exit=0",
-      "duration_s": 16.81
+      "duration_s": 16.88
     },
     {
       "name": "linux_provenance",
       "ok": true,
       "required": false,
       "detail": "exit=0",
-      "duration_s": 19.03
+      "duration_s": 18.98
     },
     {
       "name": "gen_docs",
       "ok": true,
       "required": true,
       "detail": "exit=0 bytes=513",
-      "duration_s": 0.23
+      "duration_s": 0.25
     },
     {
       "name": "f04_r2_margin",
@@ -153,21 +153,21 @@
       "ok": true,
       "required": true,
       "detail": "exit=0 bytes=2873",
-      "duration_s": 0.27
+      "duration_s": 0.26
     },
     {
       "name": "f01_confidence_gap",
       "ok": true,
       "required": true,
-      "detail": "exit=0 (no json artefact read) stderr=\u001b[0;93m2026-11-13 23:47:29.7669030 [W:onnxruntime:, execution_frame.cc:913 onnxruntime::ExecutionFrame::VerifyOutputSize",
-      "duration_s": 2.98
+      "detail": "exit=0 (no json artefact read) stderr=\u001b[0;93m2026-11-14 00:04:48.1477948 [W:onnxruntime:, execution_frame.cc:913 onnxruntime::ExecutionFrame::VerifyOutputSize",
+      "duration_s": 3.02
     },
     {
       "name": "f09_ppv_target",
       "ok": true,
       "required": true,
       "detail": "exit=0 bytes=1601",
-      "duration_s": 0.24
+      "duration_s": 0.23
     },
     {
       "name": "f12_behavioral",
@@ -187,15 +187,15 @@
       "name": "supervisor_measure",
       "ok": true,
       "required": true,
-      "detail": "exit=0 bytes=1132",
-      "duration_s": 1.2
+      "detail": "exit=0 bytes=1134",
+      "duration_s": 1.17
     },
     {
       "name": "final_summary",
       "ok": true,
       "required": true,
       "detail": "exit=0 bytes=7266",
-      "duration_s": 0.05
+      "duration_s": 0.06
     },
     {
       "name": "docs_consistency",
@@ -207,6 +207,6 @@
   ],
   "passed": 29,
   "failed_required": [],
-  "total_s": 174.87,
+  "total_s": 172.76,
   "status_doc": "D:\\ИИ защитник Вектор-защитник\\docs\\status.md"
 }
