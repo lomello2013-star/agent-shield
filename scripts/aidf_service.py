@@ -125,7 +125,8 @@ def _run_daemon() -> int:
         operator_token = os.environ.get("AIDF_OPERATOR_TOKEN", "")
         if operator_token:
             tokens[operator_token] = "operator"
-        authkey = os.environ.get("AIDF_AUTHKEY", "").encode() or os.urandom(32)
+        raw_key = os.environ.get("AIDF_AUTHKEY", "")
+        authkey = bytes.fromhex(raw_key) if raw_key else os.urandom(32)
         rpc = RpcServer(default_address(), authkey, tokens, build_daemon_registry(daemon))
         rpc.start()
     daemon.start()

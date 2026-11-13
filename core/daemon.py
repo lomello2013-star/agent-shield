@@ -140,6 +140,7 @@ class Daemon:
         self.response_executed = 0
         self.response_refused = 0
         self.response_failed = 0
+        self.actions_skipped = 0
         self.last_response_error = ""
         self.verdict_count = 0
         self.alert_count = 0
@@ -282,6 +283,7 @@ class Daemon:
             else:
                 target = str(verdict.rule_id or "")
             if not target:
+                self.actions_skipped += 1
                 self.log.append("action_skipped", {"action": action_type,
                                                    "reason": "no_target"})
                 continue
@@ -380,6 +382,10 @@ class Daemon:
             "verdicts": self.verdict_count,
             "alerts": self.alert_count,
             "containments": self.containment_count,
+            "response_executed": self.response_executed,
+            "response_refused": self.response_refused,
+            "response_failed": self.response_failed,
+            "actions_skipped": self.actions_skipped,
             "pending_confirmations": len(self.confirmations.pending()),
         }
 
@@ -399,6 +405,10 @@ class Daemon:
     def stats(self) -> dict:
         return {"pipeline": self.pipeline.stats(), "gate": self.gate.stats(self.host.host_id),
                 "audit": {"records": self.log.verify().records},
+                "response": {"executed": self.response_executed,
+                             "refused": self.response_refused,
+                             "failed": self.response_failed,
+                             "skipped": self.actions_skipped},
                 "pending_confirmations": len(self.confirmations.pending())}
 
     # ------------------------------------------------------------------ checks

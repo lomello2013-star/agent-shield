@@ -177,6 +177,7 @@ def test_action_without_target_is_skipped(tmp_path):
     d._execute_actions(_verdict(actor_pid=None), ("suspend",))
     assert d.pending_actions == {}
     assert response.executed == []
+    assert d.actions_skipped == 1
     d.stop()
 
 
@@ -188,3 +189,4 @@ def test_service_entry_wires_response_and_ipc():
     assert "daemon.response =" in src
     assert "build_daemon_registry(" in src
     assert "collect_interval_s=" in src
+    assert "bytes.fromhex(raw_key)" in src  # CLI sends hex; the server must decode it

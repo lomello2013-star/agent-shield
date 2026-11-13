@@ -1,21 +1,22 @@
 {
-  "generated_at": "2026-11-13T22:58:18.894068+00:00",
-  "entries": 107,
-  "complete": 84,
+  "generated_at": "2026-11-13T23:09:13.945460+00:00",
+  "entries": 110,
+  "complete": 87,
   "incomplete": 23,
-  "completeness_pct": 78.5,
+  "completeness_pct": 79.1,
   "by_type": {
     "config": 4,
-    "experiment": 68,
+    "experiment": 70,
     "escalation": 1,
     "decision": 2,
     "code": 23,
     "docs": 1,
     "report": 4,
-    "auto_review": 4
+    "auto_review": 5
   },
   "missing_artifacts": [
-    "dev_keys.json"
+    "dev_keys.json",
+    "linux_integrity.json"
   ],
   "legacy_incomplete": [
     {

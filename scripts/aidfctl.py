@@ -1,4 +1,4 @@
-"""`aidfctl` — minimal CLI for the JSON-RPC daemon (ADR D10).
+r"""`aidfctl` — minimal CLI for the JSON-RPC daemon (ADR D10).
 
 Auth material never comes from the command line by default:
   * ``AIDF_AUTHKEY`` (hex) — transport key;

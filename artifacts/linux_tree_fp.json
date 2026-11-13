@@ -9,7 +9,7 @@
   },
   "adapter_errors": [],
   "legit_supervisor_plus_jit": {
-    "helper": "{\"writes\":5,\"parent\":1494}\n{\"execs\":5,\"child\":1495}",
+    "helper": "{\"writes\":5,\"parent\":1595}\n{\"execs\":5,\"child\":1596}",
     "tree_alerts": 1,
     "pid_alerts": 0
   },

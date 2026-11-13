@@ -2964,6 +2964,25 @@ parameters=2
 
 ---
 
+## [2026-11-14 02:40] Windows-VM end-to-end: служба собирает события и выдаёт вердикты [experiment]
+
+**Действие**: в VM `AIDF-Win11` (Win11 Enterprise Eval, Hyper-V) установлен Python 3.12.9 + pydantic 2.14.3 / cryptography 50.0.2, скопирован runtime (`core`, `schemas`, `rules`, `docs/policy-contract.json`, `scripts`), создана служба `AIDefender` (Automatic, LocalSystem) с env `AIDF_ADMIN_TOKEN` / `AIDF_AUTHKEY` (hex) / `AIDF_COLLECT_INTERVAL_S=5` / `AIDF_SERVICE_ROOT`; запущена. Через IPC проверены `health`/`stats`; сгенерирован 7045 (`sc create EvilSvc`).
+**Числа**:
+| Параметр | Значение |
+|---|---|
+| Служба | Running / Automatic; audit chain создан |
+| До события | received 65, delivered 65, lost 0, verdicts 14 (все WIN-SERVICE-CREATE-007), audit 30 |
+| После `EvilSvc` | received 66, verdicts 15, lost 0 |
+| Audit tail | `action_skipped` (suspend, no_target) + `verdict` (high, actions=[suspend]) |
+| IPC | `health`/`stats` отвечают; pending_confirmations 0 |
+**Вердикт**: product-путь «служба → коллектор → нормализация → правило → вердикт» работает end-to-end. Windows suspend по 7045 остаётся недостижим (нет `actor_pid` → `action_skipped`) — подтверждено вживую.
+**Проверка**: `sc query AIDefender` → Running; `aidfctl stats` → 66/15/0; `Get-Content chain.jsonl -Tail 6` → seq 31/32.
+**Статус**: verified
+**Actor**: agent
+**Run_id**: winvm-e2e-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,
