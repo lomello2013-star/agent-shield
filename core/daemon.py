@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 import threading
 import time
 from dataclasses import dataclass, field
@@ -33,7 +34,7 @@ from core.selfprotect import HashChainLog, IntegrityManifest, SelfTest
 @dataclass
 class DaemonConfig:
     schema_version: str = "1.0"
-    sources: list[str] = field(default_factory=lambda: ["win.etw.ti", "win.amsi"])
+    sources: list[str] = field(default_factory=lambda: ["win.eventlog", "win.defender"])
     thresholds: dict[str, float] = field(default_factory=lambda: {
         "heartbeat_timeout_s": 60.0, "alert_budget": 1, "min_confidence": 0.5})
     queue: dict[str, float] = field(default_factory=lambda: {"capacity": 10_000})
@@ -47,6 +48,30 @@ class DaemonConfig:
         return {"schema_version": self.schema_version, "sources": list(self.sources),
                 "thresholds": dict(self.thresholds), "queue": dict(self.queue),
                 "watchdog": dict(self.watchdog), "allowlist": list(self.allowlist)}
+
+
+def build_default_collectors(config: DaemonConfig) -> list[Any]:
+    """Build real, non-admin collectors for the configured source names.
+
+    Construction performs no I/O: ``wevtutil`` is only invoked by ``poll()``, so a
+    daemon that never collects costs nothing. Unknown/unimplemented source names
+    are skipped rather than faked.
+    """
+    if sys.platform != "win32":
+        return []
+    from core.winsource import WindowsEventLogSource
+    built: list[Any] = []
+    for source in config.sources:
+        if source == "win.eventlog":
+            built.append(WindowsEventLogSource(
+                log_name="System", event_ids=(7045, 7040, 7036, 1102),
+                name="win.eventlog"))
+        elif source == "win.defender":
+            built.append(WindowsEventLogSource(
+                log_name="Microsoft-Windows-Windows Defender/Operational",
+                event_ids=(5001, 5007, 5010, 5012, 1116, 1117),
+                name="win.defender"))
+    return built
 
 
 class Daemon:
@@ -102,7 +127,13 @@ class Daemon:
         if response is not None and getattr(response, "quarantine", None) is not None:
             self.response_quarantine = response.quarantine
         # Real sources (stage 1): collectors are polled here instead of by the harness.
-        self.collectors = list(collectors or [])
+        if collectors is None:
+            collectors = build_default_collectors(self.config)
+        self.collectors = list(collectors)
+        for collector in self.collectors:
+            cname = getattr(collector, "name", None)
+            if cname and cname not in self.config.sources:
+                self.heartbeat.register(cname)
         self.collect_interval_s = float(collect_interval_s)
         self.collected_count = 0
         self.response_executed = 0

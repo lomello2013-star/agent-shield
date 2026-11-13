@@ -34,6 +34,26 @@ REVERSIBLE_ACTIONS = {"suspend", "resume", "quarantine", "restore", "notify",
 UNSUPPORTED_ACTIONS = {"block_network", "unblock_network"}
 QUARANTINE_MAGIC = b"AIDFQ1"
 
+if sys.platform == "win32":
+    from ctypes import wintypes
+
+    class _PROCESSENTRY32W(ctypes.Structure):
+        _fields_ = [
+            ("dwSize", wintypes.DWORD),
+            ("cntUsage", wintypes.DWORD),
+            ("th32ProcessID", wintypes.DWORD),
+            ("th32DefaultHeapID", ctypes.POINTER(ctypes.c_ulong)),
+            ("th32ModuleID", wintypes.DWORD),
+            ("cntThreads", wintypes.DWORD),
+            ("th32ParentProcessID", wintypes.DWORD),
+            ("pcPriClassBase", ctypes.c_long),
+            ("dwFlags", wintypes.DWORD),
+            ("szExeFile", wintypes.WCHAR * 260),
+        ]
+
+    TH32CS_SNAPPROCESS = 0x00000002
+    INVALID_HANDLE_VALUE = ctypes.c_void_p(-1).value
+
 
 class ActionError(RuntimeError):
     """Action refused or failed (never swallowed)."""
@@ -41,14 +61,32 @@ class ActionError(RuntimeError):
 
 # --------------------------------------------------------------------- processes
 class ProcessController:
-    """Suspend/resume a process. Windows uses NtSuspendProcess/NtResumeProcess."""
+    """Suspend/resume a process and its same-image launcher child.
+
+    A Windows venv redirector runs the real interpreter as a child with the same
+    image name; suspending only the stub would leave the workload running (the
+    3.14-venv finding). The same-image rule is deliberately conservative: other
+    children of a real workload are not touched.
+    """
 
     def __init__(self) -> None:
         self._ntdll = None
         self._kernel32 = None
+        self._suspended: dict[int, list[int]] = {}
         if sys.platform == "win32":
             self._ntdll = ctypes.WinDLL("ntdll")
             self._kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+            self._kernel32.OpenProcess.restype = ctypes.c_void_p
+            self._kernel32.OpenProcess.argtypes = [ctypes.c_uint32, ctypes.c_int,
+                                                   ctypes.c_uint32]
+            self._kernel32.CloseHandle.argtypes = [ctypes.c_void_p]
+            self._kernel32.CreateToolhelp32Snapshot.restype = ctypes.c_void_p
+            self._kernel32.CreateToolhelp32Snapshot.argtypes = [ctypes.c_uint32,
+                                                                ctypes.c_uint32]
+            self._kernel32.Process32FirstW.argtypes = [
+                ctypes.c_void_p, ctypes.POINTER(_PROCESSENTRY32W)]
+            self._kernel32.Process32NextW.argtypes = [
+                ctypes.c_void_p, ctypes.POINTER(_PROCESSENTRY32W)]
 
     @property
     def supported(self) -> bool:
@@ -62,7 +100,38 @@ class ProcessController:
                               f"(err={ctypes.get_last_error()})")
         return handle
 
-    def suspend(self, pid: int) -> None:
+    def _process_table(self) -> dict[int, tuple[int, str]]:
+        """pid -> (parent_pid, exe_name); empty when enumeration is unavailable."""
+        if sys.platform != "win32":
+            return {}
+        table: dict[int, tuple[int, str]] = {}
+        snapshot = self._kernel32.CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0)
+        if not snapshot or snapshot == INVALID_HANDLE_VALUE:
+            return table
+        try:
+            entry = _PROCESSENTRY32W()
+            entry.dwSize = ctypes.sizeof(_PROCESSENTRY32W)
+            more = self._kernel32.Process32FirstW(snapshot, ctypes.byref(entry))
+            while more:
+                table[int(entry.th32ProcessID)] = (
+                    int(entry.th32ParentProcessID), str(entry.szExeFile))
+                more = self._kernel32.Process32NextW(snapshot, ctypes.byref(entry))
+        finally:
+            self._kernel32.CloseHandle(snapshot)
+        return table
+
+    def _suspend_targets(self, pid: int) -> list[int]:
+        """The pid plus direct children that share its image name (redirector-safe)."""
+        pid = int(pid)
+        table = self._process_table()
+        if pid not in table:
+            return [pid]
+        image = table[pid][1].lower()
+        children = sorted(child for child, (parent, exe) in table.items()
+                          if parent == pid and exe.lower() == image and child != pid)
+        return [pid, *children]
+
+    def _suspend_one(self, pid: int) -> None:
         if sys.platform == "win32":
             handle = self._handle(pid)
             try:
@@ -74,7 +143,7 @@ class ProcessController:
         else:
             os.kill(int(pid), 19)          # SIGSTOP
 
-    def resume(self, pid: int) -> None:
+    def _resume_one(self, pid: int) -> None:
         if sys.platform == "win32":
             handle = self._handle(pid)
             try:
@@ -85,6 +154,33 @@ class ProcessController:
                 self._kernel32.CloseHandle(handle)
         else:
             os.kill(int(pid), 18)          # SIGCONT
+
+    def suspend(self, pid: int) -> list[int]:
+        pid = int(pid)
+        targets = self._suspend_targets(pid)
+        paused: list[int] = []
+        for target in targets:
+            try:
+                self._suspend_one(target)
+                paused.append(target)
+            except ActionError:
+                if target == pid:          # the requested process must be suspended
+                    raise
+        self._suspended[pid] = paused
+        return paused
+
+    def resume(self, pid: int) -> list[int]:
+        pid = int(pid)
+        targets = self._suspended.pop(pid, [pid])
+        resumed: list[int] = []
+        for target in targets:
+            try:
+                self._resume_one(target)
+                resumed.append(target)
+            except ActionError:
+                if target == pid:
+                    raise
+        return resumed
 
 
 # -------------------------------------------------------------------- quarantine

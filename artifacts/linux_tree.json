@@ -4,8 +4,8 @@
     "kernel": "6.18.54.1-microsoft-standard-WSL2"
   },
   "helper_output": [
-    "{\"writes\":5,\"parent\":1586}",
-    "{\"execs\":5,\"child\":1587}"
+    "{\"writes\":5,\"parent\":1472}",
+    "{\"execs\":5,\"child\":1473}"
   ],
   "submitted": {
     "linux.memory": 5,

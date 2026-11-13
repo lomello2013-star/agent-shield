@@ -14,15 +14,15 @@
   "rule_hits": {
     "LINUX-CRED-READ-104": 200
   },
-  "elapsed_s": 0.21,
-  "events_per_s": 965.0,
+  "elapsed_s": 0.17,
+  "events_per_s": 1157.0,
   "latency_kernel_to_user_ms": {
-    "p50": 0.669,
-    "p95": 1.831
+    "p50": 0.814,
+    "p95": 2.049
   },
   "latency_pipeline_ms": {
-    "p50": 0.198,
-    "p95": 0.423
+    "p50": 0.147,
+    "p95": 0.286
   },
   "loss": 0,
   "ledger_ok": true,

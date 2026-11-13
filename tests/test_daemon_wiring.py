@@ -2,6 +2,10 @@
 
 from __future__ import annotations
 
+import sys
+
+import pytest
+
 from core.daemon import Daemon, DaemonConfig
 from core.normalize import HostContext
 from core.response import ConfirmationManager, ExecutionResult, ResponseExecutor
@@ -91,4 +95,23 @@ def test_response_errors_do_not_break_detection(tmp_path):
     d.tick()                          # must not raise
     assert d.response_failed >= 1
     assert "boom" in d.last_response_error
+    d.stop()
+
+
+@pytest.mark.skipif(sys.platform != "win32", reason="wevtutil is Windows-only")
+def test_real_eventlog_collector_is_built(tmp_path):
+    """P0: the daemon must build the real (non-admin) event-log collector."""
+    cfg = DaemonConfig(sources=["win.eventlog"])
+    d = Daemon(str(tmp_path / "d"), config=cfg, host=HOST)
+    assert "win.eventlog" in [getattr(c, "name", "") for c in d.collectors]
+    d.stop()
+
+
+@pytest.mark.skipif(sys.platform != "win32", reason="wevtutil is Windows-only")
+def test_real_eventlog_collector_polls(tmp_path):
+    """The real collector is actually polled (may return 0 new records)."""
+    cfg = DaemonConfig(sources=["win.eventlog"])
+    d = Daemon(str(tmp_path / "d"), config=cfg, host=HOST)
+    submitted = d.collect_once()      # must not raise; 0 is a valid result
+    assert submitted >= 0
     d.stop()

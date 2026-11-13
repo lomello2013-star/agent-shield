@@ -154,6 +154,7 @@ class WindowsEventLogSource:
     event_ids: tuple[int, ...] = (7045,)
     max_events: int = 50
     wevtutil: str = WEVTUTIL
+    name: str = "win.eventlog"
     _last_record_id: int = 0
     calls: int = 0
     last_query_ms: float = 0.0

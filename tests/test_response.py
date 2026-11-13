@@ -208,3 +208,20 @@ def test_suspend_and_resume_real_process(tmp_path):
 def test_suspend_unknown_pid_reports_error():
     with pytest.raises(ActionError):
         ProcessController().suspend(999_999_999)
+
+
+def test_suspend_resolves_same_image_child(monkeypatch):
+    """P0: a venv redirector stub leaves the real interpreter as a same-image child."""
+    ctl = ProcessController()
+    paused, resumed = [], []
+    monkeypatch.setattr(ctl, "_process_table", lambda: {
+        100: (1, "python.exe"),
+        101: (100, "python.exe"),      # same image -> real interpreter
+        102: (100, "other.exe"),       # different image -> must not be touched
+    })
+    monkeypatch.setattr(ctl, "_suspend_one", lambda pid: paused.append(pid))
+    monkeypatch.setattr(ctl, "_resume_one", lambda pid: resumed.append(pid))
+    assert ctl.suspend(100) == [100, 101]
+    assert ctl.resume(100) == [100, 101]
+    assert paused == [100, 101]
+    assert resumed == [100, 101]
