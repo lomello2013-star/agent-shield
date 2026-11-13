@@ -2794,6 +2794,22 @@ parameters=2
 
 ---
 
+## [2026-11-14 00:10] Suspend redirector + реальный коллектор; повторный жёсткий P0 [code]
+
+**Действие**: 1) `ProcessController` разрешает **same-image child** (venv redirector: заглушка `python.exe` → реальный `python.exe`); 2) `build_default_collectors` подключает реальные `win.eventlog`/`win.defender` через `wevtutil` (без admin); 3) исправлены статус-дефекты из ре-ревью: champion читается из `models/registry.json` (а не stale `challenger_report.json`), `run_all.json` пишется **до** status.md (свежесть «в этом прогоне»), устаревшие счётчики в docs обновлены, вакуумный тест усилен.
+**Файлы**: `core/response.py`, `core/winsource.py`, `core/daemon.py`, `scripts/status_text.py`, `scripts/run_all.py`, `tests/test_response.py`, `tests/test_daemon_wiring.py`, docs; коммит `507d48b` + этот.
+**Числа**: pytest **454 passed**; cargo **133 passed**; `run_all` **29/29**; реальный `collect_once` — **100 записей / 0,05 с**; same-image child — юнит-тест зелёный.
+**Вердикт**: фиксы работают; два структурных пункта (ML-загрузчик без ModelPack, инертный confirmation-путь) остаются открытыми → общий статус `escalate` до их закрытия.
+**Проверка**: `pytest -o addopts="" -q` → 454 passed; `cargo test` → 133; `run_all` → 29/29; реальный `collect_once` → 100 записей/0,05 с; same-image child — юнит-тест зелёный.
+**Результат проверки**: pass.
+**Auto_review**: **escalate** (повторный жёсткий P0, deepseek-flash). Подтверждено: оба фикса работают, 494 junk untracked, WDAC 824/480, схемы идемпотентны. Открыто: (1) `OnnxModel` грузит ONNX без ModelPack — supply-chain гарантия не выполняется; (2) демон ставит `requires_confirmation=True` + `confirmation_id=None`, IPC-метод `confirm` не зарегистрирован → сдерживание в продукте инертно (executed=0); (3) stale champion/счётчики — исправлены; (4) не было записи по `507d48b` — эта запись.
+**Решение / следующий шаг**: два структурных пункта (ML-загрузчик, confirmation-путь) — отдельным решением; до них `approve` невозможен.
+**Статус**: verified (фиксы), escalation_open (2 структурных)
+**Actor**: agent
+**Run_id**: suspend-collectors-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,
