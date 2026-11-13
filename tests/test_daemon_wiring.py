@@ -98,6 +98,29 @@ def test_response_errors_do_not_break_detection(tmp_path):
 
 
 @pytest.mark.skipif(sys.platform != "win32", reason="wevtutil is Windows-only")
+class BoomCollector:
+    name = "boom"
+
+    def poll(self):
+        raise RuntimeError("boom")
+
+
+def test_broken_collector_does_not_blind_others(tmp_path):
+    d = make_daemon(tmp_path, collectors=[BoomCollector(), FakeCollector(records=2)])
+    assert d.collect_once() == 2          # the second collector still delivered
+    assert d.collected_count == 2
+    d.stop()
+
+
+@pytest.mark.skipif(sys.platform != "win32", reason="wevtutil is Windows-only")
+def test_sysmon_collector_built_when_configured():
+    from core.daemon import build_default_collectors
+
+    built = build_default_collectors(DaemonConfig(sources=["win.sysmon"]))
+    assert any(getattr(c, "name", "") == "win.sysmon" for c in built)
+
+
+@pytest.mark.skipif(sys.platform != "win32", reason="wevtutil is Windows-only")
 def test_real_eventlog_collector_is_built(tmp_path):
     """P0: the daemon must build the real (non-admin) event-log collector."""
     cfg = DaemonConfig(sources=["win.eventlog"])
@@ -148,6 +171,8 @@ def test_confirmation_path_executes_approved_action(tmp_path):
     d.response = response
     d._execute_actions(_verdict(), ("suspend",))
     assert d.pending_actions, "a reversible action must create a pending confirmation"
+    pending = d.pending_confirmations()
+    assert pending and pending[0]["target"] == "1234"
     cid = next(iter(d.pending_actions))
     assert response.executed == []
     result = d.confirm(cid, "approved")

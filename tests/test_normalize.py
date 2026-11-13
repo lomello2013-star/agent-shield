@@ -153,3 +153,19 @@ def test_linux_net_requires_port():
     with pytest.raises(NormalizationError) as exc:
         normalizer().normalize("linux.net", {"pid": 7, "comm": "x", "daddr": "1.2.3.4"})
     assert exc.value.field_name == "dport"
+
+
+def test_win_eventlog_builds_actor_from_process_id():
+    """Sysmon process events must carry actor_pid so Windows suspend has a target."""
+    ev = normalizer().normalize("win.eventlog", {
+        "category": "process.start", "action": "start",
+        "path": r"C:\Temp\evil.exe", "event_id": 1,
+        "provider": "Microsoft-Windows-Sysmon", "record_id": 1,
+        "ts": "2026-11-14T00:00:00Z",
+        "process_id": 4242, "parent_id": 4,
+        "image": r"C:\Temp\evil.exe", "cmdline": "evil.exe -x", "data": {},
+    })
+    assert ev.actor is not None
+    assert ev.actor.pid == 4242
+    assert ev.actor.path == r"C:\Temp\evil.exe"
+    assert ev.object.type == "process"

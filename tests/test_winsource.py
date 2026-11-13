@@ -222,3 +222,18 @@ def test_poll_requires_wevtutil(monkeypatch):
     source = WindowsEventLogSource(wevtutil="C:\\definitely\\missing.exe")
     with pytest.raises(RuntimeError):
         source.poll()
+
+
+def test_sysmon_process_start_to_raw_carries_pid():
+    from core.winsource import EventLogRecord
+
+    record = EventLogRecord(
+        record_id=1, event_id=1, time_created="2026-11-14T00:00:00Z",
+        provider="Microsoft-Windows-Sysmon",
+        data={"Image": r"C:\Temp\evil.exe", "ProcessId": "0x1092",
+              "ParentProcessId": "0x4", "CommandLine": "evil.exe -x"})
+    raw = record.to_raw()
+    assert raw["category"] == "process.start"
+    assert raw["process_id"] == 0x1092
+    assert raw["parent_id"] == 4
+    assert raw["image"] == r"C:\Temp\evil.exe"

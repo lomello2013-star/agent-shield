@@ -71,6 +71,10 @@ def build_default_collectors(config: DaemonConfig) -> list[Any]:
                 log_name="Microsoft-Windows-Windows Defender/Operational",
                 event_ids=(5001, 5007, 5010, 5012, 1116, 1117),
                 name="win.defender"))
+        elif source == "win.sysmon":
+            built.append(WindowsEventLogSource(
+                log_name="Microsoft-Windows-Sysmon/Operational",
+                event_ids=(1,), name="win.sysmon"))
     return built
 
 
@@ -200,11 +204,21 @@ class Daemon:
             self._stop.wait(self.collect_interval_s)
 
     def collect_once(self) -> int:
-        """Pull one batch from every collector; returns how many records were submitted."""
+        """Pull one batch from every collector; returns how many records were submitted.
+
+        A failing collector is isolated: it must not blind the other sources (the
+        previous loop aborted on the first exception, so a stalled event log hid
+        Sysmon entirely).
+        """
         submitted = 0
         for collector in self.collectors:
             name = str(getattr(collector, "name", "collector"))
-            records = collector.poll() or []
+            try:
+                records = collector.poll() or []
+            except Exception as exc:
+                self.log.append("collector_incident",
+                                {"source": name, "error": f"{type(exc).__name__}: {exc}"})
+                continue
             for raw in records:
                 payload = raw.to_raw() if hasattr(raw, "to_raw") else raw
                 if self.submit(name, payload):
@@ -319,6 +333,21 @@ class Daemon:
                                          "confirmation_id": confirmation.confirmation_id,
                                          "error": getattr(result, "error", "")})
 
+    def pending_confirmations(self) -> list[dict]:
+        """Pending confirmations with their action target (operator-facing list)."""
+        items = []
+        for conf in self.confirmations.pending():
+            action = self.pending_actions.get(conf.confirmation_id)
+            items.append({
+                "confirmation_id": conf.confirmation_id,
+                "action": action.type if action is not None else None,
+                "target": action.target if action is not None else None,
+                "level": conf.level,
+                "created_at": conf.created_at,
+                "timeout_s": conf.timeout_s,
+            })
+        return items
+
     def confirm(self, confirmation_id: str, decision: str,
                 decided_by: str = "operator") -> dict:
         """Resolve a pending confirmation; an approved action is executed exactly once."""
@@ -409,6 +438,14 @@ class Daemon:
                              "refused": self.response_refused,
                              "failed": self.response_failed,
                              "skipped": self.actions_skipped},
+                "collectors": [
+                    {"name": getattr(c, "name", "?"),
+                     "calls": getattr(c, "calls", None),
+                     "last_query_ms": getattr(c, "last_query_ms", None),
+                     "last_record_id": getattr(c, "_last_record_id", None)}
+                    for c in self.collectors],
+                "collected": self.collected_count,
+                "collect_interval_s": self.collect_interval_s,
                 "pending_confirmations": len(self.confirmations.pending())}
 
     # ------------------------------------------------------------------ checks

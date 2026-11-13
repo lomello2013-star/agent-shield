@@ -34,7 +34,7 @@ UNAUTHORIZED = -32001
 FORBIDDEN = -32002
 NOT_FOUND = -32003
 
-VIEWER_METHODS = {"ping", "health", "stats"}
+VIEWER_METHODS = {"ping", "health", "stats", "confirmations"}
 OPERATOR_METHODS = VIEWER_METHODS | {"self_test", "quarantine", "suspend", "resume", "confirm"}
 ADMIN_METHODS = OPERATOR_METHODS | {"kill_switch", "shutdown", "reload_config"}
 
@@ -300,6 +300,9 @@ def build_daemon_registry(daemon, kill_switch_add: Callable[[str], None] | None 
         daemon.log.append("kill_switch", {"rule_id": rule_id})
         return {"killed": rule_id}
 
+    def _confirmations(_params: dict) -> dict:
+        return {"pending": daemon.pending_confirmations()}
+
     def _confirm(params: dict) -> dict:
         cid = params.get("confirmation_id")
         decision = params.get("decision")
@@ -325,6 +328,7 @@ def build_daemon_registry(daemon, kill_switch_add: Callable[[str], None] | None 
     registry.register("immutable_check", {"operator", "admin"}, _immutable)
     registry.register("quarantine", {"operator", "admin"}, _quarantine)
     registry.register("confirm", {"operator", "admin"}, _confirm)
+    registry.register("confirmations", {"viewer", "operator", "admin"}, _confirmations)
     registry.register("kill_switch", {"admin"}, _kill_switch)
     registry.register("shutdown", {"admin"}, _shutdown)
     return registry

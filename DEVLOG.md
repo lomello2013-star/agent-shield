@@ -2983,6 +2983,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 02:55] Windows actor_pid end-to-end: Sysmon → verdict → confirm → suspend [experiment]
+
+**Действие**: добавлен opt-in Sysmon-источник (`win.sysmon`, Event 1) с `actor_pid`; адаптер нормализации `win.sysmon`; изоляция коллекторов (сбой одного не ослепляет остальные); IPC `confirmations` (viewer+) и счётчики response в `stats`; сервис включает sysmon при `AIDF_SYSMON=1`. В VM установлен Sysmon, служба перезапущена; процесс `C:\Temp\tick5.exe` → вердикт `WIN-EXEC-TEMP-001` → pending (target 6664) → `confirm` → `suspend`.
+**Числа**: pytest **464 passed**; cargo **133**; `run_all` **29/29**; `win.sysmon` collected **138**, quarantined **0**; e2e: pending 1, `confirm` → `executed`, `tick.bin` **150 → 150** (frozen), `response={executed:1, refused:3, skipped:17}`.
+**Вердикт**: Windows-сдерживание достижимо end-to-end; для PID нужен Sysmon (opt-in), без него — `action_skipped`.
+**Проверка**: `aidfctl stats`/`confirmations`/`confirm`; audit chain; `tick.bin` frozen.
+**Статус**: verified
+**Actor**: agent
+**Run_id**: win-sysmon-e2e-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

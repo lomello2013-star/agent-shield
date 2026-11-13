@@ -38,6 +38,28 @@ EVENT_SEMANTICS: dict[int, tuple[str, str, str]] = {
 }
 
 
+SYSMON_PROVIDER = "Microsoft-Windows-Sysmon"
+
+
+def _parse_pid(value: object) -> int | None:
+    if value is None:
+        return None
+    text = str(value).strip()
+    if not text:
+        return None
+    try:
+        return int(text, 16) if text.lower().startswith("0x") else int(text)
+    except ValueError:
+        return None
+
+
+def semantics_for(event_id: int, provider: str) -> tuple[str, str, str]:
+    """Event 1 in the Sysmon log is process creation; other logs keep their map."""
+    if provider == SYSMON_PROVIDER and event_id == 1:
+        return ("process.start", "start", "Image")
+    return EVENT_SEMANTICS.get(event_id, ("unknown", "event", ""))
+
+
 @dataclass(frozen=True)
 class EventLogRecord:
     record_id: int
@@ -47,8 +69,7 @@ class EventLogRecord:
     data: dict[str, str]
 
     def to_raw(self) -> dict:
-        category, action, path_field = EVENT_SEMANTICS.get(self.event_id,
-                                                           ("unknown", "event", ""))
+        category, action, path_field = semantics_for(self.event_id, self.provider)
         data = dict(self.data)
         if self.event_id == 5007:
             # 5007 is mostly operational noise ("Diagnostics\..." etc.); classify it
@@ -65,6 +86,10 @@ class EventLogRecord:
             "provider": self.provider,
             "record_id": self.record_id,
             "ts": self.time_created,
+            "process_id": _parse_pid(data.get("ProcessId")),
+            "parent_id": _parse_pid(data.get("ParentProcessId")),
+            "image": data.get("Image", ""),
+            "cmdline": data.get("CommandLine", ""),
             "data": data,
         }
 

@@ -100,7 +100,10 @@ def _run_daemon() -> int:
     os.makedirs(DATA_ROOT, exist_ok=True)
     host = HostContext(host_id=os.environ.get("COMPUTERNAME", "host"),
                        os="windows", version="10", arch="x64")
-    config = DaemonConfig(sources=["win.eventlog", "win.defender"],
+    sources = ["win.eventlog", "win.defender"]
+    if os.environ.get("AIDF_SYSMON") == "1":
+        sources.append("win.sysmon")       # opt-in: gives process events with a PID
+    config = DaemonConfig(sources=sources,
                           thresholds={"heartbeat_timeout_s": 60})
     # Without a positive interval the collector thread never starts and the service
     # would detect nothing (P0-11). 5 s is the default poll cadence.

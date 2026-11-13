@@ -259,12 +259,26 @@ def _win_eventlog(raw: dict, now: datetime) -> dict:
     category = str(raw.get("category") or "unknown")
     action = str(raw.get("action") or "event")
     path = str(raw.get("path") or "")
-    obj = {"type": "service", "path": path} if path else None
+    obj_type = "process" if category.startswith("process.") else "service"
+    obj = {"type": obj_type, "path": path} if path else None
     data = raw.get("data") or {}
+    pid = raw.get("process_id")
+    actor = None
+    if pid is not None:
+        image = str(raw.get("image") or path or "")
+        cmdline = str(raw.get("cmdline") or "")
+        actor = {
+            "pid": int(pid),
+            "ppid": int(raw["parent_id"]) if raw.get("parent_id") is not None else None,
+            "name": _basename(image) or str(pid),
+            "path": image,
+            "cmdline_hash": _hash_cmdline(cmdline),
+            "cmdline_redacted": cmdline[:MAX_CMDLINE],
+        }
     return {
         "category": category,
         "action": action,
-        "actor": None,
+        "actor": actor,
         "object": obj,
         "platform_data": {
             "event_id": raw.get("event_id"),
@@ -371,6 +385,7 @@ ADAPTERS: dict[str, Adapter] = {
     "win.amsi": Adapter("win.amsi", "windows", "script", _win_amsi),
     "win.eventlog": Adapter("win.eventlog", "windows", "user", _win_eventlog),
     "win.defender": Adapter("win.defender", "windows", "user", _win_eventlog),
+    "win.sysmon": Adapter("win.sysmon", "windows", "user", _win_eventlog),
     "linux.ebpf": Adapter("linux.ebpf", "linux", "kernel", _linux_ebpf),
     "linux.auditd": Adapter("linux.auditd", "linux", "kernel", _linux_auditd),
     "linux.lsm": Adapter("linux.lsm", "linux", "kernel", _linux_lsm),
