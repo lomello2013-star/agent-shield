@@ -2,9 +2,9 @@
   "rounds": [
     {
       "round": 1,
-      "killed_pid": 11744,
+      "killed_pid": 14068,
       "restarted": true,
-      "restart_latency_ms": 264.0,
+      "restart_latency_ms": 297.1,
       "supervisor": {
         "running": true,
         "circuit_open": false,
@@ -16,9 +16,9 @@
     },
     {
       "round": 2,
-      "killed_pid": 13380,
+      "killed_pid": 4084,
       "restarted": true,
-      "restart_latency_ms": 264.4,
+      "restart_latency_ms": 296.2,
       "supervisor": {
         "running": true,
         "circuit_open": false,
@@ -30,9 +30,9 @@
     },
     {
       "round": 3,
-      "killed_pid": 12480,
+      "killed_pid": 6496,
       "restarted": true,
-      "restart_latency_ms": 265.0,
+      "restart_latency_ms": 297.4,
       "supervisor": {
         "running": true,
         "circuit_open": false,
@@ -44,18 +44,18 @@
     }
   ],
   "restarts_observed": 3,
-  "max_restart_latency_ms": 265.0,
-  "median_restart_latency_ms": 264.4,
-  "startup_ms": 266.4,
+  "max_restart_latency_ms": 297.4,
+  "median_restart_latency_ms": 297.1,
+  "startup_ms": 300.7,
   "audit_chain": {
     "ok": true,
-    "records": 11
+    "records": 12
   },
   "lifecycle": {
     "starts": 4,
     "stops": 0,
     "unclean_restarts": 4
   },
-  "audit_log": "C:\\Users\\lomel\\AppData\\Local\\Temp\\aidf_sup_lrkzgdju\\audit\\chain.jsonl",
+  "audit_log": "C:\\Users\\lomel\\AppData\\Local\\Temp\\aidf_sup_oy4o_6r5\\audit\\chain.jsonl",
   "note": "child is killed with kill(), i.e. no graceful shutdown — the same shape as a native crash; the supervisor is what keeps the service alive"
 }

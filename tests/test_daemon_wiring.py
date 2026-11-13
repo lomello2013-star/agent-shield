@@ -178,3 +178,12 @@ def test_action_without_target_is_skipped(tmp_path):
     assert d.pending_actions == {}
     assert response.executed == []
     d.stop()
+
+
+def test_service_entry_wires_response_and_ipc():
+    """P0: the product entry must not run the daemon without the response layer."""
+    import pathlib
+    src = pathlib.Path("scripts/aidf_service.py").read_text(encoding="utf-8")
+    assert "ResponseExecutor(" in src
+    assert "daemon.response =" in src
+    assert "build_daemon_registry(" in src

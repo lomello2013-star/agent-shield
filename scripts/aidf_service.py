@@ -93,7 +93,9 @@ _HANDLER = HANDLER(_control)
 
 def _run_daemon() -> int:
     from core.daemon import Daemon, DaemonConfig
+    from core.ipc import RpcServer, build_daemon_registry, default_address
     from core.normalize import HostContext
+    from core.response import QuarantineStore, ResponseExecutor
 
     os.makedirs(DATA_ROOT, exist_ok=True)
     host = HostContext(host_id=os.environ.get("COMPUTERNAME", "host"),
@@ -101,6 +103,27 @@ def _run_daemon() -> int:
     config = DaemonConfig(sources=["win.eventlog", "win.defender"],
                           thresholds={"heartbeat_timeout_s": 60})
     daemon = Daemon(DATA_ROOT, config=config, host=host, serve_http=False)
+    # Response layer: without this the gate could only count actions. The key is
+    # provisioned in the data root (production: DPAPI/TPM, per docs/self-protection).
+    key_path = os.path.join(DATA_ROOT, "quarantine.key")
+    if not os.path.exists(key_path):
+        with open(key_path, "wb") as fh:
+            fh.write(os.urandom(32))
+    quarantine = QuarantineStore(os.path.join(DATA_ROOT, "quarantine"), key_path=key_path)
+    daemon.response = ResponseExecutor(daemon.confirmations, quarantine=quarantine)
+    daemon.response_quarantine = quarantine
+    # IPC is enabled only when a token is provisioned; without it the CLI cannot
+    # authenticate, and the service still detects (fail-safe, no silent bypass).
+    rpc = None
+    admin_token = os.environ.get("AIDF_ADMIN_TOKEN", "")
+    if admin_token:
+        tokens = {admin_token: "admin"}
+        operator_token = os.environ.get("AIDF_OPERATOR_TOKEN", "")
+        if operator_token:
+            tokens[operator_token] = "operator"
+        authkey = os.environ.get("AIDF_AUTHKEY", "").encode() or os.urandom(32)
+        rpc = RpcServer(default_address(), authkey, tokens, build_daemon_registry(daemon))
+        rpc.start()
     daemon.start()
     _report(SERVICE_RUNNING, SERVICE_ACCEPT_STOP | SERVICE_ACCEPT_SHUTDOWN)
     try:
@@ -108,6 +131,8 @@ def _run_daemon() -> int:
             daemon.tick()
             time.sleep(0.05)
     finally:
+        if rpc is not None:
+            rpc.stop()
         daemon.stop()
     return 0
 

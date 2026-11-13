@@ -4,12 +4,12 @@
     "kernel": "6.18.54.1-microsoft-standard-WSL2"
   },
   "helper_output": [
-    "{\"writes\":5,\"parent\":1467}",
-    "{\"execs\":5,\"child\":1468}"
+    "{\"writes\":5,\"parent\":1461}",
+    "{\"execs\":5,\"child\":1462}"
   ],
   "submitted": {
     "linux.memory": 5,
-    "linux.mprotect": 5
+    "linux.mprotect": 6
   },
   "adapter_errors": [],
   "pid_group_alerts": 0,

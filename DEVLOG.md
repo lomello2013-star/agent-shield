@@ -2824,6 +2824,23 @@ parameters=2
 
 ---
 
+## [2026-11-14 00:45] P0-3: атрибуция коммитов и product-проводка response [report]
+
+**Действие**: исправить запись 00:30 и закрыть разрыв, найденный третьим P0: response/confirmations не были подключены в реальном входе.
+**Факты**:
+- `core/ml.py`, `core/ipc.py` вошли в `300062c`; `f74b76c` — daemon/pipeline/schemas/tests. Запись 00:30 перечисляла совокупность двух коммитов; хэша `f74b76c` в журнале не было.
+- `scripts/aidf_service.py` создавал `Daemon` без `response=` и без IPC → `Confirmation` не создавался, `confirm` недостижим. Исправлено: сервис создаёт `QuarantineStore` + `ResponseExecutor`, подключает `daemon.response`, запускает `RpcServer` с `build_daemon_registry` при наличии `AIDF_ADMIN_TOKEN`; без токена защита работает, IPC выключен (fail-safe).
+- Windows-источники не дают `actor_pid` для 7045 → suspend пропускается (`action_skipped`); это ограничение источника, а не регрессия.
+- Прочее из P0-3: ESC 0x1b в status.md устранён санитайзом; f04/f01 артефакты теперь читаются (`ARTIFACT_OF`); source-колонка challenger исправлена.
+**Числа**: pytest **460 passed**; cargo **133 passed**; `run_all` **29/29**; `docs_consistency` **15/15**; ESC=false.
+**Вердикт**: product-проводка response/confirm закрыта; Windows `actor_pid` и строгость `docs_consistency` (2 константно-True, условные проверки) остаются открытыми.
+**Проверка**: `pytest -o addopts="" -q` → 460; `cargo test` → 133; `run_all` → 29/29; `test_service_entry_wires_response_and_ipc` — зелёный; ESC=false.
+**Статус**: verified (проводка), open (Windows actor_pid, docs_consistency strictness)
+**Actor**: agent
+**Run_id**: p0-3-correction-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

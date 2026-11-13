@@ -15,12 +15,12 @@
   "max_verdicts_per_event": 1,
   "duplicate_verdicts": false,
   "latency_kernel_to_user_ms": {
-    "p50": 11.709,
-    "p95": 20.875
+    "p50": 14.297,
+    "p95": 22.974
   },
   "latency_pipeline_ms": {
-    "p50": 0.121,
-    "p95": 0.214
+    "p50": 0.126,
+    "p95": 0.255
   },
   "loss": 0,
   "ledger_ok": true,

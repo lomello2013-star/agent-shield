@@ -51,8 +51,8 @@ def run_command(argv: list[str], cwd: str = HERE, timeout: int = 600,
     # Child stderr may contain NUL bytes (native-crash probes); strip them so the
     # generated status.md stays valid text (P0-6).
     return (completed.returncode,
-            completed.stdout.replace("\x00", ""),
-            completed.stderr.replace("\x00", ""))
+            completed.stdout.replace("\x00", "").replace("\x1b", ""),
+            completed.stderr.replace("\x00", "").replace("\x1b", ""))
 
 
 def step_tests() -> Step:
@@ -163,6 +163,8 @@ ARTIFACT_OF = {
     "windows_e2e.py": "windows_e2e.json",
     "windows_defender_e2e.py": "windows_defender.json",
     "stage12_chaos.py": "stage12_chaos.json",
+    "f04_measure.py": "f04_r2_margin.json",
+    "f01_ppv_fit.py": "f01_confidence.json",
 }
 
 
