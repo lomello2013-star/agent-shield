@@ -2951,6 +2951,19 @@ parameters=2
 
 ---
 
+## [2026-11-14 02:30] Ответ на ревью Gemini: сервис опрашивает коллекторы; счётчик тестов сверяется [auto_review]
+
+**Действие**: разобрано внешнее ревью Gemini (`docs/reviews/opencode-hard-gemini-2026-11-14.md`, escalate). Подтверждено и исправлено: (1) сервис не опрашивал коллекторы (`collect_interval_s=0.0`) → в `aidf_service.py` добавлен `collect_interval_s` (env `AIDF_COLLECT_INTERVAL_S`, дефолт 5 с) + тест-гвард; (2) `docs_consistency.status/tests-step-ok` сравнивал только флаг → теперь сверяет число passed в status.md и run_all.json; (3) IPC oversize: клиент получает BrokenPipe, а не -32600 — гарантия уточнена в жёстком промпте (сервер жив, соединение закрывается; лимит до десериализации), код не менялся.
+**Файлы**: `scripts/aidf_service.py`, `scripts/docs_consistency.py`, `tests/test_daemon_wiring.py`, `docs/reviews/opencode-review-prompt-hard.md`.
+**Числа**: pytest **460 passed** (на этом хосте; у Gemini 459+1 из-за symlink-skip без прав); cargo **133**; `run_all` **29/29**; `docs_consistency` **13/13**; baseline перегенерирован на HEAD `735f855`.
+**Вердикт**: product-блокер (сервис не собирал события) закрыт; IPC-семантика уточнена; остаются Windows `actor_pid` и реальный сервисный прогон.
+**Проверка**: `pytest -o addopts="" -q` → 460; `run_all` → 29/29; `docs_consistency` → 13/13; `test_service_entry_wires_response_and_ipc` (с `collect_interval_s=`) зелёный.
+**Статус**: verified
+**Actor**: agent
+**Run_id**: gemini-response-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,
