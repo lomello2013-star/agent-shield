@@ -2751,6 +2751,21 @@ parameters=2
 
 ---
 
+## [2026-11-13 23:16] Уточнение к записи 23:35: две «опровергнутые» находки были реальными и исправлены [report]
+
+**Действие**: исправить формулировку записи 23:35, чтобы журнал соответствовал состоянию **на момент ревью**, а не пост-фикс состоянию.
+**Факты**:
+- На момент ревью `rules/base.json` содержал `"action": {"regex": "(?i)service"}` — правило матчило `service_state`. Находка ревьюера была **верной**; исправлено на `"in": ["service_create", "service_change"]` (коммит `959dfdc`, `rules/base.json` −1/+1).
+- На момент ревью `verify_immutable(values=None)` сравнивал `snapshot()` с самим собой (тавтология). Находка была **верной**; исправлено: сравнение с `docs/policy-contract.json` + fingerprint + кросс-язычный тест (коммит `959dfdc`, `core/policy.py` +54, `docs/policy-contract.json` новый).
+- Формулировка «опровергнуто проверкой» описывает **пост-фикс** состояние. Это ошибка атрибуции, а не ошибка ревьюера.
+**Проверка**: `git show 959dfdc -- core/policy.py rules/base.json docs/policy-contract.json`; `pytest` — **451 passed**; `run_all` — **29/29**; `docs/status.md` — без NUL.
+**Решение / следующий шаг**: считать обе находки **подтверждёнными и исправленными**. Остальные пункты записи 23:35 (коллекторы/response, non-dict IPC, стабильный счётчик, коммит) — верны.
+**Статус**: verified
+**Actor**: agent
+**Run_id**: review-correction-2026-11-13
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,
