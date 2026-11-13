@@ -59,10 +59,16 @@ def main() -> int:
     # still exiting 0 — that hid real gaps (P0-3).
     steps = art("run_all.json").get("steps") or []
     tests_step = next((s for s in steps if s.get("name") == "tests"), None)
+    status_count = re.search(r"\| tests \| ok \| (\d+) passed", status)
+    step_detail = tests_step.get("detail", "") if tests_step else ""
+    step_count = re.search(r"(\d+) passed", step_detail)
+    counts_match = bool(status_count and step_count
+                        and status_count.group(1) == step_count.group(1))
     check("status/tests-step-ok",
-          tests_step is not None and tests_step.get("ok") is True,
+          tests_step is not None and tests_step.get("ok") is True and counts_match,
           "run_all.json missing tests step" if tests_step is None
-          else "tests step result from the current run")
+          else (f"status={status_count.group(1) if status_count else '?'} "
+                f"artifact={step_count.group(1) if step_count else '?'}"))
 
     soak_events = (art("soak_report.json").get("load") or {}).get("events_fed")
     check("status/soak-events",

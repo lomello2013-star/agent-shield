@@ -102,7 +102,11 @@ def _run_daemon() -> int:
                        os="windows", version="10", arch="x64")
     config = DaemonConfig(sources=["win.eventlog", "win.defender"],
                           thresholds={"heartbeat_timeout_s": 60})
-    daemon = Daemon(DATA_ROOT, config=config, host=host, serve_http=False)
+    # Without a positive interval the collector thread never starts and the service
+    # would detect nothing (P0-11). 5 s is the default poll cadence.
+    collect_interval = float(os.environ.get("AIDF_COLLECT_INTERVAL_S", "5"))
+    daemon = Daemon(DATA_ROOT, config=config, host=host, serve_http=False,
+                    collect_interval_s=collect_interval)
     # Response layer: without this the gate could only count actions. The key is
     # provisioned in the data root (production: DPAPI/TPM, per docs/self-protection).
     key_path = os.path.join(DATA_ROOT, "quarantine.key")

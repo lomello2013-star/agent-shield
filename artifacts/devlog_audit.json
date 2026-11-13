@@ -1,18 +1,18 @@
 {
-  "generated_at": "2026-11-13T21:42:53.838150+00:00",
-  "entries": 103,
-  "complete": 81,
-  "incomplete": 22,
-  "completeness_pct": 78.6,
+  "generated_at": "2026-11-13T22:58:18.894068+00:00",
+  "entries": 107,
+  "complete": 84,
+  "incomplete": 23,
+  "completeness_pct": 78.5,
   "by_type": {
     "config": 4,
-    "experiment": 66,
+    "experiment": 68,
     "escalation": 1,
     "decision": 2,
-    "code": 22,
+    "code": 23,
     "docs": 1,
     "report": 4,
-    "auto_review": 3
+    "auto_review": 4
   },
   "missing_artifacts": [
     "dev_keys.json"
@@ -179,6 +179,15 @@
       "missing": [
         "**Числа",
         "**Вердикт"
+      ]
+    },
+    {
+      "time": "2026-11-14 01:55",
+      "title": "Жёсткое внешнее ревью P0 (Koda CLI / Gemini)",
+      "missing": [
+        "**Действие",
+        "**Числа",
+        "**Проверка"
       ]
     }
   ],

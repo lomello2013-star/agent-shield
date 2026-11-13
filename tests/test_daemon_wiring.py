@@ -187,3 +187,4 @@ def test_service_entry_wires_response_and_ipc():
     assert "ResponseExecutor(" in src
     assert "daemon.response =" in src
     assert "build_daemon_registry(" in src
+    assert "collect_interval_s=" in src

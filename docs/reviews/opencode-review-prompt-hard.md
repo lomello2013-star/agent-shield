@@ -51,8 +51,10 @@
    правка metrics), нет fit/train в core/*.py и rust/src/*.rs, shadow_only.
 8. Fail-safe: таймаут→reject; terminate refused; destructive без оператора queued;
    «призрак approve» не исполняется.
-9. IPC: viewer→kill_switch = -32002; 2 МиБ dict → -32600 и сервер жив;
-   НЕ-dict кадр → -32600 и НЕ AttributeError/обрыв; лимит до десериализации.
+9. IPC: viewer→kill_switch = -32002; 2 МиБ dict → **сервер жив**, соединение
+   закрывается (клиент может получить BrokenPipe; JSON-RPC -32600 не
+   гарантируется — лимит срабатывает до десериализации); НЕ-dict кадр → -32600
+   и НЕ AttributeError/обрыв.
 10. Правила: 28 правил, 28 фикстур, lint=0; WIN-SERVICE-CREATE-007 НЕ матчит
     action="service_state" и матчит "service_create"/"service_change".
 11. Демон: DaemonConfig.sources — реализованы ли коллекторы? подключены ли

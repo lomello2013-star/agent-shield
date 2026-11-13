@@ -15,12 +15,12 @@
     "LINUX-EXEC-MEM-107": 100
   },
   "latency_kernel_to_user_ms": {
-    "p50": 15.155,
-    "p95": 24.103
+    "p50": 12.321,
+    "p95": 24.519
   },
   "latency_pipeline_ms": {
-    "p50": 0.135,
-    "p95": 0.359
+    "p50": 0.138,
+    "p95": 0.277
   },
   "loss": 0,
   "ledger_ok": true,
