@@ -5,22 +5,22 @@
   },
   "phases": {
     "correlated": {
-      "helper": "{\"writes\":5,\"execs\":5,\"child\":1989}",
+      "helper": "{\"writes\":5,\"execs\":5,\"child\":1538}",
       "corr_alerts": 5,
       "signal_alerts": 5,
-      "events": 30
+      "events": 10
     },
     "mprotect_only": {
       "helper": "{\"mprotects\":20}",
       "corr_alerts": 0,
-      "signal_alerts": 25,
-      "events": 60
+      "signal_alerts": 20,
+      "events": 30
     },
     "inject_only": {
-      "helper": "{\"writes\":20,\"child\":2031}",
+      "helper": "{\"writes\":20,\"child\":1545}",
       "corr_alerts": 0,
-      "signal_alerts": 0,
-      "events": 80
+      "signal_alerts": 1,
+      "events": 51
     }
   },
   "corr_alerts_correlated": 5,

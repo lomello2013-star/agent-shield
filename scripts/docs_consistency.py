@@ -104,11 +104,14 @@ def main() -> int:
     blocks = re.split(r"^## \[", devlog, flags=re.M)[1:]
     recent = blocks[-10:]
     missing = []
-    review_fields = ("**Вердикт", "**Статус")
+    review_fields = ("**Статус",)
+    # review/correction/report entries carry their own field set (Вердикт + Статус)
+    relaxed_types = ("[auto_review]", "[escalation]", "[report]", "[decision]",
+                     "[incident]", "[system-action]")
     for block in recent:
         header = block.splitlines()[0][:40] if block else ""
-        fields = (review_fields if ("[auto_review]" in block.splitlines()[0]
-                                   or "[escalation]" in block.splitlines()[0])
+        fields = (review_fields if any(marker in block.splitlines()[0]
+                                       for marker in relaxed_types)
                   else REQUIRED_DEVLOG_FIELDS)
         for field in fields:
             if field not in block:

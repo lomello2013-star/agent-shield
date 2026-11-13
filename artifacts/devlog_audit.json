@@ -1,18 +1,18 @@
 {
-  "generated_at": "2026-11-13T20:13:01.239323+00:00",
-  "entries": 97,
-  "complete": 76,
-  "incomplete": 21,
-  "completeness_pct": 78.4,
+  "generated_at": "2026-11-13T20:35:49.023032+00:00",
+  "entries": 100,
+  "complete": 78,
+  "incomplete": 22,
+  "completeness_pct": 78.0,
   "by_type": {
-    "config": 3,
+    "config": 4,
     "experiment": 66,
     "escalation": 1,
     "decision": 2,
     "code": 20,
     "docs": 1,
-    "report": 2,
-    "auto_review": 2
+    "report": 3,
+    "auto_review": 3
   },
   "missing_artifacts": [
     "dev_keys.json"
@@ -171,6 +171,14 @@
         "**Действие",
         "**Числа",
         "**Проверка"
+      ]
+    },
+    {
+      "time": "2026-11-13 23:16",
+      "title": "Уточнение к записи 23:35: две «опровергнутые» находки были реальными и исправлен",
+      "missing": [
+        "**Числа",
+        "**Вердикт"
       ]
     }
   ],
