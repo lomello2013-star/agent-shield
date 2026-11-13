@@ -1,3 +1,0 @@
-{"seq": 1, "ts": "2026-11-13T19:50:50.731490+00:00", "type": "config_applied", "payload": {"fingerprint": "5dad3945fe5a32009b41c916d9cc641475c06548f7b65bc44ccbb0ad62f65323"}, "prev": "0000000000000000000000000000000000000000000000000000000000000000", "hash": "59dbadddd00344b205cc5ef72e56400a2f4e24cb148829efc9cb1c3cff26c70e"}
-{broken}
-{"seq": 2, "ts": "2026-11-13T19:50:50.749538+00:00", "type": "daemon_stop", "payload": {"pid": 10816, "inherited_seq": 0}, "prev": "59dbadddd00344b205cc5ef72e56400a2f4e24cb148829efc9cb1c3cff26c70e", "hash": "066b455191737e76543cdebf14a7f6b936bf68de61c9970b5416cfbd7aab6214"}

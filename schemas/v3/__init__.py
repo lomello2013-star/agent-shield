@@ -357,13 +357,13 @@ def export_json_schemas(directory: str) -> list[str]:
         schema = model.model_json_schema()
         schema["$schema"] = "https://json-schema.org/draft/2020-12/schema"
         path = os.path.join(directory, f"{name}.schema.json")
-        with open(path, "w", encoding="utf-8") as fh:
+        with open(path, "w", encoding="utf-8", newline="\n") as fh:
             json.dump(schema, fh, indent=2, ensure_ascii=False)
         written.append(path)
         fname = os.path.basename(path)
         index[name] = fname
     index_path = os.path.join(directory, "index.json")
-    with open(index_path, "w", encoding="utf-8") as fh:
+    with open(index_path, "w", encoding="utf-8", newline="\n") as fh:
         json.dump({"schema_version": SCHEMA_VERSION, "files": index}, fh, indent=2, ensure_ascii=False)
     written.append(index_path)
     return written
