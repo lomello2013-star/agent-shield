@@ -2881,6 +2881,49 @@ parameters=2
 
 ---
 
+## [2026-11-14 01:55] Жёсткое внешнее ревью P0 (Koda CLI / Gemini) [auto_review]
+
+**Вердикт**: escalate
+**Reviewer_model**: gemini (Google, Koda CLI); **Author_model**: deepseek-v4-pro
+**Изоляция**: другой вендор = да; свежий контекст = да; temperature = 0; к рассуждениям автора доступа не было; та же машина/пользователь (общая ФС), read-only обеспечен дисциплиной.
+**Факты**: pytest `-o addopts="" -q` → **459 passed, 1 skipped** (182.47 с; skip: test_quarantine_rejects_symlink — symlink без привилегий; первый прогон падал на cleanup pytest-of-lomel, WinError 5, обошёл через чистый --basetemp). `cargo test --manifest-path rust/Cargo.toml` → **133 passed, 0 failed** (совпало с ожиданием). `docs_consistency.py` → **13/13 passed**; проверка status/tests-step-ok сверяет только булев флаг, не число passed. `verify_immutable()` → fingerprint `d8ae913401ea…`, сравнивает с внешним docs/policy-contract.json (не тавтология); `git diff core/policy.py docs/policy-contract.json` пуст; кросс-язычный тест есть (py-текстовый литерал + rust fingerprint_matches_python_artifact). Схемы: экспорт 21 файл = 21 закоммиченных, drift 0; drift-guard test_committed_json_schemas_match_models проходит. DEVLOG↔артефакты: 12 сверок, несошедшаяся — только число тестов (см. расхождения). ML: verify_pack(public_key=None) → untrusted_key (fail-closed); tampered/unsigned/wrong-key/invalid-manifest — 10 py + 10 rust passed; metrics в canonical payload; fit/train grep по core/*.py и rust/src/*.rs = 0; gate shadow_only. Fail-safe: timeout→reject, terminate refused, destructive без оператора queued, «призрак approve» → KeyError, response_executed=0. IPC живой прогон: viewer→kill_switch = **−32002**; не-dict кадр → **−32600**, соединение живёт; evil-pickle 2 МБ не десериализован (лимит до unpickle). Правила: **28 правил, lint=0, 28 фикстур** (rust/tests/data/rule_cases.json, parity py+rust); WIN-SERVICE-CREATE-007: service_create/service_change → hit(high), **service_state → NO HIT**. Гигиена: git status до аудита = 1 запись; NUL в docs/status.md = False.
+**Расхождения**: 1) docs/status.md и run_all.json заявляют «460 passed», факт 459 passed + 1 skipped (baseline 2026-11-13T21:42Z старее HEAD 03c2287 22:14Z). 2) IPC oversize: 2 МиБ dict у клиента даёт **BrokenPipeError**, а не обещанный −32600 (сервер жив; recv_bytes рвёт канал до ответа). 3) Демон: `aidf_service.py` не передаёт `collect_interval_s` (дефолт 0.0) → после `start()` `_collector_thread=None`, `tick()` не вызывает `collect_once()` — в сервисном режиме коллекторы **не опрашиваются** (collect_once вручную даёт 100 записей); харнессы интервал выставляют явно. 4) docs_consistency 13/13 не детектирует п. 1 (флаг вместо числа).
+**Не удалось**: linux_*-e2e (нет Linux-окружения); WDAC/RTP/Defender-системные (нет admin в сессии); воспроизведение 0xC0000005 и soak 6 ч (вне времени аудита). Первый прогон pytest в стандартный basetemp — PermissionError WinError 5.
+**Побочный эффект**: запуск обязательного docs_consistency.py перезаписал artifacts/docs_consistency.json (diff только generated_at); git status после аудита = 2 записи.
+**Статус**: verified (все P0-проверки выполнены прогонами, кроме перечисленного в «Не удалось»)
+**Actor**: reviewer-gemini
+**Run_id**: opencode-hard-2026-11-14
+**Отчёт**: docs/reviews/opencode-hard-gemini-2026-11-14.md
+
+---
+
+## [2026-11-14 02:05] Linux-VM с Secure Boot, IMA и fapolicyd поднята из cloud-образа [experiment]
+
+**Действие**: вторая лабораторная VM собрана не установщиком, а **cloud-образом** Ubuntu 24.04: qcow2 сконвертирован в VHDX (`qemu-img` в WSL), расширен до 40 ГБ, seed-ISO с cloud-init (CIDATA) создан `pycdlib`, SSH-ключ и пароль дополнительно инъецированы в образ офлайн (mount в WSL), после чего VM загружена с **включённым Secure Boot**.
+**Файлы**: `D:\vm\linux\aidf-linux-disk.vhdx` (40 ГБ), `D:\vm\linux\seed.iso` (CIDATA), `D:\vm\linux\user-data-cloud`, `D:\vm\linux\fix_guest.sh`, `D:\vm\linux\set_shadow.py`, ключ `D:\vm\linux\id_ed25519`.
+
+**Числа**:
+| Параметр | Значение |
+|---|---|
+| Гость | **Ubuntu 24.04.5 LTS**, kernel **6.8.0-147-generic**, 3 ГБ RAM, 2 vCPU |
+| Secure Boot | **включён** в госте: `secureboot: Secure boot enabled`, ядро **locked down** |
+| IMA | `ima_policy=tcb ima_appraise=enforce`, алгоритм sha256, **3 713 измерений** в `ascii_runtime_measurements` |
+| fapolicyd | active, `permissive = 0`, **60 737 записей** в trust DB (debdb) |
+| auditd | active |
+| SSH | по ключу, пользователь `aidf`, IP выдаётся DHCP (172.29.15.237 на момент проверки) |
+| Проверка исполнения | копия `/bin/ls` в `/tmp`: **rc=126** (отказ); копии `/bin/true` и `/bin/id`: rc=0 — **механизм отказа не изолирован** |
+
+**Вердикт: полигон для блокера C готов: Secure Boot + lockdown + IMA в enforce + fapolicyd с trustdb.** Но отказ при исполнении получен только в одной конфигурации (rc=126), а в двух других копии системных бинарей запускались — значит, отказ пришёл не от того механизма, который я предполагал (вероятнее IMA appraisal на root-owned копии, а не fapolicyd: fapolicyd доверяет по хешу содержимого, и копия `/bin/ls` хеш-совпадает с доверенной).
+**Decision**: отдельным экспериментом изолировать IMA и fapolicyd: (1) fapolicyd остановлен → копия root-owned бинаря; (2) fapolicyd работает, файл с уникальным содержимым; (3) IMA: файл, изменённый после измерения. Только после этого публиковать «blocked/denied» как метрику.
+**Найденные дефекты**: 1) cloud-init из seed-ISO **не применил** ключи (`authorized_keys` пустой) — пришлось инжектировать офлайн; 2) в cloud-образе нет `hyperv-daemons`, поэтому KVP не отдаёт IP — искать адрес по MAC в ARP; 3) `fapolicyd` в Ubuntu 24.04 не создаёт `/etc/fapolicyd/rules.d` — правила лежат в `/usr/share/fapolicyd/sample-rules`, их надо копировать; 4) `qemu-img resize` не поддерживает VHDX — расширять через `Resize-VHD`.
+**Ограничения (честно)**: 1) IMA appraisal и fapolicyd не разделены экспериментом; 2) «3 713 измерений» — это факт активности, а не покрытие; 3) E6 (rootkit) этим не закрывается — нужна kernel-видимость; 4) VM без TPM (vTPM не включал), поэтому измерений PCR нет; 5) IP меняется при каждом старте.
+**Проверка**: `ssh aidf@<ip>` → `uname -r` 6.8.0-147-generic, `/etc/os-release` Ubuntu 24.04.5; `dmesg` → `Secure boot enabled`; `/proc/cmdline` → `ima_policy=tcb ima_appraise=enforce`; `wc -l /sys/kernel/security/ima/ascii_runtime_measurements` → 3 713; `journalctl -u fapolicyd` → `Entries in trust DB: 60737`.
+**Статус**: Linux-VM готова; IMA active, fapolicyd active; отказ исполнения требует изоляции
+**Actor**: agent
+**Run_id**: linux-vm-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,
