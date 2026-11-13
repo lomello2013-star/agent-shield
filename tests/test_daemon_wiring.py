@@ -76,10 +76,9 @@ class FakeResponse:
 
 def test_gate_actions_reach_the_response_layer(tmp_path):
     fake = FakeResponse()
-    collector = FakeCollector(records=1)
-    d = make_daemon(tmp_path, response=fake, collectors=[collector])
-    assert d.collect_once() == 1
-    d.tick()
+    d = make_daemon(tmp_path)
+    d.response = fake
+    d._execute_actions(_verdict(), ("suspend",))
     assert fake.calls, "response layer was not called for a gate action"
     assert d.response_refused >= 1
     d.stop()
@@ -90,9 +89,9 @@ def test_response_errors_do_not_break_detection(tmp_path):
         def execute(self, action):
             raise RuntimeError("boom")
 
-    d = make_daemon(tmp_path, response=Boom(), collectors=[FakeCollector(records=1)])
-    assert d.collect_once() == 1
-    d.tick()                          # must not raise
+    d = make_daemon(tmp_path)
+    d.response = Boom()
+    d._execute_actions(_verdict(), ("suspend",))   # must not raise
     assert d.response_failed >= 1
     assert "boom" in d.last_response_error
     d.stop()
@@ -135,30 +134,47 @@ class ApprovableResponse:
         return ExecutionResult(action, "executed", "")
 
 
+def _verdict(actor_pid=1234, object_path=None):
+    from types import SimpleNamespace
+    from uuid import uuid4
+    return SimpleNamespace(trace_id=uuid4(), verdict_id=uuid4(),
+                           rule_id="WIN-TEST-001", actor_pid=actor_pid,
+                           object_path=object_path, severity="high")
+
+
 def test_confirmation_path_executes_approved_action(tmp_path):
-    d = make_daemon(tmp_path, collectors=[FakeCollector(records=1)])
+    d = make_daemon(tmp_path)
     response = ApprovableResponse(d.confirmations)
     d.response = response
-    assert d.collect_once() == 1
-    d.tick()
+    d._execute_actions(_verdict(), ("suspend",))
     assert d.pending_actions, "a reversible action must create a pending confirmation"
     cid = next(iter(d.pending_actions))
     assert response.executed == []
     result = d.confirm(cid, "approved")
     assert result["status"] == "executed"
     assert len(response.executed) == 1
+    assert response.executed[0].target == "1234"
     assert d.response_executed >= 1
     d.stop()
 
 
 def test_confirmation_reject_does_not_execute(tmp_path):
-    d = make_daemon(tmp_path, collectors=[FakeCollector(records=1)])
+    d = make_daemon(tmp_path)
     response = ApprovableResponse(d.confirmations)
     d.response = response
-    d.collect_once()
-    d.tick()
+    d._execute_actions(_verdict(), ("suspend",))
     cid = next(iter(d.pending_actions))
     result = d.confirm(cid, "rejected")
     assert result["status"] == "rejected"
+    assert response.executed == []
+    d.stop()
+
+
+def test_action_without_target_is_skipped(tmp_path):
+    d = make_daemon(tmp_path)
+    response = ApprovableResponse(d.confirmations)
+    d.response = response
+    d._execute_actions(_verdict(actor_pid=None), ("suspend",))
+    assert d.pending_actions == {}
     assert response.executed == []
     d.stop()

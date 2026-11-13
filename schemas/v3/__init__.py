@@ -175,6 +175,8 @@ class Verdict(_Base):
     severity: Literal["info", "low", "medium", "high", "critical"]
     reason_code: str
     reason_text: str
+    actor_pid: int | None = None      # process-targeted actions (suspend/resume)
+    object_path: str | None = None    # file-targeted actions (quarantine)
 
 
 class RollbackRef(_Base):

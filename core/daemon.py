@@ -275,13 +275,23 @@ class Daemon:
         from schemas.v3 import Action
         for action_type in actions:
             destructive = action_type in {"terminate", "delete"}
+            if action_type in ("suspend", "resume"):
+                target = str(verdict.actor_pid) if verdict.actor_pid is not None else ""
+            elif action_type == "quarantine":
+                target = verdict.object_path or ""
+            else:
+                target = str(verdict.rule_id or "")
+            if not target:
+                self.log.append("action_skipped", {"action": action_type,
+                                                   "reason": "no_target"})
+                continue
             level = ("critical_system" if destructive
                      else "protected_dir" if action_type == "quarantine" else "normal")
             confirmation = self.confirmations.request(
                 action_id=str(uuid4()), level=level, destructive=destructive)
             action = Action(
                 action_id=uuid4(), trace_id=verdict.trace_id, verdict_id=verdict.verdict_id,
-                type=action_type, target=str(verdict.rule_id or ""),
+                type=action_type, target=target,
                 reversible=not destructive, requires_confirmation=True,
                 confirmation_id=confirmation.confirmation_id, status="pending",
                 platform_effect="", rollback=None)

@@ -95,6 +95,30 @@
     "reason_text": {
       "title": "Reason Text",
       "type": "string"
+    },
+    "actor_pid": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Actor Pid"
+    },
+    "object_path": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Object Path"
     }
   },
   "required": [

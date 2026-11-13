@@ -5,7 +5,7 @@
   },
   "phases": {
     "correlated": {
-      "helper": "{\"writes\":5,\"execs\":5,\"child\":1429}",
+      "helper": "{\"writes\":5,\"execs\":5,\"child\":1415}",
       "corr_alerts": 5,
       "signal_alerts": 5,
       "events": 10
@@ -13,13 +13,13 @@
     "mprotect_only": {
       "helper": "{\"mprotects\":20}",
       "corr_alerts": 0,
-      "signal_alerts": 20,
-      "events": 30
+      "signal_alerts": 21,
+      "events": 31
     },
     "inject_only": {
-      "helper": "{\"writes\":20,\"child\":1440}",
+      "helper": "{\"writes\":20,\"child\":1433}",
       "corr_alerts": 0,
-      "signal_alerts": 1,
+      "signal_alerts": 0,
       "events": 51
     }
   },
