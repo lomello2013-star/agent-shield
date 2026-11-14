@@ -9,7 +9,6 @@ of truth; this is a UI adapter, not a second policy engine.
 from __future__ import annotations
 
 import json
-import os
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path

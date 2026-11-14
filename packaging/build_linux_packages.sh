@@ -49,6 +49,11 @@ if [ -n "$OBJECTS" ]; then
         [ -e "$obj" ] || continue
         install -m 0644 "$obj" "$STAGE/opt/aidf/"
     done
+    for extra in objects.sha256 objects.sha256.sig objects.sha256.pub; do
+        if [ -f "$ROOT/packaging/linux/$extra" ]; then
+            install -m 0644 "$ROOT/packaging/linux/$extra" "$STAGE/opt/aidf/$extra"
+        fi
+    done
 fi
 
 cat > "$STAGE/DEBIAN/control" <<EOF

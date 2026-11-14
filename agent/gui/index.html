@@ -263,10 +263,10 @@
     list.innerHTML = items.map(item => {
       const cid = esc(item.confirmation_id);
       const level = esc(item.level || "normal");
-      const target = esc(item.target || item.action_type || "action");
+      const target = esc(item.target || item.action || "action");
       return `<div class="approval"><div class="top"><div class="title">${target}</div>` +
         `<span class="badge ${level === "critical_system" ? "bad" : "warn"}">${level}</span></div>` +
-        `<div class="meta mono">${esc(item.reason || item.action_type || "")} · ${cid.slice(0, 8)}…</div>` +
+        `<div class="meta mono">${esc(item.action || "")} · ${cid.slice(0, 8)}…</div>` +
         `<div class="row"><button class="primary" data-confirm="${cid}" data-decision="approved">Approve</button>` +
         `<button class="danger" data-confirm="${cid}" data-decision="rejected">Deny</button></div></div>`;
     }).join("");

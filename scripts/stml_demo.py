@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """Local STML demo server with a seeded fleet (visual review only).
 
     python scripts/stml_demo.py

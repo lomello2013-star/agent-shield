@@ -74,6 +74,7 @@ rules/`, `loader`, `*.bpf.o` в `/opt/aidf`, пишет audit в
 ## Ограничения
 
 - запуск только root; fapolicyd нужно останавливать в lab;
-- нет systemd-юнита, подписи, ротации логов и очереди при переполнении;
-- объекты собираются вручную (`clang`/`gcc`), не входят в пакет;
+- объекты собираются `scripts/build_linux_ebpf.sh` и упаковываются в deb/rpm
+  через `packaging/build_linux_packages.sh --objects`;
+- без eBPF используй auditd-путь: [linux-auditd.md](linux-auditd.md);
 - это прототип коллектора, не production-сервис.
