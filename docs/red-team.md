@@ -92,8 +92,9 @@ vssadmin, local user) помечены catalog-only.
 (002), temp cmd (001), **scheduled task (006)**, **Run key (005)**,
 **Defender exclusion (009)**, **WMI subscription (018)**, masquerade (011).
 **Пропущены (честно):**
-- Downloads exec (WIN-17) — правило 016 требует `integrity.verified=false`;
-  `calc.exe` подписан, поэтому это корректный non-match, а не пропуск;
+- Downloads exec (WIN-17) — 016 остаётся для unsigned; добавлено
+  alert-правило **`WIN-DOWNLOADS-EXEC-016A`** (medium, signed/unsigned) и
+  fixture; live rerun WIN-17 не завершён из-за IPC-зависания сервиса;
 - service start (WIN-18) — 7036 не даёт нового 7045.
 
 **Defender exclusion (WIN-08) закрыт:** 5007 писался, но
@@ -109,8 +110,9 @@ WIN-10 больше не даёт `INJECT-010`.
 **Ambient 7045 больше не FP:** правило 007 сужено на `users/temp/tmp/
 programdata`; кроме того, атрибуция идёт по `event_ts` из audit
 (`Get-VerdictsSince`), поэтому запоздавшие события не приписываются контролю.
-Общая детекция service install без suspicious-пути теперь **не** даёт high —
-alert-правило для generic pending (D-001).
+Общая детекция service install без suspicious-пути теперь **не** даёт high;
+alert-only **`WIN-SERVICE-CREATE-007A`** (low, prevention=false) добавлен для
+generic/ambient и не блокирует (D-001).
 
 Это не «9/11 эффективности»: каталог показывает **source gaps**, а не только
 качество правил; два пропуска объяснены (signed non-match и 7036). Для E1–E6

@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+﻿use std::collections::HashMap;
 use std::path::PathBuf;
 
 use aidf_core::rules::{load_rules, RuleEngine};
@@ -24,7 +24,7 @@ fn every_rule_fires_on_its_fixture_and_stays_quiet_on_benign() {
     .unwrap();
     let by_id: HashMap<&str, &aidf_core::rules::Rule> =
         rules.iter().map(|rule| (rule.id.as_str(), rule)).collect();
-    assert_eq!(cases.len(), 28);
+    assert_eq!(cases.len(), 30);
 
     for case in cases {
         let rule_id = case["rule_id"].as_str().unwrap();
@@ -54,3 +54,4 @@ fn every_rule_fires_on_its_fixture_and_stays_quiet_on_benign() {
         );
     }
 }
+

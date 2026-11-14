@@ -3442,6 +3442,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 22:05] Alert rules 016A/007A; agent queue/manifest; E7/F10 assessment
+
+**Действие**: добавлены `WIN-DOWNLOADS-EXEC-016A` (medium, signed/unsigned Downloads) и `WIN-SERVICE-CREATE-007A` (low, generic/ambient service install); fixtures + Rust parity 30/30. Агент получил bounded queue (`dropped=0`) и SHA256-манифест объектов (fail-closed). E7/F10 разобраны: исходные 0.95@0.05 % и FBR 10 % недостижимы на текущих данных, цели пересмотрены (D-014/D-015).
+**Числа**: pytest **543**; rules **30**; run_all **29/29**; агент 9 audit-строк под systemd; `dropped=0`.
+**Вердикт**: generic alert и signed-Downloads закрыты правилами; E7/F10 — revised target, не «зелёные» по исходным.
+**Проверка**: `rules/base.json`; `rust/tests/data/rule_cases.json`; `docs/metrics-assessment.md`; `artifacts/linux_agent_audit.json`.
+**Статус**: implemented; holdout live rerun и soak — open
+**Actor**: agent
+**Run_id**: rules-hardening-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

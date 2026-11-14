@@ -1,4 +1,4 @@
-use std::collections::{HashMap, HashSet};
+﻿use std::collections::{HashMap, HashSet};
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 
@@ -55,7 +55,7 @@ fn simple_event(category: &str, platform: &str) -> Value {
 #[test]
 fn loads_all_rules_and_lints_clean() {
     let rules = base_rules();
-    assert_eq!(rules.len(), 28);
+    assert_eq!(rules.len(), 30);
     assert!(lint_rules(&rules, None).is_empty());
 }
 
@@ -331,3 +331,4 @@ fn counts_are_exposed_by_rule_id() {
     let counts: HashMap<String, u64> = engine.counts();
     assert_eq!(counts.get("WIN-LSASS-ACCESS-004"), Some(&1));
 }
+

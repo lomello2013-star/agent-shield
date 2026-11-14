@@ -60,6 +60,17 @@ rules/`, `loader`, `*.bpf.o` в `/opt/aidf`, пишет audit в
 `corr_helper` + connect 4444 + DNS дали **12 audit-строк**. Ротация —
 `packaging/linux/aidf-agent.logrotate` (14 дней, `logrotate -d` OK).
 
+## Очередь и целостность объектов
+
+- audit-записи идут через bounded queue (`--queue-size`, по умолчанию 10 000);
+  при переполнении считается `dropped`, readers не блокируются;
+  проверено: `dropped=0`.
+- `scripts/linux_object_manifest.py` пишет `packaging/linux/objects.sha256`
+  (loader + `.bpf.o`); агент с `--manifest` падает fail-closed при mismatch.
+  Systemd-юнит передаёт `/opt/aidf/objects.sha256`.
+- Это **integrity manifest**, не криптографическая подпись: подпись/ключи
+  остаются open.
+
 ## Ограничения
 
 - запуск только root; fapolicyd нужно останавливать в lab;

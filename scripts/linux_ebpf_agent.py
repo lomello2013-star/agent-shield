@@ -7,8 +7,10 @@ Run as root with fapolicyd stopped for the BPF binaries:
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import pathlib
+import queue
 import subprocess
 import sys
 import threading
@@ -35,6 +37,25 @@ STREAMS = [
 ]
 
 
+def verify_manifest(objects: str, manifest: str) -> list[str]:
+    """Return missing/mismatched entries; empty means all objects verified."""
+    root = pathlib.Path(objects)
+    problems: list[str] = []
+    for line in pathlib.Path(manifest).read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        digest, name = line.split(None, 1)
+        path = root / name.strip()
+        if not path.exists():
+            problems.append(f"{name}: missing")
+            continue
+        actual = hashlib.sha256(path.read_bytes()).hexdigest()
+        if actual != digest:
+            problems.append(f"{name}: sha256 mismatch")
+    return problems
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--loader", default="/root/spike4/loader")
@@ -42,14 +63,39 @@ def main() -> int:
     ap.add_argument("--duration", type=float, default=60.0,
                     help="seconds; 0 = until SIGINT")
     ap.add_argument("--out", default="/tmp/aidf_linux_audit.jsonl")
+    ap.add_argument("--manifest", default=None,
+                    help="SHA256SUMS-style manifest; fail closed on mismatch")
+    ap.add_argument("--queue-size", type=int, default=10000)
     args = ap.parse_args()
+
+    if args.manifest:
+        problems = verify_manifest(args.objects, args.manifest)
+        if problems:
+            print("agent: manifest verification failed: " + "; ".join(problems),
+                  file=sys.stderr, flush=True)
+            return 2
+        print("agent: object manifest verified", file=sys.stderr, flush=True)
 
     normalizer = Normalizer(host=HostContext(
         host_id="aidf-linux-vm", os="linux", version="24.04", arch="x64"))
     engine = RuleEngine(load_rules([str(ROOT / "rules" / "base.json")]))
     lock = threading.Lock()
     out = open(args.out, "w", encoding="utf-8")
+    records: queue.Queue = queue.Queue(maxsize=args.queue_size)
+    dropped = [0]
     procs: list[subprocess.Popen] = []
+
+    def writer() -> None:
+        while True:
+            record = records.get()
+            if record is None:
+                records.task_done()
+                break
+            out.write(json.dumps(record, ensure_ascii=False) + "\n")
+            out.flush()
+            records.task_done()
+
+    threading.Thread(target=writer, daemon=True).start()
 
     def reader(name: str, proc: subprocess.Popen) -> None:
         for line in proc.stdout:  # type: ignore[union-attr]
@@ -66,13 +112,16 @@ def main() -> int:
                 event = normalizer.normalize("linux.ebpf", raw)
                 with lock:
                     verdicts = engine.evaluate(event)
-                    for verdict in verdicts:
-                        out.write(json.dumps({
-                            "stream": name,
-                            "verdict": verdict.model_dump(mode="json"),
-                            "event": event.model_dump(mode="json"),
-                        }, ensure_ascii=False) + "\n")
-                        out.flush()
+                for verdict in verdicts:
+                    record = {
+                        "stream": name,
+                        "verdict": verdict.model_dump(mode="json"),
+                        "event": event.model_dump(mode="json"),
+                    }
+                    try:
+                        records.put_nowait(record)
+                    except queue.Full:
+                        dropped[0] += 1
             except Exception as exc:  # noqa: BLE001 - keep the agent alive
                 print(f"agent[{name}]: {type(exc).__name__}: {exc}",
                       file=sys.stderr, flush=True)
@@ -104,8 +153,10 @@ def main() -> int:
                 proc.wait(timeout=2)
             except subprocess.TimeoutExpired:
                 proc.kill()
+        records.put(None)
+        records.join()
         out.close()
-    print("agent: stopped", file=sys.stderr, flush=True)
+    print(f"agent: stopped, dropped={dropped[0]}", file=sys.stderr, flush=True)
     return 0
 
 

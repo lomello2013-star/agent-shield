@@ -114,10 +114,29 @@
       "match": {
         "category": "persistence.change",
         "action": {
-          "in": ["service_create", "service_change"]
+          "in": [
+            "service_create",
+            "service_change"
+          ]
         },
         "object.path": {
           "regex": "(?i)\\\\(users|temp|tmp|programdata)\\\\"
+        },
+        "platform": "windows"
+      }
+    },
+    {
+      "id": "WIN-SERVICE-CREATE-007A",
+      "title": "Service installed (alert, including ambient)",
+      "severity": "low",
+      "technique": "T1543",
+      "layer": "L1",
+      "prevention": false,
+      "reason_code": "service_install_alert",
+      "match": {
+        "category": "persistence.change",
+        "action": {
+          "regex": "(?i)service_create"
         },
         "platform": "windows"
       }
@@ -263,6 +282,22 @@
           "regex": "(?i)\\\\downloads\\\\"
         },
         "integrity.verified": false,
+        "platform": "windows"
+      }
+    },
+    {
+      "id": "WIN-DOWNLOADS-EXEC-016A",
+      "title": "Binary executed from Downloads (alert, signed or unsigned)",
+      "severity": "medium",
+      "technique": "T1204",
+      "layer": "L0",
+      "prevention": false,
+      "reason_code": "downloads_execution_alert",
+      "match": {
+        "category": "process.start",
+        "actor.path": {
+          "regex": "(?i)\\\\downloads\\\\"
+        },
         "platform": "windows"
       }
     },

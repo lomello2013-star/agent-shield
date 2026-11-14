@@ -18,6 +18,11 @@ install -m 0755 "$SRC/loader" "$DEST/loader"
 for obj in "$SRC"/*.bpf.o; do
     install -m 0644 "$obj" "$DEST/"
 done
+if [ -f "$ROOT/packaging/linux/objects.sha256" ]; then
+    install -m 0644 "$ROOT/packaging/linux/objects.sha256" "$DEST/objects.sha256"
+else
+    echo "warning: packaging/linux/objects.sha256 is missing; agent will fail closed" >&2
+fi
 
 install -m 0644 "$ROOT/packaging/linux/aidf-agent.service" \
     /etc/systemd/system/aidf-agent.service
