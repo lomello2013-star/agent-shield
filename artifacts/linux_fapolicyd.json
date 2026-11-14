@@ -1,0 +1,34 @@
+{
+  "environment": {
+    "host": "aidf-linux",
+    "os": "Ubuntu 24.04.5 LTS",
+    "kernel": "6.8.0-147-generic",
+    "secure_boot": true,
+    "kernel_locked_down": true,
+    "vm": "Hyper-V Gen2, 3 GB RAM, 2 vCPU"
+  },
+  "ima": {
+    "cmdline": "ima_policy=tcb ima_appraise=enforce ima_hash=sha256",
+    "measurements": 3713,
+    "blocks_untrusted_copy": false,
+    "note": "tcb policy measures but has no appraise rule for BPRM_CHECK"
+  },
+  "fapolicyd": {
+    "policy": [
+      "allow perm=any all : trust=1",
+      "allow perm=open all : all",
+      "deny perm=execute all : all"
+    ],
+    "trust_db_entries": 60737,
+    "trust_db_build_s": 657,
+    "listening_after_service_start_s": 657,
+    "untrusted_attempts": 10,
+    "untrusted_denied": 10,
+    "trusted_attempts": 10,
+    "trusted_allowed": 10,
+    "denial_exit_code": 126,
+    "audit_records_for_deny": 0,
+    "note": "deny (not deny_audit) blocks silently; for audit trail use deny_audit plus deny"
+  },
+  "verdict": "fapolicyd enforces execution policy (10/10) once the trust DB is built; the build takes ~11 minutes on this VM, which is why earlier tests 'passed' the daemon"
+}
