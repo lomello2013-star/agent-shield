@@ -3298,6 +3298,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 15:35] Net live на root cgroup; Linux 7/20 [experiment]
+
+**Действие**: `stream_net` attach к root cgroup `/sys/fs/cgroup` (процессы VM там, `/aidf` пуст) дал live-события; `connect 4444` → `LINUX-C2-PORT-105`, `443` — без вердикта. Linux live: **7/20** (exec 101, cred 104, mprotect 107, procmem/ptrace/mem 106, net 105).
+**Числа**: net 3 события → 1 вердикт; Linux live 7/20; pytest 530 (не менялся); `run_all` 29/29 (не менялся).
+**Вердикт**: net-блокер снят (root cgroup); осталось 13 live-сценариев и production-коллектор.
+**Проверка**: `/tmp/net.jsonl`; `linux_ebpf_live.py` → `LINUX-C2-PORT-105`; `artifacts/linux_ebpf_live.json`.
+**Статус**: verified (net); open (13/20, production collector)
+**Actor**: agent
+**Run_id**: linux-net-live-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

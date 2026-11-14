@@ -50,6 +50,11 @@ def main(path: str) -> int:
             raw.update(category="memory.access", action="vm_write",
                        exe=item.get("exe", ""), cmdline=item.get("exe", ""),
                        bytes=item["bytes"], target=item.get("target"))
+        elif "dport" in item:
+            raw.update(category="net.connect", action="connect",
+                       exe=item.get("comm", ""), cmdline=item.get("comm", ""),
+                       daddr=item.get("daddr", ""), dport=item["dport"],
+                       proto="tcp")
         elif "path" in item:
             raw.update(category="file.read", action="open",
                        exe=item.get("comm", ""), cmdline=item.get("comm", ""),

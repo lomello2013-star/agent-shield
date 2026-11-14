@@ -129,9 +129,9 @@ alert-правило для generic pending (D-001).
 cred-read: `cat /etc/shadow` → **`LINUX-CRED-READ-104`**, `sshd` исключён
 allowlist (иначе легитимная аутентификация давала FP).
 
-**Итого Linux live: 6 сценариев** — exec (`101`), cred-read (`104`),
-mprotect (`107`), procmem/ptrace/memwrite (`106`); все прошли через
-`linux.ebpf`-адаптер и правила, `artifacts/linux_ebpf_live.json`.
+**Итого Linux live: 7 сценариев** — exec (`101`), cred-read (`104`),
+mprotect (`107`), procmem/ptrace/memwrite (`106`), net C2 (`105`); все прошли
+через `linux.ebpf`-адаптер и правила, `artifacts/linux_ebpf_live.json`.
 
 | Сценарий | События | Вердикт |
 |---|---|---|
@@ -141,10 +141,10 @@ mprotect (`107`), procmem/ptrace/memwrite (`106`); все прошли чере�
 | `/proc/<pid>/mem` write | 5 | `LINUX-INJECT-106` ×5 |
 | ptrace POKEDATA | 5 | `LINUX-INJECT-106` ×5 |
 | process_vm_writev | 5 | `LINUX-INJECT-106` ×5 |
+| connect 4444 (root cgroup) | 3 (`4444`, `443`) | `LINUX-C2-PORT-105` ×1 |
 
-**Net live:** `stream_net` (cgroup/connect) даёт `ready:true`, но **0 событий**;
-`echo $$ > cgroup.procs` → `EINVAL`. Адаптер `net.connect → object.port` уже
-проверен unit-тестом (`LINUX-C2-PORT-105`), остаётся cgroup placement (D-010).
+**Net live:** attach к **root cgroup** `/sys/fs/cgroup` (процессы VM там, `/aidf`
+пуст) дал события; `connect 4444` → `LINUX-C2-PORT-105`, `443` — без вердикта.
 
 Production-коллектора loader→pipeline и 20/20 live пока нет. fapolicyd
 блокировал clang/loader (`EPERM`), на тест останавливался и возвращён.

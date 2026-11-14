@@ -76,9 +76,9 @@ alert-правилом, а не молчанием.
 **Рекомендация:** **A**, при блокере — **B** с явной пометкой «fixture-level».
 **Выбор:** A (рекомендация агента), fallback B только при доказанном блокере.
 **Обоснование:** пользователь просил live; fixture-level не должен подменять его.
-**Статус:** A: **6/20 live** — exec (`101`), cred-read (`104`), mprotect (`107`),
-procmem/ptrace/memwrite (`106`); LSM `bpf` включён. Net cgroup, production-
-коллектор и оставшиеся 14 сценариев — open.
+**Статус:** A: **7/20 live** — exec (`101`), cred-read (`104`), mprotect (`107`),
+procmem/ptrace/memwrite (`106`), net C2 (`105`); LSM `bpf` включён, net через
+root cgroup. Production-коллектор и оставшиеся 13 сценариев — open.
 
 ---
 
@@ -202,7 +202,9 @@ T1562.001.
 **Выбор:** A (рекомендация агента).
 **Обоснование:** адаптер уже маппит `net.connect`/`object.port` (unit-тест
 `LINUX-C2-PORT-105` зелёный); остаётся корректно поместить процесс в cgroup.
-**Статус:** open: `ready:true`, events=0; нужен cgroup-scope/placement.
+**Статус:** implemented & verified: attach к root cgroup `/sys/fs/cgroup` дал
+`connect 4444` → `LINUX-C2-PORT-105`, `443` benign. `/aidf` был пуст — процессы
+VM в root cgroup.
 
 ---
 

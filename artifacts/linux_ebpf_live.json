@@ -16,12 +16,13 @@
     {"id": "linux-ptrace", "rule": "LINUX-INJECT-106", "events": 5, "verdicts": 5,
      "control": "ptrace_helper PTRACE_POKEDATA"},
     {"id": "linux-mem-write", "rule": "LINUX-INJECT-106", "events": 5, "verdicts": 5,
-     "control": "memwrite_helper process_vm_writev"}
+     "control": "memwrite_helper process_vm_writev"},
+    {"id": "linux-net-c2", "rule": "LINUX-C2-PORT-105", "events": 3, "verdicts": 1,
+     "cgroup": "/sys/fs/cgroup", "control": "connect 443: no verdict"}
   ],
-  "live_count": 6,
+  "live_count": 7,
   "limitations": [
-    "6 of 20 Linux scenarios are live",
-    "net cgroup attach returns ready:true but 0 events (cgroup placement EINVAL)",
+    "7 of 20 Linux scenarios are live",
     "production collector (loader->pipeline service) is not integrated",
     "fapolicyd was stopped for BPF loader tests and restored afterwards"
   ]
