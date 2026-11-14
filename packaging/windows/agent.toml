@@ -1,0 +1,20 @@
+# Windows agent configuration. Install to C:\ProgramData\AIDefender\agent.toml.
+
+[agent]
+source = "win.eventlog"
+data_root = "C:/ProgramData/AIDefender/agent-data"
+report_events = true
+collect_interval_s = 2.0
+queue_capacity = 10000
+gui_host = "127.0.0.1"
+gui_port = 18080
+
+[thresholds]
+heartbeat_timeout_s = 60.0
+alert_budget = 1
+min_confidence = 0.5
+
+[stml]
+server_url = "http://127.0.0.1:8080"
+tenant = "default"
+tokens_file = "C:/ProgramData/AIDefender/stml/tokens.json"

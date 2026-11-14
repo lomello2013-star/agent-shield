@@ -1,0 +1,31 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package Name="AIDefender Agent"
+           Manufacturer="AIDefender"
+           Version="0.1.0"
+           UpgradeCode="5c7a7a15-3c47-4d61-9a4a-0e0f0f6a1b21"
+           Scope="perMachine">
+    <MajorUpgrade DowngradeErrorMessage="A newer AIDefender Agent is installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="INSTALLDIR" Name="AIDefender">
+        <Component Id="AgentExe" Guid="6b8a2f0e-3b8d-4f4d-9a0c-2f0c0a4b6d11">
+          <File Id="AgentExeFile" Source="$(var.SourceDir)\aidf-agent.exe" KeyPath="yes" />
+        </Component>
+      </Directory>
+    </StandardDirectory>
+
+    <StandardDirectory Id="CommonAppDataFolder">
+      <Directory Id="DATADIR" Name="AIDefender">
+        <Component Id="AgentConfig" Guid="b4e1b2e0-5b5d-4a4a-8c2e-2f8f9a7c3d12">
+          <File Id="AgentConfigFile" Source="$(var.SourceDir)\agent.toml" KeyPath="yes" />
+        </Component>
+      </Directory>
+    </StandardDirectory>
+
+    <Feature Id="Main" Title="AIDefender Agent" Level="1">
+      <ComponentRef Id="AgentExe" />
+      <ComponentRef Id="AgentConfig" />
+    </Feature>
+  </Package>
+</Wix>

@@ -44,6 +44,7 @@ spikes/06-ml/*.npz
 *.egg-info/
 dist/
 build/
+.tools/
 
 # Driver build artifacts / test-signing key (regenerate with build.ps1/sign.ps1)
 driver/minifilter/out/
