@@ -10,9 +10,9 @@
       7040,
       1102
     ],
-    "last_record_id": 11381,
+    "last_record_id": 11411,
     "calls": 2,
-    "last_query_ms": 13.279
+    "last_query_ms": 13.391
   },
   "events_read": 60,
   "second_poll_fresh": 0,
@@ -20,13 +20,13 @@
     7040,
     7045
   ],
-  "verdicts": 60,
+  "verdicts": 1,
   "rule_hits": {
-    "WIN-SERVICE-CREATE-007": 60
+    "WIN-SERVICE-CREATE-007": 1
   },
-  "poll_ms": 13.279,
-  "pipeline_ms_p50": 0.113,
-  "pipeline_ms_p95": 0.141,
+  "poll_ms": 13.391,
+  "pipeline_ms_p50": 0.06,
+  "pipeline_ms_p95": 0.094,
   "loss": 0,
   "ledger_ok": true,
   "audit_chain_ok": true,

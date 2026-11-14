@@ -12,6 +12,7 @@
 | Сборка | `build.ps1` (WDK 10.0.26100 + MSVC) | воспроизводима |
 | INF | `driver/minifilter/AidfFilter.inf` | черновик пакета |
 | Тестовая подпись | `sign.ps1` (self-signed) | только `testsigning` |
+| Каталог | `package.ps1` → `Inf2Cat` + `signtool` | **собран: RC=0, cat 1078 → 2366 B (test-signed)** |
 | Установка/тест | `install.ps1`, `test.ps1` | проверены в Win11 VM |
 | Политика агента | `scripts/aidf_driver_policy.py` | communication port, policy switch проверен |
 
@@ -29,7 +30,8 @@
 
 1. Получить EV-сертификат; установить в HSM/токен на сборочной машине.
 2. Собрать `AidfFilter.sys` + `AidfFilter.inf`; сгенерировать каталог:
-   `Inf2Cat /driver:driver\minifilter\out /os:10_X64,10_GE_X64` (WDK).
+   `powershell -File driver\minifilter\package.ps1` (Inf2Cat + test-sign).
+   Проверено: `Inf2Cat` RC=0, каталог создан; подпись пока test-only.
 3. Подписать `AidfFilter.sys` и `AidfFilter.cat` EV-сертификатом (`signtool sign /fd SHA256 /tr ... /td SHA256`).
 4. Прогнать HLK: `DriverVerifier`, minifilter playlists, stress/PNP/IO, fuzz; сохранить `.hlkx`.
 5. Отправить пакет в Partner Center → получить WHQL-подпись.

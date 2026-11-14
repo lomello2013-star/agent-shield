@@ -3226,6 +3226,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 14:30] STML зелёный: 525, run_all 29/29; WHQL-каталог [report]
+
+**Действие**: STML-ветка стабилизирована — весь `pytest` = **525 passed**, `run_all` **29/29**, `docs/status.md` = 525; readiness/dev-report/release синхронизированы, D-006 закрыт. `Inf2Cat` собрал каталог драйвера (RC=0), `signtool` подписал его тестовым сертификатом; добавлен `package.ps1`, автоматизирующий INF+SYS+cat.
+**Числа**: pytest **525**; `run_all` **29/29**; `docs_consistency` **13/13**; Inf2Cat catalog 1078 → **2366 B** (test-signed); package sys 10 128 B.
+**Вердикт**: синхронизация status/readiness/тестов закрыта; WHQL-пакет готов в test-signing, EV/HLK остаются внешними блокерами.
+**Проверка**: `run_all` 29/29; `pytest` 525; `Inf2Cat` RC=0; `signtool` RC=0; `docs_consistency` 13/13.
+**Статус**: verified (status/package); open (EV/HLK, Linux 20/20, Defender 5007)
+**Actor**: agent
+**Run_id**: stml-green-whql-package-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,
