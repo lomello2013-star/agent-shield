@@ -9,8 +9,9 @@
 
 | Компонент | Вариант | Ориентир по цене |
 |---|---|---|
-| HSM | YubiHSM 2 (USB) | ~$650 |
-| Ключи-доли | 3 YubiKey или paper shares | ~$55 × 3 / $0 |
+| HSM | **air-gapped encrypted USB** (см. [offline-usb-key-ceremony.md](offline-usb-key-ceremony.md)) | ~$0–20 |
+| HSM (позже) | Nitrokey HSM 2 / YubiHSM 2 — опционально | от ~€110 |
+| Ключи-доли | 3 paper shares + 2 USB copies | $0 |
 | Доступ | Tailscale (private) + Caddy/Let's Encrypt | free–$10/год |
 | Backup | Backblaze B2 + restic | ~$6/TB/мес |
 | EDR-стенд | Defender + Sysmon + Wazuh | free |
@@ -19,53 +20,49 @@
 
 ---
 
-## 1. Неделя 1 — HSM и кворум
+## 1. Неделя 1 — HSM-замена: air-gapped USB
 
-### 1.1 Установка
+> YubiHSM 2 не обязателен. Для личного пилота делаем **offline USB + LUKS +
+> 2-of-3 shares**. Это не HSM, но ключ не лежит на онлайн-хосте.
+> Полная процедура: [offline-usb-key-ceremony.md](offline-usb-key-ceremony.md).
 
-```powershell
-# YubiHSM Connector + yubihsm-shell (Windows MSI с сайта Yubico)
-# Проверь: yubihsm-shell --help
-yubihsm-shell --help
+### 1.1 Подготовка
+
+- Ubuntu LTS live USB с LUKS persistence.
+- `sudo apt install -y ssss openssl`.
+- `ssss-split -t 2 -n 3 -w luks` → три конверта.
+- Выключить Wi-Fi/Bluetooth; подписывать только офлайн.
+
+### 1.2 Ключ
+
+```bash
+openssl genpkey -algorithm ED25519 -out policy.key
+openssl pkey -in policy.key -pubout -out policy.pub
+chmod 600 policy.key
 ```
 
-### 1.2 Создать policy-ключ в HSM
+`policy.key` — только на зашифрованном USB; `policy.pub` копируется на сервер.
 
-В интерактивном `yubihsm-shell` (синтаксис проверь по `help` своей версии):
+### 1.3 Подпись policy
 
-```text
-connect
-generate-asymmetric-key 0 100 stml-policy 1 sign-eddsa ed25519
-get-public-key 0 100
+```bash
+./scripts/stml_offline_sign.sh policy.json policy.key policy.pub policy.signed.json
 ```
 
-- object-id `100` — policy key.
-- Публичный ключ экспортируй в PEM и положи в
-  `C:\ProgramData\AIDefender\stml\trust\policy-hsm.pem`.
-- Приватный ключ **не покидает HSM**.
-
-### 1.3 Кворум 2-of-3 (операционный)
-
-YubiHSM 2 **не делает threshold-подпись**. Практичная схема:
-
-1. Сгенерируй случайный admin password HSM.
-2. Раздели его Shamir 2-of-3:
-   ```bash
-   ssss-split -t 2 -n 3 -w hsm-admin
-   ```
-3. Три конверта — три доверенных человека (ты + 2).
-4. Для церемонии: два человека встречаются, собирают пароль на **air-gapped**
-   ноутбуке, подключают HSM, подписывают policy, затем пароль меняется/уничтожается.
-5. Протокол: дата, кто присутствовал, object-id, SHA256 policy, подписи.
-
-Это **операционный quorum**, не криптографический threshold. Для настоящего
-threshold нужен MPC-сервис/HSM с M-of-N — это уже корпоративный бюджет.
+Скрипт делает canonical JSON, `openssl pkeyutl -sign -rawin`, проверяет подпись,
+считает `key_id` и пишет base64 в JSON.
 
 ### 1.4 Проверка
 
-- `get-public-key` совпадает с PEM.
-- Подпись policy проверяется Python-сервером (`policy_pubkey`).
-- При неверной подписи сервер возвращает 403.
+- `policy.signed.json` проверяется сервером (`policy_pubkey` = `policy.pub`).
+- Неверная подпись → 403.
+- Ключ никогда не попадает на онлайн-ОС.
+
+### 1.5 Ограничения
+
+- Это **не HSM**: нет tamper resistance/attestation.
+- Защита: LUKS + 2-of-3 + офлайн + второй USB в другом месте.
+- При продаже/чужих ПДн — переходить на Nitrokey HSM 2/YubiHSM/cloud KMS.
 
 ---
 
