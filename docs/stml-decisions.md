@@ -146,6 +146,8 @@
 | D-94 | Policy live reload | **live: thresholds/gate confidence; sources/queue требуют restart** | полный hot reload | безопасный минимум |
 | D-95 | Rust signed requests | **nonce replay + ±300 s skew в `signed_agent` для heartbeat/inventory/reports/ack** | отдельные проверки | единая точка |
 | D-96 | HTTP 201 parity | **enrol/policy/approval/rollout возвращают 201, как Python** | оставить 200 | parity |
+| D-97 | PostgreSQL RLS | **FORCE RLS по `tenant_id`; `app.tenant_id` задаётся на pool connection из `STML_TENANT`** | per-request setting | один tenant на инстанс |
+| D-98 | Backup | **pg_dump custom + SHA256; restore в существующую БД** | WAL/PITR | MVP |
 
 ## Production acceptance
 

@@ -1,0 +1,30 @@
+{
+  "generated_at": "2026-11-14T18:17:28.109401+00:00",
+  "component": "stml-postgres",
+  "phase": "P5-RLS-backup",
+  "status": "verified",
+  "rls": {
+    "migration": "0007_rls.sql",
+    "tables": [
+      "agents",
+      "reports",
+      "policies",
+      "approvals",
+      "rollouts"
+    ],
+    "tenant_t": "tenant-t only",
+    "tenant_default": "tenant-default only",
+    "session": "app.tenant_id"
+  },
+  "backup": {
+    "custom_format": true,
+    "sha256": true,
+    "restore": true,
+    "restored_agents": 3
+  },
+  "not_yet": [
+    "HA/failover",
+    "PITR/WAL archiving",
+    "automated retention"
+  ]
+}

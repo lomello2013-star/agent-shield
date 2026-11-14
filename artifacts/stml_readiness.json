@@ -46,7 +46,9 @@
       "service": "running",
       "db": "stml",
       "migration": "0001_init.sql",
-      "status": "local-dev"
+      "status": "local-dev",
+      "rls": true,
+      "backup_restore": true
     },
     "rust_scaffold": {
       "cargo_check": true,

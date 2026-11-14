@@ -31,7 +31,7 @@
 | # | Блокер | Почему не закрыт | Владелец |
 |---|---|---|---|
 | B1 | Production HSM + quorum (2-of-3) | нет YubiHSM/HSM-стенда | security engineer + PM |
-| B2 | PostgreSQL/HA | PostgreSQL 16 установлен локально, dev-БД `stml` + миграция работают; **HA/RLS/parity/backup не сделаны** | DevOps |
+| B2 | PostgreSQL/HA | PostgreSQL 16, миграции, **RLS + backup/restore**; **HA/PITR/retention не сделаны** | DevOps |
 | B3 | Rust/axum | P1–P5: agents/reports, policies/approvals/rollouts, trust/audit/learning, commands, `/ui/`, mTLS+CRL, 14 read checks, write parity, 1000 agents p95 145.9 ms; **Tauri/HA не сделаны** | Rust-инженер |
 | B4 | Tauri + mTLS-клиент | нет Node/npm/Tauri toolchain | GUI-инженер |
 | B5 | Реальный retrain/песочница | нет данных/GPU/песочницы; DPIA в финале | ML-инженер |

@@ -1783,8 +1783,19 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let pool = match std::env::var("DATABASE_URL") {
         Ok(url) => {
+            let tenant = std::env::var("STML_TENANT").unwrap_or_else(|_| "default".into());
             let pool = PgPoolOptions::new()
                 .max_connections(5)
+                .after_connect(move |conn, _meta| {
+                    let tenant = tenant.clone();
+                    Box::pin(async move {
+                        sqlx::query("SELECT set_config('app.tenant_id', $1, false)")
+                            .bind(tenant)
+                            .execute(&mut *conn)
+                            .await?;
+                        Ok(())
+                    })
+                })
                 .connect(&url)
                 .await?;
             tracing::info!("postgres connected");
