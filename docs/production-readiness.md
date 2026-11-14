@@ -32,7 +32,7 @@
 |---|---|---|---|
 | B1 | Production HSM + quorum (2-of-3) | нет YubiHSM/HSM-стенда | security engineer + PM |
 | B2 | PostgreSQL/HA | PostgreSQL 16 установлен локально, dev-БД `stml` + миграция работают; **HA/RLS/parity/backup не сделаны** | DevOps |
-| B3 | Rust/axum | P1+P2: agents/enrol/heartbeat/inventory/reports, policies/approvals/rollouts, SoD; **P3 trust/learning, mTLS, RLS/HA не сделаны** | Rust-инженер |
+| B3 | Rust/axum | P1+P2+P3: agents/reports, policies/approvals/rollouts, trust/audit/learning; **P4 mTLS/Tauri и P5 parity не сделаны** | Rust-инженер |
 | B4 | Tauri + mTLS-клиент | нет Node/npm/Tauri toolchain | GUI-инженер |
 | B5 | Реальный retrain/песочница | нет данных/GPU/песочницы; DPIA в финале | ML-инженер |
 | B6 | Docker/Helm runtime | daemon не запущен, helm/кластер отсутствуют | DevOps |
@@ -47,7 +47,7 @@
 - Trust: ключи, отзыв/ротация, backup/restore.
 - Learning: consent/PII, cases, model registry/regression.
 - mTLS: сервер требует client cert.
-- Rust/axum: **P1+P2** — agents/enrol/heartbeat/inventory/reports, policies/approvals/rollouts, SoD; PostgreSQL 16.
+- Rust/axum: **P1+P2+P3** — agents/reports, policies/rollouts, trust/audit/learning; PostgreSQL 16.
 - 1000 агентов: p95 111,6 мс.
 
 ## 5. Критерий production-приёмки (не достигнут)

@@ -124,6 +124,10 @@
 | D-72 | Rust auth | **отдельные admin/viewer/approver токены; SoD** | один admin | parity с Python |
 | D-73 | Rust P2 | **policy-подпись + approval + rollout 1→10→50→100** | только read-only | паритет |
 | D-74 | HTTP status parity | **Rust возвращает 200 вместо 201 (временно)** | менять сигнатуры | отметить в parity-тестах |
+| D-75 | Rust trust | **private key — hex-файл в `STML_TRUST_DIR`, public hex; не HSM** | PKCS#11 сразу | P3 scaffold; HSM — production |
+| D-76 | Rust audit | **hash chain `ts_micros|actor|action|target|prev`** | JSON/CEF export | P3 MVP |
+| D-77 | Rust learning | **consent обязателен; keys raw/cmdline/path/username/email вырезаются** | полноценный PII-фильтр | DPIA отложена |
+| D-78 | Model no-regression | **accuracy(candidate) >= accuracy(active), иначе 409** | ручное подтверждение | P3 gate |
 
 ## Production acceptance
 

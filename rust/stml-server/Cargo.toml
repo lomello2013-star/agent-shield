@@ -13,10 +13,12 @@ serde_json = "1"
 uuid = { version = "1", features = ["v4", "serde"] }
 base64 = "0.22"
 chrono = "0.4"
-ed25519-dalek = "2"
+ed25519-dalek = { version = "2", features = ["rand_core"] }
 pem = "3"
 spki = "0.7"
 sha2 = "0.10"
+hex = "0.4"
+rand_core = { version = "0.6", features = ["getrandom"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 sqlx = { version = "0.8", features = ["runtime-tokio", "postgres", "uuid", "chrono", "migrate"] }

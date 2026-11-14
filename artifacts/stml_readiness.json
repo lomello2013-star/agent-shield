@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-14T12:21:51.974051+00:00",
+  "generated_at": "2026-11-14T12:26:41.781359+00:00",
   "component": "STML",
   "commit": "da64eb4",
   "tests": {
@@ -52,6 +52,7 @@
       "cargo_build": true,
       "p1": true,
       "p2": true,
+      "p3": true,
       "endpoints": [
         "health",
         "agents",
@@ -61,11 +62,17 @@
         "reports",
         "policies",
         "approvals",
-        "rollouts"
+        "rollouts",
+        "trust",
+        "tls",
+        "audit",
+        "telemetry",
+        "cases",
+        "models"
       ],
       "not_yet": [
-        "trust/learning",
-        "mTLS",
+        "P4 mTLS/Tauri/GUI",
+        "P5 parity",
         "RLS/HA",
         "timestamp skew",
         "HTTP 201 parity"

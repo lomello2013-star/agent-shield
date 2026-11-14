@@ -1,0 +1,27 @@
+{
+  "generated_at": "2026-11-14T12:26:41.781359+00:00",
+  "component": "stml-server-rust",
+  "phase": "P3",
+  "status": "verified",
+  "db": "PostgreSQL 16.16 / stml_p3",
+  "smoke": {
+    "trust_keys": true,
+    "rotate": true,
+    "revoke": true,
+    "crl_lite": true,
+    "audit_chain": true,
+    "telemetry_consent": true,
+    "pii_strip": true,
+    "cases": true,
+    "models": true,
+    "no_regression": true,
+    "model_rollback": true
+  },
+  "not_yet": [
+    "mTLS/Tauri/GUI",
+    "contract parity",
+    "RLS/HA",
+    "timestamp skew",
+    "HTTP 201 parity"
+  ]
+}
