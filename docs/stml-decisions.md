@@ -128,6 +128,9 @@
 | D-76 | Rust audit | **hash chain `ts_micros|actor|action|target|prev`** | JSON/CEF export | P3 MVP |
 | D-77 | Rust learning | **consent обязателен; keys raw/cmdline/path/username/email вырезаются** | полноценный PII-фильтр | DPIA отложена |
 | D-78 | Model no-regression | **accuracy(candidate) >= accuracy(active), иначе 409** | ручное подтверждение | P3 gate |
+| D-79 | Agent policy apply | **signed policy → `SafeMode` LKG; `live=false` до перезапуска** | горячий reload | безопасность |
+| D-80 | Agent commands | **файловая очередь `commands.json`; isolate применяется на `command_ack`** | push-канал | Phase B MVP |
+| D-81 | Agent policy auth | **`apply_policy` — operator/admin; `policy_state` — viewer** | admin-only | least privilege |
 
 ## Production acceptance
 

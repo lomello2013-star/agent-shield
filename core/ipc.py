@@ -271,6 +271,36 @@ def build_daemon_registry(daemon, kill_switch_add: Callable[[str], None] | None 
     def _stats(_params: dict) -> dict:
         return daemon.stats()
 
+    def _policy_state(_params: dict) -> dict:
+        return daemon.policy_state()
+
+    def _apply_policy(params: dict) -> dict:
+        policy = params.get("policy")
+        if not isinstance(policy, dict):
+            raise RpcError(INVALID_PARAMS, "policy object is required")
+        try:
+            return daemon.apply_policy(policy, str(params.get("pubkey", "")),
+                                       dry_run=bool(params.get("dry_run", True)))
+        except ValueError as exc:
+            raise RpcError(INVALID_PARAMS, str(exc)) from exc
+
+    def _command_poll(_params: dict) -> dict:
+        return daemon.command_poll()
+
+    def _command_ack(params: dict) -> dict:
+        cid = params.get("command_id")
+        if not isinstance(cid, str) or not cid:
+            raise RpcError(INVALID_PARAMS, "command_id is required")
+        return daemon.command_ack(cid, str(params.get("status", "acked")),
+                                  params.get("result") if isinstance(params.get("result"), dict) else None)
+
+    def _command_enqueue(params: dict) -> dict:
+        kind = params.get("kind")
+        if not isinstance(kind, str) or not kind:
+            raise RpcError(INVALID_PARAMS, "kind is required")
+        payload = params.get("payload")
+        return daemon.enqueue_command(kind, payload if isinstance(payload, dict) else {})
+
     def _ping(_params: dict) -> dict:
         return {"pong": True}
 
@@ -324,6 +354,11 @@ def build_daemon_registry(daemon, kill_switch_add: Callable[[str], None] | None 
     registry.register("ping", {"viewer", "operator", "admin"}, _ping)
     registry.register("health", {"viewer", "operator", "admin"}, _health)
     registry.register("stats", {"viewer", "operator", "admin"}, _stats)
+    registry.register("policy_state", {"viewer", "operator", "admin"}, _policy_state)
+    registry.register("apply_policy", {"operator", "admin"}, _apply_policy)
+    registry.register("command_poll", {"operator", "admin"}, _command_poll)
+    registry.register("command_ack", {"operator", "admin"}, _command_ack)
+    registry.register("command_enqueue", {"admin"}, _command_enqueue)
     registry.register("self_test", {"operator", "admin"}, _self_test)
     registry.register("immutable_check", {"operator", "admin"}, _immutable)
     registry.register("quarantine", {"operator", "admin"}, _quarantine)

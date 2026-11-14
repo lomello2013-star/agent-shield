@@ -79,6 +79,15 @@
 4. Тесты: signed policy apply, wrong signature reject, dry-run no side effects, isolate/resume.
 - **Выход:** STML управляет агентом, а не только читает.
 
+**Статус (2026-11-14): agent-side готов, server-side нет.**
+
+- Сделано: `policy_state`, `apply_policy` (Ed25519, `key_id`, dry-run, LKG), `command_poll`,
+  `command_ack`, `command_enqueue` (admin), isolate на ack, файловая очередь.
+- Тест: `tests/test_policy_commands.py` — dry-run не меняет state, wrong signature reject,
+  viewer forbidden, isolate command.
+- Остаток: server command queue/push, connector poll, policy live reload,
+  STML isolate → command, approval → `confirm`.
+
 ### Phase C — Learning/ModelPack/LearningUpdate
 
 1. `core/modelpack.py` + `schemas.v3.ModelPack`: поддержка PEM↔hex, поля STML; единый canonical.

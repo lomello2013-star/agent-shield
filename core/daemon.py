@@ -20,12 +20,14 @@ from uuid import uuid4
 
 from core.clock import MonotonicClock
 from core.confirm import ConfirmationManager
+from core.commands import CommandQueue
 from core.counters import LossCounters
 from core.gate import AlertBudget, PolicyGate
 from core.heartbeat import HeartbeatMonitor
 from core.ingest import IngestPipeline
 from core.normalize import HostContext, Normalizer
 from core.pipeline import Pipeline
+from core.policy_state import PolicyStore
 from core.rules import RuleEngine, load_rules
 from core.safemode import SafeMode
 from core.selfprotect import HashChainLog, IntegrityManifest, SelfTest
@@ -132,6 +134,9 @@ class Daemon:
         self.confirmations = ConfirmationManager()
         self.pending_actions: dict[str, Any] = {}
         self.response_quarantine = None          # set when the response layer is wired
+        self.policy_store = PolicyStore(self.root)
+        self.commands = CommandQueue(os.path.join(self.root, "commands.json"))
+        self.isolated = False
         # Response layer (stage 7): without it the gate's actions were only counted.
         self.response = response
         if response is not None and getattr(response, "quarantine", None) is not None:
@@ -394,6 +399,32 @@ class Daemon:
                                      "error": getattr(result, "error", "")})
         return {"confirmation_id": confirmation_id, "status": status}
 
+    def policy_state(self) -> dict:
+        return self.policy_store.state(self)
+
+    def apply_policy(self, policy: dict, pubkey_pem: str = "",
+                     dry_run: bool = True) -> dict:
+        key = pubkey_pem or os.environ.get("AIDF_POLICY_PUBKEY", "")
+        return self.policy_store.apply(self, policy, key, dry_run=bool(dry_run))
+
+    def command_poll(self) -> dict:
+        return {"commands": self.commands.poll(), "isolated": self.isolated}
+
+    def command_ack(self, command_id: str, status: str = "acked",
+                    result: dict | None = None) -> dict:
+        command = self.commands.ack(command_id, status, result)
+        if command is None:
+            return {"command_id": command_id, "status": "unknown"}
+        if command.get("kind") == "isolate" and command.get("status") == "acked":
+            self.isolated = bool((command.get("payload") or {}).get("isolated", True))
+            self.log.append("isolate", {"isolated": self.isolated,
+                                        "command_id": command_id})
+        return {"command_id": command_id, "status": command.get("status"),
+                "isolated": self.isolated}
+
+    def enqueue_command(self, kind: str, payload: dict | None = None) -> dict:
+        return self.commands.enqueue(kind, payload or {})
+
     def run_for(self, seconds: float, interval_s: float = 0.05) -> None:
         end = time.monotonic() + seconds
         while not self._stop.is_set() and time.monotonic() < end:
@@ -446,6 +477,7 @@ class Daemon:
 
     def stats(self) -> dict:
         return {"pipeline": self.pipeline.stats(), "gate": self.gate.stats(self.host.host_id),
+                "policy": self.policy_state(), "isolated": self.isolated,
                 "platform": {"os": self.host.os, "arch": self.host.arch,
                              "version": self.host.version, "kernel": self.host.kernel,
                              "capabilities": ["ipc", "rules", "response",

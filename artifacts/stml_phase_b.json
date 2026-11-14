@@ -1,0 +1,38 @@
+{
+  "generated_at": "2026-11-14T12:29:32.600013+00:00",
+  "phase": "B",
+  "scope": "agent-side",
+  "status": "verified-partial",
+  "rpc": {
+    "policy_state": "viewer/operator/admin",
+    "apply_policy": "operator/admin, signed, dry-run",
+    "command_poll": "operator/admin",
+    "command_ack": "operator/admin",
+    "command_enqueue": "admin"
+  },
+  "tests": {
+    "policy_commands": 1,
+    "stml": 54,
+    "ipc": 16,
+    "daemon_wiring": 13
+  },
+  "done": [
+    "signed policy verify + key_id",
+    "dry-run no side effects",
+    "apply persists policy_state/LKG",
+    "reject wrong signature/version",
+    "command queue file-backed",
+    "isolate on command_ack"
+  ],
+  "not_yet": [
+    "server command delivery/push",
+    "connector pulls server commands",
+    "policy live reload",
+    "STML isolate -> command",
+    "approval -> confirm bridge"
+  ],
+  "notes": [
+    "live=false: policy applied to last-known-good, detector reload on restart",
+    "socket exhaustion observed during full suite (16k TIME_WAIT); targeted tests pass"
+  ]
+}

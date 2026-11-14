@@ -56,3 +56,18 @@ class AgentClient:
 
     def confirmations(self) -> dict:
         return self._call("confirmations")
+
+    def policy_state(self) -> dict:
+        return self._call("policy_state")
+
+    def apply_policy(self, policy: dict, pubkey: str = "", dry_run: bool = True) -> dict:
+        return self._call("apply_policy", {"policy": policy, "pubkey": pubkey,
+                                           "dry_run": dry_run})
+
+    def command_poll(self) -> dict:
+        return self._call("command_poll")
+
+    def command_ack(self, command_id: str, status: str = "acked",
+                    result: dict | None = None) -> dict:
+        return self._call("command_ack", {"command_id": command_id, "status": status,
+                                          "result": result or {}})

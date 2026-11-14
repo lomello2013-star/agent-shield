@@ -1,10 +1,11 @@
 {
-  "generated_at": "2026-11-14T12:26:41.781359+00:00",
+  "generated_at": "2026-11-14T12:29:42.340909+00:00",
   "component": "STML",
   "commit": "da64eb4",
   "tests": {
     "stml": 54,
-    "ipc": 16
+    "ipc": 16,
+    "phase_b": 1
   },
   "stages": {
     "S0": "mvp",
@@ -78,5 +79,13 @@
         "HTTP 201 parity"
       ]
     }
+  },
+  "agent_control_plane": {
+    "policy_state": true,
+    "apply_policy": true,
+    "command_poll": true,
+    "command_ack": true,
+    "live_reload": false,
+    "server_command_delivery": false
   }
 }
