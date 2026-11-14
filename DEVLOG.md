@@ -3202,6 +3202,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 14:20] Синхронизация readiness/dev-report/release: 472 [docs]
+
+**Действие**: обновлены `docs/readiness-assessment.md`, `docs/dev-report.md`, `docs/release-checklist.md` — тесты **472** (канонический `tests/`), а не 454/467; добавлена пометка, что полный `pytest` = 490 с 1 падением в STML-ветке автора, поэтому `run_all`/`status.md` временно отстают. D-006 в decision log переведён в implemented.
+**Числа**: `tests` **472 passed**; `docs_consistency` 13/13; полный pytest 490/1 stml fail (не наш код).
+**Вердикт**: числа в отчётах синхронизированы с каноническим набором; `status.md` обновится после стабилизации STML.
+**Проверка**: `pytest tests` 472; grep по docs — 454/467 больше не встречаются в обновлённых пунктах.
+**Статус**: verified (docs); open (STML, status)
+**Actor**: agent
+**Run_id**: docs-sync-472-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,
