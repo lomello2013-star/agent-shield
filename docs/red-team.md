@@ -158,7 +158,8 @@ DNS long (`013`); все прошли через `linux.ebpf`-адаптер и 
 **Net live:** attach к **root cgroup** `/sys/fs/cgroup` (процессы VM там, `/aidf`
 пуст) дал события; `connect 4444` → `LINUX-C2-PORT-105`, `443` — без вердикта.
 
-Production-коллектора loader→pipeline и 20/20 live пока нет. fapolicyd
+Прототип production-коллектора есть (`scripts/linux_ebpf_agent.py`, 10 потоков,
+audit JSONL); systemd/подпись/очередь остаются open. fapolicyd
 блокировал clang/loader (`EPERM`), на тест останавливался и возвращён.
 
 ### Найденный дефект харнесса

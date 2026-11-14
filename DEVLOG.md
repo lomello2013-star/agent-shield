@@ -3406,6 +3406,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 17:00] Linux eBPF agent prototype [experiment]
+
+**Действие**: создан `scripts/linux_ebpf_agent.py` — 10 loader-потоков (exec/open/mprotect/procmem/ptrace/mem/net/unlink/sendto/dns), product-нормализация/правила, audit JSONL. Тест: `corr_helper` + connect 4444 + DNS → **12 вердиктов** (106×2, 107×2, 108/109/110×2, 105, 013).
+**Числа**: 10 потоков; 12 audit-строк; pytest 533 (не менялся); `run_all` 29/29 (не менялся).
+**Вердикт**: коллектор-прототип работает; systemd/подпись/очередь — packaging backlog.
+**Проверка**: `/tmp/agent_audit.jsonl`; `artifacts/linux_agent_audit.json`; `docs/linux-agent.md`.
+**Статус**: verified (prototype); open (systemd/signing/queue)
+**Actor**: agent
+**Run_id**: linux-agent-prototype-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,
