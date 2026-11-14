@@ -96,8 +96,8 @@
 5. [x] Dry-run + GUI isolate/resume + approve/deny (RBAC, SoD); правая панель агента.
 6. [x] RBAC в UI: viewer/admin/approver токены; SoD проверен API.
 7. [x] GUI не хранит секретов: токены только в `sessionStorage`, не в файлах.
-8. [ ] TUI; тренинг оператора; S18/S19.
-- **Гейт S3:** все основные экраны + agent drawer + keyboard (`1..9`, Esc); **остаток:** Tauri-обёртка, вкл/выкл модулей, тренинг, S18/S19.
+8. [x] Тренинг оператора (`docs/operator-training.md`), S18/S19 в `/v0/slo` и Ops; TUI — CLI isolate.
+- **Гейт S3:** все основные экраны + agent drawer + keyboard (`1..9`, Esc); тренинг-чек-лист и S18/S19 есть; **остаток:** Tauri-обёртка, вкл/выкл модулей, допуск оператора (подпись).
 - **Реализация:** `stml/gui/index.html` (vanilla JS, dark SOC), сервер отдаёт `/ui/`.
 
 ---

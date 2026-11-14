@@ -554,6 +554,28 @@ class Store:
                 ).fetchone()
         return row is not None
 
+    def operator_metrics(self, window_s: float = 7 * 24 * 3600) -> dict[str, Any]:
+        cutoff = time.time() - window_s
+        with self._lock:
+            rows = self._db.execute(
+                "SELECT action, COUNT(*) AS n FROM audit "
+                "WHERE actor = 'operator' AND ts >= ? GROUP BY action", (cutoff,)
+            ).fetchall()
+        counts = {r["action"]: int(r["n"]) for r in rows}
+        actions = sum(counts.values())
+        reversals = sum(counts.get(a, 0) for a in
+                        ("rollout_rollback", "rollout_halt", "model_rollback"))
+        sufficient = actions >= 50
+        return {
+            "window_s": window_s,
+            "actions": actions,
+            "reversals": reversals,
+            "s18": round(reversals / actions, 4) if sufficient else None,
+            "s19": None,  # operator-attributed incidents are not tracked yet
+            "sufficient_data": sufficient,
+            "by_action": counts,
+        }
+
     def audit_export(self, limit: int = 1000) -> list[dict[str, Any]]:
         with self._lock:
             rows = self._db.execute(

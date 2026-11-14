@@ -265,6 +265,7 @@ class Handler(BaseHTTPRequestHandler):
                 "stats": stats,
                 "audit_ok": self.server.store.verify_audit(),
                 "bus_events": len(getattr(self.server.bus, "events", [])),
+                "operator": self.server.store.operator_metrics(),
                 "targets": {"availability": 0.995, "heartbeat_p95_s": 2.0,
                             "report_p0_loss": 0, "approval_sla_h": 48},
             })
@@ -301,7 +302,8 @@ class Handler(BaseHTTPRequestHandler):
                 self._send(200, {"stats": self.server.store.stats(),
                                  "uptime_s": round(time.time() - self.server.started_at, 1),
                                  "bus_events": len(getattr(self.server.bus, "events", [])),
-                                 "modules": len(MODULES)})
+                                 "modules": len(MODULES),
+                                 "operator": self.server.store.operator_metrics()})
             return
         if parts == ["v0", "audit", "verify"]:
             if self._auth("admin"):

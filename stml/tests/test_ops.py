@@ -23,6 +23,8 @@ def test_metrics_and_slo(tmp_path):
         assert slo["audit_ok"] is True
         assert slo["stats"]["agents"] == 0
         assert slo["targets"]["heartbeat_p95_s"] == 2.0
+        assert slo["operator"]["sufficient_data"] is False
+        assert slo["operator"]["s18"] is None
 
         for path in ("/v0/reports", "/v0/incidents", "/v0/modules", "/v0/ops"):
             req = Request(f"http://127.0.0.1:{port}{path}",

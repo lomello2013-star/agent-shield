@@ -51,6 +51,7 @@ Replay: `nonce` одноразовый (`nonces`), `sent_at` ±300 с.
 | POST | `/v0/tls/revoke` | отозвать client cert `{serial}` (admin) |
 | GET | `/v0/tls/revoked` | список отозванных (admin) |
 | POST | `/v0/telemetry` | `{agent_id,consent,events[]}` (admin; consent required) |
+| GET | `/v0/ops` | uptime/stats/bus/operator S18-S19 (viewer) |
 | GET | `/v0/telemetry` | последние события (viewer) |
 | POST | `/v0/cases` | `{case_id,report_id,label,holdout,features}` (admin) |
 | GET | `/v0/cases` | кейсы (viewer) |

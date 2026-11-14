@@ -169,8 +169,8 @@ async function load(){
       $('#module-rows').innerHTML=(d.modules||[]).map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.kind)}</td><td>${esc(x.status)}</td><td class="muted">${esc(x.note)}</td></tr>`).join('');
     }
     if(state.tab==='ops'){
-      const d=await api('/v0/ops');const s=d.stats||{};
-      $('#ops-summary').innerHTML=`<span class="badge">uptime ${d.uptime_s}s</span><span class="badge">agents ${s.agents||0}</span><span class="badge">reports ${s.reports||0}</span><span class="badge">P0 ${s.p0_reports||0}</span><span class="badge">bus ${d.bus_events||0}</span><a class="ghost" href="/metrics" target="_blank">/metrics</a>`;
+      const d=await api('/v0/ops');const s=d.stats||{};const op=d.operator||{};
+      $('#ops-summary').innerHTML=`<span class="badge">uptime ${d.uptime_s}s</span><span class="badge">agents ${s.agents||0}</span><span class="badge">reports ${s.reports||0}</span><span class="badge">P0 ${s.p0_reports||0}</span><span class="badge">bus ${d.bus_events||0}</span><span class="badge">S18 ${op.s18??'n/a'}</span><span class="badge">S19 ${op.s19??'n/a'}</span><span class="badge">actions ${op.actions||0}</span><a class="ghost" href="/metrics" target="_blank">/metrics</a>`;
     }
     if(state.tab==='policies'){
       const p=await api('/v0/policies');$('#pol-rows').innerHTML=(p.policies||[]).map(x=>`<tr><td>${esc(x.policy_id)}</td><td class="mono">${esc(x.version)}</td><td>${esc(x.channel)}</td><td class="mono">${esc(x.key_id)}</td><td>${new Date(x.created_at*1000).toLocaleString()}</td></tr>`).join('');
