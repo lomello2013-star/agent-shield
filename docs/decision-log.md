@@ -241,8 +241,9 @@ T1562.001.
 **Выбор:** A (рекомендация агента).
 **Обоснование:** прототип уже даёт 10 потоков и audit JSONL; B требует
 systemd/подписи/очереди, это отдельный packaging-этап.
-**Статус:** A+B: systemd-юнит, install, logrotate, bounded queue и SHA256-манифест
-проверены (`dropped=0`, manifest verified); криптографическая подпись — open.
+**Статус:** A+B: systemd, install, logrotate, bounded queue, SHA256-манифест и
+Ed25519-подпись (lab dev-key) проверены (`dropped=0`, signature/manifest verified);
+production-ключ/HSM — внешний этап.
 
 ---
 

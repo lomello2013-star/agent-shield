@@ -65,10 +65,25 @@ def main() -> int:
     ap.add_argument("--out", default="/tmp/aidf_linux_audit.jsonl")
     ap.add_argument("--manifest", default=None,
                     help="SHA256SUMS-style manifest; fail closed on mismatch")
+    ap.add_argument("--manifest-sig", default=None,
+                    help="Ed25519 signature of the manifest")
+    ap.add_argument("--manifest-pub", default=None,
+                    help="hex Ed25519 public key for the manifest")
     ap.add_argument("--queue-size", type=int, default=10000)
     args = ap.parse_args()
 
     if args.manifest:
+        if args.manifest_sig and args.manifest_pub:
+            from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
+            key = Ed25519PublicKey.from_public_bytes(
+                bytes.fromhex(pathlib.Path(args.manifest_pub).read_text().strip()))
+            key.verify(pathlib.Path(args.manifest_sig).read_bytes(),
+                       pathlib.Path(args.manifest).read_bytes())
+            print("agent: manifest signature verified", file=sys.stderr, flush=True)
+        else:
+            print("agent: manifest signature required (--manifest-sig/--manifest-pub)",
+                  file=sys.stderr, flush=True)
+            return 2
         problems = verify_manifest(args.objects, args.manifest)
         if problems:
             print("agent: manifest verification failed: " + "; ".join(problems),

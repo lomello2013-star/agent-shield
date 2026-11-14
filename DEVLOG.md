@@ -3478,6 +3478,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 22:45] Ed25519-подпись манифеста агента; holdout 5/5
+
+**Действие**: `sign_linux_manifest.py` подписал `objects.sha256` lab-ключом; systemd-агент проверяет подпись и хэши (`manifest signature verified`, `dropped=0`), 10 потоков. Red-team 20: **10/11**, holdout **5/5**, **0 FP**.
+**Числа**: pytest 543; rules 30; run_all 29/29; soak 24 ч/0 крашей.
+**Вердикт**: внутренние пункты закрыты в lab; production-ключ/HSM, EV/HLK/human-review — внешние.
+**Проверка**: `/etc/systemd/system/aidf-agent.service`; `journalctl -u aidf-agent`; `redteam20_windows.json`.
+**Статус**: verified
+**Actor**: agent
+**Run_id**: agent-sign-holdout-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

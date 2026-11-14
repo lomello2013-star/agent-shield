@@ -20,6 +20,8 @@ for obj in "$SRC"/*.bpf.o; do
 done
 if [ -f "$ROOT/packaging/linux/objects.sha256" ]; then
     install -m 0644 "$ROOT/packaging/linux/objects.sha256" "$DEST/objects.sha256"
+    install -m 0644 "$ROOT/packaging/linux/objects.sha256.sig" "$DEST/objects.sha256.sig"
+    install -m 0644 "$ROOT/packaging/linux/objects.sha256.pub" "$DEST/objects.sha256.pub"
 else
     echo "warning: packaging/linux/objects.sha256 is missing; agent will fail closed" >&2
 fi

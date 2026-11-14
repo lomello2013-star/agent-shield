@@ -67,9 +67,9 @@ rules/`, `loader`, `*.bpf.o` в `/opt/aidf`, пишет audit в
   проверено: `dropped=0`.
 - `scripts/linux_object_manifest.py` пишет `packaging/linux/objects.sha256`
   (loader + `.bpf.o`); агент с `--manifest` падает fail-closed при mismatch.
-  Systemd-юнит передаёт `/opt/aidf/objects.sha256`.
-- Это **integrity manifest**, не криптографическая подпись: подпись/ключи
-  остаются open.
+- `scripts/sign_linux_manifest.py` подписывает манифест Ed25519 (lab dev-key);
+  systemd передаёт `--manifest-sig`/`--manifest-pub`, проверка
+  `manifest signature verified`. Production-ключ/HSM — внешний этап.
 
 ## Ограничения
 
