@@ -22,6 +22,12 @@ C:\ProgramData\AIDefender\agent-demo\
 
 ## What you should see
 
+Screenshots from this host:
+
+- [server dashboard](../artifacts/stml-server-live3.png)
+- [server reports](../artifacts/stml-reports-live.png)
+- [agent panel](../artifacts/agent-panel-live2.png)
+
 ### Server UI `/ui/`
 
 - Fleet: at least `DESKTOP-JHQB492` (the existing agent) and a demo connector
@@ -54,7 +60,11 @@ Invoke-RestMethod http://127.0.0.1:18080/api/overview
 
 ## Autostart after reboot
 
-The launcher is a demo convenience, not a Windows service. For autostart:
+A per-user Startup shortcut `STML.lnk` is installed and runs the launcher with
+`-NoBrowser`. It starts the server, demo connector and agent panel at logon; it
+does not require admin.
+
+For SYSTEM-level tasks:
 
 ```powershell
 # elevated
@@ -63,5 +73,5 @@ The launcher is a demo convenience, not a Windows service. For autostart:
 .\scripts\install_stml_rust_task.ps1
 ```
 
-Those tasks are currently **not registered** on this host; the server is running
-as a manual process.
+Those tasks are currently **not registered** on this host; the per-user startup
+shortcut is the active autostart path.
