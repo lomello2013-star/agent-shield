@@ -44,6 +44,8 @@ def main() -> int:
     ap.add_argument("--python-viewer", required=True)
     ap.add_argument("--rust-url", required=True)
     ap.add_argument("--rust-viewer", required=True)
+    ap.add_argument("--python-admin", required=True)
+    ap.add_argument("--rust-admin", required=True)
     args = ap.parse_args()
 
     checks = []
@@ -87,6 +89,47 @@ def main() -> int:
     check("policies_viewer", py, ru,
           lambda a, b: a[0] == b[0] == 200 and isinstance(a[1].get("policies"), list)
           and isinstance(b[1].get("policies"), list))
+
+    py = fetch(args.python_url, "/v0/approvals")
+    ru = fetch(args.rust_url, "/v0/approvals")
+    check("approvals_unauth", py, ru, lambda a, b: a[0] == b[0] == 401)
+    py = fetch(args.python_url, "/v0/approvals", args.python_viewer)
+    ru = fetch(args.rust_url, "/v0/approvals", args.rust_viewer)
+    check("approvals_viewer", py, ru,
+          lambda a, b: a[0] == b[0] == 200 and isinstance(a[1].get("approvals"), list)
+          and isinstance(b[1].get("approvals"), list))
+
+    py = fetch(args.python_url, "/v0/rollouts/999999", args.python_viewer)
+    ru = fetch(args.rust_url, "/v0/rollouts/999999", args.rust_viewer)
+    check("rollout_missing", py, ru, lambda a, b: a[0] == b[0] == 404)
+
+    py = fetch(args.python_url, "/v0/models", args.python_viewer)
+    ru = fetch(args.rust_url, "/v0/models", args.rust_viewer)
+    check("models_viewer", py, ru,
+          lambda a, b: a[0] == b[0] == 200 and isinstance(a[1].get("models"), list)
+          and isinstance(b[1].get("models"), list))
+
+    py = fetch(args.python_url, "/v0/cases", args.python_viewer)
+    ru = fetch(args.rust_url, "/v0/cases", args.rust_viewer)
+    check("cases_viewer", py, ru,
+          lambda a, b: a[0] == b[0] == 200 and isinstance(a[1].get("cases"), list)
+          and isinstance(b[1].get("cases"), list))
+
+    py = fetch(args.python_url, "/v0/trust/keys", args.python_viewer)
+    ru = fetch(args.rust_url, "/v0/trust/keys", args.rust_viewer)
+    check("trust_keys_viewer", py, ru,
+          lambda a, b: a[0] == b[0] == 200 and isinstance(a[1].get("keys"), list)
+          and isinstance(b[1].get("keys"), list))
+
+    py = fetch(args.python_url, "/v0/tls/revoked", args.python_viewer)
+    ru = fetch(args.rust_url, "/v0/tls/revoked", args.rust_viewer)
+    check("crl_viewer_forbidden", py, ru, lambda a, b: a[0] == b[0] == 403)
+
+    py = fetch(args.python_url, "/v0/audit/verify", args.python_admin)
+    ru = fetch(args.rust_url, "/v0/audit/verify", args.rust_admin)
+    check("audit_admin", py, ru,
+          lambda a, b: a[0] == b[0] == 200 and a[1].get("ok") is True
+          and b[1].get("ok") is True)
 
     print(json.dumps({"ok": not failures, "checks": checks, "failures": failures},
                      ensure_ascii=False, indent=2))

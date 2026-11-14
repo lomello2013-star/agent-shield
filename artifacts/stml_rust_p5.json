@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-14T12:36:35.206495+00:00",
+  "generated_at": "2026-11-14T12:37:17.101426+00:00",
   "component": "stml-server-rust",
   "phase": "P5-parity-smoke",
   "status": "verified",
@@ -9,12 +9,20 @@
     "agents_unauth",
     "agents_viewer",
     "policies_unauth",
-    "policies_viewer"
+    "policies_viewer",
+    "approvals_unauth",
+    "approvals_viewer",
+    "rollout_missing",
+    "models_viewer",
+    "cases_viewer",
+    "trust_keys_viewer",
+    "crl_viewer_forbidden",
+    "audit_admin"
   ],
-  "result": "ok:true, failures:[]",
+  "result": "ok:true, failures:[], 14 checks",
   "note": "Python 8080 vs Rust 18096, PostgreSQL stml_p4; fields/IDs not deep-compared",
   "not_yet": [
-    "full contract suite",
+    "full write-path contract suite",
     "1000-agent parity",
     "mTLS parity"
   ]
