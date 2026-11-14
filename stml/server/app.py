@@ -19,6 +19,7 @@ from stml.learning.service import LearningService
 from stml.server.bus import build_bus
 from stml.server.store import Store
 from stml.server.tls import make_server_context
+from stml.server.tracing import trace_id_from
 from stml.trust.service import TrustError, TrustService
 
 MAX_BODY = 2 * 1024 * 1024
@@ -72,6 +73,9 @@ class Handler(BaseHTTPRequestHandler):
         return
 
     # -- helpers ---------------------------------------------------------
+    def _start_trace(self) -> None:
+        self.trace_id = trace_id_from({k.lower(): v for k, v in self.headers.items()})
+
     def _body(self) -> bytes:
         length = int(self.headers.get("Content-Length", "0"))
         if length > MAX_BODY:
@@ -83,6 +87,8 @@ class Handler(BaseHTTPRequestHandler):
         self.send_response(code)
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(raw)))
+        if hasattr(self, "trace_id"):
+            self.send_header("X-Trace-ID", self.trace_id)
         self.end_headers()
         self.wfile.write(raw)
 
@@ -161,6 +167,7 @@ class Handler(BaseHTTPRequestHandler):
 
     # -- GET -------------------------------------------------------------
     def do_GET(self) -> None:  # noqa: N802
+        self._start_trace()
         parsed = urlparse(self.path)
         parts = parsed.path.strip("/").split("/")
         query = parse_qs(parsed.query)
@@ -314,6 +321,7 @@ class Handler(BaseHTTPRequestHandler):
 
     # -- POST ------------------------------------------------------------
     def do_POST(self) -> None:  # noqa: N802
+        self._start_trace()
         parts = urlparse(self.path).path.strip("/").split("/")
         try:
             raw = self._body()

@@ -135,7 +135,7 @@
 2. [x] Watchdog: `scripts/stml_watchdog.py` (1/2a/2b/3 — процесс описан).
 3. [ ] `windows_exporter` — внешний агент, не входит в сервер.
 4. [x] Матрица метрика→алерт→действие — `docs/slo.md`.
-5. [ ] OTel-трейсы `trace_id` — не реализованы.
+5. [x] Трассировка: `X-Trace-ID`/`traceparent` + генерация; OTel SDK/collector — внешний gate (`docs/tracing.md`).
 6. [x] Backup + restore (тест, `stml/server/backup.py`).
 7. [x] Incident runbook — `docs/runbook-stml.md`.
 8. [ ] Pen-test STML — внешний gate.

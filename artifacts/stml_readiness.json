@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-11-14T11:05:42.698312+00:00",
+  "generated_at": "2026-11-14T11:07:01.560150+00:00",
   "component": "STML",
-  "commit": "4c6005a",
+  "commit": "6baa8ea",
   "tests": {
-    "stml": 51,
+    "stml": 52,
     "ipc": 16
   },
   "stages": {
@@ -25,7 +25,8 @@
     "mtls": "stml/tests/test_tls.py",
     "tenant": "stml/tests/test_server_store.py::test_tenant_isolation_policies_agents_approvals",
     "backup": "stml/tests/test_backup.py",
-    "watchdog": "scripts/stml_watchdog.py"
+    "watchdog": "scripts/stml_watchdog.py",
+    "tracing": "stml/tests/test_tracing.py"
   },
   "production_ready": false,
   "blockers": [

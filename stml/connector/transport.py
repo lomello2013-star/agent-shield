@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import urllib.request
+import uuid
 from typing import Protocol
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
@@ -52,7 +53,8 @@ class HttpTransport:
 
     def send(self, reports: list[Report]) -> list[str]:
         body = json.dumps({"reports": [r.model_dump(mode="json") for r in reports]}).encode()
-        headers = {"Content-Type": "application/json"}
+        headers = {"Content-Type": "application/json",
+                   "X-Trace-ID": uuid.uuid4().hex}
         if self.token:
             headers["Authorization"] = f"Bearer {self.token}"
         if self.private_key is not None:

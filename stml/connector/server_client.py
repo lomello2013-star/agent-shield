@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import urllib.error
 import urllib.request
+import uuid
 from typing import Any
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
@@ -31,7 +32,8 @@ class ServerClient:
 
     def _post(self, path: str, payload: dict[str, Any], signed: bool = False) -> dict[str, Any]:
         raw = json.dumps(payload).encode()
-        headers = {"Content-Type": "application/json"}
+        headers = {"Content-Type": "application/json",
+                   "X-Trace-ID": uuid.uuid4().hex}
         if signed:
             headers["X-STML-Signature"] = sign(self.private_key, raw)
         req = urllib.request.Request(self.base_url + path, data=raw, headers=headers, method="POST")
