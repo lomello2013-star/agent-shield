@@ -17,6 +17,8 @@ import threading
 from pathlib import Path
 from typing import Any, Callable
 
+from stml.connector.security import restrict
+
 MAX_LINE = 1 << 20  # 1 MiB
 
 
@@ -68,11 +70,13 @@ class ConnectorRpcServer:
         host: str = "127.0.0.1",
         port: int = 0,
         lock_path: str | Path | None = None,
+        auth_token: str | None = None,
     ) -> None:
         self.methods = methods
         self.host = host
         self.port = port
         self.lock_path = Path(lock_path) if lock_path else None
+        self.auth_token = auth_token
         self._server: _Server | None = None
         self._thread: threading.Thread | None = None
 
@@ -85,9 +89,10 @@ class ConnectorRpcServer:
             self.lock_path.parent.mkdir(parents=True, exist_ok=True)
             self.lock_path.write_text(
                 json.dumps({"pid": os.getpid(), "port": self.port,
-                            "exe_hash": _exe_hash()}),
+                            "exe_hash": _exe_hash(), "token": self.auth_token}),
                 encoding="utf-8",
             )
+            restrict(self.lock_path)
         self._thread = threading.Thread(target=self._server.serve_forever, daemon=True)
         self._thread.start()
         return self.host, self.port
@@ -110,6 +115,11 @@ class ConnectorRpcServer:
         if req.get("jsonrpc") != "2.0" or not isinstance(req.get("method"), str):
             return {"jsonrpc": "2.0", "id": req_id,
                     "error": {"code": "invalid_request", "message": "jsonrpc/method required"}}
+        if self.auth_token is not None:
+            supplied = req.get("token") or (req.get("params") or {}).get("token")
+            if supplied != self.auth_token:
+                return {"jsonrpc": "2.0", "id": req_id,
+                        "error": {"code": "unauthorized", "message": "token required"}}
         method = self.methods.get(req["method"])
         if method is None:
             return {"jsonrpc": "2.0", "id": req_id,
@@ -129,9 +139,11 @@ class ConnectorRpcServer:
         if self.lock_path:
             self.lock_path.unlink(missing_ok=True)
 
-    def call(self, method: str, params: dict | None = None, timeout: float = 2.0) -> dict:
+    def call(self, method: str, params: dict | None = None, timeout: float = 2.0,
+             token: str | None = None) -> dict:
         with socket.create_connection((self.host, self.port), timeout=timeout) as sock:
             sock.sendall(json.dumps({"jsonrpc": "2.0", "id": 1, "method": method,
+                                     "token": token or self.auth_token,
                                      "params": params or {}}).encode() + b"\n")
             data = b""
             while not data.endswith(b"\n"):

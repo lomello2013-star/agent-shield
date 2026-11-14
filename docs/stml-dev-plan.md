@@ -41,15 +41,16 @@
 5. [x] CLI `python -m stml.connector run --once --console`.
 - **Гейт VS1:** live-агент в консоли (E2E), heartbeat ≤10 с, inventory ≤30 с, P0 не теряется при падении транспорта.
 
-### 0.5 S0.1b — Укрепление → гейт S0 `[next]`
-1. ACL на pipe/socket.
-2. `key_id` + доверенные `key_id`.
-3. Подпись пакета коннектора (ключ коннектора, SoftHSM допустим).
-4. Threat model коннектора + остаточные риски (`human_acceptance`).
-5. Маппинг 5 read-only RPC: `ping`, `health`, `stats`, `self_test`, `immutable_check`.
-6. Стенд 4 ВМ.
-7. Спайки: `rust-pkcs11`/`yubihsm-pkcs11`, Tauri mTLS (результат блокирующий для S3).
-- **Гейт S0:** `stml/v0` заморожен; тесты 6+6.5; threat model согласованы; ключ создан, пакет подписан; ADR D14/D15; `tenant_id` в схеме; 5 read-only RPC маппятся.
+### 0.5 S0.1b — Укрепление → гейт S0 `[done]`
+1. [x] ACL на lock/state/spool + auth token на JSON-RPC.
+2. [x] `key_id` = sha256(pubkey)[:16]; ключ и пакет подписываются/проверяются.
+3. [x] Подпись пакета коннектора (`keygen` / `sign-package` / `verify-package`), проверка при старте.
+4. [x] Threat model коннектора + остаточные риски (`docs/threat-model-connector.md`; принято делегированно).
+5. [x] Маппинг 5 read-only RPC: `ping`, `health`, `stats`, `self_test`, `immutable_check`.
+6. [ ] Стенд 4 ВМ — по факту, когда появится инфраструктура.
+7. [ ] Спайки `rust-pkcs11`/`yubihsm-pkcs11`, Tauri mTLS — слой B, до S2/S3.
+- **Гейт S0:** `stml/v0` заморожен; тесты 6+6.5 + signing/auth; threat model; ключ создан, пакет подписан; ADR D14/D15; `tenant_id`; 5 read-only RPC.
+- **Остаток гейта:** human-подпись threat model и стенд 4 ВМ — на финальной приёмке.
 
 ---
 

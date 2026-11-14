@@ -8,12 +8,12 @@
 - Транспорт: TCP `127.0.0.1:<dynamic>`, line-delimited JSON-RPC 2.0, лимит строки 1 MiB.
 - Порт: `0` (ОС выбирает), lock-файл: `{"pid","port","exe_hash"}`.
 - Если lock указывает на живой процесс с тем же `exe_hash` — `AlreadyRunning`, второй коннектор не стартует.
-- Методы: `ping`, `status`, `heartbeat`, `inventory`.
-
-Пример:
+- Методы: `ping`, `status`, `heartbeat`, `inventory` (connector-level) + **5 read-only RPC** `ping`, `health`, `stats`, `self_test`, `immutable_check` (прокси к агенту).
+- **Auth (S0.1b):** `auth_token`; каждый запрос обязан нести `token` (top-level или в `params`), иначе `unauthorized`. Токен хранится в lock-файле с ACL 0600/icacls.
+- Lock-файл: `{"pid","port","exe_hash","token"}`; при живом PID с тем же `exe_hash` — `AlreadyRunning`.
 
 ```json
-{"jsonrpc":"2.0","id":1,"method":"status","params":{}}
+{"jsonrpc":"2.0","id":1,"method":"status","token":"<from lock file>","params":{}}
 {"jsonrpc":"2.0","id":1,"result":{"agent_id":"...","heartbeat":{...},"spool_p0":0}}
 ```
 

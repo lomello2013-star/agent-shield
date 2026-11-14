@@ -14,6 +14,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from stml.contracts.v0 import PRIORITY_ORDER, Priority, Report
+from stml.connector.security import restrict
 
 
 @dataclass(frozen=True)
@@ -51,6 +52,9 @@ class Spool:
             """
         )
         self._db.commit()
+        restrict(self.path)
+        for suffix in ("-wal", "-shm"):
+            restrict(self.path + suffix)
 
     # -- write -----------------------------------------------------------
     def enqueue(self, report: Report) -> bool:

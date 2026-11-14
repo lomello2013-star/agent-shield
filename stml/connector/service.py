@@ -21,6 +21,7 @@ from stml.contracts.v0 import (
 from stml.connector.agent_client import AgentClient, AgentUnavailable
 from stml.connector.buffer import Spool
 from stml.connector.jsonl_tail import JsonlTailer
+from stml.connector.security import restrict
 from stml.connector.transport import Transport
 
 
@@ -77,6 +78,25 @@ class Connector:
                         "tenant_id": self.config.tenant_id}, indent=2),
             encoding="utf-8",
         )
+        restrict(path)
+
+    # -- read-only RPC bridge (S0.1b) ------------------------------------
+    def rpc_health(self) -> dict[str, Any]:
+        return self._agent_call("health")
+
+    def rpc_stats(self) -> dict[str, Any]:
+        return self._agent_call("stats")
+
+    def rpc_self_test(self) -> dict[str, Any]:
+        return self._agent_call("self_test")
+
+    def rpc_immutable_check(self) -> dict[str, Any]:
+        return self._agent_call("immutable_check")
+
+    def _agent_call(self, method: str) -> dict[str, Any]:
+        if self.agent is None:
+            raise AgentUnavailable(f"{method}: no agent configured")
+        return getattr(self.agent, method)()
 
     def _base(self) -> dict[str, Any]:
         return {

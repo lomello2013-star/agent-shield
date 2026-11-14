@@ -26,6 +26,11 @@ class FakeAgent:
             raise AgentUnavailable("down")
         return {"immutable": "ok"}
 
+    def self_test(self):
+        if self.down:
+            raise AgentUnavailable("down")
+        return {"ok": True, "failed": []}
+
 
 def _connector(tmp_path, agent, transport):
     cfg = ConnectorConfig(tenant_id="t", data_root=str(tmp_path),
@@ -61,3 +66,11 @@ def test_fallback_to_files_when_agent_down(tmp_path):
     assert connector.last_heartbeat.status.value == "offline"
     assert connector.last_heartbeat.source == "files"
     assert connector.spool.pending_count() == 0  # flushed
+
+
+def test_read_only_rpc_bridge(tmp_path):
+    connector = _connector(tmp_path, FakeAgent(), MemoryTransport())
+    assert connector.rpc_health()["status"] == "healthy"
+    assert connector.rpc_stats()["version"] == "0.1.0"
+    assert connector.rpc_self_test()["ok"] is True
+    assert connector.rpc_immutable_check()["immutable"] == "ok"
