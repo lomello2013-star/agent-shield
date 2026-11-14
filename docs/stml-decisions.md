@@ -152,6 +152,8 @@
 | D-100 | GUI commands | **GET/POST `/v0/agents/{id}/commands`, drawer показывает очередь** | только policy view | control-plane минимум |
 | D-101 | Pen-test automation | **auth/replay/path/SQL smoke, draft report** | независимый аудит | не заменяет human |
 | D-102 | DPIA | **технический черновик, без юридической подписи** | сразу подписывать | честный scope |
+| D-103 | ModelPack keys | **PEM↔hex helpers; signature hex or base64 accepted** | только hex | совместимость STML/агент |
+| D-104 | CaseMemory | **маппинг STML case + реальный v3 Verdict** | синтетический verdict | атрибуция |
 
 ## Production acceptance
 

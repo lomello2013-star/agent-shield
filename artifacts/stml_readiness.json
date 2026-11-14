@@ -105,5 +105,10 @@
     "connector_ack": true,
     "approval_confirm_bridge": true,
     "inventory_retry": true
+  },
+  "learning": {
+    "modelpack_pem_hex": true,
+    "case_mapping": true,
+    "learning_update_delivery": false
   }
 }

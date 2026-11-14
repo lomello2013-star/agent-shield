@@ -13,12 +13,14 @@ signed pack is the only way a model reaches the runtime.
 
 from __future__ import annotations
 
+import base64
 import hashlib
 import json
 import os
 from dataclasses import dataclass
 from typing import Any
 
+from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey, Ed25519PublicKey
 from pydantic import ValidationError
 
@@ -57,6 +59,58 @@ def sign_pack(pack: dict[str, Any], private_key: Ed25519PrivateKey) -> str:
     return private_key.sign(canonical_payload(pack)).hex()
 
 
+def _signature_bytes(signature: str) -> bytes:
+    text = signature.strip()
+    try:
+        return bytes.fromhex(text)
+    except ValueError:
+        return base64.b64decode(text, validate=True)
+
+
+def public_key_to_pem(key: Ed25519PublicKey) -> str:
+    return key.public_bytes(serialization.Encoding.PEM,
+                            serialization.PublicFormat.SubjectPublicKeyInfo).decode()
+
+
+def public_key_from_pem(pem: str) -> Ed25519PublicKey:
+    key = serialization.load_pem_public_key(pem.encode())
+    if not isinstance(key, Ed25519PublicKey):
+        raise ValueError("not an Ed25519 public key")
+    return key
+
+
+def private_key_to_pem(key: Ed25519PrivateKey) -> str:
+    return key.private_bytes(serialization.Encoding.PEM,
+                             serialization.PrivateFormat.PKCS8,
+                             serialization.NoEncryption()).decode()
+
+
+def private_key_from_pem(pem: str) -> Ed25519PrivateKey:
+    key = serialization.load_pem_private_key(pem.encode(), password=None)
+    if not isinstance(key, Ed25519PrivateKey):
+        raise ValueError("not an Ed25519 private key")
+    return key
+
+
+def public_key_hex_from_pem(pem: str) -> str:
+    key = public_key_from_pem(pem)
+    return key.public_bytes(serialization.Encoding.Raw,
+                            serialization.PublicFormat.Raw).hex()
+
+
+def public_key_pem_from_hex(hex_key: str) -> str:
+    return public_key_to_pem(load_public_key(hex_key))
+
+
+def verify_pack_pem(pack: dict[str, Any], artifact_path: str,
+                    public_key_pem: str) -> VerificationResult:
+    try:
+        key = public_key_from_pem(public_key_pem)
+    except Exception as exc:  # noqa: BLE001 - malformed trust input
+        return VerificationResult(False, "untrusted_key", str(exc))
+    return verify_pack(pack, artifact_path, key)
+
+
 def verify_pack(pack: dict[str, Any], artifact_path: str,
                 public_key: Ed25519PublicKey | None) -> VerificationResult:
     try:
@@ -73,7 +127,7 @@ def verify_pack(pack: dict[str, Any], artifact_path: str,
     if actual != manifest.sha256:
         return VerificationResult(False, "hash_mismatch", f"{actual} != {manifest.sha256}")
     try:
-        public_key.verify(bytes.fromhex(manifest.signature), canonical_payload(pack))
+        public_key.verify(_signature_bytes(manifest.signature), canonical_payload(pack))
     except Exception:
         return VerificationResult(False, "signature_invalid", "Ed25519 verification failed")
     return VerificationResult(True, "ok", "")
