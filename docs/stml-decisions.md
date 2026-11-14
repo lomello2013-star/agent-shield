@@ -154,6 +154,7 @@
 | D-102 | DPIA | **технический черновик, без юридической подписи** | сразу подписывать | честный scope |
 | D-103 | ModelPack keys | **PEM↔hex helpers; signature hex or base64 accepted** | только hex | совместимость STML/агент |
 | D-104 | CaseMemory | **маппинг STML case + реальный v3 Verdict** | синтетический verdict | атрибуция |
+| D-105 | LearningUpdate | **verify+store через команду; application rules/models — отдельно** | сразу применять | fail-closed, без автоприменения |
 
 ## Production acceptance
 

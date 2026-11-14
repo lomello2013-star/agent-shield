@@ -97,7 +97,7 @@
   Live reload теперь есть для thresholds/gate (`apply_policy(..., live=true)`);
   sources/queue требуют restart.
 - Phase C partial: ModelPack PEM↔hex + base64 signatures, CaseMemoryEntry mapping;
-  LearningUpdate delivery/apply ещё нет.
+  LearningUpdate verify/store через команду; применение rules/model packs — нет.
 ### Phase C — Learning/ModelPack/LearningUpdate
 
 1. `core/modelpack.py` + `schemas.v3.ModelPack`: поддержка PEM↔hex, поля STML; единый canonical.

@@ -478,6 +478,16 @@ class Daemon:
                 return {"status": "failed", "error": "confirmation_id required"}
             result = self.confirm(cid, decision, "approver")
             return {"status": "acked", "confirmation": result}
+        if kind == "learning_update":
+            from core.learning_update import apply_update
+            update = payload.get("update")
+            pubkey = payload.get("pubkey", "")
+            if not isinstance(update, dict) or not pubkey:
+                return {"status": "failed", "error": "update/pubkey required"}
+            try:
+                return apply_update(self, update, str(pubkey))
+            except ValueError as exc:
+                return {"status": "failed", "error": str(exc)}
         return {"status": "unsupported", "kind": kind}
 
     def run_for(self, seconds: float, interval_s: float = 0.05) -> None:

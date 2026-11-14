@@ -109,6 +109,7 @@
   "learning": {
     "modelpack_pem_hex": true,
     "case_mapping": true,
-    "learning_update_delivery": false
+    "learning_update_delivery": true,
+    "learning_update_apply": false
   }
 }

@@ -1,20 +1,21 @@
 {
-  "generated_at": "2026-11-14T18:21:57.432485+00:00",
+  "generated_at": "2026-11-14T18:22:34.717254+00:00",
   "phase": "C",
   "status": "partial",
   "done": [
     "ModelPack PEM<->hex helpers",
     "signature hex/base64 accepted",
     "verify_pack_pem",
-    "CaseMemoryEntry mapping from STML case + real verdict"
+    "CaseMemoryEntry mapping from STML case + real verdict",
+    "LearningUpdate signature verify + persistent store via command delivery"
   ],
   "tests": [
     "tests/test_modelpack_pem.py (3)",
-    "tests/test_case_mapping.py (1)"
+    "tests/test_case_mapping.py (1)",
+    "tests/test_learning_update.py (2)"
   ],
   "not_yet": [
-    "LearningUpdate delivery/apply on agent",
-    "ModelPack artifact source/registration in STML",
-    "rules/Q&A application"
+    "LearningUpdate apply rules/model packs/Q&A",
+    "ModelPack artifact registration"
   ]
 }
