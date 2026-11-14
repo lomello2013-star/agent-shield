@@ -192,7 +192,7 @@ async fn add_policy(
     State(state): State<AppState>,
     headers: HeaderMap,
     body: Bytes,
-) -> Result<Json<Value>, ApiError> {
+) -> Result<(StatusCode, Json<Value>), ApiError> {
     auth(&headers, &state, "admin")?;
     let value: Value = serde_json::from_slice(&body)
         .map_err(|e| err(StatusCode::BAD_REQUEST, format!("json: {e}")))?;
@@ -239,9 +239,12 @@ async fn add_policy(
     .fetch_one(db)
     .await
     .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
-    Ok(Json(
-        json!({"ok": true, "policy_id": policy_id, "version": version,
+    Ok((
+        StatusCode::CREATED,
+        Json(
+            json!({"ok": true, "policy_id": policy_id, "version": version,
                    "approval_id": approval_id}),
+        ),
     ))
 }
 
@@ -278,7 +281,7 @@ async fn propose_approval(
     State(state): State<AppState>,
     headers: HeaderMap,
     body: Bytes,
-) -> Result<Json<Value>, ApiError> {
+) -> Result<(StatusCode, Json<Value>), ApiError> {
     auth(&headers, &state, "admin")?;
     let value: Value = serde_json::from_slice(&body)
         .map_err(|e| err(StatusCode::BAD_REQUEST, format!("json: {e}")))?;
@@ -305,8 +308,9 @@ async fn propose_approval(
     .fetch_one(db)
     .await
     .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
-    Ok(Json(
-        json!({"approval_id": approval_id, "status": "pending"}),
+    Ok((
+        StatusCode::CREATED,
+        Json(json!({"approval_id": approval_id, "status": "pending"})),
     ))
 }
 
@@ -461,7 +465,7 @@ async fn start_rollout(
     State(state): State<AppState>,
     headers: HeaderMap,
     body: Bytes,
-) -> Result<Json<Value>, ApiError> {
+) -> Result<(StatusCode, Json<Value>), ApiError> {
     auth(&headers, &state, "admin")?;
     let value: Value = serde_json::from_slice(&body)
         .map_err(|e| err(StatusCode::BAD_REQUEST, format!("json: {e}")))?;
@@ -557,9 +561,12 @@ async fn start_rollout(
             .await
             .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
     }
-    Ok(Json(
-        json!({"rollout_id": rollout_id, "percent": percent, "status": status,
+    Ok((
+        StatusCode::CREATED,
+        Json(
+            json!({"rollout_id": rollout_id, "percent": percent, "status": status,
                    "applied": agents.len()}),
+        ),
     ))
 }
 
@@ -1335,7 +1342,10 @@ async fn model_rollback(
     Ok(Json(json!({"ok": true, "active_id": previous_id})))
 }
 
-async fn enrol(State(state): State<AppState>, body: Bytes) -> Result<Json<Value>, ApiError> {
+async fn enrol(
+    State(state): State<AppState>,
+    body: Bytes,
+) -> Result<(StatusCode, Json<Value>), ApiError> {
     let db = pool(&state)?;
     let value: Value = serde_json::from_slice(&body)
         .map_err(|e| err(StatusCode::BAD_REQUEST, format!("json: {e}")))?;
@@ -1406,7 +1416,10 @@ async fn enrol(State(state): State<AppState>, body: Bytes) -> Result<Json<Value>
     tx.commit()
         .await
         .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
-    Ok(Json(json!({"agent_id": agent_id, "tenant_id": tenant_id})))
+    Ok((
+        StatusCode::CREATED,
+        Json(json!({"agent_id": agent_id, "tenant_id": tenant_id})),
+    ))
 }
 
 async fn signed_agent(
@@ -1427,6 +1440,33 @@ async fn signed_agent(
     let pubkey: String = row.get("pubkey");
     let isolated: bool = row.get("isolated");
     verify_body(headers, body, &pubkey)?;
+    let nonce = value
+        .get("nonce")
+        .and_then(Value::as_str)
+        .ok_or_else(|| err(StatusCode::BAD_REQUEST, "nonce required"))?;
+    let sent_at = value
+        .get("sent_at")
+        .and_then(Value::as_str)
+        .ok_or_else(|| err(StatusCode::BAD_REQUEST, "sent_at required"))?;
+    let sent = chrono::DateTime::parse_from_rfc3339(sent_at)
+        .map_err(|_| err(StatusCode::BAD_REQUEST, "bad sent_at"))?;
+    let skew = (chrono::Utc::now() - sent.with_timezone(&chrono::Utc))
+        .num_seconds()
+        .abs();
+    if skew > 300 {
+        return Err(err(StatusCode::CONFLICT, "timestamp outside skew"));
+    }
+    let inserted = sqlx::query(
+        "INSERT INTO nonces(nonce, seen_at) VALUES ($1, now()) \
+         ON CONFLICT (nonce) DO NOTHING",
+    )
+    .bind(nonce)
+    .execute(db)
+    .await
+    .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+    if inserted.rows_affected() == 0 {
+        return Err(err(StatusCode::CONFLICT, "replayed nonce"));
+    }
     Ok((agent_id, pubkey, isolated))
 }
 
@@ -1439,21 +1479,6 @@ async fn heartbeat(
     let value: Value = serde_json::from_slice(&body)
         .map_err(|e| err(StatusCode::BAD_REQUEST, format!("json: {e}")))?;
     let (agent_id, _, isolated) = signed_agent(db, &headers, &body, &value).await?;
-    let nonce = value
-        .get("nonce")
-        .and_then(Value::as_str)
-        .ok_or_else(|| err(StatusCode::BAD_REQUEST, "nonce required"))?;
-    let inserted = sqlx::query(
-        "INSERT INTO nonces(nonce, seen_at) VALUES ($1, now()) \
-                                ON CONFLICT (nonce) DO NOTHING",
-    )
-    .bind(nonce)
-    .execute(db)
-    .await
-    .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
-    if inserted.rows_affected() == 0 {
-        return Err(err(StatusCode::CONFLICT, "replayed nonce"));
-    }
     let status = value
         .get("status")
         .and_then(Value::as_str)

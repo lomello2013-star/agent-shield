@@ -144,6 +144,8 @@
 | D-92 | Inventory 10055 | **3 попытки с backoff и `Connection: close`** | keep-alive/HTTP2 | WSAENOBUFS на Windows |
 | D-93 | Connector HTTP | **persistent HTTP/1.1 `http.client` pool + server `protocol_version=HTTP/1.1`** | отдельный keep-alive слой | снижает TIME_WAIT/10055 |
 | D-94 | Policy live reload | **live: thresholds/gate confidence; sources/queue требуют restart** | полный hot reload | безопасный минимум |
+| D-95 | Rust signed requests | **nonce replay + ±300 s skew в `signed_agent` для heartbeat/inventory/reports/ack** | отдельные проверки | единая точка |
+| D-96 | HTTP 201 parity | **enrol/policy/approval/rollout возвращают 201, как Python** | оставить 200 | parity |
 
 ## Production acceptance
 

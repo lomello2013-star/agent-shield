@@ -28,7 +28,9 @@
 - **P5 1000:** `scripts/stml_rust_load.py` — 1000 агентов, p95 **145.9 ms**
   (Python reference 111.6 ms), обе <2 s.
 - **CRL проверен:** `STML_CRL_FILE`; revoked client blocked, non-revoked 200.
-- **Не проверено:** Tauri, RLS/HA, timestamp skew, HTTP 201 parity.
+- **Hardening:** nonce replay + ±300 s skew для всех signed agent endpoints;
+  enrol/policy/approval/rollout — HTTP 201.
+- **Не проверено:** Tauri, RLS/HA, 1000-agent HA.
 
 ## 1. Что уже есть
 

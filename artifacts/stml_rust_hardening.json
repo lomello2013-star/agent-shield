@@ -1,0 +1,15 @@
+{
+  "generated_at": "2026-11-14T18:15:52.921127+00:00",
+  "component": "stml-server-rust",
+  "phase": "P5-hardening",
+  "status": "verified",
+  "checks": {
+    "enrol_201": true,
+    "skew_409": true,
+    "replay_409": true,
+    "approval_201": true
+  },
+  "not_yet": [
+    "timestamp skew for all agent endpoints? (now central in signed_agent)"
+  ]
+}
