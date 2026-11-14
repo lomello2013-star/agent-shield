@@ -12,7 +12,7 @@
 | Benign/holdout | ✅ | Windows **10/11**, holdout **5/5**, **0 FP**; `WIN-17` закрыт `016A` live |
 | E7/F10 | ✅ v1 accepted | E7 0.90136 @1 % / PPV 0.5642 @0.05 %; F10 13.33 %; исходные 0.95@0.05 % и 10 % — research/pilot (D-014/D-015) |
 | Реальные образцы | ✅ безопасные эмуляции | D-008: реальный malware не запускается |
-| status/readiness/тесты | ✅ | pytest 543, run_all 29/29, docs 13/13 |
+| status/readiness/тесты | ✅ | pytest 545, run_all 29/29, docs 13/13 |
 | EV/HLK-пакет | 🧊 frozen | Inf2Cat, каталог 2366 B; EV/HLK/Partner Center — D-016 |
 
 ## Заморожено (D-016)

@@ -133,8 +133,8 @@ production-коллектор — open.
 **Рекомендация:** **C**.
 **Выбор:** C (рекомендация агента).
 **Обоснование:** нельзя выдавать 467 за текущее; нельзя и скрывать stml.
-**Статус:** closed: STML зелёный, `pytest` = **543**, `run_all` **29/29**,
-`status.md` = 543; readiness/dev-report/release синхронизированы.
+**Статус:** closed: STML зелёный, `pytest` = **545**, `run_all` **29/29**,
+`status.md` = 545; readiness/dev-report/release синхронизированы.
 
 ---
 
