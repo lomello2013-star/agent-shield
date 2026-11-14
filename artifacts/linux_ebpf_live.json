@@ -27,12 +27,14 @@
      "LINUX-EXEC-CORR-109", "LINUX-EXEC-CORR-110"], "events": 10, "verdicts": 15,
      "control": "corr_helper: process_vm_writev + mprotect in one process tree"},
     {"id": "linux-smb-lateral", "rule": "NET-SMB-LATERAL-012", "events": 2, "verdicts": 2,
-     "control": "connect 445 + 4444"}
+     "control": "connect 445 + 4444"},
+    {"id": "linux-mass-write", "rule": "FILE-MASS-WRITE-014", "events": 50, "verdicts": 1,
+     "control": "50 x touch /tmp/aidf_write_*"}
   ],
-  "live_count": 13,
+  "live_count": 14,
   "limitations": [
-    "13 of 20 Linux scenarios are live",
-    "remaining 7 need new sensors (file write/delete, DNS, exfil bytes) or are Windows-only",
+    "14 of 20 Linux scenarios are live",
+    "remaining 6 need new sensors (DNS, exfil bytes, canary delete) or are Windows-only",
     "production collector (loader->pipeline service) is not integrated",
     "fapolicyd was stopped for BPF loader tests and restored afterwards"
   ]

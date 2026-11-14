@@ -101,6 +101,7 @@ struct open_evt {
     unsigned long long ts_ns;
     char comm[16];
     char path[192];
+    unsigned int writable;
 };
 
 struct exec_path_evt {
@@ -202,8 +203,9 @@ static int on_net_json(void *ctx, void *data, size_t sz)
 static int on_open_json(void *ctx, void *data, size_t sz)
 {
     struct open_evt *e = data;
-    printf("{\"pid\":%u,\"ppid\":%u,\"ts_ns\":%llu,\"comm\":\"%s\",\"path\":\"%s\"}\n",
-           e->pid, e->ppid, (unsigned long long)e->ts_ns, e->comm, e->path);
+    printf("{\"pid\":%u,\"ppid\":%u,\"ts_ns\":%llu,\"comm\":\"%s\",\"path\":\"%s\",\"writable\":%u}\n",
+           e->pid, e->ppid, (unsigned long long)e->ts_ns, e->comm, e->path,
+           e->writable);
     fflush(stdout);
     got++;
     return 0;

@@ -31,7 +31,7 @@ def _raw(item: dict) -> dict | None:
                    exe=item.get("exe", ""), cmdline=item.get("exe", ""),
                    anon=item["anon"], len=item.get("len"),
                    provenance_known=bool(item.get("exe")))
-    elif "writable" in item:
+    elif "writable" in item and "path" not in item:
         raw.update(category="memory.access", action="proc_mem",
                    exe=item.get("comm", ""), cmdline=item.get("comm", ""),
                    writable=item["writable"])
@@ -51,10 +51,15 @@ def _raw(item: dict) -> dict | None:
                    proto="tcp")
     elif "path" in item:
         path = item["path"]
-        if path.startswith(("/etc/cron", "/var/spool/cron", "/etc/crontab")):
+        writable = bool(item.get("writable"))
+        if path.startswith("/proc/") and writable:
+            category, action = "memory.access", "proc_mem"
+        elif path.startswith(("/etc/cron", "/var/spool/cron", "/etc/crontab")):
             category, action = "persistence.change", "cron_write"
         elif path.startswith(("/etc/audit", "/var/log/audit")):
             category, action = "log.tamper", "audit_tamper"
+        elif writable and path.startswith("/tmp/aidf_write"):
+            category, action = "file.write", "write"
         else:
             category, action = "file.read", "open"
         raw.update(category=category, action=action,

@@ -11,6 +11,7 @@ struct open_evt {
     __u64 ts_ns;
     char comm[16];
     char path[192];
+    __u32 writable;
 };
 
 struct {
@@ -41,10 +42,12 @@ int BPF_PROG(lsm_file_open_cred, struct file *file)
     if (!prefix(e.path, "/etc/shadow") && !prefix(e.path, "/etc/gshadow") &&
         !prefix(e.path, "/etc/sudoers") && !prefix(e.path, "/root/.ssh") &&
         !prefix(e.path, "/etc/cron") && !prefix(e.path, "/var/spool/cron") &&
-        !prefix(e.path, "/etc/audit") && !prefix(e.path, "/var/log/audit"))
+        !prefix(e.path, "/etc/audit") && !prefix(e.path, "/var/log/audit") &&
+        !prefix(e.path, "/tmp/aidf_write"))
         return 0;
     e.pid = bpf_get_current_pid_tgid() >> 32;
     e.ts_ns = bpf_ktime_get_ns();
+    e.writable = (BPF_CORE_READ(file, f_flags) & 0x3) ? 1 : 0;
     bpf_get_current_comm(&e.comm, sizeof(e.comm));
     struct task_struct *t = (struct task_struct *)bpf_get_current_task_btf();
     e.ppid = BPF_CORE_READ(t, real_parent, tgid);

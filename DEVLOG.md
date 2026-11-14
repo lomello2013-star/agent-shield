@@ -3346,6 +3346,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 16:15] Live mass-write; Linux 14/20 [experiment]
+
+**Действие**: `file_open_lsm` расширен writable-полем и префиксом `/tmp/aidf_write`; loader печатает `writable`; 50 live `touch` дали 50 событий и `FILE-MASS-WRITE-014` (windowed 50/10 с). Linux live: **14/20**.
+**Числа**: 50 событий → 1 вердикт 014; Linux live 14/20; pytest 530 (не менялся); `run_all` 29/29 (не менялся).
+**Вердикт**: mass-write live закрыт; осталось 6 сценариев (DNS/exfil/canary или Windows-only) и production-коллектор.
+**Проверка**: `/tmp/filewrite50.jsonl`; evaluator → 014; `artifacts/linux_ebpf_live.json`.
+**Статус**: verified (mass-write); open (6/20, production collector)
+**Actor**: agent
+**Run_id**: linux-mass-write-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,
