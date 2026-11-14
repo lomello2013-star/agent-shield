@@ -1,18 +1,18 @@
 {
-  "generated_at": "2026-11-14T07:58:19.303595+00:00",
-  "entries": 111,
-  "complete": 88,
-  "incomplete": 23,
+  "generated_at": "2026-11-14T08:55:07.733890+00:00",
+  "entries": 116,
+  "complete": 92,
+  "incomplete": 24,
   "completeness_pct": 79.3,
   "by_type": {
     "config": 4,
-    "experiment": 71,
+    "experiment": 74,
     "escalation": 1,
     "decision": 2,
-    "code": 23,
+    "code": 24,
     "docs": 1,
     "report": 4,
-    "auto_review": 5
+    "auto_review": 6
   },
   "missing_artifacts": [
     "dev_keys.json",
@@ -190,8 +190,17 @@
         "**Числа",
         "**Проверка"
       ]
+    },
+    {
+      "time": "2026-11-14 12:10",
+      "title": "Жёсткое внешнее ревью P0 на HEAD 61a8316 (Koda CLI / Gemini)",
+      "missing": [
+        "**Действие",
+        "**Числа",
+        "**Проверка"
+      ]
     }
   ],
-  "artifacts_on_disk": 78,
+  "artifacts_on_disk": 80,
   "note": "legacy entries are disclosed, not rewritten; new entries are enforced by docs_consistency (last 10 entries must carry all five fields)"
 }

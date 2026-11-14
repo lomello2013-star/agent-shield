@@ -9,14 +9,14 @@
     "rule_hits": {
       "WIN-SERVICE-CREATE-007": 80
     },
-    "tick_ms_p50": 0.099,
-    "tick_ms_p95": 0.189,
+    "tick_ms_p50": 0.104,
+    "tick_ms_p95": 0.253,
     "ingest_received": 160,
     "lost": 0
   },
   "R2_silent_source": {
     "timeout_s": 0.2,
-    "detection_s": 1.507,
+    "detection_s": 1.525,
     "detected": true,
     "note": "silence measured from a fresh beat of all sources"
   },
@@ -36,7 +36,7 @@
   },
   "R10_tamper": {
     "audit_chain_ok": false,
-    "detect_ms": 0.18
+    "detect_ms": 0.183
   },
   "R6_update": {
     "active_before_failed_update": "B",
@@ -47,7 +47,7 @@
   },
   "R3_watchdog": {
     "restarted": true,
-    "mttr_ms": 10.3,
+    "mttr_ms": 11.7,
     "target_ms": 30000,
     "within_target": true
   },

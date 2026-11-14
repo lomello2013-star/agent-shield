@@ -90,7 +90,7 @@ def test_quarantine_missing_file_and_bad_key(tmp_path):
         QuarantineStore(str(tmp_path / "q2"), key=b"short")
 
 
-def test_quarantine_rejects_symlink(tmp_path):
+def test_quarantine_rejects_symlink(tmp_path, monkeypatch):
     store = QuarantineStore(str(tmp_path / "q"), key=KEY)
     target = tmp_path / "real.txt"
     target.write_text("x", encoding="utf-8")
@@ -98,7 +98,11 @@ def test_quarantine_rejects_symlink(tmp_path):
     try:
         os.symlink(target, link)
     except (OSError, NotImplementedError):
-        pytest.skip("symlink creation not permitted")
+        # Unprivileged Windows cannot create symlinks; simulate the flag so the
+        # guard is still exercised and the test count stays deterministic.
+        link.write_text("x", encoding="utf-8")
+        monkeypatch.setattr(os.path, "islink",
+                            lambda p: os.fspath(p) == os.fspath(link))
     with pytest.raises(ActionError):
         store.put(str(link))
 

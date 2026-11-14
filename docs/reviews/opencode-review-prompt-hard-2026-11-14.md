@@ -99,8 +99,9 @@
 - Ветка sysmon_missing проверена unit/static, не вживую.
 - IPC службы включается только при AIDF_ADMIN_TOKEN.
 - ETW/4688-путь для actor_pid не реализован; Sysmon — opt-in.
-- Symlink-skip может дать 466+1 вместо 467 — это environment, не регрессия;
-  но числа в status/run_all должны совпадать между собой.
+- Symlink-тест детерминирован (mock `islink` без прав); ожидается 467 passed,
+  0 skipped. Если увидел skip в `test_quarantine_rejects_symlink` — это дефект
+  детерминизма, escalate.
 
 ВЕРНИ СТРОГО:
 - ВЕРДИКТ: approve | request_changes | escalate.

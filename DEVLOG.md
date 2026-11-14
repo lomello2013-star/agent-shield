@@ -3091,6 +3091,33 @@ parameters=2
 
 ---
 
+## [2026-11-14 12:10] Жёсткое внешнее ревью P0 на HEAD 61a8316 (Koda CLI / Gemini) [auto_review]
+
+**Вердикт**: escalate
+**Reviewer_model**: gemini (Google, Koda CLI); **Author_model**: deepseek-v4-pro
+**Изоляция**: другой вендор = да; свежий контекст = да; к рассуждениям автора доступа не было; та же машина/пользователь (read-only дисциплиной, не песочницей); admin/VM/Linux в сессии недоступны.
+**Факты**: HEAD при аудите = 2d7818f (61a8316 — предок, diff между ними только 1 md-файл промпта). `pytest -o addopts="" -q` → **466 passed, 1 skipped** (265.14 с; skip: test_quarantine_rejects_symlink — symlink без привилегий). `cargo test --manifest-path rust/Cargo.toml` → **133 passed, 0 failed** (совпало). `docs_consistency.py` → **13/13**; status/tests-step-ok теперь сверяет ЧИСЛО (detail "status=467 artifact=467") — исправление предыдущего замечания подтверждено, но источник у status и артефакта один (run_all.json), независимого прогона проверка не делает. Immutable: fingerprint d8ae913401ea…, verify_immutable читает внешний docs/policy-contract.json (не тавтология), git diff пуст; кросс-язычно: rust/tests/policy.rs::fingerprint_matches_python_artifact + py-тест литерала — passed. Схемы: 21=21, drift 0. ML: public_key=None → untrusted_key (fail-closed), metrics в canonical payload, fit/train grep core/*.py и rust/src/*.rs = 0, gate shadow_only. Fail-safe: timeout→reject, terminate refused, destructive queued, ghost approve → KeyError (response_executed=0). IPC живой прогон: viewer→kill_switch −32002; 2 МиБ → канал закрыт, сервер жив (pong) — соответствует новой формулировке промпта; не-dict → −32600, соединение живёт; evil-pickle не десериализован; authkey fromhex на обеих сторонах. Правила: 28/28 фикстур 1:1, lint=0; WIN-SERVICE-CREATE-007: service_create/service_change → hit, service_state → NO HIT. Демон: aidf_service.py передаёт collect_interval_s (env AIDF_COLLECT_INTERVAL_S, дефолт 5 > 0) — поток сборщиков стартует (проверено: _collector_thread активен при 5.0); ResponseExecutor+QuarantineStore подключены; AIDF_ADMIN_TOKEN гейтит IPC; AIDF_SYSMON=1 + channel_exists, при отсутствии канала — sysmon_missing в audit. Sysmon: Event 1 → process.start, _parse_pid принимает hex 0x…; build_default_collectors строит win.sysmon (тест passed); WIN-EXEC-TEMP-001 на C:\Temp\evil.exe → hit. Изоляция коллекторов: per-collector try/except в collect_once + test_broken_collector_does_not_blind_others passed. Confirmation: approve ровно один раз, reject/timeout не исполняют, без цели → action_skipped (3 теста passed). aidfctl --params-file: 2 теста passed (не-объект → ValueError). docs/sysmon.md + scripts/setup_sysmon.ps1 + ссылка в operations.md — есть. Гигиена: git status = 1 запись (soak-артефакт); NUL/ESC в status.md = False; baseline run_all 07:58Z vs HEAD 08:42Z — baseline старше HEAD на 44 мин.
+**Расхождения**: 1) заявлено 467 passed / факт 466+1 skip (symlink — environment; но заявленное число не равно факту прогона на HEAD; статус и run_all согласованы между собой, что промпт допускает, однако автором заявлено «467 passed» без skip). 2) docs_consistency проверяет согласованность status↔run_all, но не сверяет с независимым прогоном — расхождение с реальностью не детектируется (архитектурное ограничение, не новый дефект).
+**Не удалось**: linux_*-e2e (нет ОС), WDAC/RTP/Defender live (нет admin), Sysmon live (канал отсутствует на хосте — проверено unit/static), soak 6 ч / 0xC0000005 (вне времени аудита), VM AIDF-Win11 не подключалась.
+**Статус**: verified (кроме перечисленного в «Не удалось»)
+**Actor**: reviewer-gemini
+**Run_id**: opencode-hard-p0-2026-11-14
+**Отчёт**: docs/reviews/opencode-hard-p0-2026-11-14.md
+
+---
+
+## [2026-11-14 12:25] Ответ на Gemini P0: symlink-тест детерминирован; счётчик 467/0 [test]
+
+**Действие**: разобрал отчёт `opencode-hard-p0-2026-11-14.md` (escalate). Все P0, кроме pytest-числа, сошлись. Причина escalate — 466 passed + 1 skipped против 467: `test_quarantine_rejects_symlink` уходил в skip без прав на symlink. Исправлено: при запрете `os.symlink` тест подменяет `os.path.islink` (monkeypatch) и всё равно проверяет отказ карантина; счётчик детерминирован (467/0 skip). Добавлен `docs/test-strategy.md` §8: `docs_consistency` не заменяет свежий pytest (нет независимого источника), symlink-skip — дефект детерминизма.
+**Числа**: pytest **467 passed / 0 skipped**; cargo **133**; `run_all` **29/29**; `docs_consistency` **13/13**; baseline перегенерирован на текущем HEAD.
+**Вердикт**: находка Gemini — реальная двусмысленность отчётности (skip зависел от окружения), а не регрессия кода; устранена. IPC oversize (BrokenPipe) — допустимо по промпту; независимость `docs_consistency` — задокументированное ограничение.
+**Проверка**: `pytest -o addopts="" -q` → 467/0; `run_all` → 29/29; `docs_consistency` → 13/13; на хосте без symlink-прав тест идёт через mock.
+**Статус**: verified
+**Actor**: agent
+**Run_id**: gemini-p0-response-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,
