@@ -1,0 +1,21 @@
+{
+  "generated_at": "2026-11-14T12:41:22.349714+00:00",
+  "component": "stml-server-rust",
+  "phase": "P5-write-parity",
+  "status": "verified",
+  "flow": [
+    "policy 201/200",
+    "rollout-before-approval 409",
+    "approve 200",
+    "rollout 200",
+    "promote 10/50/100",
+    "completed"
+  ],
+  "db": "PostgreSQL stml_parity_write",
+  "python": "SQLite reference",
+  "result": "ok:true",
+  "not_yet": [
+    "1000-agent parity",
+    "mTLS write parity"
+  ]
+}

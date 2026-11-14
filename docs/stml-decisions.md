@@ -138,6 +138,7 @@
 | D-86 | P5 parity | **read-only smoke: health/UI/agents/policies + 401** | полный contract suite | быстрый gate, не заменяет P5 |
 | D-87 | Rust mTLS | **rustls + WebPkiClientVerifier; client cert обязателен по env** | Python ssl wrapper | parity с reference |
 | D-88 | Rust CRL | **CRL enforcement в TLS пока не реализован** | revocation middleware | сертификаты отзываются на уровне CA/прокси |
+| D-89 | P5 write parity | **policy→approval→rollout 1→10→50→100 на Python и Rust** | только read smoke | полный контрольный сценарий |
 
 ## Production acceptance
 
