@@ -94,7 +94,6 @@
 - Тест: `stml/tests/test_server_http.py::test_approval_confirm_enqueues_command` —
   approval → confirm command.
 - Остаток: Rust parity для commands/approval bridge, policy live reload.
-
 ### Phase C — Learning/ModelPack/LearningUpdate
 
 1. `core/modelpack.py` + `schemas.v3.ModelPack`: поддержка PEM↔hex, поля STML; единый canonical.

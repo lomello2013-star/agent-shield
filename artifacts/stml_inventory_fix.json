@@ -1,0 +1,19 @@
+{
+  "generated_at": "2026-11-14T18:06:54.681240+00:00",
+  "inventory_retry": {
+    "attempts": 3,
+    "backoff_s": "0.15/0.30",
+    "wsaenobufs": 10055,
+    "connector_last_error_after_40s": null
+  },
+  "gui_token": {
+    "viewer_200": true,
+    "wrong_token_401": true,
+    "ui_200": true,
+    "storage": "sessionStorage (Settings)"
+  },
+  "notes": [
+    "fix mitigates WSAENOBUFS with fresh connection; root Windows socket pressure still possible",
+    "GUI is static SPA; token is entered in Settings and kept in sessionStorage"
+  ]
+}

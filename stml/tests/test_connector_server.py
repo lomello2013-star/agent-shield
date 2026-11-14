@@ -1,7 +1,11 @@
 import json
+import urllib.error
+
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
 from stml.connector.buffer import Spool
 from stml.connector.jsonl_tail import JsonlTailer
+from stml.connector.server_client import ServerClient
 from stml.connector.service import Connector, ConnectorConfig
 from stml.connector.transport import HttpTransport
 from stml.server.app import ServerConfig, start_server
@@ -20,6 +24,32 @@ class FakeAgent:
 
     def self_test(self):
         return {"ok": True, "failed": []}
+
+
+class _Resp:
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        return False
+
+    def read(self):
+        return b'{"ok": true}'
+
+
+def test_server_client_retries_wsanobufs(monkeypatch):
+    calls = []
+
+    def flaky(*args, **kwargs):
+        calls.append(1)
+        if len(calls) < 3:
+            raise urllib.error.URLError(OSError(10055, "no buffer space"))
+        return _Resp()
+
+    monkeypatch.setattr("stml.connector.server_client.urllib.request.urlopen", flaky)
+    client = ServerClient("http://127.0.0.1:9", Ed25519PrivateKey.generate())
+    assert client._post("/v0/inventory", {}) == {"ok": True}
+    assert len(calls) == 3
 
 
 def _setup(tmp_path):

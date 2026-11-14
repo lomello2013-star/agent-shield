@@ -141,6 +141,7 @@
 | D-89 | P5 write parity | **policy→approval→rollout 1→10→50→100 на Python и Rust** | только read smoke | полный контрольный сценарий |
 | D-90 | P5 1000 parity | **Rust: 1000 агентов, p95 145.9 ms (Python 111.6 ms)** | отдельный бенч | обе <2 s |
 | D-91 | Rust CRL проверка | **revoked client blocked, non-revoked 200; файл читается на handshake** | кеш CRL | динамический отзыв |
+| D-92 | Inventory 10055 | **3 попытки с backoff и `Connection: close`** | keep-alive/HTTP2 | WSAENOBUFS на Windows |
 
 ## Production acceptance
 

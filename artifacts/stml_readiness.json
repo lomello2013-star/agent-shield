@@ -100,6 +100,7 @@
     "live_reload": false,
     "server_command_delivery": true,
     "connector_ack": true,
-    "approval_confirm_bridge": true
+    "approval_confirm_bridge": true,
+    "inventory_retry": true
   }
 }

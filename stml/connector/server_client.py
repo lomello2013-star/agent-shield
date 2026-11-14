@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import time
 import urllib.error
 import urllib.request
 import uuid
@@ -34,16 +35,29 @@ class ServerClient:
     def _post(self, path: str, payload: dict[str, Any], signed: bool = False) -> dict[str, Any]:
         raw = json.dumps(payload).encode()
         headers = {"Content-Type": "application/json",
+                   "Connection": "close",
                    "X-Trace-ID": uuid.uuid4().hex}
         if signed:
             headers["X-STML-Signature"] = sign(self.private_key, raw)
-        req = urllib.request.Request(self.base_url + path, data=raw, headers=headers, method="POST")
-        try:
-            with urllib.request.urlopen(req, timeout=self.timeout_s,
-                                        context=self.ssl_context) as resp:
-                return json.loads(resp.read().decode())
-        except urllib.error.HTTPError as exc:
-            raise ServerError(exc.code, exc.read().decode(errors="replace")) from exc
+        last_error: Exception | None = None
+        for attempt in range(3):
+            req = urllib.request.Request(self.base_url + path, data=raw,
+                                         headers=headers, method="POST")
+            try:
+                with urllib.request.urlopen(req, timeout=self.timeout_s,
+                                            context=self.ssl_context) as resp:
+                    return json.loads(resp.read().decode())
+            except urllib.error.HTTPError as exc:
+                raise ServerError(exc.code, exc.read().decode(errors="replace")) from exc
+            except (urllib.error.URLError, OSError) as exc:
+                # Windows can return WSAENOBUFS (10055) after long uptime or
+                # socket pressure; a fresh connection usually succeeds.
+                last_error = exc
+                if attempt < 2:
+                    time.sleep(0.15 * (attempt + 1))
+                    continue
+        assert last_error is not None
+        raise last_error
 
     def enrol(self, tenant_id: str, enrolment_token: str, hostname: str, os_name: str,
               arch: str, agent_version: str, connector_version: str,
