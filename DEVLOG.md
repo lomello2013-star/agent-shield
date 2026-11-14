@@ -3310,6 +3310,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 15:45] Live cron/audit; Linux 9/20 [experiment]
+
+**Действие**: `file_open_lsm` расширен префиксами cron/audit; live `touch /etc/cron.d/aidf_rt` → `LINUX-CRON-102`, `touch /var/log/audit/audit.log` → `LINUX-AUDIT-TAMPER-103`; evaluator классифицирует path→category/action. Linux live: **9/20**.
+**Числа**: 4 события → 2 вердикта (cron/audit); Linux live 9/20; pytest 530 (не менялся); `run_all` 29/29 (не менялся).
+**Вердикт**: cron/audit live закрыты; осталось 11 сценариев и production-коллектор.
+**Проверка**: `/tmp/cronaudit.jsonl`; `linux_ebpf_live.py` → 102/103; `artifacts/linux_ebpf_live.json`.
+**Статус**: verified (cron/audit); open (11/20, production collector)
+**Actor**: agent
+**Run_id**: linux-cron-audit-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

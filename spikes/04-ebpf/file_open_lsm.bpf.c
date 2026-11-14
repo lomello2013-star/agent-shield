@@ -39,7 +39,9 @@ int BPF_PROG(lsm_file_open_cred, struct file *file)
     if (n <= 0)
         return 0;
     if (!prefix(e.path, "/etc/shadow") && !prefix(e.path, "/etc/gshadow") &&
-        !prefix(e.path, "/etc/sudoers") && !prefix(e.path, "/root/.ssh"))
+        !prefix(e.path, "/etc/sudoers") && !prefix(e.path, "/root/.ssh") &&
+        !prefix(e.path, "/etc/cron") && !prefix(e.path, "/var/spool/cron") &&
+        !prefix(e.path, "/etc/audit") && !prefix(e.path, "/var/log/audit"))
         return 0;
     e.pid = bpf_get_current_pid_tgid() >> 32;
     e.ts_ns = bpf_ktime_get_ns();

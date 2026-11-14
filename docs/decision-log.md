@@ -76,9 +76,9 @@ alert-правилом, а не молчанием.
 **Рекомендация:** **A**, при блокере — **B** с явной пометкой «fixture-level».
 **Выбор:** A (рекомендация агента), fallback B только при доказанном блокере.
 **Обоснование:** пользователь просил live; fixture-level не должен подменять его.
-**Статус:** A: **7/20 live** — exec (`101`), cred-read (`104`), mprotect (`107`),
-procmem/ptrace/memwrite (`106`), net C2 (`105`); LSM `bpf` включён, net через
-root cgroup. Production-коллектор и оставшиеся 13 сценариев — open.
+**Статус:** A: **9/20 live** — exec (`101`), cred-read (`104`), mprotect (`107`),
+procmem/ptrace/memwrite (`106`), net C2 (`105`), cron (`102`), audit (`103`);
+LSM `bpf`, net через root cgroup. Production-коллектор и 11 сценариев — open.
 
 ---
 

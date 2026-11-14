@@ -56,9 +56,16 @@ def main(path: str) -> int:
                        daddr=item.get("daddr", ""), dport=item["dport"],
                        proto="tcp")
         elif "path" in item:
-            raw.update(category="file.read", action="open",
+            path = item["path"]
+            if path.startswith(("/etc/cron", "/var/spool/cron", "/etc/crontab")):
+                category, action = "persistence.change", "cron_write"
+            elif path.startswith(("/etc/audit", "/var/log/audit")):
+                category, action = "log.tamper", "audit_tamper"
+            else:
+                category, action = "file.read", "open"
+            raw.update(category=category, action=action,
                        exe=item.get("comm", ""), cmdline=item.get("comm", ""),
-                       filename=item["path"])
+                       filename=path)
         else:
             continue
         try:

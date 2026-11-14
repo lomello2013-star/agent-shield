@@ -18,11 +18,15 @@
     {"id": "linux-mem-write", "rule": "LINUX-INJECT-106", "events": 5, "verdicts": 5,
      "control": "memwrite_helper process_vm_writev"},
     {"id": "linux-net-c2", "rule": "LINUX-C2-PORT-105", "events": 3, "verdicts": 1,
-     "cgroup": "/sys/fs/cgroup", "control": "connect 443: no verdict"}
+     "cgroup": "/sys/fs/cgroup", "control": "connect 443: no verdict"},
+    {"id": "linux-cron", "rule": "LINUX-CRON-102", "events": 4, "verdicts": 1,
+     "control": "touch /etc/cron.d/aidf_rt"},
+    {"id": "linux-audit-tamper", "rule": "LINUX-AUDIT-TAMPER-103", "events": 4, "verdicts": 1,
+     "control": "touch /var/log/audit/audit.log"}
   ],
-  "live_count": 7,
+  "live_count": 9,
   "limitations": [
-    "7 of 20 Linux scenarios are live",
+    "9 of 20 Linux scenarios are live",
     "production collector (loader->pipeline service) is not integrated",
     "fapolicyd was stopped for BPF loader tests and restored afterwards"
   ]
