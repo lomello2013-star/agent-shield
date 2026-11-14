@@ -27,8 +27,8 @@
   1→10→50→100 на Python (SQLite) и Rust (Postgres); `ok:true`.
 - **P5 1000:** `scripts/stml_rust_load.py` — 1000 агентов, p95 **145.9 ms**
   (Python reference 111.6 ms), обе <2 s.
-- **Не проверено:** mTLS write parity, CRL enforcement, Tauri, RLS/HA,
-  timestamp skew, HTTP 201 parity.
+- **CRL проверен:** `STML_CRL_FILE`; revoked client blocked, non-revoked 200.
+- **Не проверено:** Tauri, RLS/HA, timestamp skew, HTTP 201 parity.
 
 ## 1. Что уже есть
 

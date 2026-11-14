@@ -50,5 +50,5 @@ cargo run
 - Commands: `isolate` / approval `confirm` → queue → heartbeat `commands` → signed ack.
 - GUI: `/` and `/ui/` serve `stml/gui/index.html` (17.6 KB) from the Rust binary.
 - mTLS: rustls + optional client cert; client without cert blocked at TLS.
-- **Not yet:** Rust CRL enforcement, Tauri, P5 write-path parity, RLS/HA,
-  timestamp skew, HTTP 201 parity, HSM.
+- CRL: optional `STML_CRL_FILE` with one revoked serial per line; checked per handshake.
+- **Not yet:** Tauri, RLS/HA, timestamp skew, HTTP 201 parity, HSM.

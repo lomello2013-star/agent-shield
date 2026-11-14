@@ -137,9 +137,10 @@
 | D-85 | Rust GUI | **Rust отдаёт тот же `stml/gui/index.html` на `/` и `/ui/`** | отдельный frontend/Tauri | минимум кода, одна SPA |
 | D-86 | P5 parity | **read-only smoke: health/UI/agents/policies + 401** | полный contract suite | быстрый gate, не заменяет P5 |
 | D-87 | Rust mTLS | **rustls + WebPkiClientVerifier; client cert обязателен по env** | Python ssl wrapper | parity с reference |
-| D-88 | Rust CRL | **CRL enforcement в TLS пока не реализован** | revocation middleware | сертификаты отзываются на уровне CA/прокси |
+| D-88 | Rust CRL | **CRL enforcement через `STML_CRL_FILE` (serial per handshake)** | revocation middleware | простой файл, без БД в TLS-слое |
 | D-89 | P5 write parity | **policy→approval→rollout 1→10→50→100 на Python и Rust** | только read smoke | полный контрольный сценарий |
 | D-90 | P5 1000 parity | **Rust: 1000 агентов, p95 145.9 ms (Python 111.6 ms)** | отдельный бенч | обе <2 s |
+| D-91 | Rust CRL проверка | **revoked client blocked, non-revoked 200; файл читается на handshake** | кеш CRL | динамический отзыв |
 
 ## Production acceptance
 

@@ -18,12 +18,18 @@ use base64::{engine::general_purpose::STANDARD, Engine};
 use chrono::Utc;
 use ed25519_dalek::{Signature, SigningKey, VerifyingKey};
 use rand_core::OsRng;
+use rustls::pki_types::{CertificateDer, UnixTime};
+use rustls::server::danger::{ClientCertVerified, ClientCertVerifier};
 use rustls::server::WebPkiClientVerifier;
-use rustls::{RootCertStore, ServerConfig};
+use rustls::{
+    CertificateError, DigitallySignedStruct, DistinguishedName, Error as TlsError, RootCertStore,
+    ServerConfig, SignatureScheme,
+};
 use serde_json::{json, Value};
 use sha2::{Digest, Sha256};
 use sqlx::{postgres::PgPoolOptions, types::Json as SqlJson, PgPool, Row};
 use uuid::Uuid;
+use x509_parser::prelude::parse_x509_certificate;
 
 type ApiError = (StatusCode, Json<Value>);
 
@@ -1621,6 +1627,77 @@ async fn agents(
     }
 }
 
+#[derive(Debug)]
+struct CrlVerifier {
+    inner: Arc<dyn ClientCertVerifier>,
+    path: String,
+}
+
+impl CrlVerifier {
+    fn blocked(&self, serial: &str) -> bool {
+        let Ok(text) = std::fs::read_to_string(&self.path) else {
+            return false;
+        };
+        text.lines().any(|line| {
+            let normalized = line.replace(':', "").replace(' ', "").to_uppercase();
+            !normalized.is_empty() && normalized == serial
+        })
+    }
+}
+
+impl ClientCertVerifier for CrlVerifier {
+    fn offer_client_auth(&self) -> bool {
+        self.inner.offer_client_auth()
+    }
+
+    fn client_auth_mandatory(&self) -> bool {
+        self.inner.client_auth_mandatory()
+    }
+
+    fn root_hint_subjects(&self) -> &[DistinguishedName] {
+        self.inner.root_hint_subjects()
+    }
+
+    fn verify_client_cert(
+        &self,
+        end_entity: &CertificateDer<'_>,
+        intermediates: &[CertificateDer<'_>],
+        now: UnixTime,
+    ) -> Result<ClientCertVerified, TlsError> {
+        self.inner
+            .verify_client_cert(end_entity, intermediates, now)?;
+        if let Ok((_, cert)) = parse_x509_certificate(end_entity.as_ref()) {
+            let serial = format!("{:X}", cert.serial);
+            if self.blocked(&serial) {
+                return Err(TlsError::InvalidCertificate(CertificateError::Revoked));
+            }
+        }
+        Ok(ClientCertVerified::assertion())
+    }
+
+    fn verify_tls12_signature(
+        &self,
+        message: &[u8],
+        cert: &CertificateDer<'_>,
+        dss: &DigitallySignedStruct,
+    ) -> Result<rustls::client::danger::HandshakeSignatureValid, TlsError> {
+        self.inner.verify_tls12_signature(message, cert, dss)
+    }
+
+    fn verify_tls13_signature(
+        &self,
+        message: &[u8],
+        cert: &CertificateDer<'_>,
+        dss: &DigitallySignedStruct,
+    ) -> Result<rustls::client::danger::HandshakeSignatureValid, TlsError> {
+        self.inner.verify_tls13_signature(message, cert, dss)
+    }
+
+    fn supported_verify_schemes(&self) -> Vec<SignatureScheme> {
+        self.inner.supported_verify_schemes()
+    }
+}
+
 async fn serve(app: Router, addr: &str) -> Result<(), Box<dyn std::error::Error>> {
     let cert_path = std::env::var("STML_TLS_CERT").unwrap_or_default();
     let key_path = std::env::var("STML_TLS_KEY").unwrap_or_default();
@@ -1652,6 +1729,13 @@ async fn serve(app: Router, addr: &str) -> Result<(), Box<dyn std::error::Error>
             roots.add(cert?)?;
         }
         let verifier = WebPkiClientVerifier::builder(Arc::new(roots)).build()?;
+        let verifier: Arc<dyn ClientCertVerifier> = match std::env::var("STML_CRL_FILE") {
+            Ok(path) if !path.is_empty() => Arc::new(CrlVerifier {
+                inner: verifier,
+                path,
+            }),
+            _ => verifier,
+        };
         builder
             .with_client_cert_verifier(verifier)
             .with_single_cert(certs, key)?

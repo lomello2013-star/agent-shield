@@ -1,0 +1,13 @@
+{
+  "generated_at": "2026-11-14T12:44:37.415866+00:00",
+  "component": "stml-server-rust",
+  "phase": "P4-CRL",
+  "status": "verified",
+  "crl": {
+    "file": "STML_CRL_FILE",
+    "revoked_client": "blocked (RemoteDisconnected)",
+    "non_revoked_client": "200",
+    "dynamic_reload": "read per handshake"
+  },
+  "note": "serial match from x509; CA validation still delegated to WebPkiClientVerifier"
+}
