@@ -259,7 +259,11 @@ def _win_eventlog(raw: dict, now: datetime) -> dict:
     category = str(raw.get("category") or "unknown")
     action = str(raw.get("action") or "event")
     path = str(raw.get("path") or raw.get("object_path") or "")
+    if path.startswith("<"):
+        path = ""                      # e.g. Sysmon "<unknown process>"
     object_path = str(raw.get("object_path") or path)
+    if object_path.startswith("<"):
+        object_path = ""
     if category.startswith("process."):
         obj_type = "process"
     elif category.startswith("registry."):

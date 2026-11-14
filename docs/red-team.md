@@ -84,26 +84,29 @@ vssadmin, local user) помечены catalog-only.
 |---|---|
 | Выполнено / пропущено | **15 / 5** |
 | Атакующих сценариев | 11 |
-| Обнаружено (raw) | **8 / 11** |
-| Обнаружено (с учётом атрибуции) | **7 / 11** (WIN-08 получил запоздавший `RUNKEY` от WIN-06) |
+| Обнаружено (raw) | **9 / 11** |
+| Обнаружено (с учётом атрибуции) | **8 / 11** (WIN-08 получил запоздавший `RUNKEY` от WIN-06) |
 | Holdout (5) | **4 / 5** raw, **3 / 5** после атрибуции |
-| Benign-контроль | 4, **1 FP**: `WIN-INJECT-010` на WIN-10 |
+| Benign-контроль | 4, **1 FP**: ambient `7045` на WIN-20 (правило 007 широкое); FP 010 **устранён** |
 
-**Обнаружены (7):** service create (007), temp exec (001), encoded PowerShell
+**Обнаружены (8):** service create (007), temp exec (001), encoded PowerShell
 (002), temp cmd (001), **scheduled task (006 — после 4698)**, **Run key (005 —
-после Sysmon registry)**, masquerade (011).
+после Sysmon registry)**, **WMI subscription (018)**, masquerade (011).
 **Пропущены (честно):**
-- WMI (WIN-09) — `wmic` отсутствует в Win11; нужен WMI-subscription сценарий
-  и события 19/20/21;
 - Downloads exec (WIN-17) — правило 016 требует `integrity.verified=false`;
   `calc.exe` подписан, поэтому это корректный non-match, а не пропуск;
 - service start (WIN-18) — 7036 не даёт нового 7045;
 - Defender exclusion (WIN-08) — 5007 не пришёл; его «детекция» в raw-прогоне —
   запоздавший RUNKEY.
 
-`WIN-INJECT-010` на benign-контроле — **реальный FP** (не атрибуция): правило
-010 сработало на Sysmon-событии, порождённом обычной активностью; требует
-разбора (какой процесс и событие).
+**FP 010 устранён:** источник — `powershell.exe → CreateRemoteThread` в
+`<unknown process>` (PS Direct). Правило 010 теперь требует
+`object.path = *.exe`; `<unknown process>` очищается в нормализаторе. Контроль
+WIN-10 больше не даёт `INJECT-010`.
+
+**Остаточный FP** — ambient `7045` на WIN-20: Windows сам ставит службы в фоне;
+правило 007 не отличает benign service install от атакующего. Нужен allowlist/
+контекст (подпись, путь, родитель), иначе 007 будет шуметь на любом хосте.
 
 Это не «5/11 эффективности»: каталог показывает **source gaps**, а не только
 качество правил. Для E1–E6 нужны реальные образцы и полный 20/ОС прогон.
@@ -127,10 +130,10 @@ vssadmin, local user) помечены catalog-only.
 | Security 4698 (schtasks) | `auditpol Other Object Access Events` + opt-in `win.security` (`AIDF_SECURITY=1`) | **live: 006 = 2 за 8 с; WIN-05 detected** |
 | FileCreate 11 | Swift Sysmon config; события 11 пишутся | live |
 | Registry 12/13/14 | Swift config + маппинг; `WIN-06` Run key detected | **live** |
-| WMI 19/20/21 | маппинг добавлен; нужен WMI-subscription сценарий; `wmic` отсутствует | **open** |
+| WMI 19/20/21 | WMI-subscription через `Set-WmiInstance`; `WIN-09` detected | **live (018)** |
 | Ложный `stalled` | heartbeat на успешный poll (даже 0 записей) | fixed |
 
 `win.sysmon` подписан на 1/8/10/11/12/13/14/19/20/21; `win.security` —
-4698/4720/4688/1102. После закрытия 4698/registry 20-срез перезапущен:
-raw **8/11**, после атрибуции **7/11**, FP 1 (`INJECT-010`).
+4698/4720/4688/1102. После закрытия 4698/registry/WMI 20-срез: raw **9/11**,
+после атрибуции **8/11**, FP 1 (ambient 7045), FP 010 устранён.
 

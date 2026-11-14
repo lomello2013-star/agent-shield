@@ -3166,6 +3166,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 14:00] FP 010 сужен; WMI live; 20-срез 9/11 raw [experiment]
+
+**Действие**: разобрал FP 010: источник — `powershell.exe → CreateRemoteThread` в `<unknown process>` (PS Direct); правило 010 теперь требует `object.path = *.exe`, `<unknown process>` очищается в нормализаторе. WMI-сценарий переведён на WMI-subscription (`Set-WmiInstance`), `WIN-09` детектируется `WIN-WMI-SUBSCRIPTION-018`. Добавлен settle-барьер; 20-срез: raw **9/11**, после атрибуции **8/11**, holdout 4/5 raw / 3/5 corrected, FP **1** — ambient 7045 (правило 007 широкое), FP 010 закрыт.
+**Числа**: `pytest tests` **472 passed**; raw **9/11**, corrected **8/11**, holdout **4/5 → 3/5**, FP **1**; WMI 018 live.
+**Вердикт**: FP 010 и WMI закрыты; остались ambient 007, атрибуция WIN-08, Linux 20, EV/HLK.
+**Проверка**: `artifacts/redteam20_windows.json`; Sysmon event 8 (PS Direct); `rules/base.json` 010; `pytest tests`.
+**Статус**: verified (FP010/WMI), open (ambient 007, Linux 20, EV)
+**Actor**: agent
+**Run_id**: fp010-wmi-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

@@ -158,6 +158,9 @@
         "action": {
           "regex": "(?i)write|inject"
         },
+        "object.path": {
+          "regex": "(?i)\\.exe$"
+        },
         "platform": "windows"
       }
     },

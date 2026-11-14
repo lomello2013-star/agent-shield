@@ -185,6 +185,26 @@ def test_win_sysmon_registry_event_maps_object_path():
     assert "CurrentVersion" in ev.object.path
 
 
+def test_inject_rule_requires_known_target():
+    """Sysmon '<unknown process>' must not trigger the injection rule."""
+    import pathlib
+
+    from core.rules import RuleEngine, load_rules
+
+    ev = normalizer().normalize("win.sysmon", {
+        "category": "memory.access", "action": "inject",
+        "path": "", "object_path": "<unknown process>",
+        "event_id": 8, "provider": "Microsoft-Windows-Sysmon", "record_id": 4,
+        "ts": "2026-11-14T00:00:00Z", "process_id": 3100, "parent_id": 4,
+        "image": r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe",
+        "cmdline": "powershell", "data": {},
+    })
+    assert ev.object is None or not ev.object.path
+    rules = str(pathlib.Path(__file__).resolve().parents[1] / "rules" / "base.json")
+    verdicts = RuleEngine(load_rules([rules])).evaluate(ev)
+    assert "WIN-INJECT-010" not in [v.rule_id for v in verdicts]
+
+
 def test_security_scheduled_task_maps_persistence():
     ev = normalizer().normalize("win.security", {
         "category": "persistence.change", "action": "scheduled_task_create",

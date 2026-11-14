@@ -114,6 +114,8 @@ class EventLogRecord:
             image = data.get("SourceImage") or data.get("Image") or ""
         object_path = (data.get("TargetFilename") or data.get("TargetObject")
                        or data.get("TargetImage") or data.get("Destination") or "")
+        if object_path.startswith("<"):
+            object_path = ""               # e.g. Sysmon "<unknown process>"
         if self.event_id == 5007:
             # 5007 is mostly operational noise ("Diagnostics\..." etc.); classify it
             # against known tamper keys so benign churn does not become alerts.

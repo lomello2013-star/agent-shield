@@ -1,4 +1,4 @@
-﻿#requires -RunAsAdministrator
+#requires -RunAsAdministrator
 <#
 .SYNOPSIS
     20-scenario Windows red-team slice, run INSIDE AIDF-Win11.
@@ -34,6 +34,16 @@ function Get-RuleDelta($before, $after) {
     }
     return $new
 }
+function Wait-Settled {
+    # Let delayed verdicts from the previous scenario land before taking the baseline.
+    $last = Get-Rules
+    for ($i = 0; $i -lt 3; $i++) {
+        Start-Sleep -Seconds 3
+        $cur = Get-Rules
+        if ((Get-RuleDelta $last $cur).Count -eq 0) { return }
+        $last = $cur
+    }
+}
 
 $rows = @(
     @{ id="WIN-01"; technique="T1543.003"; expected="WIN-SERVICE-CREATE-007"; safe=$true; holdout=$false; desc="service create";
@@ -51,8 +61,17 @@ $rows = @(
     @{ id="WIN-07"; technique="T1136.001"; expected="none"; safe=$false; holdout=$false; desc="local user (destructive; catalog only)"; action={}; cleanup={} },
     @{ id="WIN-08"; technique="T1562.001"; expected="WIN-DEFENDER-TAMPER-009"; safe=$true; holdout=$true; desc="Defender exclusion";
        action={ Add-MpPreference -ExclusionPath "C:\Temp\AidfRT" -ErrorAction SilentlyContinue }; cleanup={ Remove-MpPreference -ExclusionPath "C:\Temp\AidfRT" -ErrorAction SilentlyContinue } },
-    @{ id="WIN-09"; technique="T1047"; expected="WIN-WMI-SUBSCRIPTION-018"; safe=$true; holdout=$false; desc="WMI process create";
-       action={ & wmic.exe process call create "cmd /c exit" 2>&1 | Out-Null }; cleanup={} },
+    @{ id="WIN-09"; technique="T1546.003"; expected="WIN-WMI-SUBSCRIPTION-018"; safe=$true; holdout=$false; desc="WMI event subscription";
+       action={
+           $f = Set-WmiInstance -Namespace root/subscription -Class __EventFilter -Arguments @{Name="AidfRT"; EventNamespace="root/cimv2"; QueryLanguage="WQL"; Query='SELECT * FROM __InstanceCreationEvent WITHIN 5 WHERE TargetInstance ISA "Win32_Process"'} -ErrorAction Stop
+           $c = Set-WmiInstance -Namespace root/subscription -Class CommandLineEventConsumer -Arguments @{Name="AidfRTC"; CommandLineTemplate="cmd.exe /c exit"} -ErrorAction Stop
+           Set-WmiInstance -Namespace root/subscription -Class __FilterToConsumerBinding -Arguments @{Filter=$f; Consumer=$c} -ErrorAction Stop | Out-Null
+       };
+       cleanup={
+           Get-CimInstance -Namespace root/subscription -ClassName __FilterToConsumerBinding -ErrorAction SilentlyContinue | Where-Object { $_.Filter.Name -eq "AidfRT" } | Remove-CimInstance -ErrorAction SilentlyContinue
+           Get-CimInstance -Namespace root/subscription -ClassName __EventFilter -Filter "Name='AidfRT'" -ErrorAction SilentlyContinue | Remove-CimInstance -ErrorAction SilentlyContinue
+           Get-CimInstance -Namespace root/subscription -ClassName CommandLineEventConsumer -Filter "Name='AidfRTC'" -ErrorAction SilentlyContinue | Remove-CimInstance -ErrorAction SilentlyContinue
+       } },
     @{ id="WIN-10"; technique="T1105"; expected="none"; safe=$true; holdout=$true; desc="certutil download";
        action={ & certutil.exe -urlcache -f "https://example.com/" "C:\Temp\rt_cert.txt" 2>&1 | Out-Null }; cleanup={ Remove-Item "C:\Temp\rt_cert.txt" -Force -ErrorAction SilentlyContinue } },
     @{ id="WIN-11"; technique="T1218"; expected="none"; safe=$true; holdout=$false; desc="rundll32";
@@ -90,6 +109,7 @@ foreach ($row in $rows) {
             run=$false; skipped="destructive/catalog-only"; holdout=$row.holdout }
         continue
     }
+    Wait-Settled
     $before = Get-Rules
     $err = ""
     try { & $row.action } catch { $err = $_.Exception.Message }
