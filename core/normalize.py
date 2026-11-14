@@ -258,9 +258,19 @@ def _linux_net(raw: dict, now: datetime) -> dict:
 def _win_eventlog(raw: dict, now: datetime) -> dict:
     category = str(raw.get("category") or "unknown")
     action = str(raw.get("action") or "event")
-    path = str(raw.get("path") or "")
-    obj_type = "process" if category.startswith("process.") else "service"
-    obj = {"type": obj_type, "path": path} if path else None
+    path = str(raw.get("path") or raw.get("object_path") or "")
+    object_path = str(raw.get("object_path") or path)
+    if category.startswith("process."):
+        obj_type = "process"
+    elif category.startswith("registry."):
+        obj_type = "registry"
+    elif category.startswith("file."):
+        obj_type = "file"
+    elif category.startswith("persistence.") and "wmi" in action:
+        obj_type = "wmi"
+    else:
+        obj_type = "service"
+    obj = {"type": obj_type, "path": object_path} if object_path else None
     data = raw.get("data") or {}
     pid = raw.get("process_id")
     actor = None
@@ -389,6 +399,7 @@ ADAPTERS: dict[str, Adapter] = {
     "win.eventlog": Adapter("win.eventlog", "windows", "user", _win_eventlog),
     "win.defender": Adapter("win.defender", "windows", "user", _win_eventlog),
     "win.sysmon": Adapter("win.sysmon", "windows", "user", _win_eventlog),
+    "win.security": Adapter("win.security", "windows", "user", _win_eventlog),
     "linux.ebpf": Adapter("linux.ebpf", "linux", "kernel", _linux_ebpf),
     "linux.auditd": Adapter("linux.auditd", "linux", "kernel", _linux_auditd),
     "linux.lsm": Adapter("linux.lsm", "linux", "kernel", _linux_lsm),

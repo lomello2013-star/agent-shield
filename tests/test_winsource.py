@@ -252,3 +252,17 @@ def test_sysmon_process_start_to_raw_carries_pid():
     assert raw["process_id"] == 0x1092
     assert raw["parent_id"] == 4
     assert raw["image"] == r"C:\Temp\evil.exe"
+
+
+def test_sysmon_registry_event_to_raw_carries_object():
+    from core.winsource import EventLogRecord
+
+    record = EventLogRecord(
+        record_id=2, event_id=13, time_created="2026-11-14T00:00:00Z",
+        provider="Microsoft-Windows-Sysmon",
+        data={"Image": r"C:\Windows\reg.exe", "ProcessId": "0x20",
+              "TargetObject": r"HKLM\Software\Microsoft\Windows\CurrentVersion\Run\X"})
+    raw = record.to_raw()
+    assert raw["category"] == "registry.change"
+    assert raw["process_id"] == 0x20
+    assert raw["object_path"].endswith(r"Run\X")

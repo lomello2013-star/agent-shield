@@ -170,3 +170,26 @@ def test_win_eventlog_builds_actor_from_process_id():
     assert ev.actor.path == r"C:\Temp\evil.exe"
     assert ev.object.type == "process"
     assert ev.platform_data["cmdline"] == "evil.exe -x"
+
+
+def test_win_sysmon_registry_event_maps_object_path():
+    ev = normalizer().normalize("win.sysmon", {
+        "category": "registry.change", "action": "set", "path": "",
+        "object_path": r"HKLM\Software\Microsoft\Windows\CurrentVersion\Run\X",
+        "event_id": 13, "provider": "Microsoft-Windows-Sysmon", "record_id": 2,
+        "ts": "2026-11-14T00:00:00Z", "process_id": 32, "parent_id": 4,
+        "image": r"C:\Windows\reg.exe", "cmdline": "reg add ...", "data": {},
+    })
+    assert ev.object is not None
+    assert ev.object.type == "registry"
+    assert "CurrentVersion" in ev.object.path
+
+
+def test_security_scheduled_task_maps_persistence():
+    ev = normalizer().normalize("win.security", {
+        "category": "persistence.change", "action": "scheduled_task_create",
+        "path": "", "event_id": 4698, "provider": "Microsoft-Windows-Security-Auditing",
+        "record_id": 3, "ts": "2026-11-14T00:00:00Z", "data": {},
+    })
+    assert ev.category == "persistence.change"
+    assert ev.action == "scheduled_task_create"

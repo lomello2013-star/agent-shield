@@ -117,7 +117,18 @@ def test_sysmon_collector_built_when_configured():
     from core.daemon import build_default_collectors
 
     built = build_default_collectors(DaemonConfig(sources=["win.sysmon"]))
-    assert any(getattr(c, "name", "") == "win.sysmon" for c in built)
+    collector = next(c for c in built if getattr(c, "name", "") == "win.sysmon")
+    assert 1 in collector.event_ids and 11 in collector.event_ids
+    assert 13 in collector.event_ids and 19 in collector.event_ids
+
+
+@pytest.mark.skipif(sys.platform != "win32", reason="wevtutil is Windows-only")
+def test_security_collector_built_when_configured():
+    from core.daemon import build_default_collectors
+
+    built = build_default_collectors(DaemonConfig(sources=["win.security"]))
+    collector = next(c for c in built if getattr(c, "name", "") == "win.security")
+    assert 4698 in collector.event_ids
 
 
 @pytest.mark.skipif(sys.platform != "win32", reason="wevtutil is Windows-only")

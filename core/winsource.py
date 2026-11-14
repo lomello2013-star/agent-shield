@@ -35,6 +35,26 @@ EVENT_SEMANTICS: dict[int, tuple[str, str, str]] = {
     5007: ("defender.tamper", "config_change", ""),
     1116: ("malware.detected", "detected", ""),
     1117: ("malware.detected", "action_taken", ""),
+    # Security log (opt-in win.security): scheduled task / user / process / log clear
+    4698: ("persistence.change", "scheduled_task_create", ""),
+    4720: ("persistence.change", "user_create", ""),
+    4688: ("process.start", "start", "NewProcessName"),
+    1102: ("log.tamper", "log_cleared", ""),
+}
+
+# Sysmon event_id -> (category, action, path field). Registered only for the
+# sysmon provider so the same numeric IDs in System/Defender keep their meaning.
+SYSMON_SEMANTICS: dict[int, tuple[str, str, str]] = {
+    1: ("process.start", "start", "Image"),
+    8: ("memory.access", "inject", "TargetImage"),
+    10: ("process.access", "open_process", "TargetImage"),
+    11: ("file.write", "create", "TargetFilename"),
+    12: ("registry.change", "create", "TargetObject"),
+    13: ("registry.change", "set", "TargetObject"),
+    14: ("registry.change", "rename", "TargetObject"),
+    19: ("persistence.change", "wmi_subscription", ""),
+    20: ("persistence.change", "wmi_subscription", ""),
+    21: ("persistence.change", "wmi_subscription", ""),
 }
 
 
@@ -66,9 +86,9 @@ def _parse_pid(value: object) -> int | None:
 
 
 def semantics_for(event_id: int, provider: str) -> tuple[str, str, str]:
-    """Event 1 in the Sysmon log is process creation; other logs keep their map."""
-    if provider == SYSMON_PROVIDER and event_id == 1:
-        return ("process.start", "start", "Image")
+    """Sysmon has its own event-ID namespace; other logs keep EVENT_SEMANTICS."""
+    if provider == SYSMON_PROVIDER and event_id in SYSMON_SEMANTICS:
+        return SYSMON_SEMANTICS[event_id]
     return EVENT_SEMANTICS.get(event_id, ("unknown", "event", ""))
 
 
@@ -83,6 +103,17 @@ class EventLogRecord:
     def to_raw(self) -> dict:
         category, action, path_field = semantics_for(self.event_id, self.provider)
         data = dict(self.data)
+        if self.event_id == 4688:
+            process_id = _parse_pid(data.get("NewProcessId"))
+            parent_id = _parse_pid(data.get("ProcessId"))
+            image = data.get("NewProcessName", "")
+        else:
+            process_id = _parse_pid(data.get("SourceProcessId") or data.get("ProcessId")
+                                    or data.get("ClientProcessId"))
+            parent_id = _parse_pid(data.get("ParentProcessId"))
+            image = data.get("SourceImage") or data.get("Image") or ""
+        object_path = (data.get("TargetFilename") or data.get("TargetObject")
+                       or data.get("TargetImage") or data.get("Destination") or "")
         if self.event_id == 5007:
             # 5007 is mostly operational noise ("Diagnostics\..." etc.); classify it
             # against known tamper keys so benign churn does not become alerts.
@@ -98,10 +129,11 @@ class EventLogRecord:
             "provider": self.provider,
             "record_id": self.record_id,
             "ts": self.time_created,
-            "process_id": _parse_pid(data.get("ProcessId")),
-            "parent_id": _parse_pid(data.get("ParentProcessId")),
-            "image": data.get("Image", ""),
+            "process_id": process_id,
+            "parent_id": parent_id,
+            "image": image,
             "parent_image": data.get("ParentImage", ""),
+            "object_path": object_path,
             "cmdline": data.get("CommandLine", ""),
             "data": data,
         }

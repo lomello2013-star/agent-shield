@@ -108,6 +108,8 @@ def _run_daemon() -> int:
         sysmon_ok = channel_exists("Microsoft-Windows-Sysmon/Operational")
         if sysmon_ok:
             sources.append("win.sysmon")   # opt-in: process events with a PID
+    if os.environ.get("AIDF_SECURITY") == "1":
+        sources.append("win.security")     # opt-in: 4698/4720/4688/1102
     config = DaemonConfig(sources=sources,
                           thresholds={"heartbeat_timeout_s": 60})
     # Without a positive interval the collector thread never starts and the service

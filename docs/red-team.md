@@ -113,3 +113,17 @@ temp cmd (001), masquerade (011).
 перекрыл функцию, и первый прогон дал 0/11. Переименовано; повторный прогон —
 5/11. Это дефект измерения, а не детекции.
 
+### Закрытие source gaps (14.11)
+
+| Gap | Что сделано | Статус |
+|---|---|---|
+| Security 4698 (schtasks) | `auditpol Other Object Access Events` + opt-in `win.security` (`AIDF_SECURITY=1`) | **live: 006 = 2 за 8 с** |
+| FileCreate 11 | Swift Sysmon config; события 11 пишутся | live |
+| Registry 12/13/14 | маппинг добавлен; Sysmon config их не пишет | **open** |
+| WMI 19/20/21 | маппинг добавлен; нужен WMI-subscription сценарий | **open** |
+| Ложный `stalled` | heartbeat на успешный poll (даже 0 записей) | fixed |
+
+`win.sysmon` теперь подписан на 1/8/10/11/12/13/14/19/20/21; `win.security` —
+4698/4720/4688/1102. После закрытия 4698 20-срез **не перезапускался**; это
+следующий шаг вместе с registry/WMI.
+

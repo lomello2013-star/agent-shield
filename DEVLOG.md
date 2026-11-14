@@ -3142,6 +3142,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 13:40] Source gaps: 4698 закрыт live, ложный stall убран [code]
+
+**Действие**: (1) `Daemon.collect_once` бьёт heartbeat при успешном `poll()` даже при 0 записей — тихий источник больше не помечается «stalled». (2) Добавлен opt-in `win.security` (4698/4720/4688/1102) + env `AIDF_SECURITY=1`; `win.sysmon` расширен до 1/8/10/11/12/13/14/19/20/21; нормализатор маппит `object_path`/actor для registry/file/WMI. В VM включён auditpol 4698, применён Sysmon-конфиг, служба перезапущена: `win.security` healthy, задача → `WIN-SCHTASK-006` **2** за 8 с; FileCreate (11) пишется; registry/WMI — открыты.
+**Числа**: `pytest tests` **471 passed** (канонический набор; полный pytest 490 — падает 1 stml-тест параллельной работы автора, не этот код); `win.security` 4698 → 006=2; `win.sysmon` events 11.
+**Вердикт**: source gap 4698 закрыт live; registry/WMI остаются; 20-срез не перезапускался после расширения.
+**Проверка**: `aidfctl health` sources=`win.eventlog,win.defender,win.sysmon,win.security`; `stats.rule_counts.WIN-SCHTASK-006=2`; `Get-WinEvent 4698`.
+**Статус**: verified (4698), open (registry/WMI, stml)
+**Actor**: agent
+**Run_id**: source-gaps-4698-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

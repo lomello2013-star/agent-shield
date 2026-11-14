@@ -74,7 +74,12 @@ def build_default_collectors(config: DaemonConfig) -> list[Any]:
         elif source == "win.sysmon":
             built.append(WindowsEventLogSource(
                 log_name="Microsoft-Windows-Sysmon/Operational",
-                event_ids=(1,), name="win.sysmon"))
+                event_ids=(1, 8, 10, 11, 12, 13, 14, 19, 20, 21),
+                name="win.sysmon"))
+        elif source == "win.security":
+            built.append(WindowsEventLogSource(
+                log_name="Security", event_ids=(4698, 4720, 4688, 1102),
+                name="win.security"))
     return built
 
 
@@ -215,6 +220,9 @@ class Daemon:
             name = str(getattr(collector, "name", "collector"))
             try:
                 records = collector.poll() or []
+                # A successful poll is a heartbeat even when the source is quiet;
+                # otherwise a silent log is falsely reported as "stalled".
+                self.heartbeat.beat(name)
             except Exception as exc:
                 self.log.append("collector_incident",
                                 {"source": name, "error": f"{type(exc).__name__}: {exc}"})

@@ -1,0 +1,12 @@
+<Sysmon schemaversion="4.90">
+  <!-- Minimal lab config: all events needed for the red-team source-gap closure. -->
+  <HashAlgorithms>sha256</HashAlgorithms>
+  <EventFiltering>
+    <ProcessCreate onmatch="include"/>
+    <ProcessAccess onmatch="include"/>
+    <FileCreate onmatch="include"/>
+    <RegistryEvent onmatch="include"/>
+    <WmiEvent onmatch="include"/>
+    <CreateRemoteThread onmatch="include"/>
+  </EventFiltering>
+</Sysmon>
