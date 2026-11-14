@@ -65,6 +65,7 @@
 7. [ ] Policy CRUD + diff + dry-run (слой B) — следующий шаг.
 8. [ ] Rollout canary 1→10→50→100 %, halt, rollback (слой B).
 9. [x] p95 baseline + 100 синтетических агентов (`test_100_agents_enrolled_and_heartbeat_concurrently`).
+10. [x] **S1.5:** коннектор → сервер: auto-enrol, подписанные heartbeat/inventory/reports, isolate/resume (буферизация reports).
 - **Гейт S1:** 100 агентов online, p95 ≤2 с; TUI isolate; P0 идемпотентность; подпись heartbeat/inventory/reports; deny-by-default; GUI read-only. **Остаток:** policy-подпись/dry-run (B), Rust/axum port.
 - **Реализация:** `stml/server/` (Python stdlib, SQLite) — reference; production Rust/axum — отдельный gate.
 

@@ -48,6 +48,13 @@ def _run(args: argparse.Namespace, parser: argparse.ArgumentParser) -> int:
         data_root=args.data_root,
         spool_path=args.spool,
         state_path=args.state,
+        server_url=args.server_url,
+        enrol_token=args.enrol_token,
+        agent_key=args.agent_key,
+        hostname=args.hostname,
+        os_name=args.os,
+        arch=args.arch,
+        agent_version=args.agent_version,
     )
     spool = Spool(args.spool)
     tailer = JsonlTailer(args.state + ".tail")
@@ -79,6 +86,7 @@ def _run(args: argparse.Namespace, parser: argparse.ArgumentParser) -> int:
 
     if args.console and not args.once and args.max_ticks is None:
         try:
+            connector.enrol_if_needed()
             while True:
                 connector.tick()
                 print(json.dumps(connector.status(), ensure_ascii=False), flush=True)
@@ -113,6 +121,12 @@ def main(argv: list[str] | None = None) -> int:
     run.add_argument("--spool", default="stml-connector.sqlite3")
     run.add_argument("--state", default="stml-connector-state.json")
     run.add_argument("--server-url", default="")
+    run.add_argument("--enrol-token", default=os.environ.get("STML_ENROL_TOKEN", ""))
+    run.add_argument("--agent-key", default="")
+    run.add_argument("--hostname", default=os.environ.get("COMPUTERNAME", "unknown"))
+    run.add_argument("--os", default=os.name)
+    run.add_argument("--arch", default="x64")
+    run.add_argument("--agent-version", default="0.1.0")
     run.add_argument("--rpc-port", type=int, default=0)
     run.add_argument("--rpc-lock", default="stml-connector.lock")
     run.add_argument("--rpc-token", default="")

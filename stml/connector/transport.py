@@ -6,6 +6,9 @@ import json
 import urllib.request
 from typing import Protocol
 
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+
+from stml.connector.signing import sign
 from stml.contracts.v0 import Ack, Report
 
 
@@ -38,20 +41,22 @@ class MemoryTransport:
 
 
 class HttpTransport:
-    def __init__(self, base_url: str, token: str = "", timeout_s: float = 5.0) -> None:
+    def __init__(self, base_url: str, token: str = "", timeout_s: float = 5.0,
+                 private_key: Ed25519PrivateKey | None = None) -> None:
         self.base_url = base_url.rstrip("/")
         self.token = token
         self.timeout_s = timeout_s
+        self.private_key = private_key
 
     def send(self, reports: list[Report]) -> list[str]:
         body = json.dumps({"reports": [r.model_dump(mode="json") for r in reports]}).encode()
-        req = urllib.request.Request(
-            self.base_url + "/v0/reports",
-            data=body,
-            headers={"Content-Type": "application/json",
-                     **({"Authorization": f"Bearer {self.token}"} if self.token else {})},
-            method="POST",
-        )
+        headers = {"Content-Type": "application/json"}
+        if self.token:
+            headers["Authorization"] = f"Bearer {self.token}"
+        if self.private_key is not None:
+            headers["X-STML-Signature"] = sign(self.private_key, body)
+        req = urllib.request.Request(self.base_url + "/v0/reports", data=body,
+                                     headers=headers, method="POST")
         with urllib.request.urlopen(req, timeout=self.timeout_s) as resp:
             data = json.loads(resp.read().decode("utf-8"))
         return [str(x) for x in Ack.model_validate(data).acked]

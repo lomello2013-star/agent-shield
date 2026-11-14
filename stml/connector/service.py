@@ -22,7 +22,9 @@ from stml.connector.agent_client import AgentClient, AgentUnavailable
 from stml.connector.buffer import Spool
 from stml.connector.jsonl_tail import JsonlTailer
 from stml.connector.security import restrict
-from stml.connector.transport import Transport
+from stml.connector.server_client import ServerClient
+from stml.connector.signing import generate_keypair, load_private, load_public
+from stml.connector.transport import HttpTransport, Transport
 
 
 @dataclass
@@ -37,6 +39,14 @@ class ConnectorConfig:
     state_path: str = "stml-connector-state.json"
     max_batch: int = 50
     max_backoff_s: float = 300.0
+    server_url: str = ""
+    enrol_token: str = ""
+    agent_key: str = ""
+    hostname: str = ""
+    os_name: str = "unknown"
+    arch: str = "unknown"
+    agent_version: str = "0.1.0"
+    connector_version: str = "0.1.0"
     extra: dict[str, Any] = field(default_factory=dict)
 
 
@@ -48,6 +58,7 @@ class Connector:
         spool: Spool,
         tailer: JsonlTailer,
         transport: Transport,
+        server: ServerClient | None = None,
     ) -> None:
         self.config = config
         self.agent = agent
@@ -55,6 +66,13 @@ class Connector:
         self.tailer = tailer
         self.transport = transport
         self._load_state()
+        self.server = server
+        self.agent_private = None
+        if self.server is None and config.server_url:
+            self.server, self.agent_private = self._make_server()
+        if self.agent_private is not None and isinstance(transport, HttpTransport):
+            transport.private_key = self.agent_private
+        self.isolated = False
         self.last_heartbeat: Heartbeat | None = None
         self.last_inventory: Inventory | None = None
         self.last_error: str | None = None
@@ -63,7 +81,7 @@ class Connector:
     # -- identity --------------------------------------------------------
     def _load_state(self) -> None:
         path = Path(self.config.state_path)
-        state: dict[str, str] = {}
+        state: dict[str, Any] = {}
         if path.exists():
             try:
                 state = json.loads(path.read_text(encoding="utf-8"))
@@ -71,14 +89,50 @@ class Connector:
                 state = {}
         self.config.agent_id = self.config.agent_id or state.get("agent_id") or str(uuid.uuid4())
         self.config.connector_id = self.config.connector_id or state.get("connector_id") or str(uuid.uuid4())
+        self.enrolled = bool(state.get("enrolled", False))
+        self._save_state()
+
+    def _save_state(self) -> None:
+        path = Path(self.config.state_path)
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(
             json.dumps({"agent_id": self.config.agent_id,
                         "connector_id": self.config.connector_id,
-                        "tenant_id": self.config.tenant_id}, indent=2),
+                        "tenant_id": self.config.tenant_id,
+                        "enrolled": self.enrolled}, indent=2),
             encoding="utf-8",
         )
         restrict(path)
+
+    def _make_server(self) -> tuple[ServerClient, Any]:
+        key_path = Path(self.config.agent_key or self.config.state_path + ".key.pem")
+        pub_path = Path(str(key_path) + ".pub")
+        if not key_path.exists() or not pub_path.exists():
+            generate_keypair(key_path, pub_path)
+        private = load_private(key_path)
+        return ServerClient(self.config.server_url, private,
+                            agent_id=self.config.agent_id), private
+
+    def enrol_if_needed(self) -> None:
+        if self.server is None or self.enrolled:
+            return
+        if not self.config.enrol_token:
+            raise RuntimeError("server_url requires enrol_token")
+        key_path = Path(self.config.agent_key or self.config.state_path + ".key.pem")
+        pubkey = Path(str(key_path) + ".pub").read_text(encoding="utf-8")
+        self.config.agent_id = self.server.enrol(
+            tenant_id=self.config.tenant_id,
+            enrolment_token=self.config.enrol_token,
+            hostname=self.config.hostname or "unknown",
+            os_name=self.config.os_name,
+            arch=self.config.arch,
+            agent_version=self.config.agent_version,
+            connector_version=self.config.connector_version,
+            pubkey_pem=pubkey,
+        )
+        self.server.agent_id = self.config.agent_id
+        self.enrolled = True
+        self._save_state()
 
     # -- read-only RPC bridge (S0.1b) ------------------------------------
     def rpc_health(self) -> dict[str, Any]:
@@ -225,11 +279,23 @@ class Connector:
 
     # -- loop ------------------------------------------------------------
     def tick(self) -> None:
-        self.heartbeat()
+        hb = self.heartbeat()
+        if self.server is not None and self.enrolled:
+            try:
+                response = self.server.heartbeat(hb)
+                self.isolated = bool(response.get("isolated", False))
+            except Exception as exc:  # noqa: BLE001 - server down: keep buffering
+                self.last_error = f"server heartbeat: {exc}"
         if time.time() - self._last_inventory_at >= self.config.inventory_interval_s:
-            self.inventory()
+            inv = self.inventory()
+            if self.server is not None and self.enrolled:
+                try:
+                    self.server.inventory(inv)
+                except Exception as exc:  # noqa: BLE001
+                    self.last_error = f"server inventory: {exc}"
         self.collect_reports()
-        self.flush()
+        if not self.isolated:
+            self.flush()
 
     def status(self) -> dict[str, Any]:
         return {
@@ -240,11 +306,15 @@ class Connector:
             "inventory": self.last_inventory.model_dump(mode="json") if self.last_inventory else None,
             "spool_pending": self.spool.pending_count(),
             "spool_p0": self.spool.p0_count(),
+            "isolated": self.isolated,
+            "enrolled": self.enrolled,
+            "server": self.server is not None,
             "last_error": self.last_error,
             "tailer_skipped": self.tailer.skipped,
         }
 
     def run(self, once: bool = False, max_ticks: int | None = None) -> None:
+        self.enrol_if_needed()
         ticks = 0
         while True:
             self.tick()

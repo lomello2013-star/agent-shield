@@ -28,8 +28,16 @@
 - SQLite outbox: `report_id UNIQUE`, priority, attempts, next_attempt_at, acked.
 - P0 не вытесняется; лимит 10k строк, purge старше 7 дней.
 - Retry: экспоненциальный backoff 1→2→4→…→300 с.
-- Транспорт: `ConsoleTransport` (VS1), `MemoryTransport` (тесты), `HttpTransport` (`POST /v0/reports`, ack).
+- Транспорт: `ConsoleTransport` (VS1), `MemoryTransport` (тесты), `HttpTransport` (`POST /v0/reports`, ack; подпись Ed25519 при наличии ключа).
 - При падении сервера P0 остаётся в буфере и досылается после восстановления.
+
+## 3a. Интеграция с сервером (S1.5)
+
+- `ServerClient`: `POST /v0/enrol` (one-time token + pubkey), затем подписанные `heartbeat`/`inventory`.
+- Ключ агента: `<state>.key.pem` + `.pub`; генерируется один раз, хранится рядом со state (ACL).
+- `enrol_if_needed()` вызывается в `run()`; server `agent_id` сохраняется в state.
+- При `isolated=true` коннектор продолжает heartbeat (диагностика), но **не отправляет reports** — буфер растёт; после `resume` досылает.
+- `HttpTransport` подписывает тело reports тем же ключом.
 
 ## 4. Идентичность
 
