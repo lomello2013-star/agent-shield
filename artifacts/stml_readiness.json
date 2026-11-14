@@ -1,0 +1,41 @@
+{
+  "generated_at": "2026-11-14T11:05:42.698312+00:00",
+  "component": "STML",
+  "commit": "4c6005a",
+  "tests": {
+    "stml": 51,
+    "ipc": 16
+  },
+  "stages": {
+    "S0": "mvp",
+    "S1": "partial",
+    "S2": "dev",
+    "S3": "partial",
+    "S4": "partial",
+    "S5": "partial",
+    "S6": "partial",
+    "S7": "manifests",
+    "S8": "partial"
+  },
+  "evidence": {
+    "load_1000": {
+      "path": "artifacts/stml_s5_load.json",
+      "p95_ms": 111.6
+    },
+    "mtls": "stml/tests/test_tls.py",
+    "tenant": "stml/tests/test_server_store.py::test_tenant_isolation_policies_agents_approvals",
+    "backup": "stml/tests/test_backup.py",
+    "watchdog": "scripts/stml_watchdog.py"
+  },
+  "production_ready": false,
+  "blockers": [
+    "HSM+quorum",
+    "PostgreSQL/HA",
+    "Rust/axum",
+    "Tauri/mTLS-client",
+    "real retrain/sandbox",
+    "Docker/Helm runtime",
+    "EDR/OS matrix",
+    "pen-test/DPIA/human-acceptance"
+  ]
+}

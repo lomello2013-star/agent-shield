@@ -168,20 +168,21 @@
 
 ---
 
-## Финал — DPIA и production-приёмка
+## Финал — DPIA и production-приёмка `[not reached]`
 
-1. **DPIA** (`docs/dpia-stml.md`) — юрист/DPO: retention, метод анонимизации, критерий «провален».
-2. Полный проход чек-листа готовности (S0–S8).
-3. Human-приёмка по каждой сквозной метрике (S1–S19, error budget, SoD, immutable guards).
-4. Резервное копирование + откат-тест + runbook «STML скомпрометирован».
-5. Подпись релиза и допуск операторов.
+1. [ ] **DPIA** (`docs/dpia-stml.md`) — юрист/DPO: retention, метод анонимизации, критерий «провален». По решению владельца — в самом конце.
+2. [~] Полный проход чек-листа готовности S0–S8: все этапы имеют MVP-срез; production-гейты partial.
+3. [ ] Human-приёмка по S1–S19, error budget, SoD, immutable guards.
+4. [x] Backup + restore + runbook «STML скомпрометирован».
+5. [ ] Подпись релиза и допуск операторов.
+- **Статус:** `docs/production-readiness.md`, `artifacts/stml_readiness.json`: **production_ready=false**.
+- **Блокеры:** HSM+quorum, PostgreSQL/HA, Rust/axum, Tauri/mTLS-client, реальный retrain/песочница, Docker/Helm runtime, EDR/OS matrix, pen-test/DPIA/human-acceptance.
 
 ---
 
-## Ближайшие шаги (начинаем сейчас)
+## Текущее состояние (по факту)
 
-1. **S0.0b** — детальная карта + схема `stml/v0` (см. Фаза 0, шаг 0.2).
-2. **S0.0c** — ADR D15/D14, соглашение с владельцем агента.
-3. **S0.1a** — коннектор-минимум → VS1.
-
-**Блокеры сейчас:** соглашение с владельцем агента (S0.0c) и маппинг 5 ключевых RPC (S0.0b). Остальное — по готовности.
+- **51 STML-тест + 16 IPC** — зелёные.
+- Работающий reference MVP: коннектор, fleet, trust, GUI, learning, 1000 агентов p95 111,6 мс, mTLS, tenant-фильтрация, deploy-манифесты.
+- **Production не готов**; перечень блокеров и доказательств — `docs/production-readiness.md`.
+- Следующие шаги — закрытие блокеров по доступности внешней инфраструктуры (PostgreSQL/HSM/Tauri/EDR), а не новые этапы.
