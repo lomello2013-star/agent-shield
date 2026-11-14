@@ -129,10 +129,10 @@ alert-правило для generic pending (D-001).
 cred-read: `cat /etc/shadow` → **`LINUX-CRED-READ-104`**, `sshd` исключён
 allowlist (иначе легитимная аутентификация давала FP).
 
-**Итого Linux live: 12 сценариев** — exec (`101`), cred-read (`104`),
+**Итого Linux live: 13 сценариев** — exec (`101`), cred-read (`104`),
 mprotect (`107`), procmem/ptrace/memwrite (`106`), net C2 (`105`),
-cron (`102`), audit tamper (`103`), корреляция injection (`108/109/110`);
-все прошли через `linux.ebpf`-адаптер и правила,
+SMB lateral (`012`), cron (`102`), audit tamper (`103`), корреляция injection
+(`108/109/110`); все прошли через `linux.ebpf`-адаптер и правила,
 `artifacts/linux_ebpf_live.json`.
 
 | Сценарий | События | Вердикт |
@@ -147,6 +147,7 @@ cron (`102`), audit tamper (`103`), корреляция injection (`108/109/110
 | cron drop `touch /etc/cron.d` | 4 (`cron`, `audit`) | `LINUX-CRON-102` ×1 |
 | audit log `touch /var/log/audit` | 4 | `LINUX-AUDIT-TAMPER-103` ×1 |
 | corr_helper: memwrite + mprotect | 10 | `CORR-108/109/110` ×5 каждый |
+| connect 445 + 4444 | 2 | `NET-SMB-LATERAL-012`, `LINUX-C2-PORT-105` |
 
 **Net live:** attach к **root cgroup** `/sys/fs/cgroup` (процессы VM там, `/aidf`
 пуст) дал события; `connect 4444` → `LINUX-C2-PORT-105`, `443` — без вердикта.

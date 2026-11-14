@@ -3334,6 +3334,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 16:05] SMB lateral live; Linux 13/20 [experiment]
+
+**Действие**: net-сенсор на root cgroup поймал `connect 445` и `4444`; product-правила дали `NET-SMB-LATERAL-012` и `LINUX-C2-PORT-105`. Linux live: **13/20**. Оставшиеся 7 требуют новых сенсоров (file write/delete, DNS, exfil bytes) или Windows-only.
+**Числа**: 2 события → 2 вердикта (012, 105); Linux live 13/20; pytest 530 (не менялся); `run_all` 29/29 (не менялся).
+**Вердикт**: SMB live закрыт; дальнейший рост требует новых BPF-сенсоров/production-коллектора.
+**Проверка**: `/tmp/net_smb.jsonl`; evaluator → 012/105; `artifacts/linux_ebpf_live.json`.
+**Статус**: verified (SMB); open (7/20, production collector)
+**Actor**: agent
+**Run_id**: linux-smb-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,
