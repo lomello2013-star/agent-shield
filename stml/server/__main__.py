@@ -45,6 +45,8 @@ def main(argv: list[str] | None = None) -> int:
     run.add_argument("--no-client-cert", action="store_true")
     run.add_argument("--enrol-token", default="")
     run.add_argument("--tokens-file", default=os.environ.get("STML_TOKENS_FILE", ""))
+    run.add_argument("--policy-pubkey-file",
+                     default=os.environ.get("STML_POLICY_PUBKEY_FILE", ""))
 
     tok = sub.add_parser("token", help="create an enrolment token")
     tok.add_argument("--db", default="stml-server.sqlite3")
@@ -115,6 +117,14 @@ def main(argv: list[str] | None = None) -> int:
     viewer = args.viewer_token or existing.get("viewer_token") or secrets.token_urlsafe(24)
     approver = args.approver_token or existing.get("approver_token") or secrets.token_urlsafe(24)
     enrol = args.enrol_token or existing.get("enrol_token") or store.create_enrol_token(args.tenant)
+    policy_pubkey = ""
+    if args.policy_pubkey_file:
+        try:
+            with open(args.policy_pubkey_file, "r", encoding="utf-8") as fh:
+                policy_pubkey = fh.read()
+        except OSError as exc:
+            print(f"cannot read policy pubkey: {exc}", file=sys.stderr)
+            return 2
     os.makedirs(os.path.dirname(tokens_path) or ".", exist_ok=True)
     with open(tokens_path, "w", encoding="utf-8") as fh:
         json.dump({"stml": f"http://{args.host}:{args.port}", "url": f"http://{args.host}:{args.port}",
@@ -129,6 +139,7 @@ def main(argv: list[str] | None = None) -> int:
                           viewer_token=viewer, approver_token=approver,
                           db_path=args.db, trust_dir=args.trust_dir or args.db + ".trust",
                           trust_backend=args.trust_backend,
+                          policy_pubkey=policy_pubkey,
                           require_approval=not args.no_require_approval,
                           tls_cert=args.tls_cert, tls_key=args.tls_key,
                           tls_ca=args.tls_ca,
