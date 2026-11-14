@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-14T12:29:42.340909+00:00",
+  "generated_at": "2026-11-14T12:42:28.308420+00:00",
   "component": "STML",
   "commit": "da64eb4",
   "tests": {
@@ -83,7 +83,12 @@
       "gui": true,
       "p5_parity_checks": 14,
       "mtls": true,
-      "p5_write_parity": true
+      "p5_write_parity": true,
+      "p5_load": {
+        "agents": 1000,
+        "p95_ms": 145.9,
+        "python_p95_ms": 111.6
+      }
     }
   },
   "agent_control_plane": {

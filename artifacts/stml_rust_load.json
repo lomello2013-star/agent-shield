@@ -1,0 +1,7 @@
+{
+  "agents": 1000,
+  "enrol_s": 13.29,
+  "heartbeat_p50_ms": 103.5,
+  "heartbeat_p95_ms": 145.9,
+  "passed_p95_under_2s": true
+}

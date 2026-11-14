@@ -25,8 +25,10 @@
   TLS handshake блокируется; plain HTTP блокируется. Dev-сертификаты ECC P-256.
 - **P5 write parity:** `scripts/stml_write_parity.py` — policy→approval→rollout
   1→10→50→100 на Python (SQLite) и Rust (Postgres); `ok:true`.
-- **Не проверено:** 1000-agent parity, mTLS write parity, CRL enforcement,
-  Tauri, RLS/HA, timestamp skew, HTTP 201 parity.
+- **P5 1000:** `scripts/stml_rust_load.py` — 1000 агентов, p95 **145.9 ms**
+  (Python reference 111.6 ms), обе <2 s.
+- **Не проверено:** mTLS write parity, CRL enforcement, Tauri, RLS/HA,
+  timestamp skew, HTTP 201 parity.
 
 ## 1. Что уже есть
 
