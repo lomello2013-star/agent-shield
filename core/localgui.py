@@ -34,10 +34,11 @@ class LocalGui:
         sources = health.get("sources") or {}
         collectors = stats.get("collectors") or []
         source_names = [str(s.get("name", "")) for s in collectors]
-        kernel_loaded = any(name in {"linux.auditd", "linux.ebpf"} for name in source_names)
+        kernel_loaded = bool(collectors)
         rules = stats.get("pipeline", {}).get("rule_counts", {}) or {}
         return {
-            "host": stats.get("platform", {}),
+            "host": {**stats.get("platform", {}),
+                     "host_id": getattr(self.daemon.host, "host_id", "")},
             "health": health,
             "stats": {
                 "collected": stats.get("collected", 0),
@@ -55,7 +56,7 @@ class LocalGui:
                 for v in getattr(self.daemon.pipeline, "verdicts", [])[-20:]
             ],
             "stack": [
-                {"name": "Kernel collector", "state": "loaded" if kernel_loaded else "stopped",
+                {"name": "Collector", "state": "loaded" if kernel_loaded else "stopped",
                  "detail": ", ".join(source_names) or "no collector"},
                 {"name": "Reflex rules", "state": "active" if rules else "idle",
                  "detail": f"{sum(int(v) for v in rules.values())} evaluations"},

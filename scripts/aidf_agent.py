@@ -68,6 +68,18 @@ def build_daemon(config) -> Daemon:
     )
 
 
+def _touch_report(config) -> None:
+    """File-only connectors use the report mtime as an agent liveness signal."""
+    path = Path(config.data_root) / "reports" / "events.jsonl"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8"):
+        pass
+    try:
+        os.utime(path, None)
+    except OSError:
+        pass
+
+
 def run(config, once: bool = False, duration: float = 0.0) -> int:
     daemon = build_daemon(config)
     stop = threading.Event()
@@ -97,6 +109,7 @@ def run(config, once: bool = False, duration: float = 0.0) -> int:
         while not stop.is_set():
             collected = daemon.collect_once()
             result = daemon.tick()
+            _touch_report(config)
             if once:
                 print(f"aidf-agent: collected={collected} {result}", file=sys.stderr, flush=True)
                 return 0

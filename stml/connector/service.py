@@ -192,6 +192,21 @@ class Connector:
                 status = AgentStatus.OFFLINE
         else:
             source = "files"
+            # File-only agents (Linux auditd, packaged runners) do not expose
+            # the pickle RPC. Fresh report traffic is their liveness signal.
+            report_path = Path(self.config.data_root) / "reports" / "events.jsonl"
+            try:
+                age = time.time() - report_path.stat().st_mtime
+            except OSError:
+                age = None
+            if age is not None and age <= max(30.0, self.config.heartbeat_interval_s * 3):
+                status = AgentStatus.HEALTHY
+                health = {"status": "healthy", "source": "reports",
+                          "last_event_age_s": round(age, 3)}
+            else:
+                status = AgentStatus.OFFLINE
+                health = {"status": "offline", "source": "reports",
+                          "last_event_age_s": round(age, 3) if age is not None else None}
         hb = Heartbeat(**self._base(), status=status, health=health, source=source)
         self.last_heartbeat = hb
         return hb
@@ -212,9 +227,10 @@ class Connector:
         platform = stats.get("platform") if isinstance(stats.get("platform"), dict) else {}
         inv = Inventory(
             **self._base(),
-            os=str(platform.get("os", stats.get("os", "unknown"))),
-            arch=str(platform.get("arch", stats.get("arch", "unknown"))),
-            agent_version=str(platform.get("version", stats.get("version", "unknown"))),
+            os=str(platform.get("os", stats.get("os", self.config.os_name or "unknown"))),
+            arch=str(platform.get("arch", stats.get("arch", self.config.arch or "unknown"))),
+            agent_version=str(platform.get("version", stats.get("version",
+                                                             self.config.agent_version or "unknown"))),
             rules_version=stats.get("rules_version"),
             model_version=stats.get("model_version"),
             capabilities=list(platform.get("capabilities", ["health", "stats", "immutable_check"])),

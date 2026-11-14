@@ -300,7 +300,7 @@
       renderDecisions(data.pending || []);
 
       $("link-state").innerHTML = `<span class="dot ${ok ? "ok" : "warn"}"></span>${ok ? "online" : status}`;
-      $("link-console").textContent = location.host + "/ui/";
+      $("link-console").textContent = "http://127.0.0.1:8080/ui/";
       $("link-sync").textContent = "just now";
       $("link-policy").textContent = data.policy?.policy_id ? `${data.policy.policy_id} · ${data.policy.version || ""}` : "local defaults";
       $("link-agent").textContent = data.host?.host_id || "unknown";

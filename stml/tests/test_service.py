@@ -88,6 +88,26 @@ class PlatformAgent:
         return {"immutable": "ok"}
 
 
+def test_file_only_agent_with_fresh_reports_is_healthy(tmp_path):
+    reports = tmp_path / "reports"
+    reports.mkdir(parents=True)
+    (reports / "events.jsonl").write_text(json.dumps({"kind": "event"}) + "\n",
+                                          encoding="utf-8")
+    cfg = ConnectorConfig(tenant_id="t", data_root=str(tmp_path),
+                          spool_path=str(tmp_path / "spool.sqlite3"),
+                          state_path=str(tmp_path / "state.json"),
+                          os_name="linux", arch="x64", agent_version="1.0.0")
+    connector = Connector(cfg, None, Spool(cfg.spool_path),
+                          JsonlTailer(tmp_path / "tail.json"), MemoryTransport())
+    hb = connector.heartbeat()
+    assert hb.status.value == "healthy"
+    assert hb.health["source"] == "reports"
+    inv = connector.inventory()
+    assert inv.os == "linux"
+    assert inv.arch == "x64"
+    assert inv.agent_version == "1.0.0"
+
+
 def test_platform_block_and_safe_mode_mapping(tmp_path):
     connector = _connector(tmp_path, PlatformAgent(), MemoryTransport())
     connector.tick()
