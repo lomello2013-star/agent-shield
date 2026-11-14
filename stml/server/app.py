@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import threading
+import time
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -52,6 +53,7 @@ class StmlServer(ThreadingHTTPServer):
             config.policy_pubkey = key["public_pem"]
         self.learning = LearningService(store, self.trust)
         self.bus = build_bus(config.event_bus)
+        self.started_at = time.time()
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -191,6 +193,51 @@ class Handler(BaseHTTPRequestHandler):
                     self._error(404, "unknown agent")
                 else:
                     self._send(200, agent.__dict__)
+            return
+        if parts == ["metrics"]:
+            if not self._auth("admin"):
+                return
+            stats = self.server.store.stats()
+            lines = [
+                "# HELP stml_agents Agents by status",
+                "# TYPE stml_agents gauge",
+                f'stml_agents{{status="healthy"}} {stats["healthy"]}',
+                f'stml_agents{{status="degraded"}} {stats["degraded"]}',
+                f'stml_agents{{status="offline"}} {stats["offline"]}',
+                f'stml_agents{{status="isolated"}} {stats["isolated"]}',
+                "# HELP stml_reports_total Reports ingested",
+                "# TYPE stml_reports_total counter",
+                f"stml_reports_total {stats['reports']}",
+                f"stml_reports_p0_total {stats['p0_reports']}",
+                "# HELP stml_approvals_pending Pending approvals",
+                "# TYPE stml_approvals_pending gauge",
+                f"stml_approvals_pending {stats['approvals_pending']}",
+                "# HELP stml_models_total Registered models",
+                "# TYPE stml_models_total gauge",
+                f"stml_models_total {stats['models']}",
+                "# HELP stml_uptime_seconds Server uptime",
+                "# TYPE stml_uptime_seconds gauge",
+                f"stml_uptime_seconds {time.time() - self.server.started_at:.1f}",
+            ]
+            data = ("\n".join(lines) + "\n").encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "text/plain; version=0.0.4; charset=utf-8")
+            self.send_header("Content-Length", str(len(data)))
+            self.end_headers()
+            self.wfile.write(data)
+            return
+        if parts == ["v0", "slo"]:
+            if not self._auth("admin"):
+                return
+            stats = self.server.store.stats()
+            self._send(200, {
+                "uptime_s": round(time.time() - self.server.started_at, 1),
+                "stats": stats,
+                "audit_ok": self.server.store.verify_audit(),
+                "bus_events": len(getattr(self.server.bus, "events", [])),
+                "targets": {"availability": 0.995, "heartbeat_p95_s": 2.0,
+                            "report_p0_loss": 0, "approval_sla_h": 48},
+            })
             return
         if parts == ["v0", "telemetry"]:
             if self._auth("viewer"):

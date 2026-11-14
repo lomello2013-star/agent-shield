@@ -129,17 +129,17 @@
 
 ---
 
-## Фаза 6 — Ops и наблюдаемость (S6)
+## Фаза 6 — Ops и наблюдаемость (S6) `[partial: metrics/watchdog]`
 
-1. SLO S1–S19 + error budget + дашборды + алерты.
-2. Watchdog (три линии: 1 / 2a Prometheus **отдельный хост** / 2b SIEM / 3 облачный uptime или локальный пробер).
-3. `windows_exporter`.
-4. Матрица «метрика → порог → алерт → действие».
-5. OTel-трейсы `trace_id` от агента до GUI.
-6. Backup + restore (тест).
-7. Incident runbook + план коммуникации.
-8. Pen-test STML (CVSS ≥7.0 — исправлены до приёмки).
-- **Гейт S6:** SLO в целях; watchdog ≤60 с; трейс полный; backup восстановлен; runbook; pen-test (CVSS критерий).
+1. [x] SLO snapshot `/v0/slo`, `/metrics`, `/health`; error budget — в `docs/slo.md`.
+2. [x] Watchdog: `scripts/stml_watchdog.py` (1/2a/2b/3 — процесс описан).
+3. [ ] `windows_exporter` — внешний агент, не входит в сервер.
+4. [x] Матрица метрика→алерт→действие — `docs/slo.md`.
+5. [ ] OTel-трейсы `trace_id` — не реализованы.
+6. [x] Backup + restore (тест, `stml/server/backup.py`).
+7. [x] Incident runbook — `docs/runbook-stml.md`.
+8. [ ] Pen-test STML — внешний gate.
+- **Гейт S6 (MVP):** `/metrics`, `/v0/slo`, watchdog, backup, runbook — закрыто. **Остаток:** OTel, отдельный хост Prometheus, pen-test.
 
 ---
 

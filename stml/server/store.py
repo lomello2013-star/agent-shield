@@ -481,6 +481,24 @@ class Store:
             ).fetchall()
         return [dict(r) for r in rows]
 
+    def stats(self) -> dict[str, int]:
+        with self._lock:
+            def one(sql: str) -> int:
+                return int(self._db.execute(sql).fetchone()[0])
+            return {
+                "agents": one("SELECT COUNT(*) FROM agents"),
+                "healthy": one("SELECT COUNT(*) FROM agents WHERE status = 'healthy'"),
+                "degraded": one("SELECT COUNT(*) FROM agents WHERE status = 'degraded'"),
+                "offline": one("SELECT COUNT(*) FROM agents WHERE status = 'offline'"),
+                "isolated": one("SELECT COUNT(*) FROM agents WHERE isolated = 1"),
+                "reports": one("SELECT COUNT(*) FROM reports"),
+                "p0_reports": one("SELECT COUNT(*) FROM reports WHERE priority = 'P0'"),
+                "approvals_pending": one("SELECT COUNT(*) FROM approvals WHERE status = 'pending'"),
+                "policies": one("SELECT COUNT(*) FROM policies"),
+                "models": one("SELECT COUNT(*) FROM models"),
+                "telemetry": one("SELECT COUNT(*) FROM telemetry"),
+            }
+
     # -- learning: telemetry / cases / models ---------------------------
     def add_telemetry(self, agent_id: str, events: list[dict[str, Any]]) -> int:
         now = time.time()
