@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-14T18:06:54.681240+00:00",
+  "generated_at": "2026-11-14T18:13:57.441205+00:00",
   "inventory_retry": {
     "attempts": 3,
     "backoff_s": "0.15/0.30",
@@ -14,6 +14,15 @@
   },
   "notes": [
     "fix mitigates WSAENOBUFS with fresh connection; root Windows socket pressure still possible",
-    "GUI is static SPA; token is entered in Settings and kept in sessionStorage"
-  ]
+    "GUI is static SPA; token is entered in Settings and kept in sessionStorage",
+    "persistent HTTP/1.1 connection replaces per-request sockets"
+  ],
+  "persistent_http": {
+    "server": "HTTP/1.1",
+    "client": "http.client pooled",
+    "tcp_established": 1,
+    "timewait": 7,
+    "inventory_last_error": null,
+    "inventory_sent": "2026-11-14T18:13:47Z"
+  }
 }

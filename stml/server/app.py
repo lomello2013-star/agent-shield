@@ -68,6 +68,7 @@ class StmlServer(ThreadingHTTPServer):
 
 class Handler(BaseHTTPRequestHandler):
     server: StmlServer
+    protocol_version = "HTTP/1.1"   # keep-alive for the connector's persistent client
 
     def log_message(self, fmt: str, *args: Any) -> None:  # keep test output quiet
         return

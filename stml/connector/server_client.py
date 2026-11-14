@@ -2,13 +2,15 @@
 
 from __future__ import annotations
 
+import http.client
 import json
+import ssl
+import threading
 import time
-import urllib.error
-import urllib.request
 import uuid
 from datetime import datetime, timezone
 from typing import Any
+from urllib.parse import urlsplit
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
@@ -31,31 +33,70 @@ class ServerClient:
         self.agent_id = agent_id
         self.timeout_s = timeout_s
         self.ssl_context = ssl_context
+        parts = urlsplit(self.base_url)
+        self._https = parts.scheme == "https"
+        self._host = parts.hostname or "127.0.0.1"
+        self._port = parts.port or (443 if self._https else 80)
+        self._prefix = parts.path.rstrip("/")
+        self._conn: http.client.HTTPConnection | None = None
+        self._lock = threading.Lock()
+
+    def _connect(self) -> http.client.HTTPConnection:
+        if self._conn is not None:
+            return self._conn
+        if self._https:
+            context = self.ssl_context or ssl.create_default_context()
+            self._conn = http.client.HTTPSConnection(
+                self._host, self._port, timeout=self.timeout_s, context=context)
+        else:
+            self._conn = http.client.HTTPConnection(
+                self._host, self._port, timeout=self.timeout_s)
+        return self._conn
+
+    def close(self) -> None:
+        with self._lock:
+            if self._conn is not None:
+                try:
+                    self._conn.close()
+                except OSError:
+                    pass
+                self._conn = None
 
     def _post(self, path: str, payload: dict[str, Any], signed: bool = False) -> dict[str, Any]:
         raw = json.dumps(payload).encode()
         headers = {"Content-Type": "application/json",
-                   "Connection": "close",
                    "X-Trace-ID": uuid.uuid4().hex}
         if signed:
             headers["X-STML-Signature"] = sign(self.private_key, raw)
         last_error: Exception | None = None
-        for attempt in range(3):
-            req = urllib.request.Request(self.base_url + path, data=raw,
-                                         headers=headers, method="POST")
-            try:
-                with urllib.request.urlopen(req, timeout=self.timeout_s,
-                                            context=self.ssl_context) as resp:
-                    return json.loads(resp.read().decode())
-            except urllib.error.HTTPError as exc:
-                raise ServerError(exc.code, exc.read().decode(errors="replace")) from exc
-            except (urllib.error.URLError, OSError) as exc:
-                # Windows can return WSAENOBUFS (10055) after long uptime or
-                # socket pressure; a fresh connection usually succeeds.
-                last_error = exc
-                if attempt < 2:
-                    time.sleep(0.15 * (attempt + 1))
-                    continue
+        with self._lock:
+            for attempt in range(3):
+                try:
+                    conn = self._connect()
+                    conn.request("POST", self._prefix + path, body=raw, headers=headers)
+                    resp = conn.getresponse()
+                    data = resp.read()
+                    if resp.status >= 400:
+                        raise ServerError(resp.status, data.decode(errors="replace"))
+                    if resp.will_close:
+                        conn.close()
+                        self._conn = None
+                    return json.loads(data.decode())
+                except ServerError:
+                    raise
+                except (OSError, http.client.HTTPException) as exc:
+                    # WSAENOBUFS (10055) can appear after long uptime or socket
+                    # pressure; dropping the pooled connection and retrying is safe.
+                    last_error = exc
+                    if self._conn is not None:
+                        try:
+                            self._conn.close()
+                        except OSError:
+                            pass
+                        self._conn = None
+                    if attempt < 2:
+                        time.sleep(0.15 * (attempt + 1))
+                        continue
         assert last_error is not None
         raise last_error
 
@@ -72,7 +113,7 @@ class ServerClient:
             "connector_version": connector_version,
             "pubkey": pubkey_pem,
         })
-        self.agent_id = str(body["agent_id"])
+        self.agent_id = body["agent_id"]
         return self.agent_id
 
     def heartbeat(self, heartbeat: Any) -> dict[str, Any]:

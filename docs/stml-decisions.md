@@ -142,6 +142,7 @@
 | D-90 | P5 1000 parity | **Rust: 1000 агентов, p95 145.9 ms (Python 111.6 ms)** | отдельный бенч | обе <2 s |
 | D-91 | Rust CRL проверка | **revoked client blocked, non-revoked 200; файл читается на handshake** | кеш CRL | динамический отзыв |
 | D-92 | Inventory 10055 | **3 попытки с backoff и `Connection: close`** | keep-alive/HTTP2 | WSAENOBUFS на Windows |
+| D-93 | Connector HTTP | **persistent HTTP/1.1 `http.client` pool + server `protocol_version=HTTP/1.1`** | отдельный keep-alive слой | снижает TIME_WAIT/10055 |
 
 ## Production acceptance
 

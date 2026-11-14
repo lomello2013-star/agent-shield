@@ -1,5 +1,4 @@
 import json
-import urllib.error
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
@@ -27,29 +26,35 @@ class FakeAgent:
 
 
 class _Resp:
-    def __enter__(self):
-        return self
-
-    def __exit__(self, *args):
-        return False
+    status = 200
+    will_close = False
 
     def read(self):
         return b'{"ok": true}'
 
 
-def test_server_client_retries_wsanobufs(monkeypatch):
-    calls = []
+class _FlakyConn:
+    def __init__(self):
+        self.requests = 0
 
-    def flaky(*args, **kwargs):
-        calls.append(1)
-        if len(calls) < 3:
-            raise urllib.error.URLError(OSError(10055, "no buffer space"))
+    def request(self, *args, **kwargs):
+        self.requests += 1
+        if self.requests < 3:
+            raise OSError(10055, "no buffer space")
+
+    def getresponse(self):
         return _Resp()
 
-    monkeypatch.setattr("stml.connector.server_client.urllib.request.urlopen", flaky)
+    def close(self):
+        pass
+
+
+def test_server_client_retries_wsanobufs():
     client = ServerClient("http://127.0.0.1:9", Ed25519PrivateKey.generate())
+    conn = _FlakyConn()
+    client._connect = lambda: conn  # type: ignore[method-assign]
     assert client._post("/v0/inventory", {}) == {"ok": True}
-    assert len(calls) == 3
+    assert conn.requests == 3
 
 
 def _setup(tmp_path):
