@@ -25,7 +25,9 @@ cargo run
 | POST | `/v0/enrol` | one-time token |
 | POST | `/v0/heartbeat` `/v0/inventory` `/v0/reports` | Ed25519 |
 | GET/POST | `/v0/policies` | viewer / admin |
-| GET | `/v0/approvals`; POST `{id}/{approve|deny}` | viewer / approver |
+| POST | `/v0/agents/{id}/isolate` | admin |
+| POST | `/v0/commands/ack` | Ed25519 |
+| GET/POST | `/v0/approvals`; POST `{id}/{approve|deny}` | viewer / approver |
 | POST | `/v0/rollouts`; GET `{id}`; POST `{id}/{promote|halt|rollback}` | admin/viewer |
 | GET/POST | `/v0/trust/keys`; POST `{id}/{revoke|rotate}` | viewer/admin |
 | POST | `/v0/tls/revoke`; GET `/v0/tls/revoked` | admin |
@@ -40,5 +42,6 @@ cargo run
 - P2: policy signature, approvals+SoD, rollout 1→10→50→100, rollback.
 - P3: trust keys (Ed25519, private hex in trust dir), CRL-lite, audit hash chain,
   opt-in telemetry (PII keys stripped), cases, model registry + no-regression + rollback.
+- Commands: `isolate` / approval `confirm` → queue → heartbeat `commands` → signed ack.
 - **Not yet:** P4 mTLS/Tauri/GUI, P5 contract parity, RLS/HA, timestamp skew,
   HTTP 201 parity, HSM.

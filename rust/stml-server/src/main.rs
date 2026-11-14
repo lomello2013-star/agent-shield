@@ -259,6 +259,42 @@ async fn list_approvals(
     Ok(Json(json!({"approvals": out})))
 }
 
+async fn propose_approval(
+    State(state): State<AppState>,
+    headers: HeaderMap,
+    body: Bytes,
+) -> Result<Json<Value>, ApiError> {
+    auth(&headers, &state, "admin")?;
+    let value: Value = serde_json::from_slice(&body)
+        .map_err(|e| err(StatusCode::BAD_REQUEST, format!("json: {e}")))?;
+    let kind = value
+        .get("kind")
+        .and_then(Value::as_str)
+        .unwrap_or("policy");
+    let target = value.get("target").and_then(Value::as_str).unwrap_or("");
+    let payload = value.get("payload").cloned().unwrap_or_else(|| json!({}));
+    let db = pool(&state)?;
+    let approval_id: i64 = sqlx::query_scalar(
+        "INSERT INTO approvals(tenant_id, kind, target, payload, proposed_by, status, created_at) \
+         VALUES ($1,$2,$3,$4,'operator','pending',now()) RETURNING id",
+    )
+    .bind(
+        value
+            .get("tenant_id")
+            .and_then(Value::as_str)
+            .unwrap_or("default"),
+    )
+    .bind(kind)
+    .bind(target)
+    .bind(SqlJson(payload))
+    .fetch_one(db)
+    .await
+    .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+    Ok(Json(
+        json!({"approval_id": approval_id, "status": "pending"}),
+    ))
+}
+
 async fn decide_approval(
     State(state): State<AppState>,
     headers: HeaderMap,
@@ -286,9 +322,124 @@ async fn decide_approval(
             "unknown or already decided approval",
         ));
     }
+    if status == "approved" {
+        if let Some(row) = sqlx::query("SELECT kind, payload FROM approvals WHERE id=$1")
+            .bind(approval_id)
+            .fetch_optional(db)
+            .await
+            .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?
+        {
+            let kind: String = row.get("kind");
+            let payload: SqlJson<Value> = row.get("payload");
+            if kind == "confirm" {
+                if let (Some(agent_id), Some(confirmation_id)) = (
+                    payload.0.get("agent_id").and_then(Value::as_str),
+                    payload.0.get("confirmation_id").and_then(Value::as_str),
+                ) {
+                    if let Ok(agent_uuid) = Uuid::parse_str(agent_id) {
+                        enqueue_command(
+                            db,
+                            agent_uuid,
+                            "confirm",
+                            json!({"confirmation_id": confirmation_id,
+                                               "decision": "approved"}),
+                        )
+                        .await?;
+                    }
+                }
+            }
+        }
+    }
     Ok(Json(
         json!({"ok": true, "approval_id": approval_id, "status": status}),
     ))
+}
+
+async fn enqueue_command(
+    db: &PgPool,
+    agent_id: Uuid,
+    kind: &str,
+    payload: Value,
+) -> Result<Uuid, ApiError> {
+    let command_id = Uuid::new_v4();
+    sqlx::query(
+        "INSERT INTO commands(command_id, agent_id, kind, payload, status, created_at) \
+         VALUES ($1,$2,$3,$4,'pending',now())",
+    )
+    .bind(command_id)
+    .bind(agent_id)
+    .bind(kind)
+    .bind(SqlJson(payload))
+    .execute(db)
+    .await
+    .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+    Ok(command_id)
+}
+
+async fn isolate_agent(
+    State(state): State<AppState>,
+    headers: HeaderMap,
+    axum::extract::Path(agent_id): axum::extract::Path<String>,
+    body: Bytes,
+) -> Result<Json<Value>, ApiError> {
+    auth(&headers, &state, "admin")?;
+    let uuid =
+        Uuid::parse_str(&agent_id).map_err(|_| err(StatusCode::BAD_REQUEST, "bad agent id"))?;
+    let value: Value = serde_json::from_slice(&body).unwrap_or_else(|_| json!({}));
+    let isolated = value
+        .get("isolated")
+        .and_then(Value::as_bool)
+        .unwrap_or(true);
+    let db = pool(&state)?;
+    let changed = sqlx::query("UPDATE agents SET isolated=$1 WHERE id=$2")
+        .bind(isolated)
+        .bind(uuid)
+        .execute(db)
+        .await
+        .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+    if changed.rows_affected() == 0 {
+        return Err(err(StatusCode::NOT_FOUND, "unknown agent"));
+    }
+    enqueue_command(db, uuid, "isolate", json!({"isolated": isolated})).await?;
+    Ok(Json(
+        json!({"ok": true, "agent_id": agent_id, "isolated": isolated}),
+    ))
+}
+
+async fn ack_command(
+    State(state): State<AppState>,
+    headers: HeaderMap,
+    body: Bytes,
+) -> Result<Json<Value>, ApiError> {
+    let db = pool(&state)?;
+    let value: Value = serde_json::from_slice(&body)
+        .map_err(|e| err(StatusCode::BAD_REQUEST, format!("json: {e}")))?;
+    let (agent_id, _, _) = signed_agent(db, &headers, &body, &value).await?;
+    let command_id = value
+        .get("command_id")
+        .and_then(Value::as_str)
+        .and_then(|s| Uuid::parse_str(s).ok())
+        .ok_or_else(|| err(StatusCode::BAD_REQUEST, "command_id required"))?;
+    let status = value
+        .get("status")
+        .and_then(Value::as_str)
+        .unwrap_or("acked");
+    let result = value.get("result").cloned().unwrap_or_else(|| json!({}));
+    let changed = sqlx::query(
+        "UPDATE commands SET status=$1, acked_at=now(), result=$2 \
+         WHERE command_id=$3 AND agent_id=$4",
+    )
+    .bind(status)
+    .bind(SqlJson(result))
+    .bind(command_id)
+    .bind(agent_id)
+    .execute(db)
+    .await
+    .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+    if changed.rows_affected() == 0 {
+        return Err(err(StatusCode::NOT_FOUND, "unknown command"));
+    }
+    Ok(Json(json!({"command_id": command_id, "status": status})))
 }
 
 async fn start_rollout(
@@ -1298,7 +1449,28 @@ async fn heartbeat(
         .execute(db)
         .await
         .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
-    Ok(Json(json!({"ok": true, "isolated": isolated})))
+    let commands = sqlx::query(
+        "SELECT command_id::text AS command_id, kind, payload, created_at::text AS created_at \
+         FROM commands WHERE agent_id=$1 AND status='pending' ORDER BY created_at",
+    )
+    .bind(agent_id)
+    .fetch_all(db)
+    .await
+    .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+    let commands: Vec<Value> = commands
+        .into_iter()
+        .map(|r| {
+            json!({
+                "command_id": r.get::<String, _>("command_id"),
+                "kind": r.get::<String, _>("kind"),
+                "payload": r.get::<SqlJson<Value>, _>("payload").0,
+                "created_at": r.get::<String, _>("created_at"),
+            })
+        })
+        .collect();
+    Ok(Json(
+        json!({"ok": true, "isolated": isolated, "commands": commands}),
+    ))
 }
 
 async fn inventory(
@@ -1457,12 +1629,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let app = Router::new()
         .route("/health", get(health))
         .route("/v0/agents", get(agents))
+        .route("/v0/agents/{id}/isolate", post(isolate_agent))
+        .route("/v0/commands/ack", post(ack_command))
         .route("/v0/enrol", post(enrol))
         .route("/v0/heartbeat", post(heartbeat))
         .route("/v0/inventory", post(inventory))
         .route("/v0/reports", post(reports))
         .route("/v0/policies", get(list_policies).post(add_policy))
-        .route("/v0/approvals", get(list_approvals))
+        .route("/v0/approvals", get(list_approvals).post(propose_approval))
         .route("/v0/approvals/{id}/{action}", post(decide_approval))
         .route("/v0/rollouts", post(start_rollout))
         .route("/v0/rollouts/{id}", get(get_rollout))

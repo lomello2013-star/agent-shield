@@ -15,6 +15,8 @@
   promote/halt/rollback, tenant `p2`.
 - **P3 проверен:** trust keys/rotate/revoke, CRL-lite, audit hash chain,
   telemetry consent+PII-strip, cases, models + no-regression + rollback.
+- **Commands проверены:** `isolate`/approval `confirm` → heartbeat `commands`,
+  подписанный `/v0/commands/ack`; Rust parity с Python reference.
 - **Не проверено:** P4 (mTLS/Tauri/GUI), P5 parity, RLS/HA/backup, timestamp skew,
   HTTP 201 parity (Rust returns 200).
 

@@ -133,6 +133,7 @@
 | D-81 | Agent policy auth | **`apply_policy` — operator/admin; `policy_state` — viewer** | admin-only | least privilege |
 | D-82 | Command delivery | **команды в ответе heartbeat; ack через подписанный `/v0/commands/ack`** | отдельный long-poll/push | не нужен новый канал |
 | D-83 | Approval→confirm | **approval kind=`confirm` с payload `agent_id/confirmation_id` ставит команду `confirm`** | прямой вызов агента с сервера | сервер не имеет IPC-канала |
+| D-84 | Rust commands | **команды в heartbeat; подписанный `/v0/commands/ack`; approval confirm ставит команду** | отдельный long-poll | parity с Python |
 
 ## Production acceptance
 

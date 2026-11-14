@@ -1,0 +1,21 @@
+{
+  "generated_at": "2026-11-14T12:34:25.741983+00:00",
+  "component": "stml-server-rust",
+  "phase": "P4-commands",
+  "status": "verified",
+  "db": "PostgreSQL 16.16 / stml_p4",
+  "smoke": {
+    "isolate_command": true,
+    "heartbeat_commands": true,
+    "signed_ack": true,
+    "approval_confirm_command": true,
+    "queue_drains": true
+  },
+  "not_yet": [
+    "P4 mTLS/Tauri/GUI",
+    "P5 parity",
+    "RLS/HA",
+    "timestamp skew",
+    "HTTP 201 parity"
+  ]
+}

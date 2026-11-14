@@ -77,7 +77,8 @@
         "RLS/HA",
         "timestamp skew",
         "HTTP 201 parity"
-      ]
+      ],
+      "commands": true
     }
   },
   "agent_control_plane": {
