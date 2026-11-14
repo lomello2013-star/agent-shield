@@ -113,6 +113,8 @@
 | D-59 | Dev-сертификаты | **ECC P-256 CA/server/client, SAN 127.0.0.1** | RSA | быстрее генерация |
 | D-60 | Production CA | **внешний CA + CRL/OCSP** | self-signed | отзыв/доверие |
 | D-63 | Tracing | **X-Trace-ID/traceparent propagation; без OTel SDK** | OTel SDK сразу | минимальный срез S6 |
+| D-64 | Agent detail | **правая drawer-панель, не отдельная страница** | отдельный route | быстрее | 
+| D-65 | Keyboard | **1..9 разделы, Esc закрывает drawer** | только мышь | SOC-эргономика |
 
 ## Production acceptance
 

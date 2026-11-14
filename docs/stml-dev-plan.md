@@ -90,14 +90,14 @@
 ## Фаза 3 — Терминал GUI (S3) `[partial: web GUI]`
 
 1. [~] Tauri mTLS — не сделано; web GUI работает same-origin, mTLS — S2 prod/S3 Tauri.
-2. [x] Экраны: Dashboard, Fleet, Policies, Approvals, Audit, Settings (`/ui/`); Reports/Incidents/Learning/Modules/Ops — следующие.
+2. [x] Экраны: Dashboard, Fleet, Policies, Approvals, Learning, Reports, Incidents, Modules, Ops, Audit, Settings (`/ui/`).
 3. [~] Включение/выключение API — серверные токены; UI Settings для токенов.
-4. [ ] Управление модулями.
-5. [x] Dry-run + GUI isolate/resume + approve/deny (RBAC, SoD).
+4. [~] Управление модулями — read-only список `/v0/modules`; вкл/выкл — остаток.
+5. [x] Dry-run + GUI isolate/resume + approve/deny (RBAC, SoD); правая панель агента.
 6. [x] RBAC в UI: viewer/admin/approver токены; SoD проверен API.
 7. [x] GUI не хранит секретов: токены только в `sessionStorage`, не в файлах.
 8. [ ] TUI; тренинг оператора; S18/S19.
-- **Гейт S3:** флот, dry-run, rollout, approve, isolate — в web GUI; **остаток:** Tauri-обёртка, Reports/Incidents/Learning/Modules/Ops, тренинг, S18/S19.
+- **Гейт S3:** все основные экраны + agent drawer + keyboard (`1..9`, Esc); **остаток:** Tauri-обёртка, вкл/выкл модулей, тренинг, S18/S19.
 - **Реализация:** `stml/gui/index.html` (vanilla JS, dark SOC), сервер отдаёт `/ui/`.
 
 ---

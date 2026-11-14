@@ -30,6 +30,10 @@
   .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:12px 14px}
   .muted{color:var(--dim);font-size:12px} .err{color:var(--bad);white-space:pre-wrap;font-size:12px;padding:8px 14px}
   .hidden{display:none}
+  tr.click{cursor:pointer} tr.click:hover{background:#141c2c}
+  .drawer{position:fixed;top:0;right:0;width:380px;height:100vh;background:var(--bg1);border-left:1px solid var(--bd);padding:16px;overflow:auto;box-shadow:-8px 0 24px rgba(0,0,0,.4);z-index:10}
+  .drawer h2{font-size:14px;margin:0 0 12px} .drawer .kv{display:grid;grid-template-columns:120px 1fr;gap:6px;font-size:12px;margin-bottom:12px}
+  .drawer .kv div:nth-child(odd){color:var(--dim)}
 </style>
 </head>
 <body>
@@ -45,6 +49,10 @@
   <button data-tab="policies">Policies</button>
   <button data-tab="approvals">Approvals</button>
   <button data-tab="learning">Learning</button>
+  <button data-tab="reports">Reports</button>
+  <button data-tab="incidents">Incidents</button>
+  <button data-tab="modules">Modules</button>
+  <button data-tab="ops">Ops</button>
   <button data-tab="audit">Audit</button>
   <button data-tab="settings">Settings</button>
 </nav>
@@ -82,6 +90,22 @@
     <div class="panel"><h2>Cases</h2><table><thead><tr><th>Case</th><th>Report</th><th>Label</th><th>Holdout</th></tr></thead><tbody id="case-rows"></tbody></table></div>
   </section>
 
+  <section id="reports" class="hidden">
+    <div class="panel"><h2>Reports</h2><table><thead><tr><th>ID</th><th>Agent</th><th>Priority</th><th>Kind</th><th>Time</th></tr></thead><tbody id="report-rows"></tbody></table></div>
+  </section>
+
+  <section id="incidents" class="hidden">
+    <div class="panel"><h2>Incidents (P0/P1)</h2><table><thead><tr><th>ID</th><th>Agent</th><th>Priority</th><th>Kind</th><th>Time</th></tr></thead><tbody id="incident-rows"></tbody></table></div>
+  </section>
+
+  <section id="modules" class="hidden">
+    <div class="panel"><h2>Modules</h2><table><thead><tr><th>Name</th><th>Trust</th><th>Status</th><th>Note</th></tr></thead><tbody id="module-rows"></tbody></table></div>
+  </section>
+
+  <section id="ops" class="hidden">
+    <div class="panel"><h2>Ops</h2><div class="row" id="ops-summary"></div><div class="err" id="ops-msg"></div></div>
+  </section>
+
   <section id="audit" class="hidden">
     <div class="panel"><h2>Audit</h2><div class="row"><button class="act" id="verify">Verify chain</button><a class="ghost" href="/v0/audit/export?format=json" target="_blank">Export JSON</a><a class="ghost" href="/v0/audit/export?format=cef" target="_blank">Export CEF</a></div><div class="err" id="audit-msg"></div></div>
   </section>
@@ -92,10 +116,16 @@
       <div class="muted" style="padding:0 14px 12px">Токены не отправляются на сервер и не хранятся в файлах; только sessionStorage вкладки.</div>
     </div>
   </section>
+
+  <aside id="drawer" class="drawer hidden">
+    <h2 id="drawer-title">Agent</h2>
+    <div class="kv" id="drawer-kv"></div>
+    <div class="row" id="drawer-actions"></div>
+  </aside>
 </main>
 <script>
 const $=s=>document.querySelector(s);
-const state={tab:'dash'};
+const state={tab:'dash',agents:[],drawer:null};
 function tokens(){return{viewer:sessionStorage.getItem('stml.viewer')||'',admin:sessionStorage.getItem('stml.admin')||'',approver:sessionStorage.getItem('stml.approver')||''}}
 function tokenFor(role){const t=tokens();return role==='admin'?t.admin:role==='approver'?t.approver:t.viewer}
 async function api(path,opt={},role='viewer'){
@@ -122,8 +152,25 @@ async function load(){
         const p=await api('/v0/policies');$('#c-pol').textContent=(p.policies||[]).length;
         const ap=await api('/v0/approvals');$('#c-appr').textContent=(ap.approvals||[]).filter(x=>x.status==='pending').length;
       }else{
-        $('#fleet-rows').innerHTML=a.map(x=>`<tr><td>${esc(x.hostname)}</td><td>${esc(x.os)} / ${esc(x.arch)}</td><td class="${statusClass(x.status)}">${esc(x.status)}</td><td>${ago(x.last_seen)}</td><td class="mono">${esc(x.policy_version||'—')}</td><td>${x.isolated?'yes':'no'}</td><td><button class="act" onclick="isolate('${x.id}',${!x.isolated})">${x.isolated?'Resume':'Isolate'}</button></td></tr>`).join('');
+        state.agents=a;
+        $('#fleet-rows').innerHTML=a.map(x=>`<tr class="click" onclick="openAgent('${x.id}')"><td>${esc(x.hostname)}</td><td>${esc(x.os)} / ${esc(x.arch)}</td><td class="${statusClass(x.status)}">${esc(x.status)}</td><td>${ago(x.last_seen)}</td><td class="mono">${esc(x.policy_version||'—')}</td><td>${x.isolated?'yes':'no'}</td><td><button class="act" onclick="event.stopPropagation();isolate('${x.id}',${!x.isolated})">${x.isolated?'Resume':'Isolate'}</button></td></tr>`).join('');
       }
+    }
+    if(state.tab==='reports'){
+      const d=await api('/v0/reports');const rows=(d.reports||[]);
+      $('#report-rows').innerHTML=rows.map(x=>`<tr><td class="mono">${esc(x.report_id)}</td><td class="mono">${esc(x.agent_id)}</td><td>${esc(x.priority)}</td><td>${esc(x.kind)}</td><td>${new Date(x.created_at*1000).toLocaleString()}</td></tr>`).join('');
+    }
+    if(state.tab==='incidents'){
+      const d=await api('/v0/incidents');const rows=(d.incidents||[]);
+      $('#incident-rows').innerHTML=rows.map(x=>`<tr><td class="mono">${esc(x.report_id)}</td><td class="mono">${esc(x.agent_id)}</td><td class="${x.priority==='P0'?'bad':'warn'}">${esc(x.priority)}</td><td>${esc(x.kind)}</td><td>${new Date(x.created_at*1000).toLocaleString()}</td></tr>`).join('');
+    }
+    if(state.tab==='modules'){
+      const d=await api('/v0/modules');
+      $('#module-rows').innerHTML=(d.modules||[]).map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.kind)}</td><td>${esc(x.status)}</td><td class="muted">${esc(x.note)}</td></tr>`).join('');
+    }
+    if(state.tab==='ops'){
+      const d=await api('/v0/ops');const s=d.stats||{};
+      $('#ops-summary').innerHTML=`<span class="badge">uptime ${d.uptime_s}s</span><span class="badge">agents ${s.agents||0}</span><span class="badge">reports ${s.reports||0}</span><span class="badge">P0 ${s.p0_reports||0}</span><span class="badge">bus ${d.bus_events||0}</span><a class="ghost" href="/metrics" target="_blank">/metrics</a>`;
     }
     if(state.tab==='policies'){
       const p=await api('/v0/policies');$('#pol-rows').innerHTML=(p.policies||[]).map(x=>`<tr><td>${esc(x.policy_id)}</td><td class="mono">${esc(x.version)}</td><td>${esc(x.channel)}</td><td class="mono">${esc(x.key_id)}</td><td>${new Date(x.created_at*1000).toLocaleString()}</td></tr>`).join('');
@@ -144,6 +191,26 @@ $('#dry').onclick=async()=>{try{const r=await api('/v0/policies/'+$('#p-id').val
 $('#roll').onclick=async()=>{try{const r=await api('/v0/rollouts',{method:'POST',body:JSON.stringify({policy_id:$('#p-id').value,version:$('#p-ver').value,percent:Number($('#p-pct').value)})},'admin');$('#pol-msg').textContent=JSON.stringify(r,null,2)}catch(e){$('#pol-msg').textContent=e.message}};
 $('#verify').onclick=async()=>{try{const r=await api('/v0/audit/verify',{},'admin');$('#audit-msg').textContent='audit ok: '+r.ok}catch(e){$('#audit-msg').textContent=e.message}};
 $('#save').onclick=()=>{sessionStorage.setItem('stml.viewer',$('#t-viewer').value);sessionStorage.setItem('stml.admin',$('#t-admin').value);sessionStorage.setItem('stml.approver',$('#t-approver').value);$('#who').textContent='tokens saved';load()};
+function openAgent(id){
+  const a=state.agents.find(x=>x.id===id); if(!a) return;
+  state.drawer=id;
+  $('#drawer-title').textContent=a.hostname;
+  $('#drawer-kv').innerHTML=`
+    <div>id</div><div class="mono">${esc(a.id)}</div>
+    <div>OS / arch</div><div>${esc(a.os)} / ${esc(a.arch)}</div>
+    <div>version</div><div class="mono">${esc(a.agent_version)}</div>
+    <div>status</div><div class="${statusClass(a.status)}">${esc(a.status)}</div>
+    <div>last seen</div><div>${ago(a.last_seen)}</div>
+    <div>policy</div><div class="mono">${esc(a.policy_version||'—')}</div>
+    <div>isolated</div><div>${a.isolated?'yes':'no'}</div>`;
+  $('#drawer-actions').innerHTML=`<button class="act" onclick="isolate('${a.id}',${!a.isolated})">${a.isolated?'Resume':'Isolate'}</button><button class="ghost" onclick="closeDrawer()">Close</button>`;
+  $('#drawer').classList.remove('hidden');
+}
+function closeDrawer(){state.drawer=null;$('#drawer').classList.add('hidden')}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') closeDrawer();
+  if(/^[1-9]$/.test(e.key)){const b=document.querySelectorAll('nav button')[Number(e.key)-1];if(b)b.click()}
+});
 $('#t-viewer').value=tokens().viewer;$('#t-admin').value=tokens().admin;$('#t-approver').value=tokens().approver;
 load();
 </script>

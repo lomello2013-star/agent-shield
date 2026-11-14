@@ -23,6 +23,12 @@ def test_metrics_and_slo(tmp_path):
         assert slo["audit_ok"] is True
         assert slo["stats"]["agents"] == 0
         assert slo["targets"]["heartbeat_p95_s"] == 2.0
+
+        for path in ("/v0/reports", "/v0/incidents", "/v0/modules", "/v0/ops"):
+            req = Request(f"http://127.0.0.1:{port}{path}",
+                          headers={"Authorization": "Bearer viewer"})
+            with urlopen(req, timeout=5) as resp:
+                assert resp.status == 200
     finally:
         server.shutdown()
         server.server_close()

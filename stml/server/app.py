@@ -269,6 +269,27 @@ class Handler(BaseHTTPRequestHandler):
                 self._send(200, {"models": self.server.store.models(),
                                  "active": self.server.store.active_model()})
             return
+        if parts == ["v0", "reports"]:
+            if self._auth("viewer"):
+                self._send(200, {"reports": self.server.store.reports()})
+            return
+        if parts == ["v0", "incidents"]:
+            if self._auth("viewer"):
+                reports = [r for r in self.server.store.reports()
+                           if r["priority"] in {"P0", "P1"}]
+                self._send(200, {"incidents": reports})
+            return
+        if parts == ["v0", "modules"]:
+            if self._auth("viewer"):
+                self._send(200, {"modules": MODULES})
+            return
+        if parts == ["v0", "ops"]:
+            if self._auth("viewer"):
+                self._send(200, {"stats": self.server.store.stats(),
+                                 "uptime_s": round(time.time() - self.server.started_at, 1),
+                                 "bus_events": len(getattr(self.server.bus, "events", [])),
+                                 "modules": len(MODULES)})
+            return
         if parts == ["v0", "audit", "verify"]:
             if self._auth("admin"):
                 self._send(200, {"ok": self.server.store.verify_audit()})
@@ -599,6 +620,20 @@ class Handler(BaseHTTPRequestHandler):
             return
 
         self._error(404, "not found")
+
+
+MODULES = [
+    {"name": "agent-connector", "kind": "T1", "status": "active",
+     "note": "Python bridge, pickle->JSON"},
+    {"name": "fleet-core", "kind": "T1", "status": "active",
+     "note": "registry, enrolment, reports"},
+    {"name": "trust-service", "kind": "T0", "status": "dev",
+     "note": "SoftHSM file backend; prod HSM pending"},
+    {"name": "learning", "kind": "T1", "status": "active",
+     "note": "telemetry, cases, model registry"},
+    {"name": "gui", "kind": "T2", "status": "active",
+     "note": "web console /ui/"},
+]
 
 
 DASHBOARD = """<!doctype html><html lang="ru"><head><meta charset="utf-8">
