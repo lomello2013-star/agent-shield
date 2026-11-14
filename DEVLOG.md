@@ -3322,6 +3322,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 15:55] Live correlation 108/109/110; Linux 12/20 [experiment]
+
+**Действие**: `corr_helper` (process_vm_writev + mprotect в одном дереве) прогнан под двумя live-потоками (`stream_mprotect` + `stream_mem`); multi-file evaluator отсортировал 10 событий по `ts_ns`, и product-корреляция выдала **`LINUX-EXEC-CORR-108/109/110`** по 5 раз, плюс 106/107. Linux live: **12/20**.
+**Числа**: 10 событий → 25 вердиктов (106×5, 107×5, 108/109/110×5); Linux live 12/20; pytest 530 (не менялся); `run_all` 29/29 (не менялся).
+**Вердикт**: корреляция injection live закрыта; осталось 8 сценариев и production-коллектор.
+**Проверка**: `/tmp/corr_mprot.jsonl` + `/tmp/corr_mem.jsonl`; evaluator → 108/109/110; `artifacts/linux_ebpf_live.json`.
+**Статус**: verified (correlation); open (8/20, production collector)
+**Actor**: agent
+**Run_id**: linux-corr-live-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

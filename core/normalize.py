@@ -169,7 +169,8 @@ def _linux_ebpf(raw: dict, now: datetime) -> dict:
         "platform_data": {
             **{k: v for k, v in raw.items()
                if k in ("syscall", "cgroup", "ret", "comm",
-                        "daddr", "dport", "proto", "writable", "len")},
+                        "daddr", "dport", "proto", "writable", "len",
+                        "provenance_known")},
             **({"anon": bool(raw["anon"])} if "anon" in raw else {}),
         },
     }

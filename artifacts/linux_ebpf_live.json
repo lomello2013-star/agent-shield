@@ -22,11 +22,14 @@
     {"id": "linux-cron", "rule": "LINUX-CRON-102", "events": 4, "verdicts": 1,
      "control": "touch /etc/cron.d/aidf_rt"},
     {"id": "linux-audit-tamper", "rule": "LINUX-AUDIT-TAMPER-103", "events": 4, "verdicts": 1,
-     "control": "touch /var/log/audit/audit.log"}
+     "control": "touch /var/log/audit/audit.log"},
+    {"id": "linux-corr-injection", "rules": ["LINUX-EXEC-CORR-108",
+     "LINUX-EXEC-CORR-109", "LINUX-EXEC-CORR-110"], "events": 10, "verdicts": 15,
+     "control": "corr_helper: process_vm_writev + mprotect in one process tree"}
   ],
-  "live_count": 9,
+  "live_count": 12,
   "limitations": [
-    "9 of 20 Linux scenarios are live",
+    "12 of 20 Linux scenarios are live",
     "production collector (loader->pipeline service) is not integrated",
     "fapolicyd was stopped for BPF loader tests and restored afterwards"
   ]
