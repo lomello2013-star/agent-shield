@@ -102,19 +102,18 @@
 
 ---
 
-## Фаза 4 — Learning Pipeline (S4)
+## Фаза 4 — Learning Pipeline (S4) `[partial: registry/regression]`
 
-1. Приём opt-in телеметрии: анонимизация (хеширование + удаление raw + k-anonymity), PII-фильтр, retention.
-2. Курирование/разметка: `case_id`, SLA разметки, ≥500 кейсов/итерацию, дедуп.
-3. Реестр моделей + версии + метрики.
-4. Песочница + replay-буфер.
-5. Офлайн-retrain (LoRA/fine-tune) в изолированной ВМ.
-6. Регрессия: TPR@FPR, FP-бюджет, holdout (отдельно от API).
-7. Подпись + staged rollout + dual-slot откат ≤15 мин.
-8. Внешние модели-советники (без подписи).
-9. Baseline с методикой (`docs/s4-baseline.md` + скрипт + датасет + seed).
-- **Гейт S4:** телеметрия анонимизирована; оператор подтверждает выборку; модель обучается/регрессирует/подписывается; no-regression; dual-slot ≤15 мин; `MODELS_TRAIN_ON_DEVICE=False` (CI).
-- **DPIA — в финале** (не блокирует S4.1; юрист привлекается перед production/масштабированием).
+1. [x] Приём opt-in телеметрии: consent=true обязателен, PII-фильтр (drop raw, hash ids), retention helper.
+2. [x] Курирование/разметка: `case_id`, TP/FP, holdout flag, дедуп по `case_id`.
+3. [x] Реестр моделей: name/version/metrics/signature/key_id, статус staged/regressed/rejected/active.
+4. [ ] Песочница + replay-буфер.
+5. [~] Офлайн-retrain: внешний скрипт; сервер принимает метрики.
+6. [x] Регрессия: TPR@FPR и FP-бюджет против active; no-regression gate.
+7. [x] Подпись модели + staged/activate/rollback (серверный dual-slot).
+8. [ ] Внешние модели-советники.
+9. [ ] Baseline с методикой (ждёт данных).
+- **Гейт S4 (MVP):** consent, PII-фильтр, cases, model registry, regression, signature, activate/rollback — закрыто. **Остаток:** песочница, реальный retrain, dual-slot на агенте, внешние советники.
 
 ---
 

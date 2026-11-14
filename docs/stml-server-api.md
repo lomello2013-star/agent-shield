@@ -46,6 +46,15 @@ Replay: `nonce` одноразовый (`nonces`), `sent_at` ±300 с.
 | POST | `/v0/trust/keys/<id>/revoke` | отозвать (admin) |
 | POST | `/v0/trust/keys/<id>/rotate` | ротация (admin) |
 | GET | `/v0/audit/export?format=json\|cef` | экспорт (admin) |
+| POST | `/v0/telemetry` | `{agent_id,consent,events[]}` (admin; consent required) |
+| GET | `/v0/telemetry` | последние события (viewer) |
+| POST | `/v0/cases` | `{case_id,report_id,label,holdout,features}` (admin) |
+| GET | `/v0/cases` | кейсы (viewer) |
+| POST | `/v0/models` | `{name,version,metrics}` → signed (admin) |
+| GET | `/v0/models` | реестр + active (viewer) |
+| POST | `/v0/models/<id>/regress` | no-regression gate (admin) |
+| POST | `/v0/models/<id>/activate` | active/previous (admin) |
+| POST | `/v0/models/rollback` | вернуть previous (admin) |
 
 ## 2a. Policy signing
 

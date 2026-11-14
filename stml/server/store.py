@@ -94,6 +94,24 @@ class Store:
                 status TEXT NOT NULL, created_at REAL NOT NULL, decided_by TEXT,
                 decided_at REAL
             );
+            CREATE TABLE IF NOT EXISTS telemetry (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, agent_id TEXT NOT NULL,
+                payload TEXT NOT NULL, consent INTEGER NOT NULL, received_at REAL NOT NULL
+            );
+            CREATE TABLE IF NOT EXISTS cases (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, case_id TEXT NOT NULL UNIQUE,
+                report_id TEXT NOT NULL, label TEXT NOT NULL, holdout INTEGER NOT NULL,
+                features TEXT NOT NULL, created_at REAL NOT NULL
+            );
+            CREATE TABLE IF NOT EXISTS models (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL,
+                version TEXT NOT NULL, metrics TEXT NOT NULL, signature TEXT NOT NULL,
+                key_id TEXT NOT NULL, status TEXT NOT NULL, created_at REAL NOT NULL,
+                activated_at REAL, UNIQUE(name, version)
+            );
+            CREATE TABLE IF NOT EXISTS model_state (
+                key TEXT PRIMARY KEY, value TEXT
+            );
             """
         )
         self._db.commit()
@@ -462,6 +480,145 @@ class Store:
                 "ORDER BY id DESC LIMIT ?", (limit,)
             ).fetchall()
         return [dict(r) for r in rows]
+
+    # -- learning: telemetry / cases / models ---------------------------
+    def add_telemetry(self, agent_id: str, events: list[dict[str, Any]]) -> int:
+        now = time.time()
+        with self._lock:
+            for event in events:
+                self._db.execute(
+                    "INSERT INTO telemetry(agent_id, payload, consent, received_at) "
+                    "VALUES (?, ?, 1, ?)",
+                    (agent_id, json.dumps(event), now),
+                )
+            self._db.commit()
+        return len(events)
+
+    def telemetry(self, limit: int = 100) -> list[dict[str, Any]]:
+        with self._lock:
+            rows = self._db.execute(
+                "SELECT id, agent_id, payload, received_at FROM telemetry "
+                "ORDER BY id DESC LIMIT ?", (limit,)
+            ).fetchall()
+        return [{"id": r["id"], "agent_id": r["agent_id"],
+                 "payload": json.loads(r["payload"]), "received_at": r["received_at"]}
+                for r in rows]
+
+    def purge_telemetry(self, max_age_s: float) -> int:
+        with self._lock:
+            cur = self._db.execute("DELETE FROM telemetry WHERE received_at < ?",
+                                   (time.time() - max_age_s,))
+            self._db.commit()
+            return cur.rowcount
+
+    def add_case(self, case_id: str, report_id: str, label: str,
+                 holdout: bool, features: dict[str, Any]) -> None:
+        if label not in {"TP", "FP"}:
+            raise ValueError("label must be TP|FP")
+        with self._lock:
+            try:
+                self._db.execute(
+                    "INSERT INTO cases(case_id, report_id, label, holdout, features, created_at) "
+                    "VALUES (?, ?, ?, ?, ?, ?)",
+                    (case_id, report_id, label, 1 if holdout else 0,
+                     json.dumps(features), time.time()),
+                )
+                self._db.commit()
+            except sqlite3.IntegrityError as exc:
+                raise ValueError("case_id already exists") from exc
+        self._audit("operator", "case_add", f"{case_id}:{label}")
+
+    def cases(self) -> list[dict[str, Any]]:
+        with self._lock:
+            rows = self._db.execute(
+                "SELECT case_id, report_id, label, holdout, features, created_at "
+                "FROM cases ORDER BY id DESC"
+            ).fetchall()
+        return [{"case_id": r["case_id"], "report_id": r["report_id"],
+                 "label": r["label"], "holdout": bool(r["holdout"]),
+                 "features": json.loads(r["features"]), "created_at": r["created_at"]}
+                for r in rows]
+
+    def add_model(self, name: str, version: str, metrics: dict[str, Any],
+                  signature: str, key_id: str) -> int:
+        with self._lock:
+            try:
+                cur = self._db.execute(
+                    "INSERT INTO models(name, version, metrics, signature, key_id, status, "
+                    "created_at) VALUES (?, ?, ?, ?, ?, 'staged', ?)",
+                    (name, version, json.dumps(metrics), signature, key_id, time.time()),
+                )
+                self._db.commit()
+                return int(cur.lastrowid)
+            except sqlite3.IntegrityError as exc:
+                raise ValueError("model version already exists") from exc
+
+    def models(self) -> list[dict[str, Any]]:
+        with self._lock:
+            rows = self._db.execute("SELECT * FROM models ORDER BY id DESC").fetchall()
+        return [self._model(r) for r in rows]
+
+    def model(self, model_id: int) -> dict[str, Any] | None:
+        with self._lock:
+            row = self._db.execute("SELECT * FROM models WHERE id = ?", (model_id,)).fetchone()
+        return self._model(row) if row else None
+
+    @staticmethod
+    def _model(row: sqlite3.Row) -> dict[str, Any]:
+        data = dict(row)
+        data["metrics"] = json.loads(data["metrics"])
+        return data
+
+    def set_model_status(self, model_id: int, status: str) -> None:
+        with self._lock:
+            self._db.execute("UPDATE models SET status = ? WHERE id = ?", (status, model_id))
+            self._db.commit()
+
+    def _model_state(self, key: str) -> str | None:
+        with self._lock:
+            row = self._db.execute("SELECT value FROM model_state WHERE key = ?",
+                                   (key,)).fetchone()
+        return row["value"] if row else None
+
+    def _set_model_state(self, key: str, value: str | None) -> None:
+        with self._lock:
+            self._db.execute("INSERT OR REPLACE INTO model_state(key, value) VALUES (?, ?)",
+                             (key, value))
+            self._db.commit()
+
+    def active_model(self) -> dict[str, Any] | None:
+        active = self._model_state("active")
+        return self.model(int(active)) if active else None
+
+    def activate_model(self, model_id: int) -> dict[str, Any]:
+        model = self.model(model_id)
+        if model is None:
+            raise KeyError("unknown model")
+        previous = self._model_state("active")
+        self._set_model_state("previous", previous)
+        self._set_model_state("active", str(model_id))
+        with self._lock:
+            self._db.execute("UPDATE models SET status = 'active', activated_at = ? WHERE id = ?",
+                             (time.time(), model_id))
+            self._db.commit()
+        self._audit("operator", "model_activate", str(model_id))
+        return {"model_id": model_id, "previous": previous}
+
+    def rollback_model(self) -> dict[str, Any]:
+        previous = self._model_state("previous")
+        if not previous:
+            raise KeyError("no previous model")
+        current = self._model_state("active")
+        self._set_model_state("active", previous)
+        self._set_model_state("previous", current)
+        with self._lock:
+            self._db.execute("UPDATE models SET status = 'rolled_back' WHERE id = ?",
+                             (int(current) if current else -1,))
+            self._db.execute("UPDATE models SET status = 'active' WHERE id = ?",
+                             (int(previous),))
+            self._db.commit()
+        self._audit("operator", "model_rollback", previous)
+        return {"active": int(previous), "rolled_back": current}
 
     # -- audit chain -----------------------------------------------------
     def _audit(self, actor: str, action: str, target: str) -> None:

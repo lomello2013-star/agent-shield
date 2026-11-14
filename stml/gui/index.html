@@ -44,6 +44,7 @@
   <button data-tab="fleet">Fleet</button>
   <button data-tab="policies">Policies</button>
   <button data-tab="approvals">Approvals</button>
+  <button data-tab="learning">Learning</button>
   <button data-tab="audit">Audit</button>
   <button data-tab="settings">Settings</button>
 </nav>
@@ -74,6 +75,11 @@
   <section id="approvals" class="hidden">
     <div class="panel"><h2>Approvals</h2><table><thead><tr><th>#</th><th>Kind</th><th>Target</th><th>Status</th><th>Decided by</th><th>Actions</th></tr></thead><tbody id="appr-rows"></tbody></table></div>
     <div class="muted" style="padding:0 4px">Approve/deny требует approver token (SoD).</div>
+  </section>
+
+  <section id="learning" class="hidden">
+    <div class="panel"><h2>Models</h2><table><thead><tr><th>Name</th><th>Version</th><th>Status</th><th>TPR@FPR</th><th>FP budget</th><th>Key</th></tr></thead><tbody id="model-rows"></tbody></table></div>
+    <div class="panel"><h2>Cases</h2><table><thead><tr><th>Case</th><th>Report</th><th>Label</th><th>Holdout</th></tr></thead><tbody id="case-rows"></tbody></table></div>
   </section>
 
   <section id="audit" class="hidden">
@@ -121,6 +127,10 @@ async function load(){
     }
     if(state.tab==='policies'){
       const p=await api('/v0/policies');$('#pol-rows').innerHTML=(p.policies||[]).map(x=>`<tr><td>${esc(x.policy_id)}</td><td class="mono">${esc(x.version)}</td><td>${esc(x.channel)}</td><td class="mono">${esc(x.key_id)}</td><td>${new Date(x.created_at*1000).toLocaleString()}</td></tr>`).join('');
+    }
+    if(state.tab==='learning'){
+      const m=await api('/v0/models');$('#model-rows').innerHTML=(m.models||[]).map(x=>`<tr><td>${esc(x.name)}</td><td class="mono">${esc(x.version)}</td><td>${esc(x.status)}</td><td>${esc(x.metrics.tpr_at_fpr??'—')}</td><td>${esc(x.metrics.fp_budget??'—')}</td><td class="mono">${esc(x.key_id)}</td></tr>`).join('');
+      const c=await api('/v0/cases');$('#case-rows').innerHTML=(c.cases||[]).map(x=>`<tr><td class="mono">${esc(x.case_id)}</td><td class="mono">${esc(x.report_id)}</td><td>${esc(x.label)}</td><td>${x.holdout?'yes':'no'}</td></tr>`).join('');
     }
     if(state.tab==='approvals'){
       const d=await api('/v0/approvals');$('#appr-rows').innerHTML=(d.approvals||[]).map(x=>`<tr><td>${x.id}</td><td>${esc(x.kind)}</td><td class="mono">${esc(x.target)}</td><td>${esc(x.status)}</td><td>${esc(x.decided_by||'—')}</td><td>${x.status==='pending'?`<button class="act" onclick="decide(${x.id},'approve')">Approve</button> <button class="danger" onclick="decide(${x.id},'deny')">Deny</button>`:''}</td></tr>`).join('');

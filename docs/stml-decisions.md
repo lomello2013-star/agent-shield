@@ -63,6 +63,16 @@
 | D-39 | Токены в GUI | **sessionStorage, не файлы** | OS keychain | S3; mTLS/keychain — Tauri |
 | D-40 | RBAC в UI | **role-specific токены, кнопки скрываются** | серые кнопки | SoD визуально |
 
+## S4 (Learning)
+
+| # | Решение | Принято | Альтернативы | Почему |
+|---|---|---|---|---|
+| D-41 | Consent | **явный `consent=true`, иначе 403** | implicit opt-in | приватность |
+| D-42 | PII-фильтр | **drop raw-полей + hash идентификаторов** | k-anonymity сразу | baseline; DPIA в финале |
+| D-43 | Case labels | **TP/FP + holdout flag, `case_id` unique** | свободные метки | регрессия |
+| D-44 | No-regression | **сравнение с active: TPR не ниже, FP не выше** | абсолютный порог | не терять качество |
+| D-45 | Model slot | **active/previous на сервере; activate/rollback** | dual-slot на агенте сразу | S4 MVP |
+
 ## Открытые (предложены, не приняты)
 
 | # | Вопрос | Варианты | Рекомендация |

@@ -14,6 +14,7 @@ from urllib.parse import parse_qs, urlparse
 from stml.connector.signing import key_id, public_from_pem, verify
 from stml.contracts.policy import canonical_policy
 from stml.contracts.v0 import Heartbeat, Inventory
+from stml.learning.service import LearningService
 from stml.server.store import Store
 from stml.trust.service import TrustError, TrustService
 
@@ -47,6 +48,7 @@ class StmlServer(ThreadingHTTPServer):
         if not config.policy_pubkey:
             key = self.trust.active("policy") or self.trust.create_key("policy")
             config.policy_pubkey = key["public_pem"]
+        self.learning = LearningService(store, self.trust)
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -187,6 +189,19 @@ class Handler(BaseHTTPRequestHandler):
                 else:
                     self._send(200, agent.__dict__)
             return
+        if parts == ["v0", "telemetry"]:
+            if self._auth("viewer"):
+                self._send(200, {"telemetry": self.server.store.telemetry()})
+            return
+        if parts == ["v0", "cases"]:
+            if self._auth("viewer"):
+                self._send(200, {"cases": self.server.store.cases()})
+            return
+        if parts == ["v0", "models"]:
+            if self._auth("viewer"):
+                self._send(200, {"models": self.server.store.models(),
+                                 "active": self.server.store.active_model()})
+            return
         if parts == ["v0", "audit", "verify"]:
             if self._auth("admin"):
                 self._send(200, {"ok": self.server.store.verify_audit()})
@@ -315,6 +330,75 @@ class Handler(BaseHTTPRequestHandler):
                 else:
                     self._error(404, "not found")
             except (KeyError, TrustError) as exc:
+                self._error(404, str(exc))
+            return
+
+        if parts == ["v0", "telemetry"]:
+            if not self._auth("admin"):
+                return
+            events = body.get("events") if isinstance(body, dict) else []
+            try:
+                count = self.server.learning.ingest(
+                    str(body.get("agent_id", "unknown")),
+                    events if isinstance(events, list) else [],
+                    bool(body.get("consent", False)))
+            except PermissionError as exc:
+                self._error(403, str(exc))
+                return
+            self._send(201, {"ok": True, "accepted": count})
+            return
+
+        if parts == ["v0", "cases"]:
+            if not self._auth("admin"):
+                return
+            try:
+                self.server.learning.add_case(
+                    str(body.get("case_id", "")), str(body.get("report_id", "")),
+                    str(body.get("label", "")), bool(body.get("holdout", False)),
+                    body.get("features") or {})
+            except ValueError as exc:
+                self._error(409, str(exc))
+                return
+            self._send(201, {"ok": True, "case_id": body.get("case_id")})
+            return
+
+        if parts == ["v0", "models"]:
+            if not self._auth("admin"):
+                return
+            try:
+                result = self.server.learning.register_model(
+                    str(body.get("name", "")), str(body.get("version", "")),
+                    body.get("metrics") or {})
+            except ValueError as exc:
+                self._error(409, str(exc))
+                return
+            self._send(201, result)
+            return
+
+        if len(parts) == 4 and parts[:2] == ["v0", "models"]:
+            if not self._auth("admin"):
+                return
+            try:
+                model_id = int(parts[2])
+                if parts[3] == "regress":
+                    result = self.server.learning.regress(model_id)
+                elif parts[3] == "activate":
+                    result = self.server.learning.activate(model_id)
+                else:
+                    self._error(404, "not found")
+                    return
+            except (KeyError, ValueError) as exc:
+                self._error(404, str(exc))
+                return
+            self._send(200, result)
+            return
+
+        if parts == ["v0", "models", "rollback"]:
+            if not self._auth("admin"):
+                return
+            try:
+                self._send(200, self.server.learning.rollback())
+            except KeyError as exc:
                 self._error(404, str(exc))
             return
 
