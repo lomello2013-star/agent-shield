@@ -7,13 +7,15 @@ import threading
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
 from typing import Any
-from urllib.parse import urlparse
+from urllib.parse import parse_qs, urlparse
 
 from stml.connector.signing import key_id, public_from_pem, verify
 from stml.contracts.policy import canonical_policy
 from stml.contracts.v0 import Heartbeat, Inventory
 from stml.server.store import Store
+from stml.trust.service import TrustError, TrustService
 
 MAX_BODY = 2 * 1024 * 1024
 SKEW_S = 300
@@ -26,6 +28,10 @@ class ServerConfig:
     viewer_token: str = ""
     db_path: str = "stml-server.sqlite3"
     policy_pubkey: str = ""
+    approver_token: str = ""
+    trust_dir: str = ""
+    trust_backend: str = "file"
+    require_approval: bool = True
 
 
 class StmlServer(ThreadingHTTPServer):
@@ -36,7 +42,11 @@ class StmlServer(ThreadingHTTPServer):
         super().__init__(addr, Handler)
         self.store = store
         self.config = config
-        self.connector = None  # type: ignore[assignment]
+        self.trust = TrustService(store, config.trust_dir or str(store.path) + ".trust",
+                                  config.trust_backend)
+        if not config.policy_pubkey:
+            key = self.trust.active("policy") or self.trust.create_key("policy")
+            config.policy_pubkey = key["public_pem"]
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -66,12 +76,19 @@ class Handler(BaseHTTPRequestHandler):
     def _auth(self, role: str) -> bool:
         header = self.headers.get("Authorization", "")
         token = header.removeprefix("Bearer ").strip()
-        allowed = {self.server.config.admin_token, self.server.config.viewer_token}
-        if not token or token not in allowed:
+        cfg = self.server.config
+        if role == "approver":
+            if token != cfg.approver_token:
+                self._error(403, "approver required")
+                return False
+            return True
+        if role == "admin":
+            if token != cfg.admin_token:
+                self._error(403, "admin required")
+                return False
+            return True
+        if token not in {cfg.admin_token, cfg.viewer_token, cfg.approver_token}:
             self._error(401, "unauthorized")
-            return False
-        if role == "admin" and token != self.server.config.admin_token:
-            self._error(403, "admin required")
             return False
         return True
 
@@ -128,7 +145,9 @@ class Handler(BaseHTTPRequestHandler):
 
     # -- GET -------------------------------------------------------------
     def do_GET(self) -> None:  # noqa: N802
-        parts = urlparse(self.path).path.strip("/").split("/")
+        parsed = urlparse(self.path)
+        parts = parsed.path.strip("/").split("/")
+        query = parse_qs(parsed.query)
         if parts == ["health"]:
             self._send(200, {"ok": True, "service": "stml", "tenant": self.server.config.tenant_id})
             return
@@ -155,6 +174,36 @@ class Handler(BaseHTTPRequestHandler):
         if parts == ["v0", "audit", "verify"]:
             if self._auth("admin"):
                 self._send(200, {"ok": self.server.store.verify_audit()})
+            return
+        if parts == ["v0", "audit", "export"]:
+            if not self._auth("admin"):
+                return
+            rows = self.server.store.audit_export()
+            fmt = (query.get("format") or ["json"])[0]
+            if fmt == "cef":
+                lines = [
+                    "CEF:0|AIDefender|STML|1.0|{action}|{action}|5|actor={actor} target={target} hash={hash}".format(
+                        action=r["action"], actor=r["actor"], target=r["target"], hash=r["hash"])
+                    for r in rows
+                ]
+                payload = ("\n".join(lines) + "\n").encode()
+                self.send_response(200)
+                self.send_header("Content-Type", "text/plain; charset=utf-8")
+                self.send_header("Content-Length", str(len(payload)))
+                self.end_headers()
+                self.wfile.write(payload)
+            else:
+                self._send(200, {"audit": rows})
+            return
+        if parts == ["v0", "approvals"]:
+            if self._auth("viewer"):
+                self._send(200, {"approvals": self.server.store.approvals()})
+            return
+        if parts == ["v0", "trust", "keys"]:
+            if self._auth("viewer"):
+                keys = [{k: v for k, v in key.items() if k != "private_path"}
+                        for key in self.server.trust.keys()]
+                self._send(200, {"keys": keys})
             return
         if parts == ["v0", "policies"]:
             if self._auth("viewer"):
@@ -202,6 +251,57 @@ class Handler(BaseHTTPRequestHandler):
                                                                        self.server.config.tenant_id)})
             return
 
+        if parts == ["v0", "approvals"]:
+            if not self._auth("admin"):
+                return
+            approval_id = self.server.trust.propose(
+                str(body.get("kind", "policy")), str(body.get("target", "")),
+                body.get("payload") or {}, "operator")
+            self._send(201, {"approval_id": approval_id, "status": "pending"})
+            return
+
+        if len(parts) == 4 and parts[:2] == ["v0", "approvals"]:
+            if not self._auth("approver"):
+                return
+            status = {"approve": "approved", "deny": "rejected"}.get(parts[3])
+            if status is None:
+                self._error(404, "not found")
+                return
+            try:
+                self.server.trust.decide(int(parts[2]), status, "approver")
+            except KeyError as exc:
+                self._error(404, str(exc))
+                return
+            self._send(200, {"ok": True, "approval_id": int(parts[2]), "status": status})
+            return
+
+        if parts == ["v0", "trust", "keys"]:
+            if not self._auth("admin"):
+                return
+            try:
+                key = self.server.trust.create_key(str(body.get("key_class", "policy")))
+            except (ValueError, TrustError) as exc:
+                self._error(400, str(exc))
+                return
+            self._send(201, {k: v for k, v in key.items() if k != "private_path"})
+            return
+
+        if len(parts) == 5 and parts[:3] == ["v0", "trust", "keys"]:
+            if not self._auth("admin"):
+                return
+            try:
+                if parts[4] == "revoke":
+                    self.server.trust.revoke(parts[3])
+                    self._send(200, {"ok": True, "key_id": parts[3], "revoked": True})
+                elif parts[4] == "rotate":
+                    key = self.server.trust.rotate(parts[3])
+                    self._send(201, {k: v for k, v in key.items() if k != "private_path"})
+                else:
+                    self._error(404, "not found")
+            except (KeyError, TrustError) as exc:
+                self._error(404, str(exc))
+            return
+
         if parts == ["v0", "policies"]:
             if not self._auth("admin") or not self._verify_policy(body):
                 return
@@ -217,8 +317,10 @@ class Handler(BaseHTTPRequestHandler):
             except ValueError as exc:
                 self._error(409, str(exc))
                 return
+            target = f"{body.get('policy_id')}@{body.get('version')}"
+            approval_id = self.server.trust.propose("policy", target, body, "operator")
             self._send(201, {"ok": True, "policy_id": body.get("policy_id"),
-                             "version": body.get("version")})
+                             "version": body.get("version"), "approval_id": approval_id})
             return
 
         if len(parts) == 5 and parts[:2] == ["v0", "policies"] and parts[4] == "dry-run":
@@ -235,6 +337,10 @@ class Handler(BaseHTTPRequestHandler):
 
         if parts == ["v0", "rollouts"]:
             if not self._auth("admin"):
+                return
+            target = f"{body.get('policy_id')}@{body.get('version')}"
+            if self.server.config.require_approval and not self.server.trust.is_approved("policy", target):
+                self._error(409, "policy approval required")
                 return
             try:
                 rollout = self.server.store.start_rollout(

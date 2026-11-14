@@ -71,19 +71,19 @@
 
 ---
 
-## Фаза 2 — Trust Service (S2)
+## Фаза 2 — Trust Service (S2) `[partial: dev trust]`
 
-1. Prod HSM + quorum (2-of-3 / 2-of-2 — решение до S2).
-2. Миграция ключей S0→prod с overlap (`key_id`).
-3. Подпись/проверка пакетов (Ed25519).
-4. Human-approval (diff/approve/audit), SLA 48 ч.
-5. Audit log append-only + экспорт SIEM.
-6. Отзыв ключа ≤24 ч; ротация с overlap; backup/restore.
-7. Тесты #7–#10 (сертификат, MITM, отзыв, инъекция policy).
-8. Key ceremony (`docs/key-ceremony.md`).
-9. Immutable guards в CI.
-10. SoD: Admin ≠ approve, Approver ≠ kill-switch.
-- **Гейт S2:** prod HSM+quorum; миграция; тесты #7–#10; отзыв ≤24 ч; audit verify 100%; restore RTO ≤1 ч; key ceremony; threat model; SoD.
+1. [~] Prod HSM + quorum (2-of-3 / 2-of-2) — **не сделано**; SoftHSM-dev (file backend) готов.
+2. [~] Миграция ключей S0→prod — dev-ключи; миграция в HSM — при появлении HSM.
+3. [x] Подпись/проверка пакетов и policy (Ed25519, `key_id`).
+4. [x] Human-approval: очередь, approve/deny, SLA 48 ч (SoD).
+5. [x] Audit append-only + экспорт JSON/CEF.
+6. [x] Отзыв ≤24 ч, ротация с overlap, backup/restore (zip DB+trust).
+7. [~] Тесты #7–#10: отзыв и policy-injection — есть; mTLS/MITM — S2 prod.
+8. [x] Key ceremony — `docs/key-ceremony.md`.
+9. [~] Immutable guards — в `core/policy.py`; CI-блокировка merge — процесс.
+10. [x] SoD: Admin ≠ approve; Approver ≠ kill-switch (тесты).
+- **Гейт S2 (dev):** SoftHSM-ключи, подпись/проверка, approval+SoD, audit export, отзыв/ротация, backup/restore — закрыто. **Prod-остаток:** HSM+quorum, mTLS, key ceremony с человеческими свидетелями.
 
 ---
 

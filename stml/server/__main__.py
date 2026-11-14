@@ -33,6 +33,10 @@ def main(argv: list[str] | None = None) -> int:
     run.add_argument("--tenant", default=os.environ.get("STML_TENANT", "default"))
     run.add_argument("--admin-token", default=os.environ.get("STML_ADMIN_TOKEN", ""))
     run.add_argument("--viewer-token", default=os.environ.get("STML_VIEWER_TOKEN", ""))
+    run.add_argument("--approver-token", default=os.environ.get("STML_APPROVER_TOKEN", ""))
+    run.add_argument("--trust-dir", default="")
+    run.add_argument("--trust-backend", default="file")
+    run.add_argument("--no-require-approval", action="store_true")
     run.add_argument("--enrol-token", default="")
 
     tok = sub.add_parser("token", help="create an enrolment token")
@@ -53,7 +57,28 @@ def main(argv: list[str] | None = None) -> int:
     aud.add_argument("--url", default="http://127.0.0.1:8080")
     aud.add_argument("--admin-token", default=os.environ.get("STML_ADMIN_TOKEN", ""))
 
+    bak = sub.add_parser("backup", help="backup DB + trust dir")
+    bak.add_argument("--db", default="stml-server.sqlite3")
+    bak.add_argument("--trust-dir", default="")
+    bak.add_argument("--out", required=True)
+
+    res = sub.add_parser("restore", help="restore DB + trust dir")
+    res.add_argument("--from", dest="source", required=True)
+    res.add_argument("--db", default="stml-server.sqlite3")
+    res.add_argument("--trust-dir", default="")
+
     args = parser.parse_args(argv)
+    if args.cmd == "backup":
+        from stml.server.backup import backup
+
+        print(json.dumps(backup(args.db, args.trust_dir or args.db + ".trust", args.out), indent=2))
+        return 0
+    if args.cmd == "restore":
+        from stml.server.backup import restore
+
+        print(json.dumps(restore(args.source, args.db, args.trust_dir or args.db + ".trust"),
+                         indent=2))
+        return 0
     if args.cmd == "token":
         store = Store(args.db)
         print(store.create_enrol_token(args.tenant))
@@ -73,13 +98,18 @@ def main(argv: list[str] | None = None) -> int:
     store = Store(args.db)
     admin = args.admin_token or secrets.token_urlsafe(24)
     viewer = args.viewer_token or secrets.token_urlsafe(24)
+    approver = args.approver_token or secrets.token_urlsafe(24)
     enrol = args.enrol_token or store.create_enrol_token(args.tenant)
     config = ServerConfig(tenant_id=args.tenant, admin_token=admin,
-                          viewer_token=viewer, db_path=args.db)
+                          viewer_token=viewer, approver_token=approver,
+                          db_path=args.db, trust_dir=args.trust_dir or args.db + ".trust",
+                          trust_backend=args.trust_backend,
+                          require_approval=not args.no_require_approval)
     server = StmlServer((args.host, args.port), store, config)
     print(json.dumps({"stml": "running", "url": f"http://{args.host}:{args.port}",
                       "tenant": args.tenant, "admin_token": admin,
-                      "viewer_token": viewer, "enrol_token": enrol}), flush=True)
+                      "viewer_token": viewer, "approver_token": approver,
+                      "enrol_token": enrol}), flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

@@ -27,7 +27,8 @@ def _setup(tmp_path):
     policy_priv, policy_pub = tmp_path / "policy.pem", tmp_path / "policy.pub"
     generate_keypair(policy_priv, policy_pub)
     config = ServerConfig(tenant_id="t", admin_token="admin", viewer_token="viewer",
-                          policy_pubkey=policy_pub.read_text(encoding="utf-8"))
+                          policy_pubkey=policy_pub.read_text(encoding="utf-8"),
+                          require_approval=False)
     server, _ = start_server(store, config, port=0)
     port = server.server_address[1]
     agent_priv, agent_pub = tmp_path / "agent.pem", tmp_path / "agent.pub"

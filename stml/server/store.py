@@ -83,6 +83,17 @@ class Store:
                 rollout_id INTEGER NOT NULL, agent_id TEXT NOT NULL,
                 old_version TEXT, PRIMARY KEY (rollout_id, agent_id)
             );
+            CREATE TABLE IF NOT EXISTS keys (
+                key_id TEXT PRIMARY KEY, key_class TEXT NOT NULL, public_pem TEXT NOT NULL,
+                private_path TEXT NOT NULL, created_at REAL NOT NULL, revoked_at REAL,
+                rotated_from TEXT
+            );
+            CREATE TABLE IF NOT EXISTS approvals (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, kind TEXT NOT NULL,
+                target TEXT NOT NULL, payload TEXT NOT NULL, proposed_by TEXT NOT NULL,
+                status TEXT NOT NULL, created_at REAL NOT NULL, decided_by TEXT,
+                decided_at REAL
+            );
             """
         )
         self._db.commit()
@@ -356,6 +367,101 @@ class Store:
                 return False
             except sqlite3.IntegrityError:
                 return True
+
+    # -- trust: keys / approvals -----------------------------------------
+    def add_key(self, key_id: str, key_class: str, public_pem: str,
+                private_path: str, rotated_from: str | None = None) -> None:
+        with self._lock:
+            self._db.execute(
+                "INSERT INTO keys(key_id, key_class, public_pem, private_path, "
+                "created_at, rotated_from) VALUES (?, ?, ?, ?, ?, ?)",
+                (key_id, key_class, public_pem, private_path, time.time(), rotated_from),
+            )
+            self._db.commit()
+        self._audit("trust", "key_create", f"{key_class}:{key_id}")
+
+    def keys(self) -> list[dict[str, Any]]:
+        with self._lock:
+            rows = self._db.execute(
+                "SELECT key_id, key_class, public_pem, private_path, created_at, "
+                "revoked_at, rotated_from FROM keys ORDER BY created_at DESC"
+            ).fetchall()
+        return [dict(r) for r in rows]
+
+    def key(self, key_id: str) -> dict[str, Any] | None:
+        with self._lock:
+            row = self._db.execute("SELECT * FROM keys WHERE key_id = ?", (key_id,)).fetchone()
+        return dict(row) if row else None
+
+    def revoke_key(self, key_id: str) -> None:
+        with self._lock:
+            cur = self._db.execute(
+                "UPDATE keys SET revoked_at = ? WHERE key_id = ? AND revoked_at IS NULL",
+                (time.time(), key_id),
+            )
+            self._db.commit()
+        if cur.rowcount == 0:
+            raise KeyError("unknown or already revoked key")
+        self._audit("trust", "key_revoke", key_id)
+
+    def propose_approval(self, kind: str, target: str, payload: dict[str, Any],
+                         proposed_by: str) -> int:
+        with self._lock:
+            cur = self._db.execute(
+                "INSERT INTO approvals(kind, target, payload, proposed_by, status, created_at) "
+                "VALUES (?, ?, ?, ?, 'pending', ?)",
+                (kind, target, json.dumps(payload), proposed_by, time.time()),
+            )
+            self._db.commit()
+            approval_id = int(cur.lastrowid)
+        self._audit("operator", "approval_propose", f"{kind}:{target}")
+        return approval_id
+
+    def approvals(self, status: str | None = None) -> list[dict[str, Any]]:
+        with self._lock:
+            if status:
+                rows = self._db.execute(
+                    "SELECT * FROM approvals WHERE status = ? ORDER BY id DESC", (status,)
+                ).fetchall()
+            else:
+                rows = self._db.execute("SELECT * FROM approvals ORDER BY id DESC").fetchall()
+        return [dict(r) for r in rows]
+
+    def approval(self, approval_id: int) -> dict[str, Any] | None:
+        with self._lock:
+            row = self._db.execute("SELECT * FROM approvals WHERE id = ?",
+                                   (approval_id,)).fetchone()
+        return dict(row) if row else None
+
+    def decide_approval(self, approval_id: int, status: str, decided_by: str) -> None:
+        if status not in {"approved", "rejected"}:
+            raise ValueError("status must be approved|rejected")
+        with self._lock:
+            cur = self._db.execute(
+                "UPDATE approvals SET status = ?, decided_by = ?, decided_at = ? "
+                "WHERE id = ? AND status = 'pending'",
+                (status, decided_by, time.time(), approval_id),
+            )
+            self._db.commit()
+        if cur.rowcount == 0:
+            raise KeyError("unknown or already decided approval")
+        self._audit("approver", f"approval_{status}", str(approval_id))
+
+    def is_approved(self, kind: str, target: str) -> bool:
+        with self._lock:
+            row = self._db.execute(
+                "SELECT 1 FROM approvals WHERE kind = ? AND target = ? AND status = 'approved' "
+                "ORDER BY id DESC LIMIT 1", (kind, target),
+            ).fetchone()
+        return row is not None
+
+    def audit_export(self, limit: int = 1000) -> list[dict[str, Any]]:
+        with self._lock:
+            rows = self._db.execute(
+                "SELECT ts, actor, action, target, prev_hash, hash FROM audit "
+                "ORDER BY id DESC LIMIT ?", (limit,)
+            ).fetchall()
+        return [dict(r) for r in rows]
 
     # -- audit chain -----------------------------------------------------
     def _audit(self, actor: str, action: str, target: str) -> None:

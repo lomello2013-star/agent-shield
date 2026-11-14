@@ -45,6 +45,16 @@
 | D-31 | Rollout | **детерминированно первые N% агентов, `old_version` для rollback** | случайная выборка | воспроизводимость |
 | D-32 | Policy content | **JSON dict, канонизация sorted** | YAML | проще подписывать/диффать |
 
+## S2 (Trust)
+
+| # | Решение | Принято | Альтернативы | Почему |
+|---|---|---|---|---|
+| D-33 | Trust backend | **`file` (SoftHSM-dev); `hsm` — заглушка до prod** | HSM сразу | HSM/quorum — внешний gate |
+| D-34 | SoD | **отдельный `approver_token`; Admin ≠ approve; Approver ≠ kill-switch** | одна роль admin | требование S2 |
+| D-35 | Approval policy | **policy add → pending approval; rollout требует approved** | rollout без approval | безопасность |
+| D-36 | Backup | **zip: SQLite snapshot + trust dir** | только БД | ключи нужны для восстановления |
+| D-37 | Key classes | **root/policy/model/driver/connector** | один ключ | разные классы — разные права |
+
 ## Открытые (предложены, не приняты)
 
 | # | Вопрос | Варианты | Рекомендация |

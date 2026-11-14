@@ -24,6 +24,12 @@ artifacts/soak_partial.json
 artifacts/rust_ml_holdout_state.json
 *.log
 
+# STML runtime state
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm
+*.trust/
+
 # Rust build output
 rust/target/
 rust/unix_ipc_test/target/

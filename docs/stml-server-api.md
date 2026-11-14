@@ -36,6 +36,15 @@ Replay: `nonce` одноразовый (`nonces`), `sent_at` ±300 с.
 | GET | `/v0/rollouts/<id>` | статус + затронутые агенты (viewer) |
 | POST | `/v0/rollouts/<id>/halt` | остановить (admin) |
 | POST | `/v0/rollouts/<id>/rollback` | вернуть старые версии (admin) |
+| GET | `/v0/approvals` | очередь approvals (viewer) |
+| POST | `/v0/approvals` | propose `{kind,target,payload}` (admin) |
+| POST | `/v0/approvals/<id>/approve` | approve (approver) |
+| POST | `/v0/approvals/<id>/deny` | reject (approver) |
+| GET | `/v0/trust/keys` | реестр ключей (viewer) |
+| POST | `/v0/trust/keys` | создать ключ `{key_class}` (admin) |
+| POST | `/v0/trust/keys/<id>/revoke` | отозвать (admin) |
+| POST | `/v0/trust/keys/<id>/rotate` | ротация (admin) |
+| GET | `/v0/audit/export?format=json\|cef` | экспорт (admin) |
 
 ## 2a. Policy signing
 
@@ -43,6 +52,13 @@ Replay: `nonce` одноразовый (`nonces`), `sent_at` ±300 с.
 - Подпись Ed25519; `key_id` = sha256(pubkey)[:16]; сервер проверяет `policy_pubkey` из конфигурации.
 - `dry-run` не меняет состояние; `rollout percent` выбирает первых N агентов (детерминированно), сохраняет `old_version` для rollback.
 - `halt` не откатывает; `rollback` восстанавливает `old_version`.
+
+## 2b. Trust / approvals (S2)
+
+- Policy add создаёт pending approval; rollout требует `approved` (если `require_approval`).
+- Токены: `admin`, `approver`, `viewer`. **Admin не может approve; Approver не может isolate/rollout.**
+- Ключи: `file` backend (SoftHSM-dev) или `hsm` (не реализован до prod-HSM).
+- `backup/restore`: `python -m stml.server backup --db ... --trust-dir ... --out ...`.
 
 ## 3. Пример heartbeat
 
