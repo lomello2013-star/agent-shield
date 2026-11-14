@@ -55,6 +55,8 @@ def test_health_dashboard_and_enrol(tmp_path):
         assert _request(port, "GET", "/health")[0] == 200
         with urlopen(f"http://127.0.0.1:{port}/", timeout=5) as resp:
             assert "STML Console" in resp.read().decode()
+        with urlopen(f"http://127.0.0.1:{port}/ui/", timeout=5) as resp:
+            assert "Approvals" in resp.read().decode()
         code, body = _request(port, "GET", "/v0/agents", token="viewer")
         assert code == 200 and len(body["agents"]) == 1
         assert body["agents"][0]["id"] == agent_id

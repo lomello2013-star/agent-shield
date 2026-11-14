@@ -2,6 +2,8 @@
 
 > Дизайн-спецификация для Tauri-GUI (основной) и TUI (аварийный). Полный
 > интерактивный макет — [docs/stml-gui-mock.html](stml-gui-mock.html).
+> **Реализация S3:** [stml/gui/index.html](../stml/gui/index.html) — web SPA на `/ui/`
+> (Dashboard, Fleet, Policies, Approvals, Audit, Settings). Tauri-обёртка — позже.
 
 ## 1. Принципы
 

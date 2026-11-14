@@ -87,17 +87,18 @@
 
 ---
 
-## Фаза 3 — Терминал GUI (S3)
+## Фаза 3 — Терминал GUI (S3) `[partial: web GUI]`
 
-1. Tauri mTLS (`reqwest` + client cert + DPAPI) — по результату спайка S0.1b.
-2. Экраны: Dashboard, Fleet, Agents, Policies, Rollout, Trust/Approvals, Reports, Incidents, Learning, Modules, Ops, Settings (API).
-3. Включение/выключение API (deny-by-default).
-4. Управление модулями (вкл/выкл, версии, права, изоляция).
-5. Dry-run по умолчанию; GUI kill-switch (RBAC, Admin, подтверждение); human-approval из GUI.
-6. RBAC — одна матрица «роль × ресурс × GUI/API»; SoD.
-7. GUI не хранит секретов (только mTLS-сертификат в OS-хранилище).
-8. TUI; тренинг оператора (`docs/operator-training.md`); S18/S19.
-- **Гейт S3:** оператор видит флот, dry-run, раскатка, откат, approve; GUI kill-switch; RBAC+SoD; TUI; GUI без секретов; допуск к production — после тренинга.
+1. [~] Tauri mTLS — не сделано; web GUI работает same-origin, mTLS — S2 prod/S3 Tauri.
+2. [x] Экраны: Dashboard, Fleet, Policies, Approvals, Audit, Settings (`/ui/`); Reports/Incidents/Learning/Modules/Ops — следующие.
+3. [~] Включение/выключение API — серверные токены; UI Settings для токенов.
+4. [ ] Управление модулями.
+5. [x] Dry-run + GUI isolate/resume + approve/deny (RBAC, SoD).
+6. [x] RBAC в UI: viewer/admin/approver токены; SoD проверен API.
+7. [x] GUI не хранит секретов: токены только в `sessionStorage`, не в файлах.
+8. [ ] TUI; тренинг оператора; S18/S19.
+- **Гейт S3:** флот, dry-run, rollout, approve, isolate — в web GUI; **остаток:** Tauri-обёртка, Reports/Incidents/Learning/Modules/Ops, тренинг, S18/S19.
+- **Реализация:** `stml/gui/index.html` (vanilla JS, dark SOC), сервер отдаёт `/ui/`.
 
 ---
 

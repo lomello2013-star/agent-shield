@@ -20,7 +20,8 @@ Replay: `nonce` одноразовый (`nonces`), `sent_at` ±300 с.
 | Метод | Путь | Назначение |
 |---|---|---|
 | GET | `/health` | живость |
-| GET | `/` | read-only Dashboard (ввод viewer token) |
+| GET | `/` | legacy read-only Dashboard |
+| GET | `/ui/` | S3 web GUI (Dashboard/Fleet/Policies/Approvals/Audit/Settings) |
 | POST | `/v0/enrol` | одноразовый token + pubkey → `agent_id` |
 | POST | `/v0/heartbeat` | подписанный `Heartbeat`; ответ `{ok, isolated}` |
 | POST | `/v0/inventory` | подписанный `Inventory` |

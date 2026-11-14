@@ -55,6 +55,14 @@
 | D-36 | Backup | **zip: SQLite snapshot + trust dir** | только БД | ключи нужны для восстановления |
 | D-37 | Key classes | **root/policy/model/driver/connector** | один ключ | разные классы — разные права |
 
+## S3 (GUI)
+
+| # | Решение | Принято | Альтернативы | Почему |
+|---|---|---|---|---|
+| D-38 | GUI S3 | **web SPA (vanilla JS) на `/ui/`** | Tauri сразу | проверка UX/API без toolchain; Tauri — обёртка позже |
+| D-39 | Токены в GUI | **sessionStorage, не файлы** | OS keychain | S3; mTLS/keychain — Tauri |
+| D-40 | RBAC в UI | **role-specific токены, кнопки скрываются** | серые кнопки | SoD визуально |
+
 ## Открытые (предложены, не приняты)
 
 | # | Вопрос | Варианты | Рекомендация |

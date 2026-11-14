@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>STML Console</title>
+<style>
+  :root{--bg0:#0b0f17;--bg1:#111827;--bg2:#1a2234;--bd:#243044;--tx:#e5e9f0;--dim:#8b98a9;--acc:#3b82f6;--ok:#22c55e;--warn:#f59e0b;--bad:#ef4444}
+  *{box-sizing:border-box} body{margin:0;background:var(--bg0);color:var(--tx);font:14px/1.45 Inter,Segoe UI,system-ui,sans-serif}
+  header{display:flex;align-items:center;gap:14px;padding:12px 18px;background:var(--bg1);border-bottom:1px solid var(--bd)}
+  h1{font-size:16px;margin:0;color:var(--acc);letter-spacing:.4px} .grow{flex:1}
+  nav{display:flex;gap:4px;flex-wrap:wrap;padding:8px 18px;background:var(--bg1);border-bottom:1px solid var(--bd)}
+  nav button{background:transparent;border:0;color:var(--dim);padding:7px 12px;border-radius:6px;cursor:pointer;font-size:13px}
+  nav button.active{background:var(--bg2);color:var(--tx)}
+  main{padding:18px;max-width:1400px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+  .card{background:var(--bg1);border:1px solid var(--bd);border-radius:8px;padding:14px}
+  .card .k{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.5px} .card .v{font-size:26px;font-weight:700;margin-top:4px}
+  .panel{background:var(--bg1);border:1px solid var(--bd);border-radius:8px;margin-bottom:16px;overflow:hidden}
+  .panel h2{font-size:13px;margin:0;padding:12px 14px;border-bottom:1px solid var(--bd);color:var(--dim);font-weight:500}
+  table{width:100%;border-collapse:collapse} th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--bd);font-size:13px}
+  th{color:var(--dim);font-weight:500;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+  .mono{font-family:Consolas,monospace;font-size:12px} .ok{color:var(--ok)} .warn{color:var(--warn)} .bad{color:var(--bad)}
+  .badge{padding:2px 8px;border-radius:20px;font-size:11px;background:var(--bg2)}
+  .b-ok{color:var(--ok)} .b-warn{color:var(--warn)} .b-bad{color:var(--bad)}
+  input,select{background:var(--bg2);border:1px solid var(--bd);color:var(--tx);padding:7px 9px;border-radius:6px;font-size:13px}
+  button.act{background:var(--acc);border:0;color:#fff;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:12px}
+  button.ghost{background:var(--bg2);border:1px solid var(--bd);color:var(--tx);padding:5px 10px;border-radius:6px;cursor:pointer;font-size:12px}
+  button.danger{background:var(--bad);border:0;color:#fff;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:12px}
+  .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:12px 14px}
+  .muted{color:var(--dim);font-size:12px} .err{color:var(--bad);white-space:pre-wrap;font-size:12px;padding:8px 14px}
+  .hidden{display:none}
+</style>
+</head>
+<body>
+<header>
+  <h1>STML Console</h1>
+  <span class="muted" id="who">read-only · tokens in Settings</span>
+  <span class="grow"></span>
+  <span class="badge" id="health">health: ?</span>
+</header>
+<nav>
+  <button data-tab="dash" class="active">Dashboard</button>
+  <button data-tab="fleet">Fleet</button>
+  <button data-tab="policies">Policies</button>
+  <button data-tab="approvals">Approvals</button>
+  <button data-tab="audit">Audit</button>
+  <button data-tab="settings">Settings</button>
+</nav>
+<main>
+  <section id="dash">
+    <div class="cards">
+      <div class="card"><div class="k">Agents</div><div class="v" id="c-agents">–</div></div>
+      <div class="card"><div class="k">Healthy</div><div class="v ok" id="c-healthy">–</div></div>
+      <div class="card"><div class="k">Degraded/Offline</div><div class="v warn" id="c-bad">–</div></div>
+      <div class="card"><div class="k">Pending approvals</div><div class="v" id="c-appr">–</div></div>
+      <div class="card"><div class="k">Policies</div><div class="v" id="c-pol">–</div></div>
+    </div>
+    <div class="panel"><h2>Recent agents</h2><table><thead><tr><th>Host</th><th>OS</th><th>Status</th><th>Last seen</th><th>Policy</th></tr></thead><tbody id="dash-rows"></tbody></table></div>
+  </section>
+
+  <section id="fleet" class="hidden">
+    <div class="panel"><h2>Fleet</h2><table><thead><tr><th>Host</th><th>OS / Arch</th><th>Status</th><th>Last seen</th><th>Policy</th><th>Isolated</th><th>Action</th></tr></thead><tbody id="fleet-rows"></tbody></table></div>
+  </section>
+
+  <section id="policies" class="hidden">
+    <div class="panel"><h2>Policies</h2><table><thead><tr><th>Policy</th><th>Version</th><th>Channel</th><th>Key</th><th>Created</th></tr></thead><tbody id="pol-rows"></tbody></table></div>
+    <div class="panel"><h2>Dry-run / rollout</h2>
+      <div class="row"><input id="p-id" placeholder="policy_id" size="14"><input id="p-ver" placeholder="version" size="10"><input id="p-pct" type="number" value="50" min="0" max="100" style="width:80px"><button class="act" id="dry">Dry-run</button><button class="act" id="roll">Rollout</button></div>
+      <div class="err" id="pol-msg"></div>
+    </div>
+  </section>
+
+  <section id="approvals" class="hidden">
+    <div class="panel"><h2>Approvals</h2><table><thead><tr><th>#</th><th>Kind</th><th>Target</th><th>Status</th><th>Decided by</th><th>Actions</th></tr></thead><tbody id="appr-rows"></tbody></table></div>
+    <div class="muted" style="padding:0 4px">Approve/deny требует approver token (SoD).</div>
+  </section>
+
+  <section id="audit" class="hidden">
+    <div class="panel"><h2>Audit</h2><div class="row"><button class="act" id="verify">Verify chain</button><a class="ghost" href="/v0/audit/export?format=json" target="_blank">Export JSON</a><a class="ghost" href="/v0/audit/export?format=cef" target="_blank">Export CEF</a></div><div class="err" id="audit-msg"></div></div>
+  </section>
+
+  <section id="settings" class="hidden">
+    <div class="panel"><h2>Tokens (sessionStorage only)</h2>
+      <div class="row"><input id="t-viewer" placeholder="viewer token" size="40"><input id="t-admin" placeholder="admin token" size="40"><input id="t-approver" placeholder="approver token" size="40"><button class="act" id="save">Save</button></div>
+      <div class="muted" style="padding:0 14px 12px">Токены не отправляются на сервер и не хранятся в файлах; только sessionStorage вкладки.</div>
+    </div>
+  </section>
+</main>
+<script>
+const $=s=>document.querySelector(s);
+const state={tab:'dash'};
+function tokens(){return{viewer:sessionStorage.getItem('stml.viewer')||'',admin:sessionStorage.getItem('stml.admin')||'',approver:sessionStorage.getItem('stml.approver')||''}}
+function tokenFor(role){const t=tokens();return role==='admin'?t.admin:role==='approver'?t.approver:t.viewer}
+async function api(path,opt={},role='viewer'){
+  const t=tokenFor(role); const headers=Object.assign({'Content-Type':'application/json'},opt.headers||{});
+  if(t) headers.Authorization='Bearer '+t;
+  const r=await fetch(path,Object.assign({},opt,{headers}));
+  const text=await r.text(); let body={}; try{body=text?JSON.parse(text):{}}catch(e){body={raw:text}}
+  if(!r.ok) throw new Error((body.error||('HTTP '+r.status)));
+  return body;
+}
+function statusClass(s){return s==='healthy'?'ok':s==='degraded'?'warn':'bad'}
+function esc(v){return String(v??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function ago(ts){if(!ts)return '—';const d=Math.max(0,Date.now()/1000-ts);return d<60?Math.round(d)+'s':d<3600?Math.round(d/60)+'m':Math.round(d/3600)+'h'}
+function show(tab){state.tab=tab;document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));document.querySelectorAll('main section').forEach(s=>s.classList.toggle('hidden',s.id!==tab));load()}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>show(b.dataset.tab));
+async function load(){
+  try{
+    if(state.tab==='dash'||state.tab==='fleet'){
+      const d=await api('/v0/agents');const a=d.agents||[];
+      if(state.tab==='dash'){
+        $('#c-agents').textContent=a.length;$('#c-healthy').textContent=a.filter(x=>x.status==='healthy').length;
+        $('#c-bad').textContent=a.filter(x=>x.status!=='healthy').length;
+        $('#dash-rows').innerHTML=a.slice(0,8).map(x=>`<tr><td>${esc(x.hostname)}</td><td>${esc(x.os)}</td><td class="${statusClass(x.status)}">${esc(x.status)}</td><td>${ago(x.last_seen)}</td><td class="mono">${esc(x.policy_version||'—')}</td></tr>`).join('');
+        const p=await api('/v0/policies');$('#c-pol').textContent=(p.policies||[]).length;
+        const ap=await api('/v0/approvals');$('#c-appr').textContent=(ap.approvals||[]).filter(x=>x.status==='pending').length;
+      }else{
+        $('#fleet-rows').innerHTML=a.map(x=>`<tr><td>${esc(x.hostname)}</td><td>${esc(x.os)} / ${esc(x.arch)}</td><td class="${statusClass(x.status)}">${esc(x.status)}</td><td>${ago(x.last_seen)}</td><td class="mono">${esc(x.policy_version||'—')}</td><td>${x.isolated?'yes':'no'}</td><td><button class="act" onclick="isolate('${x.id}',${!x.isolated})">${x.isolated?'Resume':'Isolate'}</button></td></tr>`).join('');
+      }
+    }
+    if(state.tab==='policies'){
+      const p=await api('/v0/policies');$('#pol-rows').innerHTML=(p.policies||[]).map(x=>`<tr><td>${esc(x.policy_id)}</td><td class="mono">${esc(x.version)}</td><td>${esc(x.channel)}</td><td class="mono">${esc(x.key_id)}</td><td>${new Date(x.created_at*1000).toLocaleString()}</td></tr>`).join('');
+    }
+    if(state.tab==='approvals'){
+      const d=await api('/v0/approvals');$('#appr-rows').innerHTML=(d.approvals||[]).map(x=>`<tr><td>${x.id}</td><td>${esc(x.kind)}</td><td class="mono">${esc(x.target)}</td><td>${esc(x.status)}</td><td>${esc(x.decided_by||'—')}</td><td>${x.status==='pending'?`<button class="act" onclick="decide(${x.id},'approve')">Approve</button> <button class="danger" onclick="decide(${x.id},'deny')">Deny</button>`:''}</td></tr>`).join('');
+    }
+    const h=await api('/health');$('#health').textContent='health: ok';$('#health').className='badge b-ok';
+  }catch(e){$('#health').textContent='health: error';$('#health').className='badge b-bad';console.error(e)}
+}
+async function isolate(id,on){try{await api('/v0/agents/'+id+'/isolate',{method:'POST',body:JSON.stringify({isolated:on})},'admin');load()}catch(e){alert(e.message)}}
+async function decide(id,action){try{await api('/v0/approvals/'+id+'/'+action,{method:'POST',body:'{}'},'approver');load()}catch(e){alert(e.message)}}
+$('#dry').onclick=async()=>{try{const r=await api('/v0/policies/'+$('#p-id').value+'/'+$('#p-ver').value+'/dry-run',{method:'POST',body:'{}'});$('#pol-msg').textContent=JSON.stringify(r,null,2)}catch(e){$('#pol-msg').textContent=e.message}};
+$('#roll').onclick=async()=>{try{const r=await api('/v0/rollouts',{method:'POST',body:JSON.stringify({policy_id:$('#p-id').value,version:$('#p-ver').value,percent:Number($('#p-pct').value)})},'admin');$('#pol-msg').textContent=JSON.stringify(r,null,2)}catch(e){$('#pol-msg').textContent=e.message}};
+$('#verify').onclick=async()=>{try{const r=await api('/v0/audit/verify',{},'admin');$('#audit-msg').textContent='audit ok: '+r.ok}catch(e){$('#audit-msg').textContent=e.message}};
+$('#save').onclick=()=>{sessionStorage.setItem('stml.viewer',$('#t-viewer').value);sessionStorage.setItem('stml.admin',$('#t-admin').value);sessionStorage.setItem('stml.approver',$('#t-approver').value);$('#who').textContent='tokens saved';load()};
+$('#t-viewer').value=tokens().viewer;$('#t-admin').value=tokens().admin;$('#t-approver').value=tokens().approver;
+load();
+</script>
+</body>
+</html>

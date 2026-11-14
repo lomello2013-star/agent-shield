@@ -151,6 +151,22 @@ class Handler(BaseHTTPRequestHandler):
         if parts == ["health"]:
             self._send(200, {"ok": True, "service": "stml", "tenant": self.server.config.tenant_id})
             return
+        if parts and parts[0] == "ui":
+            gui_dir = Path(__file__).resolve().parent.parent / "gui"
+            name = "index.html" if len(parts) == 1 else parts[1]
+            target = (gui_dir / name).resolve()
+            if gui_dir.resolve() not in target.parents or not target.is_file():
+                self._error(404, "not found")
+                return
+            data = target.read_bytes()
+            ctype = "text/html; charset=utf-8" if target.suffix == ".html" else (
+                "text/css" if target.suffix == ".css" else "application/javascript")
+            self.send_response(200)
+            self.send_header("Content-Type", ctype)
+            self.send_header("Content-Length", str(len(data)))
+            self.end_headers()
+            self.wfile.write(data)
+            return
         if parts == [""]:
             page = DASHBOARD.encode()
             self.send_response(200)
