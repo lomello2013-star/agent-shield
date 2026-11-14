@@ -136,6 +136,8 @@
 | D-84 | Rust commands | **команды в heartbeat; подписанный `/v0/commands/ack`; approval confirm ставит команду** | отдельный long-poll | parity с Python |
 | D-85 | Rust GUI | **Rust отдаёт тот же `stml/gui/index.html` на `/` и `/ui/`** | отдельный frontend/Tauri | минимум кода, одна SPA |
 | D-86 | P5 parity | **read-only smoke: health/UI/agents/policies + 401** | полный contract suite | быстрый gate, не заменяет P5 |
+| D-87 | Rust mTLS | **rustls + WebPkiClientVerifier; client cert обязателен по env** | Python ssl wrapper | parity с reference |
+| D-88 | Rust CRL | **CRL enforcement в TLS пока не реализован** | revocation middleware | сертификаты отзываются на уровне CA/прокси |
 
 ## Production acceptance
 

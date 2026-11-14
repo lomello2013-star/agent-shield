@@ -21,8 +21,10 @@
 - **P5 parity smoke:** `scripts/stml_rust_parity.py` → **14 checks**:
   health/UI/agents/policies/approvals/rollouts/models/cases/trust/CRL/audit;
   Python 8080 vs Rust 18097 — `ok:true`, `failures:[]`.
-- **Не проверено:** P4 mTLS/Tauri, полный write-path P5, RLS/HA/backup,
-  timestamp skew, HTTP 201 parity (Rust returns 200).
+- **mTLS проверен:** rustls, client cert required; без клиентского сертификата
+  TLS handshake блокируется; plain HTTP блокируется. Dev-сертификаты ECC P-256.
+- **Не проверено:** CRL enforcement в Rust TLS, Tauri, write-path P5, RLS/HA,
+  timestamp skew, HTTP 201 parity.
 
 ## 1. Что уже есть
 

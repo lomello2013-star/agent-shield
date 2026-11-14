@@ -1,0 +1,19 @@
+{
+  "generated_at": "2026-11-14T12:40:01.645679+00:00",
+  "component": "stml-server-rust",
+  "phase": "P4-mTLS",
+  "status": "verified",
+  "tls": {
+    "server_cert": "ECC P-256 dev",
+    "client_cert_required": true,
+    "client_with_cert": 200,
+    "client_without_cert": "TLSV13_ALERT_CERTIFICATE_REQUIRED",
+    "plain_http": "blocked"
+  },
+  "not_yet": [
+    "CRL enforcement in Rust TLS",
+    "Tauri",
+    "P5 write-path parity"
+  ],
+  "note": "dev certs from stml.server.tls.generate_dev_certs; not production CA/HSM"
+}

@@ -1,18 +1,22 @@
-# stml-server (Rust/axum + PostgreSQL), P3
+# stml-server (Rust/axum + PostgreSQL), P4
 
 > Python reference remains authoritative for the full API. This crate covers
-> P1 (agents/reports), P2 (policies/rollouts/approvals) and P3 (trust/learning).
+> P1/P2/P3 plus command delivery, GUI and mTLS.
 
 ## Build / run
 
 ```powershell
-$env:DATABASE_URL="postgres://stml:stml@127.0.0.1:5432/stml_p3"
+$env:DATABASE_URL="postgres://stml:stml@127.0.0.1:5432/stml_p4"
 $env:STML_BIND="127.0.0.1:8080"
 $env:STML_ADMIN_TOKEN="admin"
 $env:STML_VIEWER_TOKEN="viewer"
 $env:STML_APPROVER_TOKEN="approver"
 $env:STML_POLICY_PUBKEY_FILE="C:\path\policy.pub"
 $env:STML_TRUST_DIR="C:\path\trust"
+$env:STML_TLS_CERT="C:\path\server.pem"
+$env:STML_TLS_KEY="C:\path\server.key"
+$env:STML_TLS_CA="C:\path\ca.pem"
+$env:STML_TLS_REQUIRE_CLIENT="1"
 cargo run
 ```
 
@@ -45,5 +49,6 @@ cargo run
   opt-in telemetry (PII keys stripped), cases, model registry + no-regression + rollback.
 - Commands: `isolate` / approval `confirm` → queue → heartbeat `commands` → signed ack.
 - GUI: `/` and `/ui/` serve `stml/gui/index.html` (17.6 KB) from the Rust binary.
-- **Not yet:** P4 mTLS/Tauri, P5 contract parity, RLS/HA, timestamp skew,
-  HTTP 201 parity, HSM.
+- mTLS: rustls + optional client cert; client without cert blocked at TLS.
+- **Not yet:** Rust CRL enforcement, Tauri, P5 write-path parity, RLS/HA,
+  timestamp skew, HTTP 201 parity, HSM.

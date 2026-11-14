@@ -81,7 +81,8 @@
       "commands": true,
       "p5_parity_smoke": true,
       "gui": true,
-      "p5_parity_checks": 14
+      "p5_parity_checks": 14,
+      "mtls": true
     }
   },
   "agent_control_plane": {

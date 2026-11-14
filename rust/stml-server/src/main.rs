@@ -3,6 +3,8 @@
 //! Implemented: enrolment, signed heartbeat/inventory/reports, agents query.
 //! Not yet: operator auth, policies/approvals, trust/learning parity.
 
+use std::sync::Arc;
+
 use axum::{
     body::Bytes,
     extract::State,
@@ -11,10 +13,13 @@ use axum::{
     routing::{get, post},
     Json, Router,
 };
+use axum_server::tls_rustls::RustlsConfig;
 use base64::{engine::general_purpose::STANDARD, Engine};
 use chrono::Utc;
 use ed25519_dalek::{Signature, SigningKey, VerifyingKey};
 use rand_core::OsRng;
+use rustls::server::WebPkiClientVerifier;
+use rustls::{RootCertStore, ServerConfig};
 use serde_json::{json, Value};
 use sha2::{Digest, Sha256};
 use sqlx::{postgres::PgPoolOptions, types::Json as SqlJson, PgPool, Row};
@@ -1616,6 +1621,51 @@ async fn agents(
     }
 }
 
+async fn serve(app: Router, addr: &str) -> Result<(), Box<dyn std::error::Error>> {
+    let cert_path = std::env::var("STML_TLS_CERT").unwrap_or_default();
+    let key_path = std::env::var("STML_TLS_KEY").unwrap_or_default();
+    if cert_path.is_empty() || key_path.is_empty() {
+        let listener = tokio::net::TcpListener::bind(addr).await?;
+        tracing::info!("stml-server listening on {addr} (plaintext)");
+        axum::serve(listener, app).await?;
+        return Ok(());
+    }
+
+    let mut cert_reader = std::io::BufReader::new(std::fs::File::open(&cert_path)?);
+    let certs: Vec<_> = rustls_pemfile::certs(&mut cert_reader).collect::<Result<_, _>>()?;
+    let mut key_reader = std::io::BufReader::new(std::fs::File::open(&key_path)?);
+    let key =
+        rustls_pemfile::private_key(&mut key_reader)?.ok_or("no private key in STML_TLS_KEY")?;
+    let require_client =
+        std::env::var("STML_TLS_REQUIRE_CLIENT").unwrap_or_else(|_| "1".into()) != "0";
+
+    let _ = rustls::crypto::ring::default_provider().install_default();
+    let builder = ServerConfig::builder();
+    let config = if require_client {
+        let ca_path = std::env::var("STML_TLS_CA").unwrap_or_default();
+        if ca_path.is_empty() {
+            return Err("STML_TLS_CA required when client certs are required".into());
+        }
+        let mut ca_reader = std::io::BufReader::new(std::fs::File::open(ca_path)?);
+        let mut roots = RootCertStore::empty();
+        for cert in rustls_pemfile::certs(&mut ca_reader) {
+            roots.add(cert?)?;
+        }
+        let verifier = WebPkiClientVerifier::builder(Arc::new(roots)).build()?;
+        builder
+            .with_client_cert_verifier(verifier)
+            .with_single_cert(certs, key)?
+    } else {
+        builder.with_no_client_auth().with_single_cert(certs, key)?
+    };
+    let tls = RustlsConfig::from_config(Arc::new(config));
+    tracing::info!("stml-server listening on {addr} (mTLS)");
+    axum_server::bind_rustls(addr.parse()?, tls)
+        .serve(app.into_make_service())
+        .await?;
+    Ok(())
+}
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::fmt()
@@ -1682,8 +1732,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         });
 
     let addr = std::env::var("STML_BIND").unwrap_or_else(|_| "127.0.0.1:8080".to_string());
-    let listener = tokio::net::TcpListener::bind(&addr).await?;
-    tracing::info!("stml-server listening on {addr}");
-    axum::serve(listener, app).await?;
+    serve(app, &addr).await?;
     Ok(())
 }
