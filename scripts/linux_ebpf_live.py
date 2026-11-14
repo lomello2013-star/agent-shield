@@ -26,27 +26,36 @@ def main(path: str) -> int:
             continue
         if "pid" not in item:
             continue
-        if "filename" in item:
-            category, action = "process.start", "execve"
-            exe = item["filename"]
-            filename = None
-        elif "path" in item:
-            category, action = "file.read", "open"
-            exe = item.get("comm", "")
-            filename = item["path"]
-        else:
-            continue
         raw = {
-            "category": category,
-            "action": action,
             "pid": item["pid"],
             "ppid": item.get("ppid"),
             "comm": item.get("comm", ""),
-            "exe": exe,
-            "cmdline": exe,
         }
-        if filename is not None:
-            raw["filename"] = filename
+        if "filename" in item:
+            raw.update(category="process.start", action="execve",
+                       exe=item["filename"], cmdline=item["filename"])
+        elif "anon" in item:
+            raw.update(category="memory.access", action="mprotect_exec",
+                       exe=item.get("exe", ""), cmdline=item.get("exe", ""),
+                       anon=item["anon"], len=item.get("len"))
+        elif "writable" in item:
+            raw.update(category="memory.access", action="proc_mem",
+                       exe=item.get("comm", ""), cmdline=item.get("comm", ""),
+                       writable=item["writable"])
+        elif "request" in item:
+            raw.update(category="memory.access", action="ptrace",
+                       exe=item.get("comm", ""), cmdline=item.get("comm", ""),
+                       request=item["request"], target=item.get("target"))
+        elif "bytes" in item:
+            raw.update(category="memory.access", action="vm_write",
+                       exe=item.get("exe", ""), cmdline=item.get("exe", ""),
+                       bytes=item["bytes"], target=item.get("target"))
+        elif "path" in item:
+            raw.update(category="file.read", action="open",
+                       exe=item.get("comm", ""), cmdline=item.get("comm", ""),
+                       filename=item["path"])
+        else:
+            continue
         try:
             event = normalizer.normalize("linux.ebpf", raw)
         except Exception as exc:  # noqa: BLE001 - diagnostic path

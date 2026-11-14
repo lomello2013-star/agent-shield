@@ -1,25 +1,28 @@
 {
-  "mode": "exec+cred_read",
-  "source": "eBPF CO-RE stream (exec_path + file_open_lsm), live",
+  "mode": "exec+cred+mprotect+procmem+ptrace+mem",
+  "source": "eBPF CO-RE stream (exec_path, file_open_lsm, mprotect_exec, proc_mem, ptrace_write, mem_write), live",
   "vm": "AIDF-Linux",
   "kernel": "6.8.0-149-generic",
   "lsm": "lockdown,capability,landlock,yama,apparmor,bpf",
-  "exec": {
-    "events": 3,
-    "verdicts": ["LINUX-EXEC-TMP-101"],
-    "benign_control": "cp -> /bin/true: no verdict",
-    "scenario": "/tmp/aidf_exec_live executed"
-  },
-  "cred_read": {
-    "events": 2,
-    "verdicts": ["LINUX-CRED-READ-104"],
-    "actors": ["cat"],
-    "excluded_auth_daemons": ["sshd"],
-    "scenario": "cat /etc/shadow"
-  },
+  "live_scenarios": [
+    {"id": "linux-exec-tmp", "rule": "LINUX-EXEC-TMP-101", "events": 3, "verdicts": 1,
+     "control": "cp -> /bin/true: no verdict"},
+    {"id": "linux-cred-read", "rule": "LINUX-CRED-READ-104", "events": 2, "verdicts": 1,
+     "excluded_auth_daemons": ["sshd"], "control": "cat /etc/shadow"},
+    {"id": "linux-mprotect-exec", "rule": "LINUX-EXEC-MEM-107", "events": 5, "verdicts": 5,
+     "control": "mprotect_helper adds PROT_EXEC to anonymous pages"},
+    {"id": "linux-proc-mem", "rule": "LINUX-INJECT-106", "events": 5, "verdicts": 5,
+     "control": "procmem_helper writes /proc/<pid>/mem"},
+    {"id": "linux-ptrace", "rule": "LINUX-INJECT-106", "events": 5, "verdicts": 5,
+     "control": "ptrace_helper PTRACE_POKEDATA"},
+    {"id": "linux-mem-write", "rule": "LINUX-INJECT-106", "events": 5, "verdicts": 5,
+     "control": "memwrite_helper process_vm_writev"}
+  ],
+  "live_count": 6,
   "limitations": [
-    "2 of 20 Linux scenarios are live; production collector (loader->pipeline) is not integrated",
+    "6 of 20 Linux scenarios are live",
     "net cgroup attach returns ready:true but 0 events (cgroup placement EINVAL)",
+    "production collector (loader->pipeline service) is not integrated",
     "fapolicyd was stopped for BPF loader tests and restored afterwards"
   ]
 }

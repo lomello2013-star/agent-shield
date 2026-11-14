@@ -203,6 +203,27 @@ def test_linux_cred_read_allows_auth_daemons():
     assert "LINUX-CRED-READ-104" not in [v.rule_id for v in engine.evaluate(cred("sshd"))]
 
 
+def test_linux_mprotect_and_procmem_rules():
+    import pathlib
+
+    from core.rules import RuleEngine, load_rules
+
+    rules = str(pathlib.Path(__file__).resolve().parents[1] / "rules" / "base.json")
+    engine = RuleEngine(load_rules([rules]))
+    mprot = normalizer().normalize("linux.ebpf", {
+        "category": "memory.access", "action": "mprotect_exec",
+        "pid": 10, "ppid": 1, "comm": "helper", "exe": "/tmp/helper",
+        "anon": 1, "len": 4096,
+    })
+    assert "LINUX-EXEC-MEM-107" in [v.rule_id for v in engine.evaluate(mprot)]
+    procmem = normalizer().normalize("linux.ebpf", {
+        "category": "memory.access", "action": "proc_mem",
+        "pid": 11, "ppid": 1, "comm": "helper", "exe": "helper",
+        "writable": 1,
+    })
+    assert "LINUX-INJECT-106" in [v.rule_id for v in engine.evaluate(procmem)]
+
+
 def test_linux_ebpf_net_connect_maps_object_port():
     import pathlib
 

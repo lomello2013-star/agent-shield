@@ -129,8 +129,18 @@ alert-правило для generic pending (D-001).
 cred-read: `cat /etc/shadow` → **`LINUX-CRED-READ-104`**, `sshd` исключён
 allowlist (иначе легитимная аутентификация давала FP).
 
-**Итого Linux live:** 2 сценария — exec (`101`) и cred-read (`104`);
-`artifacts/linux_ebpf_live.json`.
+**Итого Linux live: 6 сценариев** — exec (`101`), cred-read (`104`),
+mprotect (`107`), procmem/ptrace/memwrite (`106`); все прошли через
+`linux.ebpf`-адаптер и правила, `artifacts/linux_ebpf_live.json`.
+
+| Сценарий | События | Вердикт |
+|---|---|---|
+| exec `/tmp/...` | 3 (вкл. benign `/bin/true`) | `LINUX-EXEC-TMP-101` ×1 |
+| cred read `/etc/shadow` | 2 (`cat`, `sshd`) | `LINUX-CRED-READ-104` ×1 (sshd исключён) |
+| mprotect RW→RX anon | 5 | `LINUX-EXEC-MEM-107` ×5 |
+| `/proc/<pid>/mem` write | 5 | `LINUX-INJECT-106` ×5 |
+| ptrace POKEDATA | 5 | `LINUX-INJECT-106` ×5 |
+| process_vm_writev | 5 | `LINUX-INJECT-106` ×5 |
 
 **Net live:** `stream_net` (cgroup/connect) даёт `ready:true`, но **0 событий**;
 `echo $$ > cgroup.procs` → `EINVAL`. Адаптер `net.connect → object.port` уже

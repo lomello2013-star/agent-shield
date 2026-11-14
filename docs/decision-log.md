@@ -76,9 +76,9 @@ alert-правилом, а не молчанием.
 **Рекомендация:** **A**, при блокере — **B** с явной пометкой «fixture-level».
 **Выбор:** A (рекомендация агента), fallback B только при доказанном блокере.
 **Обоснование:** пользователь просил live; fixture-level не должен подменять его.
-**Статус:** A partially: live exec → product rule проверен (3 события, 1 вердикт
-`LINUX-EXEC-TMP-101`, benign без вердикта); LSM-сенсоры не работают без
-`lsm=...,bpf`; production-коллектора loader→pipeline и 20/20 live — open.
+**Статус:** A: **6/20 live** — exec (`101`), cred-read (`104`), mprotect (`107`),
+procmem/ptrace/memwrite (`106`); LSM `bpf` включён. Net cgroup, production-
+коллектор и оставшиеся 14 сценариев — open.
 
 ---
 
@@ -130,8 +130,8 @@ alert-правилом, а не молчанием.
 **Рекомендация:** **C**.
 **Выбор:** C (рекомендация агента).
 **Обоснование:** нельзя выдавать 467 за текущее; нельзя и скрывать stml.
-**Статус:** closed: STML зелёный, `pytest` = **529**, `run_all` **29/29**,
-`status.md` = 529; readiness/dev-report/release синхронизированы.
+**Статус:** closed: STML зелёный, `pytest` = **530**, `run_all` **29/29**,
+`status.md` = 530; readiness/dev-report/release синхронизированы.
 
 ---
 

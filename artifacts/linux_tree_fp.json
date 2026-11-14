@@ -5,11 +5,11 @@
   },
   "submitted": {
     "linux.memory": 5,
-    "linux.mprotect": 11
+    "linux.mprotect": 10
   },
   "adapter_errors": [],
   "legit_supervisor_plus_jit": {
-    "helper": "{\"writes\":5,\"parent\":1509}\n{\"execs\":5,\"child\":1510}",
+    "helper": "{\"writes\":5,\"parent\":1648}\n{\"execs\":5,\"child\":1649}",
     "tree_alerts": 1,
     "pid_alerts": 0
   },

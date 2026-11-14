@@ -3286,6 +3286,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 15:25] Linux live 6/20: exec/cred/mprotect/procmem/ptrace/mem [experiment]
+
+**Действие**: после включения bpf LSM собраны/прогнаны live-сенсоры: `exec_path` (101), `file_open_lsm` (104), `mprotect_exec` (107), `proc_mem`/`ptrace_write`/`mem_write` (106). Добавлены маппинги `anon/writable/request/target/bytes` в `linux.ebpf`-адаптер и evaluator; mprotect — 5/5, procmem/ptrace/mem — по 5/5 вердиктов; cred-read — 1 (sshd allowlist); exec — 1 (benign без вердикта).
+**Числа**: Linux live **6/20**; mprotect 5/5, procmem 5/5, ptrace 5/5, mem 5/5, cred 1/2, exec 1/1; pytest **530**; `run_all` **29/29**.
+**Вердикт**: 6 live-сценариев проходят через product-правила; net cgroup и оставшиеся 14 сценариев — open.
+**Проверка**: `artifacts/linux_ebpf_live.json`; eval JSONL; `pytest` 530; `run_all` 29/29.
+**Статус**: verified (6 live); open (net cgroup, 14/20, production collector)
+**Actor**: agent
+**Run_id**: linux-live-6-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,
