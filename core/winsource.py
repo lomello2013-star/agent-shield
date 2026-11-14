@@ -146,6 +146,7 @@ DEFENDER_SUSPICIOUS_TOKENS: tuple[str, ...] = (
     "disablerealtimemonitoring", "disableioavprotection", "disablebehaviormonitoring",
     "disablescriptscanning", "disableantispyware", "disableantivirus",
     "exclusionpath", "exclusionextension", "exclusionprocess",
+    "exclusions\\paths", "exclusions\\processes", "exclusions\\extensions",
     "puaprotection", "tamperprotection", "disabletamperprotection",
     "enablecontrolledfolderaccess", "disablecoreservice",
 )

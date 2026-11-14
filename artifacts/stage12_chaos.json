@@ -5,18 +5,19 @@
   "sources": {
     "system_events": 80,
     "defender_events": 80,
-    "verdicts_after_sources": 1,
+    "verdicts_after_sources": 2,
     "rule_hits": {
-      "WIN-SERVICE-CREATE-007": 1
+      "WIN-SERVICE-CREATE-007": 1,
+      "WIN-DEFENDER-TAMPER-009": 1
     },
     "tick_ms_p50": 0.058,
-    "tick_ms_p95": 0.083,
+    "tick_ms_p95": 0.068,
     "ingest_received": 160,
     "lost": 0
   },
   "R2_silent_source": {
     "timeout_s": 0.2,
-    "detection_s": 1.513,
+    "detection_s": 1.504,
     "detected": true,
     "note": "silence measured from a fresh beat of all sources"
   },
@@ -36,7 +37,7 @@
   },
   "R10_tamper": {
     "audit_chain_ok": false,
-    "detect_ms": 0.183
+    "detect_ms": 0.225
   },
   "R6_update": {
     "active_before_failed_update": "B",
@@ -47,7 +48,7 @@
   },
   "R3_watchdog": {
     "restarted": true,
-    "mttr_ms": 11.5,
+    "mttr_ms": 11.6,
     "target_ms": 30000,
     "within_target": true
   },
@@ -57,9 +58,9 @@
   "final": {
     "lost": 0,
     "ledger_ok": true,
-    "verdicts": 1,
-    "alerts": 1,
-    "containments": 1,
+    "verdicts": 2,
+    "alerts": 2,
+    "containments": 2,
     "integrity_ok": true
   }
 }

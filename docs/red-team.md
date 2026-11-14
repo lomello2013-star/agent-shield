@@ -84,19 +84,22 @@ vssadmin, local user) помечены catalog-only.
 |---|---|
 | Выполнено / пропущено | **15 / 5** |
 | Атакующих сценариев | 11 |
-| Обнаружено | **8 / 11** |
-| Holdout (5) | **3 / 5** (WIN-04, WIN-06, WIN-16) |
+| Обнаружено | **9 / 11** |
+| Holdout (5) | **4 / 5** (WIN-04, WIN-06, WIN-08, WIN-16) |
 | Benign-контроль | 4, **0 FP** |
 
-**Обнаружены (8):** service create (007), temp exec (001), encoded PowerShell
-(002), temp cmd (001), **scheduled task (006 — после 4698)**, **Run key (005 —
-после Sysmon registry)**, **WMI subscription (018)**, masquerade (011).
+**Обнаружены (9):** service create (007), temp exec (001), encoded PowerShell
+(002), temp cmd (001), **scheduled task (006)**, **Run key (005)**,
+**Defender exclusion (009)**, **WMI subscription (018)**, masquerade (011).
 **Пропущены (честно):**
 - Downloads exec (WIN-17) — правило 016 требует `integrity.verified=false`;
   `calc.exe` подписан, поэтому это корректный non-match, а не пропуск;
-- service start (WIN-18) — 7036 не даёт нового 7045;
-- Defender exclusion (WIN-08) — 5007 не пришёл; это **реальный miss**, а не
-  запоздавший RUNKEY (атрибуция теперь по `event_ts`).
+- service start (WIN-18) — 7036 не даёт нового 7045.
+
+**Defender exclusion (WIN-08) закрыт:** 5007 писался, но
+`classify_defender_change` не видел ключ `Exclusions\Paths` (был только
+`exclusionpath`) → классифицировал как benign. Добавлены
+`exclusions\paths|processes|extensions`; live `WIN-DEFENDER-TAMPER-009` = 7.
 
 **FP 010 устранён:** источник — `powershell.exe → CreateRemoteThread` в
 `<unknown process>` (PS Direct). Правило 010 теперь требует
@@ -109,8 +112,9 @@ programdata`; кроме того, атрибуция идёт по `event_ts` �
 Общая детекция service install без suspicious-пути теперь **не** даёт high —
 alert-правило для generic pending (D-001).
 
-Это не «5/11 эффективности»: каталог показывает **source gaps**, а не только
-качество правил. Для E1–E6 нужны реальные образцы и полный 20/ОС прогон.
+Это не «9/11 эффективности»: каталог показывает **source gaps**, а не только
+качество правил; два пропуска объяснены (signed non-match и 7036). Для E1–E6
+нужны реальные образцы и полный 20/ОС прогон.
 
 ### Linux
 
@@ -138,7 +142,7 @@ clang/gcc (`EPERM`), на сборку останавливался и возв�
 | Ложный `stalled` | heartbeat на успешный poll (даже 0 записей) | fixed |
 
 `win.sysmon` подписан на 1/8/10/11/12/13/14/19/20/21; `win.security` —
-4698/4720/4688/1102. После закрытия 4698/registry/WMI и перехода на audit-
-атрибуцию 20-срез: **8/11**, holdout **3/5**, **0 FP**; FP 010 устранён; WIN-08 —
-реальный miss (5007).
+4698/4720/4688/1102. После закрытия 4698/registry/WMI/Defender-классификации и
+audit-атрибуции 20-срез: **9/11**, holdout **4/5**, **0 FP**; FP 010 устранён;
+оба пропуска объяснены (signed non-match, 7036).
 

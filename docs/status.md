@@ -1,19 +1,19 @@
 # Статус проекта «ИИ-защитник» (user-mode)
 
-> Сгенерировано `scripts/run_all.py` — 2026-11-14 11:23 UTC. Не редактировать вручную.
+> Сгенерировано `scripts/run_all.py` — 2026-11-14 11:39 UTC. Не редактировать вручную.
 
 ## Регрессионный прогон
 
 | Шаг | Результат | Детали |
 |---|---|---|
-| tests | ok | 525 passed in 25.89s |
+| tests | ok | 527 passed in 46.48s |
 | rules_and_coverage | ok | rules=28 lint=0 detection=100.0% prevention=100.0% |
 | schema_drift | ok | in sync |
 | immutable_policy | ok | fingerprint=d8ae913401ea contract=ok |
 | artifacts | ok | present=39/39 |
 | windows_system_e2e | ok | events=60 verdicts=1 |
-| windows_defender_e2e | ok | events=200 verdicts=1 before_classification=200 |
-| windows_chaos | ok | final_verdicts=1 loss=0 |
+| windows_defender_e2e | ok | events=200 verdicts=29 before_classification=200 |
+| windows_chaos | ok | final_verdicts=2 loss=0 |
 | linux_exec_e2e | ok | exit=0 |
 | linux_lsm_e2e | ok | exit=0 |
 | linux_net_e2e | ok | exit=0 |
@@ -28,11 +28,11 @@
 | gen_docs | ok | exit=0 bytes=540 |
 | f04_r2_margin | ok | exit=0 bytes=321 |
 | f02_f03_signal_levels | ok | exit=0 bytes=2873 |
-| f01_confidence_gap | ok | exit=0 bytes=506 stderr=[0;93m2026-11-14 14:23:33.1238629 [W:onnxruntime:, execution_frame.cc:913 onnxruntime::ExecutionFrame::VerifyOutputSizes |
+| f01_confidence_gap | ok | exit=0 bytes=506 stderr=[0;93m2026-11-14 14:39:39.0923292 [W:onnxruntime:, execution_frame.cc:913 onnxruntime::ExecutionFrame::VerifyOutputSizes |
 | f09_ppv_target | ok | exit=0 bytes=1601 |
 | f12_behavioral | ok | exit=0 bytes=2623 |
 | f13_scenarios | ok | exit=0 bytes=2502 |
-| supervisor_measure | ok | exit=0 bytes=1134 |
+| supervisor_measure | ok | exit=0 bytes=1133 |
 | final_summary | ok | exit=0 bytes=7266 |
 | docs_consistency | ok | exit=0 bytes=1345 |
 
@@ -51,11 +51,11 @@
 | Правил / покрытие обнаружения | 28 / 100.0% | stage5 |
 | Покрытие предотвращения | 100.0% | stage5 |
 | IPC health p95 | 1.884 мс | ipc |
-| Linux exec: ядро→вердикт p95 | 1.598 мс | linux_e2e |
+| Linux exec: ядро→вердикт p95 | 0.928 мс | linux_e2e |
 | Linux LSM: чтений→вердиктов | 200 / 200 | linux_lsm |
 | Linux net: C2-портов→вердиктов | 200 / 200 | linux_net |
 | Windows System: событий→вердиктов | 60 / 1 | windows_e2e |
-| Windows Defender: событий→вердиктов | 200 / 1 | windows_defender |
+| Windows Defender: событий→вердиктов | 200 / 29 | windows_defender |
 | Soak: событий / потерь | 35653 / 0 | soak |
 | Soak: RSS за последние 60 с | 0.0 % | soak |
 | Открытый дефект: длинные прогоны | **0xC0000005** (нативный краш), причина не найдена — R1/R4 не подтверждены (dev-report §14) | f11 |
@@ -92,97 +92,99 @@
 | F09: PPV на пороге алерта | 0.5642 при FPR 0.00052 (TPR 0.67242) | f09 |
 | F12: поведенческий TPR / benign-алерты | 1.0 / 0 | f12 |
 | F13: сценарии E1–E5 (detect/prevent) | 9 / 9 из 10 | f13 |
-| Супервизор: перезапуск после kill | медиана 293.8 мс, цепочка True (12 записей) | supervisor |
+| Супервизор: перезапуск после kill | медиана 569.2 мс, цепочка True (12 записей) | supervisor |
 | Доступность под супервизором | 100.0 % за 3600.2 с, перезапусков 0 | soak_supervised |
 
 ## Свежесть артефактов
 
 | Артефакт | Изменён (UTC) | Возраст, мин | В этом прогоне |
 |---|---|---|---|
-| audit_bench.json | 12:36 | 2807 | нет (из прошлого прогона) |
-| calibration_report.json | 17:48 | 2495 | нет (из прошлого прогона) |
-| challenger_report.json | 17:58 | 2485 | нет (из прошлого прогона) |
-| chaos_report.json | 12:34 | 2809 | нет (из прошлого прогона) |
-| devlog_audit.json | 11:23 | 0 | да |
-| disagreement_report.json | 13:47 | 2736 | нет (из прошлого прогона) |
-| docker_matrix.json | 12:53 | 2790 | нет (из прошлого прогона) |
-| docs_consistency.json | 11:23 | 0 | да |
-| ensemble_report.json | 13:49 | 2734 | нет (из прошлого прогона) |
-| etwti_t1055.json | 18:33 | 1010 | нет (из прошлого прогона) |
-| f01_confidence.json | 11:23 | 0 | да |
-| f02_f03_measure.json | 11:23 | 0 | да |
-| f04_r2_margin.json | 11:23 | 0 | да |
-| f08_tail.json | 18:59 | 2424 | нет (из прошлого прогона) |
-| f09_ppv_target.json | 11:23 | 0 | да |
-| f11_bisect.json | 19:40 | 2384 | нет (из прошлого прогона) |
-| f11_controls.json | 00:46 | 2077 | нет (из прошлого прогона) |
-| f11_health_livelock.json | 19:11 | 2412 | нет (из прошлого прогона) |
-| f11_health_probe_1500.json | 19:11 | 2412 | нет (из прошлого прогона) |
-| f11_health_probe_summary.json | 19:11 | 2412 | нет (из прошлого прогона) |
-| f11_pydantic_focus.json | 22:56 | 2187 | нет (из прошлого прогона) |
-| f11_pydantic_stress.json | 21:07 | 2296 | нет (из прошлого прогона) |
-| f11_repeat.json | 00:10 | 2114 | нет (из прошлого прогона) |
-| f12_behavioral.json | 11:23 | 0 | да |
-| f13_scenarios.json | 11:23 | 0 | да |
-| final_summary.json | 11:23 | 0 | да |
-| gate_report.json | 12:31 | 2812 | нет (из прошлого прогона) |
-| gen_docs.json | 11:23 | 0 | да |
-| ipc_report.json | 12:44 | 2799 | нет (из прошлого прогона) |
-| linux_corr.json | 11:22 | 1 | да |
-| linux_e2e.json | 11:21 | 2 | да |
-| linux_fapolicyd.json | 08:42 | 161 | нет (из прошлого прогона) |
-| linux_ima_appraise.json | 08:46 | 157 | нет (из прошлого прогона) |
-| linux_load.json | 12:53 | 2790 | нет (из прошлого прогона) |
-| linux_lsm.json | 11:21 | 2 | да |
-| linux_mem.json | 11:21 | 2 | да |
-| linux_mprotect.json | 11:22 | 1 | да |
-| linux_net.json | 11:21 | 2 | да |
-| linux_procmem.json | 11:22 | 2 | да |
-| linux_provenance.json | 11:23 | 0 | да |
-| linux_ptrace.json | 11:21 | 2 | да |
-| linux_tree.json | 11:22 | 1 | да |
-| linux_tree_fp.json | 11:23 | 0 | да |
-| pe_v2_report.json | 13:43 | 2740 | нет (из прошлого прогона) |
-| redteam20_windows.json | 11:13 | 10 | нет (из прошлого прогона) |
-| redteam_windows.json | 09:40 | 103 | нет (из прошлого прогона) |
-| release_engineering.json | 23:37 | 2146 | нет (из прошлого прогона) |
-| report_metrics.json | 17:18 | 2525 | нет (из прошлого прогона) |
-| run_all.json | 11:23 | -0 | да |
-| rust_bench.json | 23:20 | 2163 | нет (из прошлого прогона) |
-| rust_gate.json | 23:26 | 2157 | нет (из прошлого прогона) |
-| rust_ml_holdout_report.json | 22:23 | 2220 | нет (из прошлого прогона) |
-| rust_ml_holdout_state.json | 22:23 | 2220 | нет (из прошлого прогона) |
-| rust_port_slice1.json | 21:16 | 2287 | нет (из прошлого прогона) |
-| rust_port_slice2.json | 21:29 | 2274 | нет (из прошлого прогона) |
-| rust_port_slice3.json | 21:37 | 2266 | нет (из прошлого прогона) |
-| rust_port_slice4.json | 21:42 | 2261 | нет (из прошлого прогона) |
-| rust_port_slice5.json | 22:10 | 2233 | нет (из прошлого прогона) |
-| rust_port_slice6.json | 22:18 | 2225 | нет (из прошлого прогона) |
-| rust_port_slice7.json | 22:57 | 2186 | нет (из прошлого прогона) |
-| rust_port_slice8.json | 23:26 | 2157 | нет (из прошлого прогона) |
-| ship_v2.json | 13:43 | 2740 | нет (из прошлого прогона) |
-| soak_6h_2026-11-13.json | 18:01 | 1042 | нет (из прошлого прогона) |
-| soak_before_hyperv_2026-11-13.json | 19:18 | 966 | нет (из прошлого прогона) |
-| soak_before_reboot_2026-11-13.json | 18:47 | 996 | нет (из прошлого прогона) |
-| soak_report.json | 11:50 | 1414 | нет (из прошлого прогона) |
-| soak_supervised.json | 11:13 | 1451 | нет (из прошлого прогона) |
-| soak_supervised_partial.json | 11:23 | 0 | да |
-| stage11_report.json | 12:33 | 2811 | нет (из прошлого прогона) |
-| stage12_chaos.json | 11:21 | 2 | да |
-| stage1_report.json | 12:14 | 2829 | нет (из прошлого прогона) |
-| stage2_report.json | 18:08 | 2475 | нет (из прошлого прогона) |
-| stage4_report.json | 12:25 | 2819 | нет (из прошлого прогона) |
-| stage5_report.json | 18:03 | 2481 | нет (из прошлого прогона) |
-| stage7_report.json | 12:30 | 2814 | нет (из прошлого прогона) |
-| stage8_report.json | 12:28 | 2815 | нет (из прошлого прогона) |
-| stml_readiness.json | 11:13 | 10 | нет (из прошлого прогона) |
-| stml_s5_load.json | 10:57 | 26 | нет (из прошлого прогона) |
-| supervisor_measure.json | 11:23 | 0 | да |
-| t1055_coverage.json | 11:23 | 0 | да |
-| wdac_audit.json | 18:37 | 1006 | нет (из прошлого прогона) |
-| wdac_inventory.json | 20:02 | 921 | нет (из прошлого прогона) |
-| windows_defender.json | 11:20 | 3 | да |
-| windows_e2e.json | 11:20 | 3 | да |
+| agent-stml-compatibility.json | 11:24 | 15 | нет (из прошлого прогона) |
+| audit_bench.json | 12:36 | 2823 | нет (из прошлого прогона) |
+| calibration_report.json | 17:48 | 2511 | нет (из прошлого прогона) |
+| challenger_report.json | 17:58 | 2501 | нет (из прошлого прогона) |
+| chaos_report.json | 12:34 | 2825 | нет (из прошлого прогона) |
+| devlog_audit.json | 11:39 | 0 | да |
+| disagreement_report.json | 13:47 | 2752 | нет (из прошлого прогона) |
+| docker_matrix.json | 12:53 | 2807 | нет (из прошлого прогона) |
+| docs_consistency.json | 11:39 | 0 | да |
+| ensemble_report.json | 13:49 | 2750 | нет (из прошлого прогона) |
+| etwti_t1055.json | 18:33 | 1026 | нет (из прошлого прогона) |
+| f01_confidence.json | 11:39 | 0 | да |
+| f02_f03_measure.json | 11:39 | 0 | да |
+| f04_r2_margin.json | 11:39 | 0 | да |
+| f08_tail.json | 18:59 | 2440 | нет (из прошлого прогона) |
+| f09_ppv_target.json | 11:39 | 0 | да |
+| f11_bisect.json | 19:40 | 2400 | нет (из прошлого прогона) |
+| f11_controls.json | 00:46 | 2093 | нет (из прошлого прогона) |
+| f11_health_livelock.json | 19:11 | 2428 | нет (из прошлого прогона) |
+| f11_health_probe_1500.json | 19:11 | 2428 | нет (из прошлого прогона) |
+| f11_health_probe_summary.json | 19:11 | 2428 | нет (из прошлого прогона) |
+| f11_pydantic_focus.json | 22:56 | 2203 | нет (из прошлого прогона) |
+| f11_pydantic_stress.json | 21:07 | 2312 | нет (из прошлого прогона) |
+| f11_repeat.json | 00:10 | 2130 | нет (из прошлого прогона) |
+| f12_behavioral.json | 11:39 | 0 | да |
+| f13_scenarios.json | 11:39 | 0 | да |
+| final_summary.json | 11:39 | 0 | да |
+| gate_report.json | 12:31 | 2828 | нет (из прошлого прогона) |
+| gen_docs.json | 11:39 | 0 | да |
+| ipc_report.json | 12:44 | 2815 | нет (из прошлого прогона) |
+| linux_corr.json | 11:38 | 1 | да |
+| linux_e2e.json | 11:37 | 3 | да |
+| linux_fapolicyd.json | 08:42 | 177 | нет (из прошлого прогона) |
+| linux_ima_appraise.json | 08:46 | 173 | нет (из прошлого прогона) |
+| linux_load.json | 12:53 | 2807 | нет (из прошлого прогона) |
+| linux_lsm.json | 11:37 | 2 | да |
+| linux_mem.json | 11:37 | 2 | да |
+| linux_mprotect.json | 11:38 | 1 | да |
+| linux_net.json | 11:37 | 2 | да |
+| linux_procmem.json | 11:38 | 2 | да |
+| linux_provenance.json | 11:39 | 0 | да |
+| linux_ptrace.json | 11:37 | 2 | да |
+| linux_tree.json | 11:38 | 1 | да |
+| linux_tree_fp.json | 11:39 | 0 | да |
+| pe_v2_report.json | 13:43 | 2756 | нет (из прошлого прогона) |
+| redteam20_windows.json | 11:31 | 8 | нет (из прошлого прогона) |
+| redteam_windows.json | 09:40 | 119 | нет (из прошлого прогона) |
+| release_engineering.json | 23:37 | 2162 | нет (из прошлого прогона) |
+| report_metrics.json | 17:18 | 2541 | нет (из прошлого прогона) |
+| run_all.json | 11:39 | -0 | да |
+| rust_bench.json | 23:20 | 2179 | нет (из прошлого прогона) |
+| rust_gate.json | 23:26 | 2173 | нет (из прошлого прогона) |
+| rust_ml_holdout_report.json | 22:23 | 2236 | нет (из прошлого прогона) |
+| rust_ml_holdout_state.json | 22:23 | 2236 | нет (из прошлого прогона) |
+| rust_port_slice1.json | 21:16 | 2303 | нет (из прошлого прогона) |
+| rust_port_slice2.json | 21:29 | 2290 | нет (из прошлого прогона) |
+| rust_port_slice3.json | 21:37 | 2282 | нет (из прошлого прогона) |
+| rust_port_slice4.json | 21:42 | 2277 | нет (из прошлого прогона) |
+| rust_port_slice5.json | 22:10 | 2249 | нет (из прошлого прогона) |
+| rust_port_slice6.json | 22:18 | 2241 | нет (из прошлого прогона) |
+| rust_port_slice7.json | 22:57 | 2202 | нет (из прошлого прогона) |
+| rust_port_slice8.json | 23:26 | 2173 | нет (из прошлого прогона) |
+| ship_v2.json | 13:43 | 2756 | нет (из прошлого прогона) |
+| soak_6h_2026-11-13.json | 18:01 | 1058 | нет (из прошлого прогона) |
+| soak_before_hyperv_2026-11-13.json | 19:18 | 982 | нет (из прошлого прогона) |
+| soak_before_reboot_2026-11-13.json | 18:47 | 1012 | нет (из прошлого прогона) |
+| soak_report.json | 11:50 | 1430 | нет (из прошлого прогона) |
+| soak_supervised.json | 11:13 | 1467 | нет (из прошлого прогона) |
+| soak_supervised_partial.json | 11:39 | 0 | да |
+| stage11_report.json | 12:33 | 2827 | нет (из прошлого прогона) |
+| stage12_chaos.json | 11:36 | 3 | да |
+| stage1_report.json | 12:14 | 2845 | нет (из прошлого прогона) |
+| stage2_report.json | 18:08 | 2491 | нет (из прошлого прогона) |
+| stage4_report.json | 12:25 | 2835 | нет (из прошлого прогона) |
+| stage5_report.json | 18:03 | 2497 | нет (из прошлого прогона) |
+| stage7_report.json | 12:30 | 2830 | нет (из прошлого прогона) |
+| stage8_report.json | 12:28 | 2831 | нет (из прошлого прогона) |
+| stml_phase_a.json | 11:32 | 7 | нет (из прошлого прогона) |
+| stml_readiness.json | 11:32 | 7 | нет (из прошлого прогона) |
+| stml_s5_load.json | 10:57 | 42 | нет (из прошлого прогона) |
+| supervisor_measure.json | 11:39 | 0 | да |
+| t1055_coverage.json | 11:39 | 0 | да |
+| wdac_audit.json | 18:37 | 1023 | нет (из прошлого прогона) |
+| wdac_inventory.json | 20:02 | 937 | нет (из прошлого прогона) |
+| windows_defender.json | 11:36 | 3 | да |
+| windows_e2e.json | 11:36 | 3 | да |
 
 ## Что доказано измерением
 - Надёжностная платформа: R2/R3/R6/R8/R9/R10 — см. stage1 и chaos-отчёты.

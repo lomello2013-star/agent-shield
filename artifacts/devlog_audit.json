@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-11-14T11:23:29.243407+00:00",
-  "entries": 126,
-  "complete": 102,
+  "generated_at": "2026-11-14T11:39:34.753864+00:00",
+  "entries": 127,
+  "complete": 103,
   "incomplete": 24,
-  "completeness_pct": 81.0,
+  "completeness_pct": 81.1,
   "by_type": {
     "config": 4,
     "experiment": 80,
@@ -11,7 +11,7 @@
     "decision": 2,
     "code": 26,
     "docs": 2,
-    "report": 4,
+    "report": 5,
     "auto_review": 6,
     "test": 1
   },
@@ -202,6 +202,6 @@
       ]
     }
   ],
-  "artifacts_on_disk": 84,
+  "artifacts_on_disk": 86,
   "note": "legacy entries are disclosed, not rewritten; new entries are enforced by docs_consistency (last 10 entries must carry all five fields)"
 }

@@ -1,6 +1,6 @@
 {
-    "generated_at":  "2026-11-14T11:13:52.6553229Z",
-    "head":  "21198c0",
+    "generated_at":  "2026-11-14T11:31:37.1180921Z",
+    "head":  "ee26644",
     "vm":  "AIDFLAB",
     "scenarios":  [
                       {
@@ -76,8 +76,8 @@
                           "id":  "WIN-08",
                           "technique":  "T1562.001",
                           "expected":  "WIN-DEFENDER-TAMPER-009",
-                          "detected":  false,
-                          "observed":  "",
+                          "detected":  true,
+                          "observed":  "WIN-DEFENDER-TAMPER-009",
                           "run":  true,
                           "holdout":  true,
                           "error":  ""
@@ -204,11 +204,11 @@
                     "run":  15,
                     "skipped":  5,
                     "attacks_run":  11,
-                    "attacks_detected":  8,
+                    "attacks_detected":  9,
                     "controls_run":  4,
                     "control_fp":  0,
                     "holdout_total":  5,
-                    "holdout_detected":  3
+                    "holdout_detected":  4
                 },
     "limitations":  "Safe emulation, 20/OS catalog with 5 destructive entries skipped; detection only for this run (prevention measured separately); E1-E6 still require real samples and a hidden holdout."
 }

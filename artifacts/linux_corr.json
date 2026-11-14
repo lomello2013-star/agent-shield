@@ -13,14 +13,14 @@
     "mprotect_only": {
       "helper": "{\"mprotects\":20}",
       "corr_alerts": 0,
-      "signal_alerts": 20,
-      "events": 30
+      "signal_alerts": 21,
+      "events": 31
     },
     "inject_only": {
-      "helper": "{\"writes\":20,\"child\":1420}",
+      "helper": "{\"writes\":20,\"child\":1429}",
       "corr_alerts": 0,
       "signal_alerts": 0,
-      "events": 50
+      "events": 51
     }
   },
   "corr_alerts_correlated": 5,

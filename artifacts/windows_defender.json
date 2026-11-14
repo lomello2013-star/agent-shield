@@ -15,7 +15,7 @@
     ],
     "last_record_id": 2885,
     "calls": 2,
-    "last_query_ms": 18.729
+    "last_query_ms": 17.818
   },
   "events_read": 200,
   "second_poll_fresh": 0,
@@ -26,25 +26,27 @@
     "5007": 191
   },
   "by_classification": {
-    "benign": 191,
+    "benign": 163,
+    "suspicious": 28,
     "n/a": 9
   },
   "by_action": {
-    "config_unclassified": 85,
+    "config_unclassified": 57,
     "config_benign": 100,
+    "config_tamper": 28,
     "config_policy_weak": 6,
     "rtp_disabled": 1,
     "detected": 4,
     "action_taken": 4
   },
   "verdicts_before_classification": 200,
-  "verdicts": 1,
+  "verdicts": 29,
   "rule_hits": {
-    "WIN-DEFENDER-TAMPER-009": 1
+    "WIN-DEFENDER-TAMPER-009": 29
   },
-  "poll_ms": 18.729,
+  "poll_ms": 17.818,
   "pipeline_ms_p50": 0.037,
-  "pipeline_ms_p95": 0.065,
+  "pipeline_ms_p95": 0.124,
   "loss": 0,
   "ledger_ok": true,
   "audit_chain_ok": true,

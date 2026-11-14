@@ -3238,6 +3238,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 14:45] Defender exclusion → tamper; 20-срез 9/11, 0 FP [code]
+
+**Действие**: 5007 exclusion-путь (`Exclusions\Paths`) классифицировался benign, потому что в токенах был только `exclusionpath`; добавлены `exclusions\paths|processes|extensions`. Live: `WIN-DEFENDER-TAMPER-009` = **7**; 20-срез: **9/11**, holdout **4/5**, **0 FP**; `WIN-08` detected. Остались только объяснённые пропуски: WIN-17 (signed non-match) и WIN-18 (7036).
+**Числа**: pytest **527**; `run_all` **29/29**; 20-срез 9/11, holdout 4/5, FP 0; `009` live = 7.
+**Вердикт**: Defender exclusion закрыт; 20-срез достиг 9/11 при 0 FP; остались Linux 20/20 live, EV/HLK, generic alert 007.
+**Проверка**: `artifacts/redteam20_windows.json`; `aidfctl stats` 009=7; `pytest` 527; `run_all` 29/29.
+**Статус**: verified (Defender/20-срез); open (Linux 20, EV/HLK, alert 007)
+**Actor**: agent
+**Run_id**: defender-exclusion-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

@@ -224,6 +224,16 @@ def test_poll_requires_wevtutil(monkeypatch):
         source.poll()
 
 
+def test_defender_exclusion_path_is_tamper():
+    from core.winsource import classify_defender_change
+
+    category, action, benign = classify_defender_change(
+        "", r"HKLM\SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths\C:\Temp\AidfRT = 0x0")
+    assert category == "defender.tamper"
+    assert action == "config_tamper"
+    assert benign is False
+
+
 def test_channel_exists_reports_missing_and_present(monkeypatch, tmp_path):
     from types import SimpleNamespace
     from core import winsource
