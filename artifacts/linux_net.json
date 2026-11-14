@@ -5,24 +5,23 @@
   },
   "c2_connects": 200,
   "benign_connects": 200,
-  "events": 400,
-  "ppid_events": 400,
+  "events": 115,
+  "ppid_events": 115,
   "ports_seen": {
-    "4444": 200,
-    "8080": 200
+    "4444": 115
   },
-  "verdicts": 200,
+  "verdicts": 115,
   "rule_hits": {
-    "LINUX-C2-PORT-105": 200
+    "LINUX-C2-PORT-105": 115
   },
-  "elapsed_s": 0.32,
+  "elapsed_s": 1.12,
   "latency_kernel_to_user_ms": {
-    "p50": 0.267,
-    "p95": 0.859
+    "p50": 11.689,
+    "p95": 34.635
   },
   "latency_pipeline_ms": {
-    "p50": 0.171,
-    "p95": 0.374
+    "p50": 0.245,
+    "p95": 0.439
   },
   "loss": 0,
   "ledger_ok": true,

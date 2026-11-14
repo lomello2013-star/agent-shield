@@ -3370,6 +3370,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 16:35] Live exfil 017; Linux 16/20 [experiment]
+
+**Действие**: добавлен tracepoint-сенсор `sendto` (≥1 МБ) с ручным layout контекста; 12 МБ UDP sendto → `NET-EXFIL-LARGE-017`; platform_data `bytes_out` добавлен в `linux.ebpf`. Linux live: **16/20**.
+**Числа**: 1 событие → 1 вердикт 017; pytest **531**; `run_all` **29/29**; Linux live 16/20.
+**Вердикт**: exfil live закрыт; осталось 4 (DNS-сенсор + Windows-only); production-коллектор open.
+**Проверка**: `/tmp/sendto.jsonl`; evaluator → 017; `run_all` 29/29.
+**Статус**: verified (exfil); open (4/20, production collector)
+**Actor**: agent
+**Run_id**: linux-exfil-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

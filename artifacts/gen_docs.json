@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-14T12:10:28.815250+00:00",
+  "generated_at": "2026-11-14T12:26:54.796440+00:00",
   "ok": true,
   "steps": [
     {
@@ -23,7 +23,7 @@
       "script": "devlog_audit.py",
       "ok": true,
       "tail": [
-        "{\"entries\": 131, \"complete\": 107, \"incomplete\": 24, \"completeness_pct\": 81.7, \"missing_artifacts\": [\"dev_keys.json\", \"linux_integrity.json\"]}"
+        "{\"entries\": 138, \"complete\": 114, \"incomplete\": 24, \"completeness_pct\": 82.6, \"missing_artifacts\": [\"dev_keys.json\", \"linux_integrity.json\"]}"
       ]
     }
   ]

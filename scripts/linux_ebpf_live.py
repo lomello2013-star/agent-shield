@@ -39,6 +39,10 @@ def _raw(item: dict) -> dict | None:
         raw.update(category="memory.access", action="ptrace",
                    exe=item.get("comm", ""), cmdline=item.get("comm", ""),
                    request=item["request"], target=item.get("target"))
+    elif item.get("op") == "sendto":
+        raw.update(category="net.connect", action="sendto",
+                   exe=item.get("comm", ""), cmdline=item.get("comm", ""),
+                   bytes_out=item["bytes"])
     elif "bytes" in item:
         raw.update(category="memory.access", action="vm_write",
                    exe=item.get("exe", ""), cmdline=item.get("exe", ""),

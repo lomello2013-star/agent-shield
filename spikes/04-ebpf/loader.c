@@ -112,6 +112,14 @@ struct unlink_evt {
     char path[192];
 };
 
+struct send_evt {
+    unsigned int pid;
+    unsigned int ppid;
+    unsigned long long ts_ns;
+    unsigned long long bytes;
+    char comm[16];
+};
+
 struct exec_path_evt {
     unsigned int pid;
     unsigned int ppid;
@@ -214,6 +222,17 @@ static int on_open_json(void *ctx, void *data, size_t sz)
     printf("{\"pid\":%u,\"ppid\":%u,\"ts_ns\":%llu,\"comm\":\"%s\",\"path\":\"%s\",\"writable\":%u}\n",
            e->pid, e->ppid, (unsigned long long)e->ts_ns, e->comm, e->path,
            e->writable);
+    fflush(stdout);
+    got++;
+    return 0;
+}
+
+static int on_sendto_json(void *ctx, void *data, size_t sz)
+{
+    struct send_evt *e = data;
+    printf("{\"op\":\"sendto\",\"pid\":%u,\"ppid\":%u,\"ts_ns\":%llu,\"bytes\":%llu,\"comm\":\"%s\"}\n",
+           e->pid, e->ppid, (unsigned long long)e->ts_ns,
+           (unsigned long long)e->bytes, e->comm);
     fflush(stdout);
     got++;
     return 0;
@@ -361,6 +380,23 @@ int main(int argc, char **argv)
         if (!link) { printf("{\"error\":\"attach_lsm\",\"errno\":%d}\n", errno); return 1; }
         int mfd = bpf_object__find_map_fd_by_name(obj, "open_events");
         struct ring_buffer *rb = ring_buffer__new(mfd, on_open_json, NULL, NULL);
+        if (!rb) { printf("{\"error\":\"ringbuf\"}\n"); return 1; }
+        printf("{\"ready\":true}\n");
+        fflush(stdout);
+        int limit = argc >= 4 ? atoi(argv[3]) : 0;
+        while ((limit == 0 || got < limit)) {
+            int rc = ring_buffer__poll(rb, 200);
+            if (rc < 0 && rc != -EINTR && rc != -EAGAIN) break;
+        }
+        ring_buffer__free(rb);
+        bpf_link__destroy(link);
+    } else if (strcmp(mode, "stream_sendto") == 0) {
+        struct bpf_program *prog = bpf_object__find_program_by_name(obj, "on_sendto");
+        if (!prog) { printf("{\"error\":\"prog_not_found\"}\n"); return 1; }
+        struct bpf_link *link = bpf_program__attach(prog);
+        if (!link) { printf("{\"error\":\"attach\",\"errno\":%d}\n", errno); return 1; }
+        int mfd = bpf_object__find_map_fd_by_name(obj, "send_events");
+        struct ring_buffer *rb = ring_buffer__new(mfd, on_sendto_json, NULL, NULL);
         if (!rb) { printf("{\"error\":\"ringbuf\"}\n"); return 1; }
         printf("{\"ready\":true}\n");
         fflush(stdout);

@@ -31,12 +31,14 @@
     {"id": "linux-mass-write", "rule": "FILE-MASS-WRITE-014", "events": 50, "verdicts": 1,
      "control": "50 x touch /tmp/aidf_write_*"},
     {"id": "linux-canary-delete", "rule": "FILE-CANARY-015", "events": 2, "verdicts": 1,
-     "control": "rm /tmp/aidf_canary_test"}
+     "control": "rm /tmp/aidf_canary_test"},
+    {"id": "linux-exfil-large", "rule": "NET-EXFIL-LARGE-017", "events": 1, "verdicts": 1,
+     "control": "sendto 12 MB UDP"}
   ],
-  "live_count": 15,
+  "live_count": 16,
   "limitations": [
-    "15 of 20 Linux scenarios are live",
-    "remaining 5 need DNS/exfil sensors or are Windows-only",
+    "16 of 20 Linux scenarios are live",
+    "remaining 4 need DNS sensor or are Windows-only",
     "production collector (loader->pipeline service) is not integrated",
     "fapolicyd was stopped for BPF loader tests and restored afterwards"
   ]

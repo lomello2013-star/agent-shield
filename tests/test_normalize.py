@@ -203,6 +203,20 @@ def test_linux_cred_read_allows_auth_daemons():
     assert "LINUX-CRED-READ-104" not in [v.rule_id for v in engine.evaluate(cred("sshd"))]
 
 
+def test_linux_net_exfil_bytes_rule():
+    import pathlib
+
+    from core.rules import RuleEngine, load_rules
+
+    ev = normalizer().normalize("linux.ebpf", {
+        "category": "net.connect", "action": "sendto", "pid": 12,
+        "ppid": 1, "comm": "exfil", "exe": "exfil", "bytes_out": 12_000_000,
+    })
+    rules = str(pathlib.Path(__file__).resolve().parents[1] / "rules" / "base.json")
+    verdicts = RuleEngine(load_rules([rules])).evaluate(ev)
+    assert "NET-EXFIL-LARGE-017" in [v.rule_id for v in verdicts]
+
+
 def test_linux_mprotect_and_procmem_rules():
     import pathlib
 
