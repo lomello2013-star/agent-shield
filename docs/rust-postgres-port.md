@@ -11,14 +11,18 @@
 - `cargo check` / `cargo build` — успешно.
 - **P1 проверен:** enrol, подписанные heartbeat/inventory/reports, `/v0/agents`;
   тест с Python-сгенерированным Ed25519-ключом.
-- **Не проверено:** операторский auth, policies/rollouts/approvals (P2), RLS/HA/backup, mTLS, timestamp skew.
+- **P2 проверен:** policy-подпись, approvals+SoD, rollout 1→10→50→100,
+  promote/halt/rollback, tenant `p2`.
+- **Не проверено:** P3 (trust/learning), mTLS, RLS/HA/backup, timestamp skew,
+  HTTP 201 parity (Rust returns 200).
 
 ## 1. Что уже есть
 
 - `Cargo.toml`: axum, tokio, serde, tracing, sqlx/Postgres, ed25519-dalek, spki/pem.
 - `src/main.rs`: `/health`, `/v0/agents`, `/v0/enrol`, `/v0/heartbeat`,
-  `/v0/inventory`, `/v0/reports` (P1).
-- `migrations/0001_init.sql`, `0002_enrol_nonces.sql`.
+  `/v0/inventory`, `/v0/reports`, `/v0/policies`, `/v0/approvals`,
+  `/v0/rollouts` (P1+P2).
+- `migrations/0001_init.sql`, `0002_enrol_nonces.sql`, `0003_rollouts.sql`.
 - `Cargo.lock` — зафиксирован для воспроизводимости.
 
 ## 2. Принцип порта
@@ -60,4 +64,4 @@ $env:DATABASE_URL="postgres://stml:stml@127.0.0.1:5432/stml"
 cargo run --manifest-path rust\stml-server\Cargo.toml
 # /health -> {"db":"ok"}; /v0/agents -> rows
 ```
-Далее: P2 (policies/rollouts/approvals + операторский auth).
+Далее: P3 (trust/keys/CRL, learning) и parity-тесты Python↔Rust.

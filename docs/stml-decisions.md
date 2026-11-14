@@ -121,6 +121,9 @@
 | D-69 | Promote scope | **только tenant политики, детерминированно по hostname** | все агенты | изоляция |
 | D-70 | S18 | **reversals/actions из audit, min 50/нед** | отдельный трекер | без новой схемы |
 | D-71 | S19 | **`null` (operator-attributed incidents не tracked)** | приблизительная оценка | не выдумывать |
+| D-72 | Rust auth | **отдельные admin/viewer/approver токены; SoD** | один admin | parity с Python |
+| D-73 | Rust P2 | **policy-подпись + approval + rollout 1→10→50→100** | только read-only | паритет |
+| D-74 | HTTP status parity | **Rust возвращает 200 вместо 201 (временно)** | менять сигнатуры | отметить в parity-тестах |
 
 ## Production acceptance
 

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-14T12:15:27.424043+00:00",
+  "generated_at": "2026-11-14T12:21:51.974051+00:00",
   "component": "STML",
   "commit": "da64eb4",
   "tests": {
@@ -51,21 +51,24 @@
       "cargo_check": true,
       "cargo_build": true,
       "p1": true,
+      "p2": true,
       "endpoints": [
         "health",
         "agents",
         "enrol",
         "heartbeat",
         "inventory",
-        "reports"
+        "reports",
+        "policies",
+        "approvals",
+        "rollouts"
       ],
-      "parity": "P1",
       "not_yet": [
-        "operator auth",
-        "policies/rollouts/approvals",
         "trust/learning",
         "mTLS",
-        "RLS/HA"
+        "RLS/HA",
+        "timestamp skew",
+        "HTTP 201 parity"
       ]
     }
   }

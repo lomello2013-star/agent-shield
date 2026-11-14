@@ -13,6 +13,7 @@ use axum::{
 use base64::{engine::general_purpose::STANDARD, Engine};
 use ed25519_dalek::{Signature, VerifyingKey};
 use serde_json::{json, Value};
+use sha2::{Digest, Sha256};
 use sqlx::{postgres::PgPoolOptions, types::Json as SqlJson, PgPool, Row};
 use uuid::Uuid;
 
@@ -21,6 +22,11 @@ type ApiError = (StatusCode, Json<Value>);
 #[derive(Clone)]
 struct AppState {
     pool: Option<PgPool>,
+    admin_token: String,
+    viewer_token: String,
+    approver_token: String,
+    policy_pubkey: String,
+    require_approval: bool,
 }
 
 fn err(code: StatusCode, message: impl Into<String>) -> ApiError {
@@ -68,6 +74,500 @@ fn verify_body(headers: &HeaderMap, body: &[u8], pem_text: &str) -> Result<(), A
     let key = parse_public_key(pem_text)?;
     key.verify_strict(body, &signature)
         .map_err(|_| err(StatusCode::FORBIDDEN, "bad signature"))
+}
+
+fn bearer(headers: &HeaderMap) -> &str {
+    headers
+        .get("authorization")
+        .and_then(|v| v.to_str().ok())
+        .and_then(|v| v.strip_prefix("Bearer "))
+        .unwrap_or("")
+}
+
+fn auth(headers: &HeaderMap, state: &AppState, role: &str) -> Result<(), ApiError> {
+    if state.admin_token.is_empty() {
+        return Err(err(
+            StatusCode::SERVICE_UNAVAILABLE,
+            "operator auth not configured",
+        ));
+    }
+    let token = bearer(headers);
+    match role {
+        "admin" if token == state.admin_token => Ok(()),
+        "approver" if token == state.approver_token => Ok(()),
+        "viewer"
+            if token == state.admin_token
+                || token == state.viewer_token
+                || token == state.approver_token =>
+        {
+            Ok(())
+        }
+        _ => Err(err(StatusCode::FORBIDDEN, format!("{role} required"))),
+    }
+}
+
+fn canonical_policy(value: &Value) -> Result<Vec<u8>, ApiError> {
+    let body = json!({
+        "policy_id": value.get("policy_id").and_then(Value::as_str).unwrap_or(""),
+        "version": value.get("version").and_then(Value::as_str).unwrap_or(""),
+        "channel": value.get("channel").and_then(Value::as_str).unwrap_or("stable"),
+        "content": value.get("content").cloned().unwrap_or_else(|| json!({})),
+    });
+    serde_json::to_vec(&body).map_err(|e| err(StatusCode::BAD_REQUEST, e.to_string()))
+}
+
+fn key_id_of(key: &VerifyingKey) -> String {
+    let digest = Sha256::digest(key.to_bytes());
+    let hex = format!("{digest:x}");
+    hex[..16].to_string()
+}
+
+fn verify_policy(state: &AppState, value: &Value) -> Result<(), ApiError> {
+    if state.policy_pubkey.is_empty() {
+        return Err(err(
+            StatusCode::SERVICE_UNAVAILABLE,
+            "policy pubkey not configured",
+        ));
+    }
+    let key = parse_public_key(&state.policy_pubkey)?;
+    if value.get("key_id").and_then(Value::as_str).unwrap_or("") != key_id_of(&key) {
+        return Err(err(StatusCode::FORBIDDEN, "policy key_id mismatch"));
+    }
+    let signature = STANDARD
+        .decode(value.get("signature").and_then(Value::as_str).unwrap_or(""))
+        .map_err(|_| err(StatusCode::FORBIDDEN, "bad policy signature encoding"))?;
+    let signature = Signature::from_slice(&signature)
+        .map_err(|_| err(StatusCode::FORBIDDEN, "bad policy signature length"))?;
+    key.verify_strict(&canonical_policy(value)?, &signature)
+        .map_err(|_| err(StatusCode::FORBIDDEN, "bad policy signature"))
+}
+
+async fn list_policies(
+    State(state): State<AppState>,
+    headers: HeaderMap,
+) -> Result<Json<Value>, ApiError> {
+    auth(&headers, &state, "viewer")?;
+    let db = pool(&state)?;
+    let rows = sqlx::query(
+        "SELECT policy_id, version, channel, key_id, created_at::text AS created_at \
+         FROM policies ORDER BY created_at DESC",
+    )
+    .fetch_all(db)
+    .await
+    .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+    let out: Vec<Value> = rows
+        .into_iter()
+        .map(|r| {
+            json!({
+                "policy_id": r.get::<String, _>("policy_id"),
+                "version": r.get::<String, _>("version"),
+                "channel": r.get::<String, _>("channel"),
+                "key_id": r.get::<String, _>("key_id"),
+                "created_at": r.get::<String, _>("created_at"),
+            })
+        })
+        .collect();
+    Ok(Json(json!({"policies": out})))
+}
+
+async fn add_policy(
+    State(state): State<AppState>,
+    headers: HeaderMap,
+    body: Bytes,
+) -> Result<Json<Value>, ApiError> {
+    auth(&headers, &state, "admin")?;
+    let value: Value = serde_json::from_slice(&body)
+        .map_err(|e| err(StatusCode::BAD_REQUEST, format!("json: {e}")))?;
+    verify_policy(&state, &value)?;
+    let db = pool(&state)?;
+    let tenant = value
+        .get("tenant_id")
+        .and_then(Value::as_str)
+        .unwrap_or("default");
+    let policy_id = value.get("policy_id").and_then(Value::as_str).unwrap_or("");
+    let version = value.get("version").and_then(Value::as_str).unwrap_or("");
+    let channel = value
+        .get("channel")
+        .and_then(Value::as_str)
+        .unwrap_or("stable");
+    let content = value.get("content").cloned().unwrap_or_else(|| json!({}));
+    let key_id = value.get("key_id").and_then(Value::as_str).unwrap_or("");
+    let signature = value.get("signature").and_then(Value::as_str).unwrap_or("");
+    let inserted = sqlx::query(
+        "INSERT INTO policies(tenant_id, policy_id, version, channel, content, key_id, \
+         signature, created_at) VALUES ($1,$2,$3,$4,$5,$6,$7,now()) \
+         ON CONFLICT (tenant_id, policy_id, version) DO NOTHING",
+    )
+    .bind(tenant)
+    .bind(policy_id)
+    .bind(version)
+    .bind(channel)
+    .bind(SqlJson(content))
+    .bind(key_id)
+    .bind(signature)
+    .execute(db)
+    .await
+    .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+    if inserted.rows_affected() == 0 {
+        return Err(err(StatusCode::CONFLICT, "policy version already exists"));
+    }
+    let approval_id: i64 = sqlx::query_scalar(
+        "INSERT INTO approvals(tenant_id, kind, target, payload, proposed_by, status, created_at) \
+         VALUES ($1,'policy',$2,$3,'operator','pending',now()) RETURNING id",
+    )
+    .bind(tenant)
+    .bind(format!("{policy_id}@{version}"))
+    .bind(SqlJson(value.clone()))
+    .fetch_one(db)
+    .await
+    .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+    Ok(Json(
+        json!({"ok": true, "policy_id": policy_id, "version": version,
+                   "approval_id": approval_id}),
+    ))
+}
+
+async fn list_approvals(
+    State(state): State<AppState>,
+    headers: HeaderMap,
+) -> Result<Json<Value>, ApiError> {
+    auth(&headers, &state, "viewer")?;
+    let db = pool(&state)?;
+    let rows = sqlx::query(
+        "SELECT id, kind, target, status, proposed_by, decided_by FROM approvals \
+         ORDER BY id DESC",
+    )
+    .fetch_all(db)
+    .await
+    .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+    let out: Vec<Value> = rows
+        .into_iter()
+        .map(|r| {
+            json!({
+                "id": r.get::<i64, _>("id"),
+                "kind": r.get::<String, _>("kind"),
+                "target": r.get::<String, _>("target"),
+                "status": r.get::<String, _>("status"),
+                "proposed_by": r.get::<String, _>("proposed_by"),
+                "decided_by": r.get::<Option<String>, _>("decided_by"),
+            })
+        })
+        .collect();
+    Ok(Json(json!({"approvals": out})))
+}
+
+async fn decide_approval(
+    State(state): State<AppState>,
+    headers: HeaderMap,
+    axum::extract::Path((approval_id, action)): axum::extract::Path<(i64, String)>,
+) -> Result<Json<Value>, ApiError> {
+    auth(&headers, &state, "approver")?;
+    let status = match action.as_str() {
+        "approve" => "approved",
+        "deny" => "rejected",
+        _ => return Err(err(StatusCode::NOT_FOUND, "unknown action")),
+    };
+    let db = pool(&state)?;
+    let changed = sqlx::query(
+        "UPDATE approvals SET status = $1, decided_by = 'approver', decided_at = now() \
+         WHERE id = $2 AND status = 'pending'",
+    )
+    .bind(status)
+    .bind(approval_id)
+    .execute(db)
+    .await
+    .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+    if changed.rows_affected() == 0 {
+        return Err(err(
+            StatusCode::NOT_FOUND,
+            "unknown or already decided approval",
+        ));
+    }
+    Ok(Json(
+        json!({"ok": true, "approval_id": approval_id, "status": status}),
+    ))
+}
+
+async fn start_rollout(
+    State(state): State<AppState>,
+    headers: HeaderMap,
+    body: Bytes,
+) -> Result<Json<Value>, ApiError> {
+    auth(&headers, &state, "admin")?;
+    let value: Value = serde_json::from_slice(&body)
+        .map_err(|e| err(StatusCode::BAD_REQUEST, format!("json: {e}")))?;
+    let policy_id = value.get("policy_id").and_then(Value::as_str).unwrap_or("");
+    let version = value.get("version").and_then(Value::as_str).unwrap_or("");
+    let percent = value
+        .get("percent")
+        .and_then(Value::as_i64)
+        .unwrap_or(1)
+        .clamp(1, 100);
+    let tenant = value
+        .get("tenant_id")
+        .and_then(Value::as_str)
+        .unwrap_or("default");
+    let db = pool(&state)?;
+    if state.require_approval {
+        let approved = sqlx::query_scalar::<_, i64>(
+            "SELECT COUNT(*) FROM approvals WHERE kind='policy' AND target=$1 \
+             AND status='approved' AND tenant_id=$2",
+        )
+        .bind(format!("{policy_id}@{version}"))
+        .bind(tenant)
+        .fetch_one(db)
+        .await
+        .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+        if approved == 0 {
+            return Err(err(StatusCode::CONFLICT, "policy approval required"));
+        }
+    }
+    let policy =
+        sqlx::query("SELECT 1 FROM policies WHERE tenant_id=$1 AND policy_id=$2 AND version=$3")
+            .bind(tenant)
+            .bind(policy_id)
+            .bind(version)
+            .fetch_optional(db)
+            .await
+            .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+    if policy.is_none() {
+        return Err(err(StatusCode::NOT_FOUND, "unknown policy"));
+    }
+    let count = sqlx::query_scalar::<_, i64>("SELECT COUNT(*) FROM agents WHERE tenant_id=$1")
+        .bind(tenant)
+        .fetch_one(db)
+        .await
+        .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+    let target = if percent == 0 {
+        0
+    } else {
+        ((count * percent + 99) / 100).max(1)
+    };
+    let agents = sqlx::query(
+        "SELECT id, policy_version FROM agents WHERE tenant_id=$1 ORDER BY hostname LIMIT $2",
+    )
+    .bind(tenant)
+    .bind(target)
+    .fetch_all(db)
+    .await
+    .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+    let status = if percent >= 100 {
+        "completed"
+    } else {
+        "running"
+    };
+    let rollout_id: i64 = sqlx::query_scalar(
+        "INSERT INTO rollouts(tenant_id, policy_id, version, percent, status, created_at, updated_at) \
+         VALUES ($1,$2,$3,$4,$5,now(),now()) RETURNING id",
+    )
+    .bind(tenant)
+    .bind(policy_id)
+    .bind(version)
+    .bind(percent)
+    .bind(status)
+    .fetch_one(db)
+    .await
+    .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+    for row in &agents {
+        let agent_id: Uuid = row.get("id");
+        let old: Option<String> = row.get("policy_version");
+        sqlx::query(
+            "INSERT INTO rollout_agents(rollout_id, agent_id, old_version) \
+                     VALUES ($1,$2,$3) ON CONFLICT DO NOTHING",
+        )
+        .bind(rollout_id)
+        .bind(agent_id)
+        .bind(old)
+        .execute(db)
+        .await
+        .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+        sqlx::query("UPDATE agents SET policy_version=$1 WHERE id=$2")
+            .bind(version)
+            .bind(agent_id)
+            .execute(db)
+            .await
+            .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+    }
+    Ok(Json(
+        json!({"rollout_id": rollout_id, "percent": percent, "status": status,
+                   "applied": agents.len()}),
+    ))
+}
+
+async fn promote_rollout(
+    State(state): State<AppState>,
+    headers: HeaderMap,
+    axum::extract::Path(rollout_id): axum::extract::Path<i64>,
+) -> Result<Json<Value>, ApiError> {
+    auth(&headers, &state, "admin")?;
+    let db = pool(&state)?;
+    let row = sqlx::query("SELECT tenant_id, version, percent, status FROM rollouts WHERE id=$1")
+        .bind(rollout_id)
+        .fetch_optional(db)
+        .await
+        .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?
+        .ok_or_else(|| err(StatusCode::NOT_FOUND, "unknown rollout"))?;
+    let status: String = row.get("status");
+    if status != "running" {
+        return Err(err(StatusCode::CONFLICT, "rollout is not running"));
+    }
+    let current: i32 = row.get("percent");
+    let next = [1, 10, 50, 100]
+        .into_iter()
+        .find(|s| *s > current)
+        .unwrap_or(100);
+    let tenant: String = row.get("tenant_id");
+    let version: String = row.get("version");
+    let count = sqlx::query_scalar::<_, i64>("SELECT COUNT(*) FROM agents WHERE tenant_id=$1")
+        .bind(&tenant)
+        .fetch_one(db)
+        .await
+        .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+    let target = ((count * next as i64 + 99) / 100).max(1);
+    let agents = sqlx::query(
+        "SELECT id, policy_version FROM agents WHERE tenant_id=$1 ORDER BY hostname LIMIT $2",
+    )
+    .bind(&tenant)
+    .bind(target)
+    .fetch_all(db)
+    .await
+    .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+    let mut applied = 0;
+    for row in &agents {
+        let agent_id: Uuid = row.get("id");
+        let old: Option<String> = row.get("policy_version");
+        let res = sqlx::query(
+            "INSERT INTO rollout_agents(rollout_id, agent_id, old_version) \
+             VALUES ($1,$2,$3) ON CONFLICT DO NOTHING",
+        )
+        .bind(rollout_id)
+        .bind(agent_id)
+        .bind(old)
+        .execute(db)
+        .await
+        .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+        if res.rows_affected() > 0 {
+            applied += 1;
+        }
+        sqlx::query("UPDATE agents SET policy_version=$1 WHERE id=$2")
+            .bind(&version)
+            .bind(agent_id)
+            .execute(db)
+            .await
+            .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+    }
+    let status = if next >= 100 { "completed" } else { "running" };
+    sqlx::query("UPDATE rollouts SET percent=$1, status=$2, updated_at=now() WHERE id=$3")
+        .bind(next)
+        .bind(status)
+        .bind(rollout_id)
+        .execute(db)
+        .await
+        .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+    Ok(Json(
+        json!({"rollout_id": rollout_id, "percent": next, "status": status,
+                   "applied": applied}),
+    ))
+}
+
+async fn rollout_action(
+    State(state): State<AppState>,
+    headers: HeaderMap,
+    axum::extract::Path((rollout_id, action)): axum::extract::Path<(i64, String)>,
+) -> Result<Json<Value>, ApiError> {
+    auth(&headers, &state, "admin")?;
+    let db = pool(&state)?;
+    if action == "promote" {
+        return promote_rollout(State(state), headers, axum::extract::Path(rollout_id)).await;
+    }
+    match action.as_str() {
+        "halt" => {
+            let changed = sqlx::query(
+                "UPDATE rollouts SET status='halted', updated_at=now() WHERE id=$1 AND status='running'",
+            )
+            .bind(rollout_id)
+            .execute(db)
+            .await
+            .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+            if changed.rows_affected() == 0 {
+                return Err(err(StatusCode::NOT_FOUND, "unknown or finished rollout"));
+            }
+        }
+        "rollback" => {
+            let rows =
+                sqlx::query("SELECT agent_id, old_version FROM rollout_agents WHERE rollout_id=$1")
+                    .bind(rollout_id)
+                    .fetch_all(db)
+                    .await
+                    .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+            if rows.is_empty() {
+                return Err(err(StatusCode::NOT_FOUND, "unknown rollout"));
+            }
+            for row in rows {
+                let agent_id: Uuid = row.get("agent_id");
+                let old: Option<String> = row.get("old_version");
+                sqlx::query("UPDATE agents SET policy_version=$1 WHERE id=$2")
+                    .bind(old)
+                    .bind(agent_id)
+                    .execute(db)
+                    .await
+                    .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+            }
+            sqlx::query("UPDATE rollouts SET status='rolled_back', updated_at=now() WHERE id=$1")
+                .bind(rollout_id)
+                .execute(db)
+                .await
+                .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+        }
+        _ => return Err(err(StatusCode::NOT_FOUND, "unknown action")),
+    }
+    Ok(Json(
+        json!({"ok": true, "rollout_id": rollout_id, "action": action}),
+    ))
+}
+
+async fn get_rollout(
+    State(state): State<AppState>,
+    headers: HeaderMap,
+    axum::extract::Path(rollout_id): axum::extract::Path<i64>,
+) -> Result<Json<Value>, ApiError> {
+    auth(&headers, &state, "viewer")?;
+    let db = pool(&state)?;
+    let row = sqlx::query(
+        "SELECT id, tenant_id, policy_id, version, percent, status, created_at::text AS created_at \
+         FROM rollouts WHERE id=$1",
+    )
+    .bind(rollout_id)
+    .fetch_optional(db)
+    .await
+    .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+    let Some(row) = row else {
+        return Err(err(StatusCode::NOT_FOUND, "unknown rollout"));
+    };
+    let agents = sqlx::query(
+        "SELECT agent_id::text AS agent_id, old_version FROM rollout_agents WHERE rollout_id=$1",
+    )
+    .bind(rollout_id)
+    .fetch_all(db)
+    .await
+    .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+    let applied: Vec<Value> = agents
+        .into_iter()
+        .map(|r| {
+            json!({"agent_id": r.get::<String, _>("agent_id"),
+                        "old_version": r.get::<Option<String>, _>("old_version")})
+        })
+        .collect();
+    Ok(Json(json!({
+        "id": row.get::<i64, _>("id"),
+        "tenant_id": row.get::<String, _>("tenant_id"),
+        "policy_id": row.get::<String, _>("policy_id"),
+        "version": row.get::<String, _>("version"),
+        "percent": row.get::<i32, _>("percent"),
+        "status": row.get::<String, _>("status"),
+        "created_at": row.get::<String, _>("created_at"),
+        "agents": applied,
+    })))
 }
 
 async fn enrol(State(state): State<AppState>, body: Bytes) -> Result<Json<Value>, ApiError> {
@@ -288,7 +788,7 @@ async fn health(State(state): State<AppState>) -> Json<Value> {
         None => "not_configured",
     };
     Json(
-        json!({"ok": true, "service": "stml", "impl": "rust-p1", "db": db,
+        json!({"ok": true, "service": "stml", "impl": "rust-p2", "db": db,
                 "production_ready": false}),
     )
 }
@@ -349,6 +849,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     };
 
+    let policy_pubkey = std::env::var("STML_POLICY_PUBKEY").unwrap_or_else(|_| {
+        std::env::var("STML_POLICY_PUBKEY_FILE")
+            .ok()
+            .and_then(|p| std::fs::read_to_string(p).ok())
+            .unwrap_or_default()
+    });
     let app = Router::new()
         .route("/health", get(health))
         .route("/v0/agents", get(agents))
@@ -356,7 +862,21 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .route("/v0/heartbeat", post(heartbeat))
         .route("/v0/inventory", post(inventory))
         .route("/v0/reports", post(reports))
-        .with_state(AppState { pool });
+        .route("/v0/policies", get(list_policies).post(add_policy))
+        .route("/v0/approvals", get(list_approvals))
+        .route("/v0/approvals/{id}/{action}", post(decide_approval))
+        .route("/v0/rollouts", post(start_rollout))
+        .route("/v0/rollouts/{id}", get(get_rollout))
+        .route("/v0/rollouts/{id}/{action}", post(rollout_action))
+        .with_state(AppState {
+            pool,
+            admin_token: std::env::var("STML_ADMIN_TOKEN").unwrap_or_default(),
+            viewer_token: std::env::var("STML_VIEWER_TOKEN").unwrap_or_default(),
+            approver_token: std::env::var("STML_APPROVER_TOKEN").unwrap_or_default(),
+            policy_pubkey,
+            require_approval: std::env::var("STML_REQUIRE_APPROVAL").unwrap_or_else(|_| "1".into())
+                != "0",
+        });
 
     let addr = std::env::var("STML_BIND").unwrap_or_else(|_| "127.0.0.1:8080".to_string());
     let listener = tokio::net::TcpListener::bind(&addr).await?;

@@ -1619,6 +1619,7 @@ dependencies = [
  "pem",
  "serde",
  "serde_json",
+ "sha2",
  "spki",
  "sqlx",
  "tokio",

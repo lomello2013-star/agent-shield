@@ -1,0 +1,30 @@
+{
+  "generated_at": "2026-11-14T12:21:46.909836+00:00",
+  "component": "stml-server-rust",
+  "phase": "P2",
+  "status": "verified",
+  "db": "PostgreSQL 16.16 / stml_p2",
+  "smoke": {
+    "policy_signature": true,
+    "approval_required": true,
+    "sod_admin_cannot_approve": true,
+    "approver_cannot_rollout": true,
+    "rollout_stages": [
+      1,
+      10,
+      50,
+      100
+    ],
+    "promote": true,
+    "rollback": true,
+    "tenant": "p2"
+  },
+  "not_yet": [
+    "trust/keys/CRL",
+    "learning",
+    "mTLS",
+    "RLS/HA",
+    "timestamp skew",
+    "HTTP 201 parity"
+  ]
+}
