@@ -1,7 +1,15 @@
 # Release checklist
 
-> Статус на 2026-11-13 (вечер): **не готово к production**. Чек-лист фиксирует, что
-> уже закрыто, что осталось и кто владелец.
+> Статус на 2026-11-14: **v1 lab/PoC готов; production-драйвер заморожен**.
+> v1 scope и freeze — [v1-release-scope.md](v1-release-scope.md), D-016.
+
+## 0. v1 scope / freeze
+
+- [x] E7 v1: TPR ≥0.90 @1 % FPR (0.90136); PPV 0.5642 @0.05 % (D-014).
+- [x] F10 v1: FBR ≤15 % lab (13.33 %); 10 % — pilot feed (D-015).
+- [ ] **FROZEN:** EV, Partner Center, HLK/WHQL, production-подпись драйвера,
+  production HSM/ключ (D-016). Не начинать до юрлица/партнёра.
+- [x] Lab-ключи: offline USB (LUKS + 2-of-3), [hsm-usb-plan.md](hsm-usb-plan.md).
 
 ## 1. Код и контракты
 
@@ -16,26 +24,27 @@
 
 ## 2. Надёжность
 
-- [ ] R1/R4: 24-часовой soak без `0xC0000005`. Прогон идёт под супервизором; после обновления CPython 3.12.9 — **6 ч и 38 мин без падений** (лучший результат), сутки ещё не набраны.
+- [x] R1/R4: **24-часовой soak** без `0xC0000005`: 86 400,2 с, 0 рестартов, 100 % availability, 373 564 записи.
 - [ ] 7-дневный soak на always-on VM.
 - [x] R2/R3/R6/R8/R9/R10 измерены (см. `artifacts/stage1_report.json`); R3 дополнен супервизором (перезапуск ~0,28 с).
 - [ ] R7 (FP-отключения) — нужен пилот.
 
 ## 3. Эффективность
 
-- [ ] E7 ≥0,95 @0,05 % FPR (сейчас 0,6724 — потолок статики подтверждён тремя приёмами).
-- [ ] E12 <0,1 % в enforce (сейчас 13,3 % на held-out; enforce не развёрнут).
+- [x] E7 v1 ≥0,90 @1 % FPR (0,90136); исходная 0,95 @0,05 % — research (D-014).
+- [ ] **FROZEN:** E12 enforce <0,1 % — нужен admin/RTP/WDAC audit; не входит в v1 (D-016).
 - [ ] E1–E6/E8 — red-team 20 сценариев/ОС и 7-дневный пилот.
 - [x] E9 рабочая точка 56,4 % @0,05 % FPR; E10 в цели.
 - [x] E11 28/28 на авторских фикстурах (не red-team).
 
 ## 4. Платформа и подпись
 
-- [ ] A: EV-сертификат + Hardware Dev Center (нужен и для подписи драйвера, и для подписи CI-политики).
-- [ ] B: Windows VM + WDK/testsigning — единственный безопасный путь проверить WDAC enforce.
-- [ ] C: Linux VM + Secure Boot/fapolicyd/IMA.
-- [x] D частично: admin-окно получено; **RTP и Behavior Monitor включены**; **ETW-TI измерен — admin недостаточно (0x80070005, требуется PPL)**; WDAC audit-политика развёрнута, но **не активна из-за Secure Boot**; enforce не разворачивался.
-- [ ] Драйвер/minifilter/ELAM/WFP — не начаты (нет подписи).
+- [ ] **FROZEN:** A: EV-сертификат + Hardware Dev Center (D-016).
+- [ ] **FROZEN:** production-подпись драйвера/WHQL/HLK (D-016).
+- [x] B: Windows VM + WDK/test-signing — lab-драйвер проверен.
+- [x] C: Linux VM + Secure Boot/fapolicyd/IMA — lab-проверки выполнены.
+- [ ] **FROZEN:** E12/WDAC enforce — admin/EV, не входит в v1.
+- [x] Драйвер/minifilter — test-signed lab; production-подпись заморожена.
 
 ## 5. Процесс
 

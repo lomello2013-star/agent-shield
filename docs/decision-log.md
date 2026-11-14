@@ -205,7 +205,7 @@ T1562.001.
 **Выбор:** B (рекомендация агента), C — внешний трек.
 **Обоснование:** 0.90136 @1 % и PPV 0.5642 @0.05 % уже измерены; дальнейший
 рост требует динамики/песочницы, а не порога.
-**Статус:** revised target met; original 0.95 @0.05 % — research/open.
+**Статус:** accepted for v1 (D-016): revised target met; original 0.95 @0.05 % — research, не релизный гейт.
 
 ---
 
@@ -223,7 +223,31 @@ T1562.001.
 **Выбор:** B (рекомендация агента).
 **Обоснование:** 13.33 % — измеренный floor sound policy на held-out inventory;
 пути шире = дыра в default-deny.
-**Статус:** lab target met; 10 % — pilot/open с внешним feed.
+**Статус:** accepted for v1 (D-016): lab target met; 10 % — pilot/research с внешним feed.
+
+---
+
+## D-016. Freeze всего, что требует юрлица/EV/HLK
+
+**Вопрос:** физлицо не может получить EV/HLK/Partner Center; нужно ли продолжать
+эти работы или заморозить.
+
+| Вариант | Плюсы | Минусы |
+|---|---|---|
+| A. Заморозить до юрлица/партнёра (рекомендация) | не тратим время/деньги в тупике | production-драйвер отложен |
+| B. Пытаться как физлицо | — | EV/Partner Center всё равно блокируют |
+| C. Партнёр с EV | production возможен | юрлицо/партнёр нужен |
+
+**Рекомендация:** **A**; C — когда появится партнёр/юрлицо.
+**Выбор:** A (рекомендация агента).
+**Обоснование:** без юрлица цепочка EV→HLK→Partner Center не завершается;
+v1 выпускаем как user-mode/test-signed lab, production-подпись не обещаем.
+**Заморожено:** EV, Partner Center, HLK/WHQL, production-подпись драйвера,
+production HSM/ключ. **Не заморожено:** user-mode v1, Linux-агент, test-signed
+lab, 24h soak, red-team.
+**HSM:** для lab — offline USB (LUKS + 2-of-3), см. `docs/hsm-usb-plan.md`;
+это не production HSM.
+**Статус:** accepted; разморозка — после юрлица/партнёра.
 
 ---
 
