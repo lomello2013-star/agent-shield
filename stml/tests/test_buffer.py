@@ -41,3 +41,12 @@ def test_retry_backoff_delays(tmp_path):
     item = spool.peek()[0]
     spool.mark_attempt(item.row_id, 1, delay_s=60)
     assert spool.peek(now=__import__("time").time() + 1) == []
+
+
+def test_purge_keeps_p0_but_drops_old_p1(tmp_path):
+    spool = Spool(tmp_path / "s.sqlite3")
+    spool.enqueue(_report("p0", Priority.P0))
+    spool.enqueue(_report("p1", Priority.P1))
+    assert spool.purge(max_age_s=-1) == 1
+    assert spool.p0_count() == 1
+    assert spool.pending_count() == 1

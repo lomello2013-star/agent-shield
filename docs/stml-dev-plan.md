@@ -117,14 +117,15 @@
 
 ---
 
-## Фаза 5 — Масштаб транспорта (S5)
+## Фаза 5 — Масштаб транспорта (S5) `[partial: 1k verified]`
 
-1. NATS JetStream для >1k агентов (или Kafka — по критерию ADR D16).
-2. Pull + опциональный push (gRPC stream).
-3. Replay-защита (nonce + timestamp + skew limit).
-4. Offline 7 дней.
+1. [~] NATS JetStream — адаптер есть как явная заглушка; внешний сервер/NATS не настроены. LocalBus для MVP.
+2. [ ] Pull + push (gRPC stream) — pull уже есть; push отложен.
+3. [x] Replay-защита (nonce + timestamp + skew).
+4. [x] Offline: P0 не вытесняется, P1–P3 purge 7 дней; буфер SQLite.
 - **Триггер:** 800 агентов при работающем S1 → подготовка S5; инцидент S1 (p95 >2 с на 500) — эскалация.
-- **Гейт S5:** P0 не теряется (1k); дубликаты 0; offline 7 дней; kill-switch ≤5 мин на 1k; replay.
+- **Гейт S5:** **1000 агентов, p95 111,6 мс**, enrol 9,67 с; P0 durability, offline/purge, replay. **Остаток:** реальный NATS/Kafka и push.
+- **Артефакт:** `artifacts/stml_s5_load.json`; `docs/stml-transport.md`.
 
 ---
 

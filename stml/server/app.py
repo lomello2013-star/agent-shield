@@ -15,6 +15,7 @@ from stml.connector.signing import key_id, public_from_pem, verify
 from stml.contracts.policy import canonical_policy
 from stml.contracts.v0 import Heartbeat, Inventory
 from stml.learning.service import LearningService
+from stml.server.bus import build_bus
 from stml.server.store import Store
 from stml.trust.service import TrustError, TrustService
 
@@ -33,6 +34,7 @@ class ServerConfig:
     trust_dir: str = ""
     trust_backend: str = "file"
     require_approval: bool = True
+    event_bus: str = "local"
 
 
 class StmlServer(ThreadingHTTPServer):
@@ -49,6 +51,7 @@ class StmlServer(ThreadingHTTPServer):
             key = self.trust.active("policy") or self.trust.create_key("policy")
             config.policy_pubkey = key["public_pem"]
         self.learning = LearningService(store, self.trust)
+        self.bus = build_bus(config.event_bus)
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -508,6 +511,7 @@ class Handler(BaseHTTPRequestHandler):
             if agent is None or not self._verify_signed(raw, first, agent):
                 return
             acked = self.server.store.ingest(reports)
+            self.server.bus.publish("reports", {"acked": acked, "count": len(reports)})
             self._send(200, {"schema_version": "stml/v0", "acked": acked})
             return
 
