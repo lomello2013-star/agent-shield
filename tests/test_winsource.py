@@ -224,6 +224,21 @@ def test_poll_requires_wevtutil(monkeypatch):
         source.poll()
 
 
+def test_channel_exists_reports_missing_and_present(monkeypatch, tmp_path):
+    from types import SimpleNamespace
+    from core import winsource
+
+    fake = tmp_path / "wevtutil.exe"
+    fake.write_bytes(b"")
+    monkeypatch.setattr(winsource.subprocess, "run",
+                        lambda *a, **k: SimpleNamespace(returncode=0))
+    assert winsource.channel_exists("X", wevtutil=str(fake)) is True
+    monkeypatch.setattr(winsource.subprocess, "run",
+                        lambda *a, **k: SimpleNamespace(returncode=1))
+    assert winsource.channel_exists("X", wevtutil=str(fake)) is False
+    assert winsource.channel_exists("X", wevtutil=str(tmp_path / "missing.exe")) is False
+
+
 def test_sysmon_process_start_to_raw_carries_pid():
     from core.winsource import EventLogRecord
 

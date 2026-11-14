@@ -4,23 +4,25 @@
     "kernel": "6.18.54.1-microsoft-standard-WSL2"
   },
   "helper_result": "{\"mprotects\":100}",
-  "control_events": 0,
-  "events": 100,
+  "control_events": 1,
+  "events": 102,
   "helper_events": 100,
   "top_comms": {
-    "mprotect_helper": 100
+    "mprotect_helper": 100,
+    "WorkerThread": 1,
+    "MainThread": 1
   },
-  "verdicts": 100,
+  "verdicts": 102,
   "rule_hits": {
-    "LINUX-EXEC-MEM-107": 100
+    "LINUX-EXEC-MEM-107": 102
   },
   "latency_kernel_to_user_ms": {
-    "p50": 11.202,
-    "p95": 19.736
+    "p50": 10.531,
+    "p95": 20.944
   },
   "latency_pipeline_ms": {
-    "p50": 0.117,
-    "p95": 0.199
+    "p50": 0.128,
+    "p95": 0.219
   },
   "loss": 0,
   "ledger_ok": true,

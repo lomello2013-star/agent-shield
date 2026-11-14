@@ -15,14 +15,14 @@
   "rule_hits": {
     "LINUX-C2-PORT-105": 200
   },
-  "elapsed_s": 0.26,
+  "elapsed_s": 0.21,
   "latency_kernel_to_user_ms": {
-    "p50": 0.239,
-    "p95": 1.066
+    "p50": 0.249,
+    "p95": 0.771
   },
   "latency_pipeline_ms": {
-    "p50": 0.137,
-    "p95": 0.267
+    "p50": 0.128,
+    "p95": 0.212
   },
   "loss": 0,
   "ledger_ok": true,

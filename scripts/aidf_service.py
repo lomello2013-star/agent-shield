@@ -101,8 +101,13 @@ def _run_daemon() -> int:
     host = HostContext(host_id=os.environ.get("COMPUTERNAME", "host"),
                        os="windows", version="10", arch="x64")
     sources = ["win.eventlog", "win.defender"]
-    if os.environ.get("AIDF_SYSMON") == "1":
-        sources.append("win.sysmon")       # opt-in: gives process events with a PID
+    sysmon_requested = os.environ.get("AIDF_SYSMON") == "1"
+    sysmon_ok = False
+    if sysmon_requested:
+        from core.winsource import channel_exists
+        sysmon_ok = channel_exists("Microsoft-Windows-Sysmon/Operational")
+        if sysmon_ok:
+            sources.append("win.sysmon")   # opt-in: process events with a PID
     config = DaemonConfig(sources=sources,
                           thresholds={"heartbeat_timeout_s": 60})
     # Without a positive interval the collector thread never starts and the service
@@ -110,6 +115,9 @@ def _run_daemon() -> int:
     collect_interval = float(os.environ.get("AIDF_COLLECT_INTERVAL_S", "5"))
     daemon = Daemon(DATA_ROOT, config=config, host=host, serve_http=False,
                     collect_interval_s=collect_interval)
+    if sysmon_requested and not sysmon_ok:
+        daemon.log.append("sysmon_missing",
+                          {"channel": "Microsoft-Windows-Sysmon/Operational"})
     # Response layer: without this the gate could only count actions. The key is
     # provisioned in the data root (production: DPAPI/TPM, per docs/self-protection).
     key_path = os.path.join(DATA_ROOT, "quarantine.key")

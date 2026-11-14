@@ -2995,6 +2995,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 10:55] Sysmon как опция + aidfctl --params-file [code]
+
+**Действие**: (1) `aidfctl --params-file` — JSON из файла, чтобы PowerShell не терял кавычки при передаче в native exe; (2) Sysmon оформлен как опция продукта: `scripts/setup_sysmon.ps1`, `docs/sysmon.md`, `channel_exists()` — сервис проверяет канал и пишет `sysmon_missing`, а не добавляет заведомо мёртвый источник; (3) ссылка в `docs/operations.md`.
+**Числа**: pytest **467 passed**; cargo **133**; `run_all` **29/29**; e2e `--params-file`: `confirm` → `executed`, `tick.bin` **390 → 390** (frozen), `response.executed=1`.
+**Вердикт**: CLI-эргономика закрыта; Sysmon — документированная опция с проверкой наличия канала и честным `sysmon_missing`.
+**Проверка**: `pytest` → 467; в VM `aidfctl confirm --params-file C:\Temp\confirm.json` → `status: executed`; `docs/sysmon.md` + `scripts/setup_sysmon.ps1`.
+**Статус**: verified
+**Actor**: agent
+**Run_id**: sysmon-option-params-file-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

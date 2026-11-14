@@ -10,9 +10,9 @@
       7040,
       1102
     ],
-    "last_record_id": 11301,
+    "last_record_id": 11331,
     "calls": 2,
-    "last_query_ms": 13.257
+    "last_query_ms": 12.993
   },
   "events_read": 60,
   "second_poll_fresh": 0,
@@ -24,9 +24,9 @@
   "rule_hits": {
     "WIN-SERVICE-CREATE-007": 60
   },
-  "poll_ms": 13.257,
-  "pipeline_ms_p50": 0.113,
-  "pipeline_ms_p95": 0.211,
+  "poll_ms": 12.993,
+  "pipeline_ms_p50": 0.11,
+  "pipeline_ms_p95": 0.138,
   "loss": 0,
   "ledger_ok": true,
   "audit_chain_ok": true,

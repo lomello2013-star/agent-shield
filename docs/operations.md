@@ -23,6 +23,13 @@
 | Тесты | машины с топ-3 EDR в матрице (test-strategy.md) |
 | Минимальный набор callbacks | драйвер не перекрывает чужие перехваты (altitude — согласованный) |
 
+### 2.1. Sysmon (опция, Windows)
+
+`suspend` по PID на Windows требует источника с `ProcessId`: System/Defender его не
+дают, поэтому без Sysmon действие пропускается (`action_skipped`). Sysmon опционален:
+установка — `scripts/setup_sysmon.ps1`, включение — `AIDF_SYSMON=1` в env службы,
+подробности — [sysmon.md](sysmon.md). Детекция работает и без него.
+
 ## 3. Ресурсы пилота (без денежной оценки)
 
 - ВМ: Windows 10/11/Server ×2, Ubuntu/Debian/RHEL/Fedora ×2, машины с топ-3 EDR ×3.

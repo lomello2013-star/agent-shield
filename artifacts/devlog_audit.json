@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-11-13T23:25:32.083693+00:00",
-  "entries": 110,
-  "complete": 87,
+  "generated_at": "2026-11-14T07:58:19.303595+00:00",
+  "entries": 111,
+  "complete": 88,
   "incomplete": 23,
-  "completeness_pct": 79.1,
+  "completeness_pct": 79.3,
   "by_type": {
     "config": 4,
-    "experiment": 70,
+    "experiment": 71,
     "escalation": 1,
     "decision": 2,
     "code": 23,

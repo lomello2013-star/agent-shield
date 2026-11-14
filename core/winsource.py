@@ -41,6 +41,18 @@ EVENT_SEMANTICS: dict[int, tuple[str, str, str]] = {
 SYSMON_PROVIDER = "Microsoft-Windows-Sysmon"
 
 
+def channel_exists(log_name: str, wevtutil: str = WEVTUTIL) -> bool:
+    """True when the event channel exists (Sysmon is an optional component)."""
+    if not os.path.exists(wevtutil):
+        return False
+    try:
+        completed = subprocess.run([wevtutil, "gl", log_name], capture_output=True,
+                                   text=True, timeout=10)
+    except (OSError, subprocess.SubprocessError):
+        return False
+    return completed.returncode == 0
+
+
 def _parse_pid(value: object) -> int | None:
     if value is None:
         return None

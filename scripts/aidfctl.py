@@ -8,6 +8,7 @@ Auth material never comes from the command line by default:
 Example:
     set AIDF_AUTHKEY=... & set AIDF_TOKEN=...
     python scripts/aidfctl.py --address \\.\pipe\aidf health
+    python scripts/aidfctl.py confirm --params-file confirm.json
 """
 
 from __future__ import annotations
@@ -42,23 +43,34 @@ def _load_token(path: str | None) -> str:
     return value
 
 
+def load_params(raw: str | None, path: str | None) -> dict:
+    """Params from --params or --params-file (the file avoids native-quoting issues)."""
+    if path:
+        with open(path, encoding="utf-8") as fh:
+            value = json.load(fh)
+    else:
+        value = json.loads(raw or "{}")
+    if not isinstance(value, dict):
+        raise ValueError("params must be a JSON object")
+    return value
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="aidfctl", description="AIDefender JSON-RPC client")
     parser.add_argument("--address", default=None)
     parser.add_argument("--authkey-file")
     parser.add_argument("--token-file")
     parser.add_argument("method")
-    parser.add_argument("--params", default="{}")
+    parser.add_argument("--params", default=None)
+    parser.add_argument("--params-file")
     args = parser.parse_args(argv)
 
     address = args.address or default_address()
     authkey = _load_hex(args.authkey_file, "AIDF_AUTHKEY")
     token = _load_token(args.token_file)
     try:
-        params = json.loads(args.params)
-        if not isinstance(params, dict):
-            raise ValueError("params must be a JSON object")
-    except ValueError as exc:
+        params = load_params(args.params, args.params_file)
+    except (OSError, ValueError) as exc:
         print(json.dumps({"error": f"bad params: {exc}"}), file=sys.stderr)
         return 2
 

@@ -1,8 +1,8 @@
 # Покрытие T1055 (Linux, измерено)
 
-> Сгенерировано `scripts/t1055_coverage.py` — 2026-11-13T23:25 UTC.
+> Сгенерировано `scripts/t1055_coverage.py` — 2026-11-14T07:58 UTC.
 
-Путей измерено: **4**; алерт-уровень: **3**, признак-уровень: **1**; событий 400, вердиктов 400, потерь 0.
+Путей измерено: **4**; алерт-уровень: **3**, признак-уровень: **1**; событий 402, вердиктов 402, потерь 0.
 
 ## Пути
 
@@ -11,13 +11,13 @@
 | process_vm_writev | linux.memory | **alert** | 100 | 100 | 0 | 0 |
 | ptrace POKE* | linux.ptrace | **alert** | 100 | 100 | 0 | 0 |
 | /proc/<pid>/mem | linux.procmem | **alert** | 100 | 100 | 0 | 0 |
-| mprotect PROT_EXEC | linux.mprotect | **signal** | 100 | 100 | 0 | 0 |
+| mprotect PROT_EXEC | linux.mprotect | **signal** | 102 | 102 | 1 | 0 |
 
 ## Лестница правил (наращивание контекста)
 
 | Слой | Правило | Группировка | Алерты | Измеренные FP | Вывод |
 |---|---|---|---|---|---|
-| 0 | `LINUX-EXEC-MEM-107` | none | 100 | JIT noise: 0 non-helper events in the run | signal only (medium), never an alert alone |
+| 0 | `LINUX-EXEC-MEM-107` | none | 102 | JIT noise: 2 non-helper events in the run | signal only (medium), never an alert alone |
 | 1 | `LINUX-EXEC-CORR-108` | actor.pid | 5 | JIT-only phase: 0 alerts | alert on injection, quiet on JIT |
 | 2 | `LINUX-EXEC-CORR-109` | process_tree | 1 | legit supervisor+JIT: 1 alert(s); benign JIT: 0 | catches parent-writes-child-executes, known FP class |
 | 3 | `LINUX-EXEC-CORR-110` | process_tree + provenance | 1 | trusted supervisor: 0 alert(s); path from kernel: 20, fallback: 0 | preferred: FP removed, detection kept |

@@ -215,3 +215,4 @@ def test_service_entry_wires_response_and_ipc():
     assert "build_daemon_registry(" in src
     assert "collect_interval_s=" in src
     assert "bytes.fromhex(raw_key)" in src  # CLI sends hex; the server must decode it
+    assert "channel_exists(" in src        # opt-in Sysmon must be probed, not assumed
