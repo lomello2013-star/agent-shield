@@ -126,9 +126,14 @@ alert-правило для generic pending (D-001).
 
 LSM-сенсоры (cred read) **не работают**: ядро загружено без `bpf` в `lsm=`
 (active: `lockdown,capability,landlock,yama,apparmor`), поэтому `file_open`
-программа не получает событий. Нужен `lsm=...,bpf` + перезагрузка; это
-следующий шаг. Production-коллектора loader→pipeline и 20/20 live пока нет.
-fapolicyd блокировал clang/loader (`EPERM`), на тест останавливался и возвращён.
+программа не получает событий. Нужен `lsm=...,bpf` + перезагрузка.
+
+**Net live:** `stream_net` (cgroup/connect) даёт `ready:true`, но **0 событий**;
+`echo $$ > cgroup.procs` → `EINVAL`. Адаптер `net.connect → object.port` уже
+проверен unit-тестом (`LINUX-C2-PORT-105`), остаётся cgroup placement (D-010).
+
+Production-коллектора loader→pipeline и 20/20 live пока нет. fapolicyd
+блокировал clang/loader (`EPERM`), на тест останавливался и возвращён.
 
 ### Найденный дефект харнесса
 

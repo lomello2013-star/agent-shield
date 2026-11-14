@@ -143,7 +143,15 @@ def _linux_ebpf(raw: dict, now: datetime) -> dict:
         if not category:
             raise NormalizationError("unmapped syscall", "syscall")
     filename = raw.get("filename")
-    obj = {"type": "file", "path": str(filename)} if filename else None
+    if category == "net.connect" and raw.get("dport") is not None:
+        daddr = str(raw.get("daddr") or "")
+        dport = int(raw["dport"])
+        obj = {"type": "network", "path": f"{daddr}:{dport}", "ip": daddr,
+               "port": dport, "proto": str(raw.get("proto") or "tcp")}
+    elif filename:
+        obj = {"type": "file", "path": str(filename)}
+    else:
+        obj = None
     return {
         "category": category,
         "action": str(raw.get("action") or syscall or "event"),
@@ -159,7 +167,8 @@ def _linux_ebpf(raw: dict, now: datetime) -> dict:
         },
         "object": obj,
         "platform_data": {k: v for k, v in raw.items()
-                          if k in ("syscall", "cgroup", "ret", "comm")},
+                          if k in ("syscall", "cgroup", "ret", "comm",
+                                   "daddr", "dport", "proto")},
     }
 
 

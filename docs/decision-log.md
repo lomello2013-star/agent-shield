@@ -130,8 +130,8 @@ alert-правилом, а не молчанием.
 **Рекомендация:** **C**.
 **Выбор:** C (рекомендация агента).
 **Обоснование:** нельзя выдавать 467 за текущее; нельзя и скрывать stml.
-**Статус:** closed: STML зелёный, `pytest` = **527**, `run_all` **29/29**,
-`status.md` = 527; readiness/dev-report/release синхронизированы.
+**Статус:** closed: STML зелёный, `pytest` = **528**, `run_all` **29/29**,
+`status.md` = 528; readiness/dev-report/release синхронизированы.
 
 ---
 
@@ -184,3 +184,22 @@ T1562.001.
 **Обоснование:** exclusion — типовой шаг атакующего; 5007 уже пишется, не
 хватало только классификации. FP на легитимных exclusion допустим и виден.
 **Статус:** implemented & verified: live `009 = 7`, WIN-08 detected.
+
+---
+
+## D-010. Live net через cgroup
+
+**Вопрос:** `stream_net` (cgroup/connect) даёт `ready:true`, но 0 событий;
+попытка `echo $$ > cgroup.procs` — `EINVAL`.
+
+| Вариант | Плюсы | Минусы |
+|---|---|---|
+| A. Разобрать cgroup placement (systemd scope / `cgroup.procs`) | честный live net | время, зависит от cgroup v2 |
+| B. Пропустить net | быстро | −1 live-сценарий |
+| C. auditd/iptables как источник | обход cgroup | не eBPF |
+
+**Рекомендация:** **A**; fallback B с пометкой.
+**Выбор:** A (рекомендация агента).
+**Обоснование:** адаптер уже маппит `net.connect`/`object.port` (unit-тест
+`LINUX-C2-PORT-105` зелёный); остаётся корректно поместить процесс в cgroup.
+**Статус:** open: `ready:true`, events=0; нужен cgroup-scope/placement.

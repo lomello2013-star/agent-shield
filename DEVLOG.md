@@ -3262,6 +3262,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 15:00] Net-адаптер + cgroup-попытка; 528 тестов [experiment]
+
+**Действие**: `linux.ebpf` научился маппить `net.connect` в `object.port` (unit-тест `LINUX-C2-PORT-105` зелёный); собран `net_connect_event.bpf.o`. Live `stream_net` даёт `ready:true`, но **0 событий**; `echo $$ > /sys/fs/cgroup/aidf/cgroup.procs` → `EINVAL` (cgroup placement). Регрессия: **528 passed**, `run_all` **29/29**, status 528.
+**Числа**: pytest **528**; `run_all` 29/29; net stream ready, events 0; exec live 3 события/1 вердикт (ранее).
+**Вердикт**: net-адаптер готов, live net заблокирован cgroup placement; LSM bpf — отдельный блокер; 20/20 live open.
+**Проверка**: `net_connect_event.bpf.o`; `loader stream_net` → `{"ready":true}`; `pytest tests`; `run_all`.
+**Статус**: verified (adapter/tests); open (cgroup net, LSM bpf, 20/20)
+**Actor**: agent
+**Run_id**: net-cgroup-attempt-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

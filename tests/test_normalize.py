@@ -185,6 +185,24 @@ def test_win_sysmon_registry_event_maps_object_path():
     assert "CurrentVersion" in ev.object.path
 
 
+def test_linux_ebpf_net_connect_maps_object_port():
+    import pathlib
+
+    from core.rules import RuleEngine, load_rules
+
+    ev = normalizer().normalize("linux.ebpf", {
+        "category": "net.connect", "action": "connect", "pid": 100,
+        "ppid": 1, "comm": "curl", "exe": "/usr/bin/curl",
+        "daddr": "127.0.0.1", "dport": 4444, "proto": "tcp",
+    })
+    assert ev.object is not None
+    assert ev.object.type == "network"
+    assert ev.object.port == 4444
+    rules = str(pathlib.Path(__file__).resolve().parents[1] / "rules" / "base.json")
+    verdicts = RuleEngine(load_rules([rules])).evaluate(ev)
+    assert "LINUX-C2-PORT-105" in [v.rule_id for v in verdicts]
+
+
 def test_inject_rule_requires_known_target():
     """Sysmon '<unknown process>' must not trigger the injection rule."""
     import pathlib
