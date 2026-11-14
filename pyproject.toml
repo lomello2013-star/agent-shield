@@ -49,7 +49,7 @@ include = ["core*", "schemas*"]
 "schemas.v3" = ["json_schema/*.json"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "stml/tests"]
 addopts = "-q"
 filterwarnings = ["ignore::DeprecationWarning"]
 
