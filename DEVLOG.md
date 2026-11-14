@@ -3214,6 +3214,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 14:25] Linux eBPF: toolchain + live exec trace [experiment]
+
+**Действие**: в Linux-VM установлены clang/llvm/libbpf-dev; fapolicyd блокировал новые бинарники (`EPERM`), на сборку остановлен и возвращён. Собраны CO-RE `exec_tp`/`net_cgroup`/`open_lsm`, loader; live `exec` trace дал 20 событий, `net`/`lsm` объекты собраны (LSM 0 hits).
+**Числа**: `exec` load **15.62 мс**, events **20**, latency avg **446.4 µs**; объекты 850 680 / 15 504 / 819 392 B; loader 22 136 B; BTF-секции 10/10/10.
+**Вердикт**: live eBPF-примитив работает, но production-коллектора (loader→pipeline) и 20/20 live нет — D-003 остаётся open.
+**Проверка**: `run_spike4.sh` → JSON exec; `readelf -S` 10 секций; fapolicyd восстановлен.
+**Статус**: verified (spike); open (20/20 live, LSM)
+**Actor**: agent
+**Run_id**: linux-ebpf-smoke-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

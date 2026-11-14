@@ -114,9 +114,12 @@ alert-правило для generic pending (D-001).
 
 ### Linux
 
-20-сценарный Linux-прогон в этом срезе **не выполнялся**; существующие
-`linux_*_e2e` (9 техник) и fapolicyd (10/10) — отдельные измерения, не red-team
-агента. Следующий шаг — тот же каталог на Linux-VM с eBPF-агентом.
+20-сценарный Linux-прогон **не выполнялся**. Live eBPF-примитив проверен:
+в Linux-VM собраны CO-RE `exec_tp` / `net_cgroup` / `open_lsm` и loader;
+`exec` trace дал **20 событий**, load 15.6 мс, latency ~446 µs. LSM hook — 0
+hits (нужен разбор LSM-стека). Это **spike**, а не production-коллектор:
+интеграции loader→pipeline и 20/20 live пока нет. fapolicyd блокировал новый
+clang/gcc (`EPERM`), на сборку останавливался и возвращён.
 
 ### Найденный дефект харнесса
 
