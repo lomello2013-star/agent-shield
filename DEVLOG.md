@@ -3430,6 +3430,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 17:30] logrotate + финальная оценка [decision]
+
+**Действие**: добавлен `packaging/linux/aidf-agent.logrotate` (14 дней, copytruncate), install ставит его в `/etc/logrotate.d`; `logrotate -d` OK. Составлен `docs/final-assessment.md`: внутренние P0/P1 закрыты, остаток — hardening (подпись/очередь, alert-only 007) и внешние EV/HLK/human-review.
+**Числа**: pytest 533; `run_all` 29/29; docs 13/13; Linux live 17/17 applicable; agent 12 audit-строк.
+**Вердикт**: агентская часть проекта завершена; внешние блокеры зафиксированы.
+**Проверка**: `logrotate -d`; `docs/final-assessment.md`; `artifacts/linux_ebpf_live.json`.
+**Статус**: verified; external blockers documented
+**Actor**: agent
+**Run_id**: final-assessment-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

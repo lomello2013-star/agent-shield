@@ -57,7 +57,8 @@ sudo systemctl stop aidf-agent
 Юнит — `packaging/linux/aidf-agent.service`; install копирует `core/ schemas/
 rules/`, `loader`, `*.bpf.o` в `/opt/aidf`, пишет audit в
 `/var/log/aidf/linux_audit.jsonl`. Проверено: сервис стартует ~5 с, сценарии
-`corr_helper` + connect 4444 + DNS дали **12 audit-строк**.
+`corr_helper` + connect 4444 + DNS дали **12 audit-строк**. Ротация —
+`packaging/linux/aidf-agent.logrotate` (14 дней, `logrotate -d` OK).
 
 ## Ограничения
 

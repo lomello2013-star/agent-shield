@@ -203,8 +203,8 @@ T1562.001.
 **Выбор:** A (рекомендация агента).
 **Обоснование:** прототип уже даёт 10 потоков и audit JSONL; B требует
 systemd/подписи/очереди, это отдельный packaging-этап.
-**Статус:** A+B partially: systemd-юнит и install-скрипт проверены (12 audit-строк);
-подпись, очередь и ротация логов — open.
+**Статус:** A+B partially: systemd-юнит, install и logrotate проверены
+(12 audit-строк, `logrotate -d` OK); подпись и очередь — open (hardening).
 
 ---
 

@@ -1,0 +1,8 @@
+/var/log/aidf/linux_audit.jsonl {
+    daily
+    rotate 14
+    compress
+    missingok
+    notifempty
+    copytruncate
+}

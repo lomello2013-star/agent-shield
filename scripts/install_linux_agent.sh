@@ -21,6 +21,8 @@ done
 
 install -m 0644 "$ROOT/packaging/linux/aidf-agent.service" \
     /etc/systemd/system/aidf-agent.service
+install -m 0644 "$ROOT/packaging/linux/aidf-agent.logrotate" \
+    /etc/logrotate.d/aidf-agent
 systemctl daemon-reload
 systemctl enable aidf-agent
 echo "installed: $DEST; start with: systemctl start aidf-agent"
