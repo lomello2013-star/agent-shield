@@ -5,9 +5,11 @@ $ErrorActionPreference = "Stop"
 $ShortRepo = "D:\-528D~1"
 $DataDir = "C:\ProgramData\AIDefender\stml"
 New-Item -ItemType Directory -Force -Path $DataDir | Out-Null
-Copy-Item (Join-Path $ShortRepo "scripts\run_stml_server.cmd") (Join-Path $DataDir "run_server.cmd") -Force
+Copy-Item (Join-Path $ShortRepo "scripts\run_stml_server.ps1") (Join-Path $DataDir "run_server.ps1") -Force
 
-$Action = New-ScheduledTaskAction -Execute "cmd.exe" -Argument "/c `"$DataDir\run_server.cmd`"" -WorkingDirectory $ShortRepo
+$Action = New-ScheduledTaskAction -Execute "powershell.exe" `
+    -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$DataDir\run_server.ps1`"" `
+    -WorkingDirectory $ShortRepo
 $Trigger = New-ScheduledTaskTrigger -AtStartup
 $Settings = New-ScheduledTaskSettingsSet -RestartCount 3 -RestartInterval (New-TimeSpan -Minutes 1) -StartWhenAvailable
 Register-ScheduledTask -TaskName "AIDefender-STML-Server" -Action $Action -Trigger $Trigger `
