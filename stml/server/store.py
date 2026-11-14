@@ -72,7 +72,8 @@ class Store:
             CREATE TABLE IF NOT EXISTS policies (
                 policy_id TEXT NOT NULL, version TEXT NOT NULL, channel TEXT NOT NULL,
                 content TEXT NOT NULL, key_id TEXT NOT NULL, signature TEXT NOT NULL,
-                created_at REAL NOT NULL, PRIMARY KEY (policy_id, version)
+                created_at REAL NOT NULL, tenant_id TEXT NOT NULL DEFAULT '',
+                PRIMARY KEY (tenant_id, policy_id, version)
             );
             CREATE TABLE IF NOT EXISTS rollouts (
                 id INTEGER PRIMARY KEY AUTOINCREMENT, policy_id TEXT NOT NULL,
@@ -92,7 +93,7 @@ class Store:
                 id INTEGER PRIMARY KEY AUTOINCREMENT, kind TEXT NOT NULL,
                 target TEXT NOT NULL, payload TEXT NOT NULL, proposed_by TEXT NOT NULL,
                 status TEXT NOT NULL, created_at REAL NOT NULL, decided_by TEXT,
-                decided_at REAL
+                decided_at REAL, tenant_id TEXT NOT NULL DEFAULT ''
             );
             CREATE TABLE IF NOT EXISTS telemetry (
                 id INTEGER PRIMARY KEY AUTOINCREMENT, agent_id TEXT NOT NULL,
@@ -115,7 +116,17 @@ class Store:
             """
         )
         self._db.commit()
+        self._migrate_columns()
         restrict(self.path)
+
+    def _migrate_columns(self) -> None:
+        """Add tenant columns to databases created by earlier STML snapshots."""
+        for table in ("policies", "approvals"):
+            columns = [row[1] for row in self._db.execute(f"PRAGMA table_info({table})")]
+            if "tenant_id" not in columns:
+                self._db.execute(
+                    f"ALTER TABLE {table} ADD COLUMN tenant_id TEXT NOT NULL DEFAULT ''")
+        self._db.commit()
 
     # -- enrolment -------------------------------------------------------
     def create_enrol_token(self, tenant_id: str, token: str | None = None) -> str:
@@ -259,30 +270,43 @@ class Store:
             try:
                 self._db.execute(
                     "INSERT INTO policies(policy_id, version, channel, content, key_id, "
-                    "signature, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                    "signature, created_at, tenant_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                     (policy["policy_id"], policy["version"], policy.get("channel", "stable"),
                      json.dumps(policy.get("content", {})), policy.get("key_id", ""),
-                     policy.get("signature", ""), time.time()),
+                     policy.get("signature", ""), time.time(), policy.get("tenant_id", "")),
                 )
                 self._db.commit()
             except sqlite3.IntegrityError as exc:
                 raise ValueError("policy version already exists") from exc
         self._audit("operator", "policy_add", f"{policy['policy_id']}@{policy['version']}")
 
-    def policies(self) -> list[dict[str, Any]]:
+    def policies(self, tenant_id: str | None = None) -> list[dict[str, Any]]:
         with self._lock:
-            rows = self._db.execute(
-                "SELECT policy_id, version, channel, key_id, created_at FROM policies "
-                "ORDER BY created_at DESC"
-            ).fetchall()
+            if tenant_id is None:
+                rows = self._db.execute(
+                    "SELECT policy_id, version, channel, key_id, created_at, tenant_id "
+                    "FROM policies ORDER BY created_at DESC"
+                ).fetchall()
+            else:
+                rows = self._db.execute(
+                    "SELECT policy_id, version, channel, key_id, created_at, tenant_id "
+                    "FROM policies WHERE tenant_id = ? ORDER BY created_at DESC", (tenant_id,)
+                ).fetchall()
         return [dict(r) for r in rows]
 
-    def policy(self, policy_id: str, version: str) -> dict[str, Any] | None:
+    def policy(self, policy_id: str, version: str,
+               tenant_id: str | None = None) -> dict[str, Any] | None:
         with self._lock:
-            row = self._db.execute(
-                "SELECT * FROM policies WHERE policy_id = ? AND version = ?",
-                (policy_id, version),
-            ).fetchone()
+            if tenant_id is None:
+                row = self._db.execute(
+                    "SELECT * FROM policies WHERE policy_id = ? AND version = ?",
+                    (policy_id, version),
+                ).fetchone()
+            else:
+                row = self._db.execute(
+                    "SELECT * FROM policies WHERE policy_id = ? AND version = ? AND tenant_id = ?",
+                    (policy_id, version, tenant_id),
+                ).fetchone()
         if row is None:
             return None
         data = dict(row)
@@ -290,11 +314,12 @@ class Store:
         return data
 
     def dry_run(self, policy_id: str, version: str,
-                agent_ids: list[str] | None = None) -> dict[str, Any]:
-        policy = self.policy(policy_id, version)
+                agent_ids: list[str] | None = None,
+                tenant_id: str | None = None) -> dict[str, Any]:
+        policy = self.policy(policy_id, version, tenant_id)
         if policy is None:
             raise KeyError("unknown policy")
-        agents = self.agents()
+        agents = self.agents(tenant_id)
         if agent_ids:
             wanted = set(agent_ids)
             agents = [a for a in agents if a.id in wanted]
@@ -305,12 +330,13 @@ class Store:
         return {"policy_id": policy_id, "version": version, "channel": policy["channel"],
                 "agents": len(agents), "would_change": len(changes), "changes": changes}
 
-    def start_rollout(self, policy_id: str, version: str, percent: int) -> dict[str, Any]:
-        policy = self.policy(policy_id, version)
+    def start_rollout(self, policy_id: str, version: str, percent: int,
+                      tenant_id: str | None = None) -> dict[str, Any]:
+        policy = self.policy(policy_id, version, tenant_id)
         if policy is None:
             raise KeyError("unknown policy")
         percent = max(0, min(100, int(percent)))
-        agents = self.agents()
+        agents = self.agents(tenant_id)
         count = 0 if percent == 0 else max(1, (len(agents) * percent + 99) // 100)
         selected = agents[:count]
         now = time.time()
@@ -423,26 +449,33 @@ class Store:
         self._audit("trust", "key_revoke", key_id)
 
     def propose_approval(self, kind: str, target: str, payload: dict[str, Any],
-                         proposed_by: str) -> int:
+                         proposed_by: str, tenant_id: str = "") -> int:
         with self._lock:
             cur = self._db.execute(
-                "INSERT INTO approvals(kind, target, payload, proposed_by, status, created_at) "
-                "VALUES (?, ?, ?, ?, 'pending', ?)",
-                (kind, target, json.dumps(payload), proposed_by, time.time()),
+                "INSERT INTO approvals(kind, target, payload, proposed_by, status, created_at, "
+                "tenant_id) VALUES (?, ?, ?, ?, 'pending', ?, ?)",
+                (kind, target, json.dumps(payload), proposed_by, time.time(), tenant_id),
             )
             self._db.commit()
             approval_id = int(cur.lastrowid)
         self._audit("operator", "approval_propose", f"{kind}:{target}")
         return approval_id
 
-    def approvals(self, status: str | None = None) -> list[dict[str, Any]]:
+    def approvals(self, status: str | None = None,
+                  tenant_id: str | None = None) -> list[dict[str, Any]]:
+        clauses: list[str] = []
+        params: list[Any] = []
+        if status:
+            clauses.append("status = ?")
+            params.append(status)
+        if tenant_id is not None:
+            clauses.append("tenant_id = ?")
+            params.append(tenant_id)
+        where = (" WHERE " + " AND ".join(clauses)) if clauses else ""
         with self._lock:
-            if status:
-                rows = self._db.execute(
-                    "SELECT * FROM approvals WHERE status = ? ORDER BY id DESC", (status,)
-                ).fetchall()
-            else:
-                rows = self._db.execute("SELECT * FROM approvals ORDER BY id DESC").fetchall()
+            rows = self._db.execute(
+                f"SELECT * FROM approvals{where} ORDER BY id DESC", params
+            ).fetchall()
         return [dict(r) for r in rows]
 
     def approval(self, approval_id: int) -> dict[str, Any] | None:
@@ -465,12 +498,19 @@ class Store:
             raise KeyError("unknown or already decided approval")
         self._audit("approver", f"approval_{status}", str(approval_id))
 
-    def is_approved(self, kind: str, target: str) -> bool:
+    def is_approved(self, kind: str, target: str,
+                    tenant_id: str | None = None) -> bool:
         with self._lock:
-            row = self._db.execute(
-                "SELECT 1 FROM approvals WHERE kind = ? AND target = ? AND status = 'approved' "
-                "ORDER BY id DESC LIMIT 1", (kind, target),
-            ).fetchone()
+            if tenant_id is None:
+                row = self._db.execute(
+                    "SELECT 1 FROM approvals WHERE kind = ? AND target = ? AND status = 'approved' "
+                    "ORDER BY id DESC LIMIT 1", (kind, target),
+                ).fetchone()
+            else:
+                row = self._db.execute(
+                    "SELECT 1 FROM approvals WHERE kind = ? AND target = ? AND status = 'approved' "
+                    "AND tenant_id = ? ORDER BY id DESC LIMIT 1", (kind, target, tenant_id),
+                ).fetchone()
         return row is not None
 
     def audit_export(self, limit: int = 1000) -> list[dict[str, Any]]:

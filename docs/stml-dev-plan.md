@@ -156,12 +156,15 @@
 
 ## Фаза 8 — Сосуществование и multi-tenant (S8)
 
-1. Тесты с топ-3 EDR (Defender, CrowdStrike, SentinelOne).
-2. Режим `compat`.
-3. Матрица ОС (Windows 10/11/Server, Ubuntu/Debian/RHEL/Fedora, arm64).
-4. Multi-tenant (финализация ADR D14) + tenant-изоляция (RLS).
-5. SIEM-экспорт (JSON + CEF).
-- **Гейт S8:** топ-3 EDR пройдены; матрица в `docs/compat.md`; tenant-изоляция проверена; SIEM; ADR D14 финализирован.
+## Фаза 8 — Сосуществование и multi-tenant (S8) `[partial]`
+
+1. [ ] Тесты с топ-3 EDR — нет стенда/лицензий; не проводились.
+2. [~] Режим `compat` — описан в `docs/compat.md`; реализация в агенте (v9.1).
+3. [~] Матрица ОС — целевая в `docs/compat.md`; runtime-проверка — CI.
+4. [x] Tenant-изоляция на уровне хранилища: `tenant_id` в agents/reports/policies/approvals, фильтрация; тест двух тенантов.
+5. [x] SIEM-экспорт JSON + CEF.
+- **Гейт S8 (MVP):** tenant-фильтрация + SIEM + матрица/`compat` документированы. **Остаток:** реальные EDR-тесты, tenant-claim/RLS, per-tenant ключи.
+- **Артефакты:** `docs/compat.md`, `docs/multi-tenant.md`.
 
 ---
 

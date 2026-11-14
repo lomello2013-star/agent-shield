@@ -85,11 +85,11 @@ class TrustService:
         return self.create_key(old["key_class"], rotated_from=key_id)
 
     def propose(self, kind: str, target: str, payload: dict[str, Any],
-                proposed_by: str) -> int:
-        return self.store.propose_approval(kind, target, payload, proposed_by)
+                proposed_by: str, tenant_id: str = "") -> int:
+        return self.store.propose_approval(kind, target, payload, proposed_by, tenant_id)
 
     def decide(self, approval_id: int, status: str, decided_by: str) -> None:
         self.store.decide_approval(approval_id, status, decided_by)
 
-    def is_approved(self, kind: str, target: str) -> bool:
-        return self.store.is_approved(kind, target)
+    def is_approved(self, kind: str, target: str, tenant_id: str | None = None) -> bool:
+        return self.store.is_approved(kind, target, tenant_id)

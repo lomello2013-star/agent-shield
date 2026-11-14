@@ -186,7 +186,8 @@ class Handler(BaseHTTPRequestHandler):
             if not self._auth("viewer"):
                 return
             if len(parts) == 2:
-                self._send(200, {"agents": [a.__dict__ for a in self.server.store.agents()]})
+                self._send(200, {"agents": [a.__dict__ for a in
+                                            self.server.store.agents(self.server.config.tenant_id)]})
             elif len(parts) == 3:
                 agent = self.server.store.agent(parts[2])
                 if agent is None:
@@ -278,7 +279,8 @@ class Handler(BaseHTTPRequestHandler):
             return
         if parts == ["v0", "approvals"]:
             if self._auth("viewer"):
-                self._send(200, {"approvals": self.server.store.approvals()})
+                self._send(200, {"approvals": self.server.store.approvals(
+                    tenant_id=self.server.config.tenant_id)})
             return
         if parts == ["v0", "trust", "keys"]:
             if self._auth("viewer"):
@@ -288,7 +290,8 @@ class Handler(BaseHTTPRequestHandler):
             return
         if parts == ["v0", "policies"]:
             if self._auth("viewer"):
-                self._send(200, {"policies": self.server.store.policies()})
+                self._send(200, {"policies": self.server.store.policies(
+                    self.server.config.tenant_id)})
             return
         if len(parts) == 3 and parts[:2] == ["v0", "rollouts"]:
             if self._auth("viewer"):
@@ -337,7 +340,7 @@ class Handler(BaseHTTPRequestHandler):
                 return
             approval_id = self.server.trust.propose(
                 str(body.get("kind", "policy")), str(body.get("target", "")),
-                body.get("payload") or {}, "operator")
+                body.get("payload") or {}, "operator", self.server.config.tenant_id)
             self._send(201, {"approval_id": approval_id, "status": "pending"})
             return
 
@@ -463,12 +466,14 @@ class Handler(BaseHTTPRequestHandler):
                     "content": body.get("content") or {},
                     "key_id": str(body.get("key_id", "")),
                     "signature": str(body.get("signature", "")),
+                    "tenant_id": self.server.config.tenant_id,
                 })
             except ValueError as exc:
                 self._error(409, str(exc))
                 return
             target = f"{body.get('policy_id')}@{body.get('version')}"
-            approval_id = self.server.trust.propose("policy", target, body, "operator")
+            approval_id = self.server.trust.propose("policy", target, body, "operator",
+                                                    self.server.config.tenant_id)
             self._send(201, {"ok": True, "policy_id": body.get("policy_id"),
                              "version": body.get("version"), "approval_id": approval_id})
             return
@@ -478,7 +483,8 @@ class Handler(BaseHTTPRequestHandler):
                 return
             try:
                 result = self.server.store.dry_run(parts[2], parts[3],
-                                                   body.get("agent_ids") if body else None)
+                                                   body.get("agent_ids") if body else None,
+                                                   self.server.config.tenant_id)
             except KeyError:
                 self._error(404, "unknown policy")
                 return
@@ -489,13 +495,14 @@ class Handler(BaseHTTPRequestHandler):
             if not self._auth("admin"):
                 return
             target = f"{body.get('policy_id')}@{body.get('version')}"
-            if self.server.config.require_approval and not self.server.trust.is_approved("policy", target):
+            if self.server.config.require_approval and not self.server.trust.is_approved(
+                    "policy", target, self.server.config.tenant_id):
                 self._error(409, "policy approval required")
                 return
             try:
                 rollout = self.server.store.start_rollout(
                     str(body.get("policy_id", "")), str(body.get("version", "")),
-                    int(body.get("percent", 0)))
+                    int(body.get("percent", 0)), self.server.config.tenant_id)
             except KeyError:
                 self._error(404, "unknown policy")
                 return

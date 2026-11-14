@@ -97,6 +97,14 @@
 | D-53 | K8s | **Helm chart reference; SQLite ReadWriteOnce** | PostgreSQL сразу | S1.5 |
 | D-54 | Air-gapped | **процедура USB + anti-rollback + backup** | автоматический updater | S7 MVP |
 
+## S8 (Coexistence / tenant)
+
+| # | Решение | Принято | Альтернативы | Почему |
+|---|---|---|---|---|
+| D-55 | Multi-tenant | **tenant_id в хранилище + фильтрация; один тенант на инсталляцию** | RLS/tenant-claim сразу | SQLite MVP |
+| D-56 | EDR compat | **документированный режим, реализация в агенте** | STML-перехват | зона агента |
+| D-57 | SIEM | **JSON + CEF export** | только JSON | совместимость |
+
 ## Открытые (предложены, не приняты)
 
 | # | Вопрос | Варианты | Рекомендация |

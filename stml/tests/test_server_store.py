@@ -37,3 +37,22 @@ def test_reports_idempotent_and_nonce_replay(tmp_path):
     assert len(store.reports()) == 1
     assert store.seen_nonce("n1") is False
     assert store.seen_nonce("n1") is True
+
+
+def test_tenant_isolation_policies_agents_approvals(tmp_path):
+    store = Store(tmp_path / "db.sqlite3")
+    for tenant in ("a", "b"):
+        token = store.create_enrol_token(tenant)
+        store.enrol(token, tenant, f"h-{tenant}", "windows", "x64", "0.1.0", "pem")
+    for tenant in ("a", "b"):
+        store.add_policy({"policy_id": "p", "version": "v1", "channel": "stable",
+                          "content": {}, "key_id": "k", "signature": "s",
+                          "tenant_id": tenant})
+    assert len(store.policies("a")) == 1
+    assert len(store.agents("a")) == 1
+    assert store.agents("a")[0].hostname == "h-a"
+    approval = store.propose_approval("policy", "p@v1", {}, "op", "a")
+    assert store.is_approved("policy", "p@v1", "b") is False
+    store.decide_approval(approval, "approved", "approver")
+    assert store.is_approved("policy", "p@v1", "a") is True
+    assert store.is_approved("policy", "p@v1", "b") is False
