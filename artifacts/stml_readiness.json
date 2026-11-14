@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-14T11:46:20.536605+00:00",
+  "generated_at": "2026-11-14T12:15:27.424043+00:00",
   "component": "STML",
   "commit": "da64eb4",
   "tests": {
@@ -50,9 +50,23 @@
     "rust_scaffold": {
       "cargo_check": true,
       "cargo_build": true,
-      "health_db": "ok",
-      "agents_query": true,
-      "parity": false
+      "p1": true,
+      "endpoints": [
+        "health",
+        "agents",
+        "enrol",
+        "heartbeat",
+        "inventory",
+        "reports"
+      ],
+      "parity": "P1",
+      "not_yet": [
+        "operator auth",
+        "policies/rollouts/approvals",
+        "trust/learning",
+        "mTLS",
+        "RLS/HA"
+      ]
     }
   }
 }

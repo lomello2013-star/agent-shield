@@ -44,14 +44,27 @@ python -m stml.server run --port 8080 `
   --trust-dir "$env:ProgramData\AIDefender\stml\trust"
 ```
 
-Сервер напечатает `admin_token`, `viewer_token`, `approver_token`, `enrol_token`.
-Сохрани их в менеджер секретов. `enrol_token` одноразовый.
+Сервер запишет токены в `C:\ProgramData\AIDefender\stml\tokens.json` с ACL и
+напечатает **только путь** (не сами токены). Прочитай `tokens.json` из-под
+своего пользователя; не вставляй токены в чат/логи.
 
 Проверка:
 
 ```powershell
 Invoke-RestMethod http://127.0.0.1:8080/health
 ```
+
+## 2a. Автозапуск сервера
+
+```powershell
+# elevated
+& "D:\ИИ защитник Вектор-защитник\scripts\install_stml_server_task.ps1"
+Get-ScheduledTask -TaskName "AIDefender-STML-Server"
+```
+
+Задача `SYSTEM` копирует `run_server.cmd` в `C:\ProgramData\AIDefender\stml`
+(ASCII-путь) и работает из короткого пути репозитория; DB/trust/tokens должны
+быть доступны SYSTEM (ACL).
 
 ## 3. Настроить и запустить sidecar
 
@@ -96,6 +109,14 @@ Get-ScheduledTask -TaskName "AIDefender-STML-Connector"
 ```
 
 Задача работает от SYSTEM, читает те же файлы в `C:\ProgramData\AIDefender`.
+Серверная задача — `AIDefender-STML-Server` (`install_stml_server_task.ps1`).
+
+## 5a. Если задача не стартует
+
+- `Get-ScheduledTaskInfo` → `LastTaskResult`.
+- Проверить `C:\ProgramData\AIDefender\stml\server.run.log` (без токенов).
+- SYSTEM должен иметь ACL на `server.sqlite3`, `tokens.json`, `trust/`.
+- Использовать полный путь к `python.exe` в `run_server.cmd` / `run_connector.cmd`.
 
 ## 6. Остановка/откат
 
@@ -122,3 +143,11 @@ Unregister-ScheduledTask -TaskName "AIDefender-STML-Connector" -Confirm:$false
 - F11/R1/R4 не закрыты; это не production.
 - `authkey.hex`/токены — файлы; production: DPAPI/TPM/secret store.
 - Не использовать admin-токен в коннекторе; только operator.
+
+## 9. Безопасность после проверки
+
+- Ранее `server.boot.log` содержал токены в открытом виде — он удалён.
+- Токены теперь пишутся в `tokens.json` с ACL; сервер печатает только путь.
+- Если токены попадали в логи/скриншоты — **перевыпусти** их (удали `tokens.json`
+  и перезапусти сервер), затем обнови GUI/sidecar.
+

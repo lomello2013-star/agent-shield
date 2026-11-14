@@ -14,6 +14,7 @@ from __future__ import annotations
 import ctypes
 import ctypes.wintypes as wt
 import os
+import platform
 import secrets
 import subprocess
 import sys
@@ -135,7 +136,8 @@ def _run_daemon() -> int:
 
     os.makedirs(DATA_ROOT, exist_ok=True)
     host = HostContext(host_id=os.environ.get("COMPUTERNAME", "host"),
-                       os="windows", version="10", arch="x64")
+                       os="windows", version=platform.version() or "unknown",
+                       arch=platform.machine() or "x64")
     sources = ["win.eventlog", "win.defender"]
     sysmon_requested = os.environ.get("AIDF_SYSMON") == "1"
     sysmon_ok = False

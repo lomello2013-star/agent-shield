@@ -9,6 +9,8 @@ import secrets
 import sys
 import urllib.request
 
+from stml.connector.security import restrict
+
 from stml.server.app import ServerConfig, StmlServer
 from stml.server.store import Store
 
@@ -42,6 +44,7 @@ def main(argv: list[str] | None = None) -> int:
     run.add_argument("--tls-ca", default="")
     run.add_argument("--no-client-cert", action="store_true")
     run.add_argument("--enrol-token", default="")
+    run.add_argument("--tokens-file", default=os.environ.get("STML_TOKENS_FILE", ""))
 
     tok = sub.add_parser("token", help="create an enrolment token")
     tok.add_argument("--db", default="stml-server.sqlite3")
@@ -100,10 +103,28 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     store = Store(args.db)
-    admin = args.admin_token or secrets.token_urlsafe(24)
-    viewer = args.viewer_token or secrets.token_urlsafe(24)
-    approver = args.approver_token or secrets.token_urlsafe(24)
-    enrol = args.enrol_token or store.create_enrol_token(args.tenant)
+    tokens_path = (args.tokens_file
+                   or os.path.join(os.path.dirname(os.path.abspath(args.db)), "tokens.json"))
+    existing: dict = {}
+    if os.path.exists(tokens_path):
+        try:
+            existing = json.loads(open(tokens_path, encoding="utf-8").read())
+        except (OSError, json.JSONDecodeError):
+            existing = {}
+    admin = args.admin_token or existing.get("admin_token") or secrets.token_urlsafe(24)
+    viewer = args.viewer_token or existing.get("viewer_token") or secrets.token_urlsafe(24)
+    approver = args.approver_token or existing.get("approver_token") or secrets.token_urlsafe(24)
+    enrol = args.enrol_token or existing.get("enrol_token") or store.create_enrol_token(args.tenant)
+    os.makedirs(os.path.dirname(tokens_path) or ".", exist_ok=True)
+    with open(tokens_path, "w", encoding="utf-8") as fh:
+        json.dump({"stml": f"http://{args.host}:{args.port}", "url": f"http://{args.host}:{args.port}",
+                   "tenant": args.tenant, "db": args.db,
+                   "admin_token": admin, "viewer_token": viewer,
+                   "approver_token": approver, "enrol_token": enrol},
+                  fh, indent=2)
+        fh.flush()
+        os.fsync(fh.fileno())
+    restrict(tokens_path)
     config = ServerConfig(tenant_id=args.tenant, admin_token=admin,
                           viewer_token=viewer, approver_token=approver,
                           db_path=args.db, trust_dir=args.trust_dir or args.db + ".trust",
@@ -114,9 +135,8 @@ def main(argv: list[str] | None = None) -> int:
                           require_client_cert=not args.no_client_cert)
     server = StmlServer((args.host, args.port), store, config)
     print(json.dumps({"stml": "running", "url": f"http://{args.host}:{args.port}",
-                      "tenant": args.tenant, "admin_token": admin,
-                      "viewer_token": viewer, "approver_token": approver,
-                      "enrol_token": enrol}), flush=True)
+                      "tenant": args.tenant, "tokens_file": tokens_path,
+                      "tokens": "written; read the file (ACL)"}), flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

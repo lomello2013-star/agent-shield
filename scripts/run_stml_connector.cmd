@@ -30,4 +30,5 @@ if not exist "%STML_PY%" set "STML_PY=python"
   --enrol-token "%STML_ENROL_TOKEN%" ^
   --authkey-file "%AIDF_AUTHKEY_FILE%" ^
   --token-file "%AIDF_OPERATOR_TOKEN_FILE%" ^
-  --console
+  --console ^
+  --rpc-lock "%STML_DATA%\rpc.lock"

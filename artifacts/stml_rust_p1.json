@@ -1,0 +1,24 @@
+{
+  "generated_at": "2026-11-14T12:15:31.527600+00:00",
+  "component": "stml-server-rust",
+  "phase": "P1",
+  "status": "verified",
+  "db": "PostgreSQL 16.16 / stml",
+  "smoke": {
+    "enrol": true,
+    "heartbeat": true,
+    "inventory": true,
+    "reports": true,
+    "agents": true,
+    "agent_version": "10.0.19045",
+    "signature": "Ed25519 PEM"
+  },
+  "not_yet": [
+    "operator auth",
+    "policies/rollouts/approvals",
+    "trust/learning",
+    "mTLS",
+    "RLS/HA",
+    "timestamp skew"
+  ]
+}

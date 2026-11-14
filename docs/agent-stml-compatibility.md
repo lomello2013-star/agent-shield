@@ -165,3 +165,18 @@
 **Остаток:** реальный запуск службы на этом хосте (нужен admin/SCM) и запись
 результата оператором. Phase B (policy/command) не начата.
 
+### 9a. Проверка операторской установки (2026-11-14, выполнена)
+
+- `AIDefender` — Running; named pipe `\\.\pipe\aidf` есть.
+- `AIDefender-STML-Server` — Running; `/health` 200, `/ui/` 200.
+- `AIDefender-STML-Connector` — Running; последний heartbeat `healthy`,
+  `last_error` пуст.
+- Агент в `/v0/agents`: `DESKTOP-JHQB492`, `windows/AMD64`, `10.0.19045`,
+  `healthy`, `last_seen` свежий.
+- Найдено и исправлено: `server.boot.log` содержал plaintext-токены (удалён,
+  токены перевыпущены); дубли серверных процессов; stale-сокет коннектора после
+  рестарта сервера (перезапуск задачи); `agent_version` был `10` (рестарт службы
+  → `10.0.19045`).
+- Остаток: `server.run.log`/`connector.log` не должны содержать секретов;
+  `tokens.json` — ACL; production: DPAPI/secret store.
+

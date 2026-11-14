@@ -7,20 +7,18 @@
 
 - PostgreSQL **16.16** установлен (winget), служба `postgresql-x64-16` работает.
 - Dev-БД: `stml`, роль `stml` / пароль `stml` (только localhost; не production).
-- Миграция `migrations/0001_init.sql` применена; таблицы agents/reports/policies/approvals.
-- `cargo check --features postgres` — успешно.
-- `cargo build --features postgres` — успешно.
-- Сервер запущен с `DATABASE_URL=postgres://stml:stml@127.0.0.1:5432/stml`;
-  `/health` → `{"db":"ok"}`, `/v0/agents` вернул вставленную тестовую строку.
-- **Не проверено:** нагрузка, auth, parity API, RLS, HA, backup/DR.
+- Миграции `0001_init.sql` + `0002_enrol_nonces.sql` применены.
+- `cargo check` / `cargo build` — успешно.
+- **P1 проверен:** enrol, подписанные heartbeat/inventory/reports, `/v0/agents`;
+  тест с Python-сгенерированным Ed25519-ключом.
+- **Не проверено:** операторский auth, policies/rollouts/approvals (P2), RLS/HA/backup, mTLS, timestamp skew.
 
 ## 1. Что уже есть
 
-- `Cargo.toml`: axum, tokio, serde, tracing; `sqlx` — optional feature
-  `postgres`.
-- `src/main.rs`: `/health` (DB probe), `/v0/agents` (SQL query); bind
-  `STML_BIND` (default `127.0.0.1:8080`).
-- `migrations/0001_init.sql`: agents/reports/policies/approvals под PostgreSQL.
+- `Cargo.toml`: axum, tokio, serde, tracing, sqlx/Postgres, ed25519-dalek, spki/pem.
+- `src/main.rs`: `/health`, `/v0/agents`, `/v0/enrol`, `/v0/heartbeat`,
+  `/v0/inventory`, `/v0/reports` (P1).
+- `migrations/0001_init.sql`, `0002_enrol_nonces.sql`.
 - `Cargo.lock` — зафиксирован для воспроизводимости.
 
 ## 2. Принцип порта
@@ -59,7 +57,7 @@
 
 ```powershell
 $env:DATABASE_URL="postgres://stml:stml@127.0.0.1:5432/stml"
-cargo run --manifest-path rust\stml-server\Cargo.toml --features postgres
+cargo run --manifest-path rust\stml-server\Cargo.toml
 # /health -> {"db":"ok"}; /v0/agents -> rows
 ```
-Далее: P1 (enrol/heartbeat/reports + Ed25519), P2 (policies/rollouts/approvals).
+Далее: P2 (policies/rollouts/approvals + операторский auth).
