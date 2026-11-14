@@ -17,7 +17,8 @@
   telemetry consent+PII-strip, cases, models + no-regression + rollback.
 - **Commands проверены:** `isolate`/approval `confirm` → heartbeat `commands`,
   подписанный `/v0/commands/ack`; Rust parity с Python reference.
-- **Не проверено:** P4 (mTLS/Tauri/GUI), P5 parity, RLS/HA/backup, timestamp skew,
+- **GUI проверен:** Rust отдаёт `/` и `/ui/` (тот же `stml/gui/index.html`), 200/17.6 KB.
+- **Не проверено:** P4 mTLS/Tauri, P5 parity, RLS/HA/backup, timestamp skew,
   HTTP 201 parity (Rust returns 200).
 
 ## 1. Что уже есть

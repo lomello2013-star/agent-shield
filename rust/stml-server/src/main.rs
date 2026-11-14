@@ -7,6 +7,7 @@ use axum::{
     body::Bytes,
     extract::State,
     http::{HeaderMap, StatusCode},
+    response::Html,
     routing::{get, post},
     Json, Router,
 };
@@ -1547,6 +1548,10 @@ async fn reports(
     Ok(Json(json!({"schema_version": "stml/v0", "acked": acked})))
 }
 
+async fn ui() -> Html<&'static str> {
+    Html(include_str!("../../../stml/gui/index.html"))
+}
+
 async fn health(State(state): State<AppState>) -> Json<Value> {
     let db = match &state.pool {
         Some(pool) => match sqlx::query_scalar::<_, i32>("SELECT 1")
@@ -1559,7 +1564,7 @@ async fn health(State(state): State<AppState>) -> Json<Value> {
         None => "not_configured",
     };
     Json(
-        json!({"ok": true, "service": "stml", "impl": "rust-p3", "db": db,
+        json!({"ok": true, "service": "stml", "impl": "rust-p4", "db": db,
                 "production_ready": false}),
     )
 }
@@ -1627,6 +1632,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             .unwrap_or_default()
     });
     let app = Router::new()
+        .route("/", get(ui))
+        .route("/ui/", get(ui))
         .route("/health", get(health))
         .route("/v0/agents", get(agents))
         .route("/v0/agents/{id}/isolate", post(isolate_agent))

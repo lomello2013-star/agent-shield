@@ -32,7 +32,7 @@
 |---|---|---|---|
 | B1 | Production HSM + quorum (2-of-3) | нет YubiHSM/HSM-стенда | security engineer + PM |
 | B2 | PostgreSQL/HA | PostgreSQL 16 установлен локально, dev-БД `stml` + миграция работают; **HA/RLS/parity/backup не сделаны** | DevOps |
-| B3 | Rust/axum | P1+P2+P3+commands: agents/reports, policies/approvals/rollouts, trust/audit/learning, isolate/confirm command delivery; **P4 mTLS/Tauri и P5 parity не сделаны** | Rust-инженер |
+| B3 | Rust/axum | P1+P2+P3+commands+GUI: agents/reports, policies/approvals/rollouts, trust/audit/learning, command delivery, `/ui/`; **P4 mTLS/Tauri и P5 parity не сделаны** | Rust-инженер |
 | B4 | Tauri + mTLS-клиент | нет Node/npm/Tauri toolchain | GUI-инженер |
 | B5 | Реальный retrain/песочница | нет данных/GPU/песочницы; DPIA в финале | ML-инженер |
 | B6 | Docker/Helm runtime | daemon не запущен, helm/кластер отсутствуют | DevOps |

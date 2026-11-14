@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-14T12:34:25.741983+00:00",
+  "generated_at": "2026-11-14T12:35:25.299296+00:00",
   "component": "stml-server-rust",
   "phase": "P4-commands",
   "status": "verified",
@@ -9,10 +9,13 @@
     "heartbeat_commands": true,
     "signed_ack": true,
     "approval_confirm_command": true,
-    "queue_drains": true
+    "queue_drains": true,
+    "gui_ui_200": true,
+    "gui_root_200": true,
+    "gui_bytes": 17661
   },
   "not_yet": [
-    "P4 mTLS/Tauri/GUI",
+    "P4 mTLS/Tauri",
     "P5 parity",
     "RLS/HA",
     "timestamp skew",

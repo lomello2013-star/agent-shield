@@ -21,6 +21,7 @@ cargo run
 | Method | Path | Auth |
 |---|---|---|
 | GET | `/health` | — |
+| GET | `/` `/ui/` | STML web console (same static SPA) |
 | GET | `/v0/agents` | — |
 | POST | `/v0/enrol` | one-time token |
 | POST | `/v0/heartbeat` `/v0/inventory` `/v0/reports` | Ed25519 |
@@ -43,5 +44,6 @@ cargo run
 - P3: trust keys (Ed25519, private hex in trust dir), CRL-lite, audit hash chain,
   opt-in telemetry (PII keys stripped), cases, model registry + no-regression + rollback.
 - Commands: `isolate` / approval `confirm` → queue → heartbeat `commands` → signed ack.
-- **Not yet:** P4 mTLS/Tauri/GUI, P5 contract parity, RLS/HA, timestamp skew,
+- GUI: `/` and `/ui/` serve `stml/gui/index.html` (17.6 KB) from the Rust binary.
+- **Not yet:** P4 mTLS/Tauri, P5 contract parity, RLS/HA, timestamp skew,
   HTTP 201 parity, HSM.
