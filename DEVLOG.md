@@ -3250,6 +3250,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 14:50] Linux live exec → product rule; LSM bpf blocker [experiment]
+
+**Действие**: собран `exec_path` CO-RE; loader `stream` дал live-поток; `/tmp/aidf_exec_live` прогнан через `linux.ebpf`-адаптер и правила. Получен ровно **`LINUX-EXEC-TMP-101`**, benign `/bin/true` — без вердикта. LSM `file_open` не даёт событий: ядро без `bpf` в `lsm=`; нужен `lsm=...,bpf` + перезагрузка.
+**Числа**: 3 live-события (cp, /tmp, /bin/true), **1** вердикт `LINUX-EXEC-TMP-101`, 0 FP; `exec` latency ~446 µs (raнее); 20/20 live — нет.
+**Вердикт**: live exec-срез работает через product-правила; LSM-сенсоры заблокированы конфигурацией ядра; production-коллектор и 20/20 live остаются open.
+**Проверка**: `/tmp/exec3.jsonl`; `linux_ebpf_live.py` → SUMMARY events=3 verdicts=[101]; `artifacts/linux_ebpf_live.json`.
+**Статус**: verified (1 live scenario); open (LSM bpf, 20/20, loader→pipeline)
+**Actor**: agent
+**Run_id**: linux-live-exec-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

@@ -76,8 +76,9 @@ alert-правилом, а не молчанием.
 **Рекомендация:** **A**, при блокере — **B** с явной пометкой «fixture-level».
 **Выбор:** A (рекомендация агента), fallback B только при доказанном блокере.
 **Обоснование:** пользователь просил live; fixture-level не должен подменять его.
-**Статус:** A partially: toolchain + live exec trace (20 событий, ~446 µs)
-проверены; production-коллектора loader→pipeline нет, 20/20 live — open.
+**Статус:** A partially: live exec → product rule проверен (3 события, 1 вердикт
+`LINUX-EXEC-TMP-101`, benign без вердикта); LSM-сенсоры не работают без
+`lsm=...,bpf`; production-коллектора loader→pipeline и 20/20 live — open.
 
 ---
 

@@ -1,0 +1,15 @@
+{
+  "mode": "exec",
+  "source": "eBPF exec_path stream (CO-RE tracepoint, live)",
+  "vm": "AIDF-Linux",
+  "kernel": "6.8.0-147-generic",
+  "events": 3,
+  "verdicts": ["LINUX-EXEC-TMP-101"],
+  "benign_control": "cp -> /bin/true: no verdict",
+  "scenario": "/tmp/aidf_exec_live executed",
+  "limitations": [
+    "only 1 of 20 Linux scenarios is live; production collector (loader->pipeline) is not integrated",
+    "LSM BPF sensors see 0 events because 'bpf' is not in the kernel lsm= list (active: lockdown,capability,landlock,yama,apparmor)",
+    "fapolicyd was stopped for the test and restored afterwards"
+  ]
+}

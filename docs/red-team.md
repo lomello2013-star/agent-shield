@@ -118,12 +118,17 @@ alert-правило для generic pending (D-001).
 
 ### Linux
 
-20-сценарный Linux-прогон **не выполнялся**. Live eBPF-примитив проверен:
-в Linux-VM собраны CO-RE `exec_tp` / `net_cgroup` / `open_lsm` и loader;
-`exec` trace дал **20 событий**, load 15.6 мс, latency ~446 µs. LSM hook — 0
-hits (нужен разбор LSM-стека). Это **spike**, а не production-коллектор:
-интеграции loader→pipeline и 20/20 live пока нет. fapolicyd блокировал новый
-clang/gcc (`EPERM`), на сборку останавливался и возвращён.
+20-сценарный Linux-прогон **не выполнялся**, но появился **live exec-срез**:
+в Linux-VM собран `exec_path` CO-RE, loader `stream` дал 3 live-события
+(`cp`, `/tmp/aidf_exec_live`, `/bin/true`); product `linux.ebpf`-адаптер + правила
+выдали ровно **`LINUX-EXEC-TMP-101`**, benign `/bin/true` — без вердикта
+(`artifacts/linux_ebpf_live.json`).
+
+LSM-сенсоры (cred read) **не работают**: ядро загружено без `bpf` в `lsm=`
+(active: `lockdown,capability,landlock,yama,apparmor`), поэтому `file_open`
+программа не получает событий. Нужен `lsm=...,bpf` + перезагрузка; это
+следующий шаг. Production-коллектора loader→pipeline и 20/20 live пока нет.
+fapolicyd блокировал clang/loader (`EPERM`), на тест останавливался и возвращён.
 
 ### Найденный дефект харнесса
 
