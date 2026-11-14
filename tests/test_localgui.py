@@ -32,7 +32,7 @@ def test_overview_has_live_state(tmp_path):
         data = json.loads(urllib.request.urlopen(f"http://{host}:{port}/api/overview",
                                                  timeout=5).read())
         assert data["health"]["status"] in {"ok", "degraded", "safe"}
-        assert any(x["name"] == "Kernel collector" for x in data["stack"])
+        assert any(x["name"] == "Collector" for x in data["stack"])
         assert "pending" in data and "recent_verdicts" in data
         html = urllib.request.urlopen(f"http://{host}:{port}/ui/", timeout=5).read()
         assert b"AIDefender Agent" in html

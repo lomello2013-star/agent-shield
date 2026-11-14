@@ -1,10 +1,12 @@
 #requires -Version 5.1
+param([switch]$NoBrowser)
 <#
 .SYNOPSIS
     Start the local STML server + demo connector + agent panel and open both UIs.
 .DESCRIPTION
     Non-admin convenience launcher for a personal pilot. It starts only the
     processes whose ports are free. Logs go to C:\ProgramData\AIDefender\stml.
+    Use -NoBrowser for the per-user Startup shortcut.
 #>
 $ErrorActionPreference = "Stop"
 $Repo = Split-Path $PSScriptRoot -Parent
@@ -71,7 +73,7 @@ try {
     $urls[0] = "http://127.0.0.1:8080/ui/#$hash"
 } catch { }
 foreach ($url in $urls) {
-    Start-Process $url | Out-Null
+    if (-not $NoBrowser) { Start-Process $url | Out-Null }
 }
 Write-Output "STML server:  http://127.0.0.1:8080/ui/"
 Write-Output "Agent panel:  http://127.0.0.1:18080/ui/"
