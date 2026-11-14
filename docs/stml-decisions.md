@@ -135,6 +135,7 @@
 | D-83 | Approval→confirm | **approval kind=`confirm` с payload `agent_id/confirmation_id` ставит команду `confirm`** | прямой вызов агента с сервера | сервер не имеет IPC-канала |
 | D-84 | Rust commands | **команды в heartbeat; подписанный `/v0/commands/ack`; approval confirm ставит команду** | отдельный long-poll | parity с Python |
 | D-85 | Rust GUI | **Rust отдаёт тот же `stml/gui/index.html` на `/` и `/ui/`** | отдельный frontend/Tauri | минимум кода, одна SPA |
+| D-86 | P5 parity | **read-only smoke: health/UI/agents/policies + 401** | полный contract suite | быстрый gate, не заменяет P5 |
 
 ## Production acceptance
 

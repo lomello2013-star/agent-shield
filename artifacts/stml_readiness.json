@@ -78,7 +78,9 @@
         "timestamp skew",
         "HTTP 201 parity"
       ],
-      "commands": true
+      "commands": true,
+      "p5_parity_smoke": true,
+      "gui": true
     }
   },
   "agent_control_plane": {

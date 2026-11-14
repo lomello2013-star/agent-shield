@@ -1,0 +1,21 @@
+{
+  "generated_at": "2026-11-14T12:36:35.206495+00:00",
+  "component": "stml-server-rust",
+  "phase": "P5-parity-smoke",
+  "status": "verified",
+  "checks": [
+    "health",
+    "ui",
+    "agents_unauth",
+    "agents_viewer",
+    "policies_unauth",
+    "policies_viewer"
+  ],
+  "result": "ok:true, failures:[]",
+  "note": "Python 8080 vs Rust 18096, PostgreSQL stml_p4; fields/IDs not deep-compared",
+  "not_yet": [
+    "full contract suite",
+    "1000-agent parity",
+    "mTLS parity"
+  ]
+}

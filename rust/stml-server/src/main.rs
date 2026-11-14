@@ -96,6 +96,9 @@ fn auth(headers: &HeaderMap, state: &AppState, role: &str) -> Result<(), ApiErro
         ));
     }
     let token = bearer(headers);
+    if token.is_empty() {
+        return Err(err(StatusCode::UNAUTHORIZED, "unauthorized"));
+    }
     match role {
         "admin" if token == state.admin_token => Ok(()),
         "approver" if token == state.approver_token => Ok(()),
@@ -1569,13 +1572,20 @@ async fn health(State(state): State<AppState>) -> Json<Value> {
     )
 }
 
-async fn agents(State(state): State<AppState>) -> Json<Value> {
+async fn agents(
+    State(state): State<AppState>,
+    headers: HeaderMap,
+) -> Result<Json<Value>, ApiError> {
+    auth(&headers, &state, "viewer")?;
     let Some(pool) = &state.pool else {
-        return Json(json!({"agents": [], "note": "database not configured"}));
+        return Ok(Json(
+            json!({"agents": [], "note": "database not configured"}),
+        ));
     };
     match sqlx::query(
         "SELECT id::text AS id, tenant_id, hostname, os, arch, agent_version, status, \
-         last_seen::text AS last_seen, isolated, policy_version FROM agents ORDER BY hostname",
+         last_seen::text AS last_seen, enrolled_at::text AS enrolled_at, isolated, \
+         policy_version, pubkey FROM agents ORDER BY hostname",
     )
     .fetch_all(pool)
     .await
@@ -1593,14 +1603,16 @@ async fn agents(State(state): State<AppState>) -> Json<Value> {
                         "agent_version": row.get::<String, _>("agent_version"),
                         "status": row.get::<String, _>("status"),
                         "last_seen": row.get::<String, _>("last_seen"),
+                        "enrolled_at": row.get::<String, _>("enrolled_at"),
                         "isolated": row.get::<bool, _>("isolated"),
                         "policy_version": row.get::<Option<String>, _>("policy_version"),
+                        "pubkey": row.get::<String, _>("pubkey"),
                     })
                 })
                 .collect();
-            Json(json!({"agents": agents}))
+            Ok(Json(json!({"agents": agents})))
         }
-        Err(e) => Json(json!({"agents": [], "error": e.to_string()})),
+        Err(e) => Ok(Json(json!({"agents": [], "error": e.to_string()}))),
     }
 }
 
