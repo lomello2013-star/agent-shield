@@ -18,6 +18,7 @@ from stml.contracts.v0 import Heartbeat, Inventory
 from stml.learning.service import LearningService
 from stml.server.bus import build_bus
 from stml.server.store import Store
+from stml.server.tls import make_server_context
 from stml.trust.service import TrustError, TrustService
 
 MAX_BODY = 2 * 1024 * 1024
@@ -36,6 +37,10 @@ class ServerConfig:
     trust_backend: str = "file"
     require_approval: bool = True
     event_bus: str = "local"
+    tls_cert: str = ""
+    tls_key: str = ""
+    tls_ca: str = ""
+    require_client_cert: bool = True
 
 
 class StmlServer(ThreadingHTTPServer):
@@ -54,6 +59,10 @@ class StmlServer(ThreadingHTTPServer):
         self.learning = LearningService(store, self.trust)
         self.bus = build_bus(config.event_bus)
         self.started_at = time.time()
+        if config.tls_cert:
+            ctx = make_server_context(config.tls_cert, config.tls_key,
+                                      config.tls_ca, config.require_client_cert)
+            self.socket = ctx.wrap_socket(self.socket, server_side=True)
 
 
 class Handler(BaseHTTPRequestHandler):

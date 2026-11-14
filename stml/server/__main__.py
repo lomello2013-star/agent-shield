@@ -37,6 +37,10 @@ def main(argv: list[str] | None = None) -> int:
     run.add_argument("--trust-dir", default=os.environ.get("STML_TRUST_DIR", ""))
     run.add_argument("--trust-backend", default="file")
     run.add_argument("--no-require-approval", action="store_true")
+    run.add_argument("--tls-cert", default="")
+    run.add_argument("--tls-key", default="")
+    run.add_argument("--tls-ca", default="")
+    run.add_argument("--no-client-cert", action="store_true")
     run.add_argument("--enrol-token", default="")
 
     tok = sub.add_parser("token", help="create an enrolment token")
@@ -104,7 +108,10 @@ def main(argv: list[str] | None = None) -> int:
                           viewer_token=viewer, approver_token=approver,
                           db_path=args.db, trust_dir=args.trust_dir or args.db + ".trust",
                           trust_backend=args.trust_backend,
-                          require_approval=not args.no_require_approval)
+                          require_approval=not args.no_require_approval,
+                          tls_cert=args.tls_cert, tls_key=args.tls_key,
+                          tls_ca=args.tls_ca,
+                          require_client_cert=not args.no_client_cert)
     server = StmlServer((args.host, args.port), store, config)
     print(json.dumps({"stml": "running", "url": f"http://{args.host}:{args.port}",
                       "tenant": args.tenant, "admin_token": admin,

@@ -21,11 +21,13 @@ class ServerError(RuntimeError):
 
 class ServerClient:
     def __init__(self, base_url: str, private_key: Ed25519PrivateKey,
-                 agent_id: str = "", timeout_s: float = 5.0) -> None:
+                 agent_id: str = "", timeout_s: float = 5.0,
+                 ssl_context: object | None = None) -> None:
         self.base_url = base_url.rstrip("/")
         self.private_key = private_key
         self.agent_id = agent_id
         self.timeout_s = timeout_s
+        self.ssl_context = ssl_context
 
     def _post(self, path: str, payload: dict[str, Any], signed: bool = False) -> dict[str, Any]:
         raw = json.dumps(payload).encode()
@@ -34,7 +36,8 @@ class ServerClient:
             headers["X-STML-Signature"] = sign(self.private_key, raw)
         req = urllib.request.Request(self.base_url + path, data=raw, headers=headers, method="POST")
         try:
-            with urllib.request.urlopen(req, timeout=self.timeout_s) as resp:
+            with urllib.request.urlopen(req, timeout=self.timeout_s,
+                                        context=self.ssl_context) as resp:
                 return json.loads(resp.read().decode())
         except urllib.error.HTTPError as exc:
             raise ServerError(exc.code, exc.read().decode(errors="replace")) from exc

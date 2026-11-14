@@ -55,6 +55,9 @@ def _run(args: argparse.Namespace, parser: argparse.ArgumentParser) -> int:
         os_name=args.os,
         arch=args.arch,
         agent_version=args.agent_version,
+        server_ca=args.server_ca,
+        server_cert=args.server_cert,
+        server_key=args.server_key,
     )
     spool = Spool(args.spool)
     tailer = JsonlTailer(args.state + ".tail")
@@ -122,6 +125,9 @@ def main(argv: list[str] | None = None) -> int:
     run.add_argument("--state", default="stml-connector-state.json")
     run.add_argument("--server-url", default="")
     run.add_argument("--enrol-token", default=os.environ.get("STML_ENROL_TOKEN", ""))
+    run.add_argument("--server-ca", default="")
+    run.add_argument("--server-cert", default="")
+    run.add_argument("--server-key", default="")
     run.add_argument("--agent-key", default="")
     run.add_argument("--hostname", default=os.environ.get("COMPUTERNAME", "unknown"))
     run.add_argument("--os", default=os.name)

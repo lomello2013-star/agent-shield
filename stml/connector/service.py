@@ -47,6 +47,9 @@ class ConnectorConfig:
     arch: str = "unknown"
     agent_version: str = "0.1.0"
     connector_version: str = "0.1.0"
+    server_ca: str = ""
+    server_cert: str = ""
+    server_key: str = ""
     extra: dict[str, Any] = field(default_factory=dict)
 
 
@@ -72,6 +75,11 @@ class Connector:
             self.server, self.agent_private = self._make_server()
         if self.agent_private is not None and isinstance(transport, HttpTransport):
             transport.private_key = self.agent_private
+        if self.config.server_ca and isinstance(transport, HttpTransport):
+            from stml.server.tls import make_client_context
+
+            transport.ssl_context = make_client_context(
+                self.config.server_ca, self.config.server_cert, self.config.server_key)
         self.isolated = False
         self.last_heartbeat: Heartbeat | None = None
         self.last_inventory: Inventory | None = None
@@ -110,8 +118,16 @@ class Connector:
         if not key_path.exists() or not pub_path.exists():
             generate_keypair(key_path, pub_path)
         private = load_private(key_path)
+        ssl_context = None
+        if self.config.server_ca:
+            from stml.server.tls import make_client_context
+
+            ssl_context = make_client_context(self.config.server_ca,
+                                              self.config.server_cert,
+                                              self.config.server_key)
         return ServerClient(self.config.server_url, private,
-                            agent_id=self.config.agent_id), private
+                            agent_id=self.config.agent_id,
+                            ssl_context=ssl_context), private
 
     def enrol_if_needed(self) -> None:
         if self.server is None or self.enrolled:

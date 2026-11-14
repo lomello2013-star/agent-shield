@@ -12,6 +12,7 @@
 | Оператор: чтение | `Authorization: Bearer <viewer_token>` |
 | Оператор: kill-switch | `Authorization: Bearer <admin_token>` |
 | Enrolment | одноразовый `enrolment_token` в теле |
+| Транспорт (опция) | **mTLS**: сервер требует client cert; коннектор — `--server-ca/--server-cert/--server-key` |
 
 Replay: `nonce` одноразовый (`nonces`), `sent_at` ±300 с.
 

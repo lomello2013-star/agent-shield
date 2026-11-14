@@ -42,11 +42,13 @@ class MemoryTransport:
 
 class HttpTransport:
     def __init__(self, base_url: str, token: str = "", timeout_s: float = 5.0,
-                 private_key: Ed25519PrivateKey | None = None) -> None:
+                 private_key: Ed25519PrivateKey | None = None,
+                 ssl_context: object | None = None) -> None:
         self.base_url = base_url.rstrip("/")
         self.token = token
         self.timeout_s = timeout_s
         self.private_key = private_key
+        self.ssl_context = ssl_context
 
     def send(self, reports: list[Report]) -> list[str]:
         body = json.dumps({"reports": [r.model_dump(mode="json") for r in reports]}).encode()
@@ -57,6 +59,7 @@ class HttpTransport:
             headers["X-STML-Signature"] = sign(self.private_key, body)
         req = urllib.request.Request(self.base_url + "/v0/reports", data=body,
                                      headers=headers, method="POST")
-        with urllib.request.urlopen(req, timeout=self.timeout_s) as resp:
+        with urllib.request.urlopen(req, timeout=self.timeout_s,
+                                    context=self.ssl_context) as resp:
             data = json.loads(resp.read().decode("utf-8"))
         return [str(x) for x in Ack.model_validate(data).acked]
