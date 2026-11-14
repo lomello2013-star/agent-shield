@@ -76,6 +76,16 @@ class Handler(BaseHTTPRequestHandler):
     def _start_trace(self) -> None:
         self.trace_id = trace_id_from({k.lower(): v for k, v in self.headers.items()})
 
+    def _client_revoked(self) -> bool:
+        if not self.server.config.tls_cert:
+            return False
+        try:
+            peer = self.connection.getpeercert()
+        except (OSError, ValueError):
+            return False
+        serial = (peer or {}).get("serialNumber", "")
+        return bool(serial) and self.server.store.is_cert_revoked(serial)
+
     def _body(self) -> bytes:
         length = int(self.headers.get("Content-Length", "0"))
         if length > MAX_BODY:
@@ -168,6 +178,9 @@ class Handler(BaseHTTPRequestHandler):
     # -- GET -------------------------------------------------------------
     def do_GET(self) -> None:  # noqa: N802
         self._start_trace()
+        if self._client_revoked():
+            self._error(403, "client certificate revoked")
+            return
         parsed = urlparse(self.path)
         parts = parsed.path.strip("/").split("/")
         query = parse_qs(parsed.query)
@@ -314,6 +327,10 @@ class Handler(BaseHTTPRequestHandler):
             else:
                 self._send(200, {"audit": rows})
             return
+        if parts == ["v0", "tls", "revoked"]:
+            if self._auth("admin"):
+                self._send(200, {"revoked": self.server.store.revoked_certs()})
+            return
         if parts == ["v0", "approvals"]:
             if self._auth("viewer"):
                 self._send(200, {"approvals": self.server.store.approvals(
@@ -343,6 +360,9 @@ class Handler(BaseHTTPRequestHandler):
     # -- POST ------------------------------------------------------------
     def do_POST(self) -> None:  # noqa: N802
         self._start_trace()
+        if self._client_revoked():
+            self._error(403, "client certificate revoked")
+            return
         parts = urlparse(self.path).path.strip("/").split("/")
         try:
             raw = self._body()
@@ -371,6 +391,17 @@ class Handler(BaseHTTPRequestHandler):
                 return
             self._send(201, {"agent_id": agent_id, "tenant_id": body.get("tenant_id",
                                                                        self.server.config.tenant_id)})
+            return
+
+        if parts == ["v0", "tls", "revoke"]:
+            if not self._auth("admin"):
+                return
+            serial = str(body.get("serial", ""))
+            if not serial:
+                self._error(400, "serial required")
+                return
+            self.server.store.revoke_cert(serial, str(body.get("reason", "operator")))
+            self._send(200, {"ok": True, "serial": serial})
             return
 
         if parts == ["v0", "approvals"]:

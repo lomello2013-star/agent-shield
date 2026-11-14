@@ -1,7 +1,9 @@
 import http.client
+import json
 import ssl
 
 import pytest
+from cryptography import x509
 
 from stml.server.app import ServerConfig, start_server
 from stml.server.store import Store
@@ -22,6 +24,20 @@ def test_mtls_required_and_client_cert_accepted(tmp_path):
         conn.request("GET", "/health")
         resp = conn.getresponse()
         assert resp.status == 200
+        conn.close()
+
+        serial = f"{x509.load_pem_x509_certificate(open(certs['client_cert'], 'rb').read()).serial_number:X}"
+        conn = http.client.HTTPSConnection("127.0.0.1", port, context=ctx, timeout=5)
+        conn.request("POST", "/v0/tls/revoke", body=json.dumps({"serial": serial}),
+                     headers={"Authorization": "Bearer a", "Content-Type": "application/json"})
+        resp = conn.getresponse()
+        assert resp.status == 200, resp.read()
+        conn.close()
+
+        conn = http.client.HTTPSConnection("127.0.0.1", port, context=ctx, timeout=5)
+        conn.request("GET", "/health")
+        resp = conn.getresponse()
+        assert resp.status == 403
         conn.close()
 
         no_cert = make_client_context(certs["ca"])

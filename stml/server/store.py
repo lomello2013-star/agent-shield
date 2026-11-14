@@ -113,6 +113,9 @@ class Store:
             CREATE TABLE IF NOT EXISTS model_state (
                 key TEXT PRIMARY KEY, value TEXT
             );
+            CREATE TABLE IF NOT EXISTS revoked_certs (
+                serial TEXT PRIMARY KEY, revoked_at REAL NOT NULL, reason TEXT
+            );
             """
         )
         self._db.commit()
@@ -677,6 +680,35 @@ class Store:
             self._db.commit()
         self._audit("operator", "model_rollback", previous)
         return {"active": int(previous), "rolled_back": current}
+
+    # -- TLS client certificate revocation --------------------------------
+    @staticmethod
+    def _normalize_serial(serial: str) -> str:
+        return serial.replace(":", "").replace(" ", "").upper().lstrip("0") or "0"
+
+    def revoke_cert(self, serial: str, reason: str = "") -> None:
+        serial = self._normalize_serial(serial)
+        with self._lock:
+            self._db.execute(
+                "INSERT OR REPLACE INTO revoked_certs(serial, revoked_at, reason) "
+                "VALUES (?, ?, ?)", (serial, time.time(), reason),
+            )
+            self._db.commit()
+        self._audit("operator", "cert_revoke", serial)
+
+    def is_cert_revoked(self, serial: str) -> bool:
+        serial = self._normalize_serial(serial)
+        with self._lock:
+            row = self._db.execute("SELECT 1 FROM revoked_certs WHERE serial = ?",
+                                   (serial,)).fetchone()
+        return row is not None
+
+    def revoked_certs(self) -> list[dict[str, Any]]:
+        with self._lock:
+            rows = self._db.execute(
+                "SELECT serial, revoked_at, reason FROM revoked_certs ORDER BY revoked_at DESC"
+            ).fetchall()
+        return [dict(r) for r in rows]
 
     # -- audit chain -----------------------------------------------------
     def _audit(self, actor: str, action: str, target: str) -> None:

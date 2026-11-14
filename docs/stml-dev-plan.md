@@ -78,8 +78,8 @@
 3. [x] Подпись/проверка пакетов и policy (Ed25519, `key_id`).
 4. [x] Human-approval: очередь, approve/deny, SLA 48 ч (SoD).
 5. [x] Audit append-only + экспорт JSON/CEF.
-6. [x] Отзыв ≤24 ч, ротация с overlap, backup/restore (zip DB+trust).
-7. [~] Тесты #7–#10: отзыв и policy-injection — есть; **mTLS — реализован и проверен** (client cert required); CRL/OCSP — S15.
+6. [x] Отзыв: CRL-lite по serial client cert (`/v0/tls/revoke`); ротация с overlap; backup/restore.
+7. [~] Тесты #7–#10: отзыв и policy-injection — есть; **mTLS — реализован и проверен**; **CRL-lite — проверен**; полноценный OCSP — S15.
 8. [x] Key ceremony — `docs/key-ceremony.md`.
 9. [~] Immutable guards — в `core/policy.py`; CI-блокировка merge — процесс.
 10. [x] SoD: Admin ≠ approve; Approver ≠ kill-switch (тесты).

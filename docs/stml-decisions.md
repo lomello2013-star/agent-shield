@@ -115,6 +115,8 @@
 | D-63 | Tracing | **X-Trace-ID/traceparent propagation; без OTel SDK** | OTel SDK сразу | минимальный срез S6 |
 | D-64 | Agent detail | **правая drawer-панель, не отдельная страница** | отдельный route | быстрее | 
 | D-65 | Keyboard | **1..9 разделы, Esc закрывает drawer** | только мышь | SOC-эргономика |
+| D-66 | Отзыв client cert | **CRL-lite: serial в БД + проверка после handshake** | OCSP сразу | минимальный срез |
+| D-67 | Формат serial | **hex upper, без `:`/пробелов** | как в сертификате | сравнение |
 
 ## Production acceptance
 
