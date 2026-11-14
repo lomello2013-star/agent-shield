@@ -1,0 +1,18 @@
+[Unit]
+Description=AIDefender Linux eBPF agent
+Documentation=file:///opt/aidf/docs/linux-agent.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/aidf
+ExecStartPre=/usr/bin/test -x /opt/aidf/loader
+ExecStart=/usr/bin/python3 /opt/aidf/linux_ebpf_agent.py --loader /opt/aidf/loader --objects /opt/aidf --duration 0 --out /var/log/aidf/linux_audit.jsonl
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

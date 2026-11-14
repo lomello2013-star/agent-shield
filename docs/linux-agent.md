@@ -45,6 +45,20 @@ sudo systemctl start fapolicyd
 `LINUX-EXEC-CORR-108/109/110`×2, `LINUX-C2-PORT-105`×1,
 `NET-DNS-LONG-013`×1; `artifacts/linux_agent_audit.json`.
 
+## systemd
+
+```bash
+sudo bash scripts/install_linux_agent.sh /root/spike4
+sudo systemctl start aidf-agent
+sudo journalctl -u aidf-agent -n 30 --no-pager
+sudo systemctl stop aidf-agent
+```
+
+Юнит — `packaging/linux/aidf-agent.service`; install копирует `core/ schemas/
+rules/`, `loader`, `*.bpf.o` в `/opt/aidf`, пишет audit в
+`/var/log/aidf/linux_audit.jsonl`. Проверено: сервис стартует ~5 с, сценарии
+`corr_helper` + connect 4444 + DNS дали **12 audit-строк**.
+
 ## Ограничения
 
 - запуск только root; fapolicyd нужно останавливать в lab;

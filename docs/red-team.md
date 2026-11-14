@@ -158,8 +158,9 @@ DNS long (`013`); все прошли через `linux.ebpf`-адаптер и 
 **Net live:** attach к **root cgroup** `/sys/fs/cgroup` (процессы VM там, `/aidf`
 пуст) дал события; `connect 4444` → `LINUX-C2-PORT-105`, `443` — без вердикта.
 
-Прототип production-коллектора есть (`scripts/linux_ebpf_agent.py`, 10 потоков,
-audit JSONL); systemd/подпись/очередь остаются open. fapolicyd
+Коллектор упакован в systemd (`packaging/linux/aidf-agent.service`,
+`scripts/install_linux_agent.sh`, 10 потоков, audit JSONL; проверено 12 строк);
+подпись/очередь/ротация остаются open. fapolicyd
 блокировал clang/loader (`EPERM`), на тест останавливался и возвращён.
 
 ### Найденный дефект харнесса

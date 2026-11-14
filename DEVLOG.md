@@ -3418,6 +3418,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 17:15] systemd agent service verified [experiment]
+
+**Действие**: `packaging/linux/aidf-agent.service` + `scripts/install_linux_agent.sh`; сервис установлен в `/opt/aidf`, запущен, сценарии corr/net/DNS дали **12 audit-строк** в `/var/log/aidf/linux_audit.jsonl`; остановлен, fapolicyd возвращён.
+**Числа**: 10 потоков; 12 audit-строк; старт ~5 с; pytest 533 (не менялся); `run_all` 29/29 (не менялся).
+**Вердикт**: упаковка коллектора в systemd работает; подпись/очередь/ротация — open.
+**Проверка**: `systemctl status aidf-agent`; `/var/log/aidf/linux_audit.jsonl`; `journalctl -u aidf-agent`.
+**Статус**: verified (systemd); open (signing/queue/rotation)
+**Actor**: agent
+**Run_id**: linux-agent-systemd-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

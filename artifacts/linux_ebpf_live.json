@@ -40,7 +40,7 @@
   "live_count": 17,
   "limitations": [
     "17 of 20 Linux scenarios are live; the other 3 are Windows-only",
-    "production collector prototype exists (scripts/linux_ebpf_agent.py, 10 streams, audit JSONL); systemd/signing/queue open",
+    "production collector: systemd unit + install script verified (10 streams, 12 audit lines); signing/queue/log rotation open",
     "fapolicyd was stopped for BPF loader tests and restored afterwards"
   ]
 }
