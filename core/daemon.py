@@ -425,6 +425,14 @@ class Daemon:
     def enqueue_command(self, kind: str, payload: dict | None = None) -> dict:
         return self.commands.enqueue(kind, payload or {})
 
+    def execute_command(self, kind: str, payload: dict | None = None) -> dict:
+        payload = payload or {}
+        if kind == "isolate":
+            self.isolated = bool(payload.get("isolated", True))
+            self.log.append("isolate", {"isolated": self.isolated, "source": "command"})
+            return {"status": "acked", "isolated": self.isolated}
+        return {"status": "unsupported", "kind": kind}
+
     def run_for(self, seconds: float, interval_s: float = 0.05) -> None:
         end = time.monotonic() + seconds
         while not self._stop.is_set() and time.monotonic() < end:

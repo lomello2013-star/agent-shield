@@ -614,7 +614,8 @@ class Handler(BaseHTTPRequestHandler):
                 self._error(400, f"bad heartbeat: {exc}")
                 return
             isolated = self.server.store.heartbeat(agent.id, hb.status.value, hb.health)
-            self._send(200, {"ok": True, "isolated": isolated})
+            commands = self.server.store.pending_commands(agent.id)
+            self._send(200, {"ok": True, "isolated": isolated, "commands": commands})
             return
 
         if parts == ["v0", "inventory"]:
@@ -645,6 +646,24 @@ class Handler(BaseHTTPRequestHandler):
             acked = self.server.store.ingest(reports)
             self.server.bus.publish("reports", {"acked": acked, "count": len(reports)})
             self._send(200, {"schema_version": "stml/v0", "acked": acked})
+            return
+
+        if parts == ["v0", "commands", "ack"]:
+            agent = self._agent(body)
+            if agent is None or not self._verify_signed(raw, body, agent):
+                return
+            command_id = str(body.get("command_id", ""))
+            if not command_id:
+                self._error(400, "command_id required")
+                return
+            try:
+                result = self.server.store.ack_command(
+                    agent.id, command_id, str(body.get("status", "acked")),
+                    body.get("result") if isinstance(body.get("result"), dict) else {})
+            except KeyError:
+                self._error(404, "unknown command")
+                return
+            self._send(200, result)
             return
 
         if len(parts) == 4 and parts[:2] == ["v0", "agents"] and parts[3] == "isolate":

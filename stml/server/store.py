@@ -69,6 +69,11 @@ class Store:
             CREATE TABLE IF NOT EXISTS nonces (
                 nonce TEXT PRIMARY KEY, seen_at REAL NOT NULL
             );
+            CREATE TABLE IF NOT EXISTS commands (
+                command_id TEXT PRIMARY KEY, agent_id TEXT NOT NULL, kind TEXT NOT NULL,
+                payload TEXT NOT NULL, status TEXT NOT NULL, created_at REAL NOT NULL,
+                acked_at REAL, result TEXT
+            );
             CREATE TABLE IF NOT EXISTS policies (
                 policy_id TEXT NOT NULL, version TEXT NOT NULL, channel TEXT NOT NULL,
                 content TEXT NOT NULL, key_id TEXT NOT NULL, signature TEXT NOT NULL,
@@ -232,6 +237,47 @@ class Store:
         if cur.rowcount == 0:
             raise KeyError(agent_id)
         self._audit("operator", "isolate" if isolated else "resume", agent_id)
+        self.enqueue_command(agent_id, "isolate", {"isolated": isolated})
+
+    # -- commands ---------------------------------------------------------
+    def enqueue_command(self, agent_id: str, kind: str,
+                        payload: dict[str, Any] | None = None) -> dict[str, Any]:
+        command_id = str(uuid.uuid4())
+        now = time.time()
+        with self._lock:
+            self._db.execute(
+                "INSERT INTO commands(command_id, agent_id, kind, payload, status, created_at) "
+                "VALUES (?, ?, ?, ?, 'pending', ?)",
+                (command_id, agent_id, kind,
+                 json.dumps(payload or {}, ensure_ascii=False), now))
+            self._db.commit()
+        self._audit("operator", "command_enqueue", f"{agent_id}:{kind}")
+        return {"command_id": command_id, "agent_id": agent_id, "kind": kind,
+                "payload": payload or {}, "status": "pending", "created_at": now}
+
+    def pending_commands(self, agent_id: str) -> list[dict[str, Any]]:
+        with self._lock:
+            rows = self._db.execute(
+                "SELECT * FROM commands WHERE agent_id = ? AND status = 'pending' "
+                "ORDER BY created_at", (agent_id,)).fetchall()
+        return [{"command_id": row["command_id"], "kind": row["kind"],
+                 "payload": json.loads(row["payload"]), "status": row["status"],
+                 "created_at": row["created_at"]} for row in rows]
+
+    def ack_command(self, agent_id: str, command_id: str, status: str = "acked",
+                    result: dict[str, Any] | None = None) -> dict[str, Any]:
+        now = time.time()
+        with self._lock:
+            cur = self._db.execute(
+                "UPDATE commands SET status = ?, acked_at = ?, result = ? "
+                "WHERE command_id = ? AND agent_id = ?",
+                (status, now, json.dumps(result or {}, ensure_ascii=False),
+                 command_id, agent_id))
+            self._db.commit()
+        if cur.rowcount == 0:
+            raise KeyError(command_id)
+        self._audit("agent", f"command_{status}", f"{agent_id}:{command_id}")
+        return {"command_id": command_id, "status": status}
 
     # -- reports ---------------------------------------------------------
     def ingest(self, reports: Iterable[dict[str, Any]]) -> list[str]:

@@ -71,3 +71,6 @@ class AgentClient:
                     result: dict | None = None) -> dict:
         return self._call("command_ack", {"command_id": command_id, "status": status,
                                           "result": result or {}})
+
+    def execute_command(self, kind: str, payload: dict | None = None) -> dict:
+        return self._call("command_execute", {"kind": kind, "payload": payload or {}})

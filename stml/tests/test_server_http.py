@@ -97,6 +97,53 @@ def test_signed_heartbeat_replay_and_isolate(tmp_path):
         store.close()
 
 
+def test_command_delivery_and_ack(tmp_path):
+    store, server, port, agent_id, priv = _setup(tmp_path)
+    try:
+        hb = Heartbeat(tenant_id="t", agent_id=agent_id, connector_id="c",
+                       message_id=str(uuid.uuid4()), nonce=uuid.uuid4().hex,
+                       status=AgentStatus.HEALTHY)
+        payload = hb.model_dump(mode="json")
+        _, sig = _signed(priv, payload)
+        code, body = _request(port, "POST", "/v0/heartbeat", payload, signature=sig)
+        assert code == 200 and body["commands"] == []
+
+        code, _ = _request(port, "POST", f"/v0/agents/{agent_id}/isolate",
+                           {"isolated": True}, token="admin")
+        assert code == 200
+        hb2 = Heartbeat(tenant_id="t", agent_id=agent_id, connector_id="c",
+                        message_id=str(uuid.uuid4()), nonce=uuid.uuid4().hex,
+                        status=AgentStatus.HEALTHY)
+        p2 = hb2.model_dump(mode="json")
+        _, sig2 = _signed(priv, p2)
+        code, body = _request(port, "POST", "/v0/heartbeat", p2, signature=sig2)
+        assert code == 200 and len(body["commands"]) == 1, body
+        command = body["commands"][0]
+        assert command["kind"] == "isolate" and command["payload"]["isolated"] is True
+
+        ack = {"agent_id": agent_id, "command_id": command["command_id"],
+               "status": "acked", "result": {"isolated": True},
+               "nonce": uuid.uuid4().hex,
+               "sent_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")}
+        _, ack_sig = _signed(priv, ack)
+        code, body = _request(port, "POST", "/v0/commands/ack", ack,
+                              signature=ack_sig)
+        assert code == 200 and body["status"] == "acked", body
+
+        hb3 = Heartbeat(tenant_id="t", agent_id=agent_id, connector_id="c",
+                        message_id=str(uuid.uuid4()), nonce=uuid.uuid4().hex,
+                        status=AgentStatus.HEALTHY)
+        p3 = hb3.model_dump(mode="json")
+        _, sig3 = _signed(priv, p3)
+        code, body = _request(port, "POST", "/v0/heartbeat", p3, signature=sig3)
+        assert code == 200 and body["commands"] == []
+        assert store.agent(agent_id).isolated is True
+    finally:
+        server.shutdown()
+        server.server_close()
+        store.close()
+
+
 def test_reports_and_audit(tmp_path):
     store, server, port, agent_id, priv = _setup(tmp_path)
     try:

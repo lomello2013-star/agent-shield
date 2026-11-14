@@ -86,6 +86,7 @@
     "command_poll": true,
     "command_ack": true,
     "live_reload": false,
-    "server_command_delivery": false
+    "server_command_delivery": true,
+    "connector_ack": true
   }
 }

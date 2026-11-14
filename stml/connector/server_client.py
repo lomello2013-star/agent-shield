@@ -6,6 +6,7 @@ import json
 import urllib.error
 import urllib.request
 import uuid
+from datetime import datetime, timezone
 from typing import Any
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
@@ -65,3 +66,11 @@ class ServerClient:
 
     def inventory(self, inventory: Any) -> dict[str, Any]:
         return self._post("/v0/inventory", inventory.model_dump(mode="json"), signed=True)
+
+    def ack_command(self, command_id: str, status: str = "acked",
+                    result: dict[str, Any] | None = None) -> dict[str, Any]:
+        body = {"agent_id": self.agent_id, "command_id": command_id,
+                "status": status, "result": result or {},
+                "nonce": uuid.uuid4().hex,
+                "sent_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")}
+        return self._post("/v0/commands/ack", body, signed=True)

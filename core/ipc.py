@@ -301,6 +301,13 @@ def build_daemon_registry(daemon, kill_switch_add: Callable[[str], None] | None 
         payload = params.get("payload")
         return daemon.enqueue_command(kind, payload if isinstance(payload, dict) else {})
 
+    def _command_execute(params: dict) -> dict:
+        kind = params.get("kind")
+        if not isinstance(kind, str) or not kind:
+            raise RpcError(INVALID_PARAMS, "kind is required")
+        payload = params.get("payload")
+        return daemon.execute_command(kind, payload if isinstance(payload, dict) else {})
+
     def _ping(_params: dict) -> dict:
         return {"pong": True}
 
@@ -359,6 +366,7 @@ def build_daemon_registry(daemon, kill_switch_add: Callable[[str], None] | None 
     registry.register("command_poll", {"operator", "admin"}, _command_poll)
     registry.register("command_ack", {"operator", "admin"}, _command_ack)
     registry.register("command_enqueue", {"admin"}, _command_enqueue)
+    registry.register("command_execute", {"operator", "admin"}, _command_execute)
     registry.register("self_test", {"operator", "admin"}, _self_test)
     registry.register("immutable_check", {"operator", "admin"}, _immutable)
     registry.register("quarantine", {"operator", "admin"}, _quarantine)

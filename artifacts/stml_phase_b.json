@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-11-14T12:29:32.600013+00:00",
+  "generated_at": "2026-11-14T12:31:22.525828+00:00",
   "phase": "B",
   "scope": "agent-side",
-  "status": "verified-partial",
+  "status": "verified-server-and-agent",
   "rpc": {
     "policy_state": "viewer/operator/admin",
     "apply_policy": "operator/admin, signed, dry-run",
@@ -14,7 +14,8 @@
     "policy_commands": 1,
     "stml": 54,
     "ipc": 16,
-    "daemon_wiring": 13
+    "daemon_wiring": 13,
+    "server_http": 6
   },
   "done": [
     "signed policy verify + key_id",
@@ -22,13 +23,15 @@
     "apply persists policy_state/LKG",
     "reject wrong signature/version",
     "command queue file-backed",
-    "isolate on command_ack"
+    "isolate on command_ack",
+    "server command queue (SQLite)",
+    "heartbeat returns commands",
+    "signed /v0/commands/ack",
+    "connector executes+acks isolate"
   ],
   "not_yet": [
-    "server command delivery/push",
-    "connector pulls server commands",
+    "Rust parity for commands",
     "policy live reload",
-    "STML isolate -> command",
     "approval -> confirm bridge"
   ],
   "notes": [

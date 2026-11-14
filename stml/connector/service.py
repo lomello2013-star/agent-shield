@@ -304,6 +304,7 @@ class Connector:
             try:
                 response = self.server.heartbeat(hb)
                 self.isolated = bool(response.get("isolated", False))
+                self._apply_commands(response.get("commands", []))
             except Exception as exc:  # noqa: BLE001 - server down: keep buffering
                 self.last_error = f"server heartbeat: {exc}"
         if time.time() - self._last_inventory_at >= self.config.inventory_interval_s:
@@ -316,6 +317,28 @@ class Connector:
         self.collect_reports()
         if not self.isolated:
             self.flush()
+
+    def _apply_commands(self, commands: list[dict[str, Any]]) -> None:
+        if not commands or self.server is None:
+            return
+        for command in commands:
+            command_id = str(command.get("command_id", ""))
+            if not command_id:
+                continue
+            try:
+                if self.agent is None:
+                    status, result = "failed", {"error": "agent unavailable"}
+                else:
+                    result = self.agent.execute_command(str(command.get("kind", "")),
+                                                        command.get("payload") or {})
+                    status = "acked" if result.get("status") == "acked" else "failed"
+                self.server.ack_command(command_id, status, result)
+            except Exception as exc:  # noqa: BLE001 - do not break the loop
+                self.last_error = f"server command ack: {exc}"
+                try:
+                    self.server.ack_command(command_id, "failed", {"error": str(exc)})
+                except Exception:
+                    pass
 
     def status(self) -> dict[str, Any]:
         return {

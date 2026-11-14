@@ -83,10 +83,13 @@
 
 - Сделано: `policy_state`, `apply_policy` (Ed25519, `key_id`, dry-run, LKG), `command_poll`,
   `command_ack`, `command_enqueue` (admin), isolate на ack, файловая очередь.
+- Сервер/коннектор: `isolate` ставит команду в SQLite; heartbeats возвращают
+  `commands`; коннектор выполняет и подписанно ack-ает `/v0/commands/ack`.
 - Тест: `tests/test_policy_commands.py` — dry-run не меняет state, wrong signature reject,
   viewer forbidden, isolate command.
-- Остаток: server command queue/push, connector poll, policy live reload,
-  STML isolate → command, approval → `confirm`.
+- Тест: `stml/tests/test_server_http.py::test_command_delivery_and_ack` — isolate →
+  command → signed ack → очередь пуста.
+- Остаток: Rust parity для commands, policy live reload, approval → `confirm`.
 
 ### Phase C — Learning/ModelPack/LearningUpdate
 

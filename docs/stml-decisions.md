@@ -131,6 +131,7 @@
 | D-79 | Agent policy apply | **signed policy → `SafeMode` LKG; `live=false` до перезапуска** | горячий reload | безопасность |
 | D-80 | Agent commands | **файловая очередь `commands.json`; isolate применяется на `command_ack`** | push-канал | Phase B MVP |
 | D-81 | Agent policy auth | **`apply_policy` — operator/admin; `policy_state` — viewer** | admin-only | least privilege |
+| D-82 | Command delivery | **команды в ответе heartbeat; ack через подписанный `/v0/commands/ack`** | отдельный long-poll/push | не нужен новый канал |
 
 ## Production acceptance
 
