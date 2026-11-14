@@ -286,3 +286,25 @@ Linux-полосы требуют WSL2 с root (`scripts\run_linux_*.sh`); бе�
 | Что это значит | **R1/R4 не подтверждены**: длинные прогоны недействительны, пока дефект открыт |
 
 Честная формулировка: причина **не найдена**. Гипотеза о повторной валидации была проверена и опровергнута — после исправления падение повторилось. Нативный пробник показал, что fault приходит из **`python312.dll`** со стабильным смещением **0x278B44…0x278B57** (два падения в 19 байтах друг от друга), то есть на уровне интерпретатора. Интерпретатор обновлён до **3.12.9**, запущен **суточный прогон** на падающем профиле (health каждые 2 с) под супервизором; результат — в [soak_supervised.json](../artifacts/soak_supervised.json) (частями в `soak_supervised_partial.json`).
+
+## 15. Лабораторные полигоны (13–14.11.2026)
+
+Оба полигона подняты на Hyper-V (Gen2) и управляются с хоста: Windows — через **PowerShell Direct**, Linux — по **SSH-ключу**.
+
+| Полигон | Факты | Что уже проверено | Что блокирует |
+|---|---|---|---|
+| **Windows 11** | `AIDFLAB`, Enterprise Evaluation **build 26300**, 4 ГБ / 2 vCPU, установлен **офлайн** (DISM apply + bcdboot + `Panther\unattend.xml`), Secure Boot **Off**, `testsigning Yes` | установка, вход по PowerShell Direct, попытка загрузки WDAC audit-политики | неподписанная CI-политика на 26H2 **не загружается** (`CiTool --list-policies` её не видит, 3076/3077 = 0) — нужна подписанная политика или генерация через ConfigCI внутри VM |
+| **Linux** | `aidf-linux`, Ubuntu **24.04.5**, kernel **6.8.0-147**, 3 ГБ / 2 vCPU, cloud-образ (qcow2→VHDX), Secure Boot **On**, kernel **locked down** | SSH, `ima_policy=tcb ima_appraise=enforce` (**3 713 измерений**), fapolicyd (trust DB **60 737**), auditd | enforcement не измерен: пакетные правила fapolicyd — `deny_audit` (только аудит), а построение trust DB занимает **>8 мин**, и демон не доходит до прослушивания; IMA `tcb` не содержит appraise-правила, поэтому копии бинарей исполняются |
+
+**Вывод по полигонам:** инфраструктура для блокеров B/C готова и воспроизводима, но оба «защитных» механизма упираются в подпись/политику: WDAC — в подпись CI-политики (без EV её нет на 26H2), целостность Linux — в политику fapolicyd и appraise-правила IMA. До этого цифры «blocked/denied» публиковать нельзя.
+
+## 16. Как проверять одной командой (обновлено)
+
+```powershell
+python -m pytest            # 451 passed
+python scripts\run_all.py   # 29/29
+python scripts\docs_consistency.py
+python scripts\soak_progress.py   # состояние длинного прогона
+```
+
+Критерий: обязательные шаги зелёные, `docs_consistency` 13/13, `docs/status.md` — валидный UTF-8 без NUL.
