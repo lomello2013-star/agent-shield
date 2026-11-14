@@ -5,13 +5,13 @@
   },
   "trusted_supervisor": {
     "path": "/usr/bin/aidf_tree_helper",
-    "helper": "{\"writes\":5,\"parent\":2867}\n{\"execs\":5,\"child\":2868}",
+    "helper": "{\"writes\":5,\"parent\":1550}\n{\"execs\":5,\"child\":1551}",
     "corr_109_alerts": 1,
     "corr_110_alerts": 0
   },
   "untrusted_supervisor": {
     "path": "/tmp/aidf_tree_helper",
-    "helper": "{\"writes\":5,\"parent\":3237}\n{\"execs\":5,\"child\":3238}",
+    "helper": "{\"writes\":5,\"parent\":1560}\n{\"execs\":5,\"child\":1561}",
     "corr_109_alerts": 1,
     "corr_110_alerts": 1
   },

@@ -3118,6 +3118,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 12:45] Red-team срез + рабочий minifilter (test-signed) [experiment]
+
+**Действие**: (1) собран, подписан и загружен `AidfFilter` minifilter (WDK 10.0.26100 + MSVC) в Windows 11 VM: altitude 328000, 4 инстанса, блокирует `IRP_MJ_CREATE` с write-доступом в `\protected\`, обычная запись проходит. (2) red-team харнесс `scripts/redteam_windows.ps1` + `redteam_vm.ps1`: 4 безопасные эмуляции — T1543.003 service create, T1204 temp exec, T1059.001 encoded PowerShell, benign control + driver block. Первый прогон дал 2/4: правило `WIN-PS-ENCODED-002` не срабатывало, т.к. Sysmon `cmdline` не попадал в `platform_data.cmdline`; исправлено в `core/normalize.py`, повтор — 3/3.
+**Числа**: pytest **467**; cargo **133**; `run_all` **29/29**; red-team detected **3/3**, prevented **3**, FP **0**, driver_blocked **true**; драйвер: 4 инстанса, protected write → **Access denied**.
+**Вердикт**: драйверный контур proof-of-concept работает (test-signing, lab); red-team дал первый измеренный срез, но E1–E6 не закрыты (нет 20 сценариев/ОС и реальных образцов).
+**Проверка**: `fltmc filters` → `AidfFilter 4 328000`; `test.ps1` → `blocked=True allowed=True`; `artifacts/redteam_windows.json`; `pytest` → 467.
+**Статус**: verified (lab); production gap — EV/WHQL
+**Actor**: agent
+**Run_id**: redteam-driver-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

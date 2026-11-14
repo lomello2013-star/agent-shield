@@ -169,3 +169,4 @@ def test_win_eventlog_builds_actor_from_process_id():
     assert ev.actor.pid == 4242
     assert ev.actor.path == r"C:\Temp\evil.exe"
     assert ev.object.type == "process"
+    assert ev.platform_data["cmdline"] == "evil.exe -x"

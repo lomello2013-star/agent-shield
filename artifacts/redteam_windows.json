@@ -1,0 +1,56 @@
+﻿{
+    "generated_at":  "2026-11-14T09:40:59.8316804Z",
+    "head":  "d75d04d",
+    "vm":  "AIDFLAB",
+    "scenarios":  [
+                      {
+                          "id":  "RT-WIN-01",
+                          "technique":  "T1543.003",
+                          "action":  "sc create AidfRtSvc",
+                          "rule":  "WIN-SERVICE-CREATE-007",
+                          "detected":  true,
+                          "prevented":  false,
+                          "note":  "service install has no actor_pid; suspend is action_skipped"
+                      },
+                      {
+                          "id":  "RT-WIN-02",
+                          "technique":  "T1204",
+                          "action":  "exec C:\\Temp\\rt_tick.exe",
+                          "rule":  "WIN-EXEC-TEMP-001",
+                          "detected":  true,
+                          "prevented":  true,
+                          "pending":  true,
+                          "confirm":  "executed",
+                          "frozen":  true
+                      },
+                      {
+                          "id":  "RT-WIN-03",
+                          "technique":  "T1059.001",
+                          "action":  "powershell -EncodedCommand (sleep)",
+                          "rule":  "WIN-PS-ENCODED-002",
+                          "detected":  true,
+                          "prevented":  true,
+                          "pending":  true,
+                          "confirm":  "executed"
+                      },
+                      {
+                          "id":  "RT-WIN-04",
+                          "technique":  "control+E6",
+                          "action":  "benign cmd; protected write",
+                          "rule":  "none",
+                          "detected":  false,
+                          "prevented":  true,
+                          "fp_delta":  0,
+                          "driver_loaded":  true,
+                          "note":  "driver blocks protected write; benign cmd must not add verdicts"
+                      }
+                  ],
+    "summary":  {
+                    "total":  4,
+                    "detected":  3,
+                    "prevented":  3,
+                    "fp_delta":  0,
+                    "driver_blocked":  true
+                },
+    "limitations":  "Safe technique emulation, not real malware; one VM, one run; E1-E6 still need a full 20-scenario/OS red-team."
+}

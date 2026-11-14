@@ -101,6 +101,7 @@ class EventLogRecord:
             "process_id": _parse_pid(data.get("ProcessId")),
             "parent_id": _parse_pid(data.get("ParentProcessId")),
             "image": data.get("Image", ""),
+            "parent_image": data.get("ParentImage", ""),
             "cmdline": data.get("CommandLine", ""),
             "data": data,
         }

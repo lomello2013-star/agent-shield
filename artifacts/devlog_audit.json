@@ -1,18 +1,19 @@
 {
-  "generated_at": "2026-11-14T08:55:07.733890+00:00",
-  "entries": 116,
-  "complete": 92,
+  "generated_at": "2026-11-14T09:48:51.747040+00:00",
+  "entries": 118,
+  "complete": 94,
   "incomplete": 24,
-  "completeness_pct": 79.3,
+  "completeness_pct": 79.7,
   "by_type": {
     "config": 4,
-    "experiment": 74,
+    "experiment": 75,
     "escalation": 1,
     "decision": 2,
     "code": 24,
     "docs": 1,
     "report": 4,
-    "auto_review": 6
+    "auto_review": 6,
+    "test": 1
   },
   "missing_artifacts": [
     "dev_keys.json",
@@ -201,6 +202,6 @@
       ]
     }
   ],
-  "artifacts_on_disk": 80,
+  "artifacts_on_disk": 81,
   "note": "legacy entries are disclosed, not rewritten; new entries are enforced by docs_consistency (last 10 entries must carry all five fields)"
 }
