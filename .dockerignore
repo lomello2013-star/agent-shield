@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.git/
+.github/
+artifacts/
+docs/
+spikes/
+rust/
+tests/
+secrets/
+*.sqlite3
+*.trust/

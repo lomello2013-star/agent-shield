@@ -1,0 +1,19 @@
+services:
+  stml:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    image: aidfender/stml:dev
+    ports:
+      - "8080:8080"
+    environment:
+      STML_TENANT: ${STML_TENANT:-default}
+      STML_ADMIN_TOKEN: ${STML_ADMIN_TOKEN:-change-me-admin}
+      STML_VIEWER_TOKEN: ${STML_VIEWER_TOKEN:-change-me-viewer}
+      STML_APPROVER_TOKEN: ${STML_APPROVER_TOKEN:-change-me-approver}
+    volumes:
+      - stml-data:/data
+    restart: unless-stopped
+
+volumes:
+  stml-data:

@@ -89,6 +89,14 @@
 | D-50 | Watchdog | **`scripts/stml_watchdog.py` + `/v0/slo`** | встроенный поток | внешняя независимость |
 | D-51 | SLO snapshot | **`/v0/slo`: stats/audit/bus/targets** | отдельный сервис | MVP |
 
+## S7 (Deploy)
+
+| # | Решение | Принято | Альтернативы | Почему |
+|---|---|---|---|---|
+| D-52 | Compose first | **Dockerfile + compose (SQLite volume)** | K8s сразу | малый парк |
+| D-53 | K8s | **Helm chart reference; SQLite ReadWriteOnce** | PostgreSQL сразу | S1.5 |
+| D-54 | Air-gapped | **процедура USB + anti-rollback + backup** | автоматический updater | S7 MVP |
+
 ## Открытые (предложены, не приняты)
 
 | # | Вопрос | Варианты | Рекомендация |

@@ -143,14 +143,14 @@
 
 ---
 
-## Фаза 7 — Развёртывание (S7)
+## Фаза 7 — Развёртывание (S7) `[partial: manifests]`
 
-1. Docker Compose (малый парк) — развёртывание.
-2. Helm/K8s (HA, autoscaling, rolling update).
-3. Air-gapped: offline-процесс, anti-rollback, журнал USB, dual-slot, план B.
-4. DR-тест на целевом стенде: Compose — backup-restore (RTO ≤1 ч); K8s — полный DR (RTO ≤4 ч, ceremony отдельно ≤24 ч).
-- **Артефакты:** `docs/deploy.md`.
-- **Гейт S7:** Compose; K8s; air-gapped; DR-тест на целевом стенде.
+1. [x] Docker Compose файлы (`deploy/Dockerfile`, `deploy/docker-compose.yml`); **сборка не проверена — Docker daemon не запущен**.
+2. [~] Helm/K8s chart (`deploy/helm/stml`); **helm/кластер недоступны — lint/install не проверены**.
+3. [~] Air-gapped: процедура + anti-rollback/журнал USB/план B — `docs/deploy.md`; не автоматизировано.
+4. [x] DR backup/restore (SQLite+trust) — тест; полный K8s DR — после кластера.
+- **Артефакты:** `deploy/`, `docs/deploy.md`, `deploy/systemd/stml.service`.
+- **Гейт S7:** Compose/K8s/air-gapped/DR — **manifests + процедура; runtime-проверка на целевом стенде**.
 
 ---
 
