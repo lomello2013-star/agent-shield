@@ -1,0 +1,262 @@
+"""STML Fleet Core HTTP API (S1 MVP) and read-only dashboard."""
+
+from __future__ import annotations
+
+import json
+import threading
+from dataclasses import dataclass
+from datetime import datetime, timezone
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from typing import Any
+from urllib.parse import urlparse
+
+from stml.connector.signing import public_from_pem, verify
+from stml.contracts.v0 import Heartbeat, Inventory
+from stml.server.store import Store
+
+MAX_BODY = 2 * 1024 * 1024
+SKEW_S = 300
+
+
+@dataclass
+class ServerConfig:
+    tenant_id: str = "default"
+    admin_token: str = ""
+    viewer_token: str = ""
+    db_path: str = "stml-server.sqlite3"
+
+
+class StmlServer(ThreadingHTTPServer):
+    daemon_threads = True
+    allow_reuse_address = True
+
+    def __init__(self, addr: tuple[str, int], store: Store, config: ServerConfig) -> None:
+        super().__init__(addr, Handler)
+        self.store = store
+        self.config = config
+        self.connector = None  # type: ignore[assignment]
+
+
+class Handler(BaseHTTPRequestHandler):
+    server: StmlServer
+
+    def log_message(self, fmt: str, *args: Any) -> None:  # keep test output quiet
+        return
+
+    # -- helpers ---------------------------------------------------------
+    def _body(self) -> bytes:
+        length = int(self.headers.get("Content-Length", "0"))
+        if length > MAX_BODY:
+            raise ValueError("body too large")
+        return self.rfile.read(length) if length else b""
+
+    def _send(self, code: int, payload: Any) -> None:
+        raw = json.dumps(payload, ensure_ascii=False).encode()
+        self.send_response(code)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Content-Length", str(len(raw)))
+        self.end_headers()
+        self.wfile.write(raw)
+
+    def _error(self, code: int, message: str) -> None:
+        self._send(code, {"error": message})
+
+    def _auth(self, role: str) -> bool:
+        header = self.headers.get("Authorization", "")
+        token = header.removeprefix("Bearer ").strip()
+        allowed = {self.server.config.admin_token, self.server.config.viewer_token}
+        if not token or token not in allowed:
+            self._error(401, "unauthorized")
+            return False
+        if role == "admin" and token != self.server.config.admin_token:
+            self._error(403, "admin required")
+            return False
+        return True
+
+    def _agent(self, body: dict[str, Any]) -> Any:
+        agent_id = body.get("agent_id")
+        if not isinstance(agent_id, str):
+            self._error(400, "agent_id required")
+            return None
+        agent = self.server.store.agent(agent_id)
+        if agent is None:
+            self._error(404, "unknown agent")
+            return None
+        return agent
+
+    def _verify_signed(self, raw: bytes, body: dict[str, Any], agent: Any) -> bool:
+        signature = self.headers.get("X-STML-Signature", "")
+        if not signature or not verify(public_from_pem(agent.pubkey), raw, signature):
+            self._error(403, "bad signature")
+            return False
+        nonce = body.get("nonce")
+        if not isinstance(nonce, str) or self.server.store.seen_nonce(nonce):
+            self._error(409, "replayed nonce")
+            return False
+        try:
+            sent = datetime.fromisoformat(str(body.get("sent_at")).replace("Z", "+00:00"))
+        except ValueError:
+            self._error(400, "sent_at required")
+            return False
+        if abs((datetime.now(timezone.utc) - sent).total_seconds()) > SKEW_S:
+            self._error(409, "timestamp outside skew")
+            return False
+        return True
+
+    # -- GET -------------------------------------------------------------
+    def do_GET(self) -> None:  # noqa: N802
+        parts = urlparse(self.path).path.strip("/").split("/")
+        if parts == ["health"]:
+            self._send(200, {"ok": True, "service": "stml", "tenant": self.server.config.tenant_id})
+            return
+        if parts == [""]:
+            page = DASHBOARD.encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(page)))
+            self.end_headers()
+            self.wfile.write(page)
+            return
+        if parts[:2] == ["v0", "agents"]:
+            if not self._auth("viewer"):
+                return
+            if len(parts) == 2:
+                self._send(200, {"agents": [a.__dict__ for a in self.server.store.agents()]})
+            elif len(parts) == 3:
+                agent = self.server.store.agent(parts[2])
+                if agent is None:
+                    self._error(404, "unknown agent")
+                else:
+                    self._send(200, agent.__dict__)
+            return
+        if parts == ["v0", "audit", "verify"]:
+            if self._auth("admin"):
+                self._send(200, {"ok": self.server.store.verify_audit()})
+            return
+        self._error(404, "not found")
+
+    # -- POST ------------------------------------------------------------
+    def do_POST(self) -> None:  # noqa: N802
+        parts = urlparse(self.path).path.strip("/").split("/")
+        try:
+            raw = self._body()
+            body = json.loads(raw) if raw else {}
+        except (ValueError, json.JSONDecodeError) as exc:
+            self._error(400, str(exc))
+            return
+
+        if parts == ["v0", "enrol"]:
+            try:
+                public_from_pem(str(body.get("pubkey", "")))
+                agent_id = self.server.store.enrol(
+                    token=str(body.get("enrolment_token", "")),
+                    tenant_id=str(body.get("tenant_id", self.server.config.tenant_id)),
+                    hostname=str(body.get("hostname", "unknown")),
+                    os_name=str(body.get("os", "unknown")),
+                    arch=str(body.get("arch", "unknown")),
+                    agent_version=str(body.get("agent_version", "unknown")),
+                    pubkey=str(body.get("pubkey", "")),
+                )
+            except PermissionError as exc:
+                self._error(403, str(exc))
+                return
+            except Exception as exc:  # noqa: BLE001
+                self._error(400, f"bad enrolment: {exc}")
+                return
+            self._send(201, {"agent_id": agent_id, "tenant_id": body.get("tenant_id",
+                                                                       self.server.config.tenant_id)})
+            return
+
+        if parts == ["v0", "heartbeat"]:
+            agent = self._agent(body)
+            if agent is None or not self._verify_signed(raw, body, agent):
+                return
+            try:
+                hb = Heartbeat.model_validate(body)
+            except Exception as exc:  # noqa: BLE001
+                self._error(400, f"bad heartbeat: {exc}")
+                return
+            isolated = self.server.store.heartbeat(agent.id, hb.status.value, hb.health)
+            self._send(200, {"ok": True, "isolated": isolated})
+            return
+
+        if parts == ["v0", "inventory"]:
+            agent = self._agent(body)
+            if agent is None or not self._verify_signed(raw, body, agent):
+                return
+            try:
+                inv = Inventory.model_validate(body)
+            except Exception as exc:  # noqa: BLE001
+                self._error(400, f"bad inventory: {exc}")
+                return
+            self.server.store.inventory(agent.id, {
+                "os": inv.os, "arch": inv.arch, "agent_version": inv.agent_version,
+                "policy_version": inv.rules_version,
+            })
+            self._send(200, {"ok": True})
+            return
+
+        if parts == ["v0", "reports"]:
+            reports = body.get("reports") if isinstance(body, dict) else body
+            if not isinstance(reports, list) or not reports:
+                self._error(400, "reports[] required")
+                return
+            first = reports[0] if isinstance(reports[0], dict) else {}
+            agent = self._agent(first)
+            if agent is None or not self._verify_signed(raw, first, agent):
+                return
+            acked = self.server.store.ingest(reports)
+            self._send(200, {"schema_version": "stml/v0", "acked": acked})
+            return
+
+        if len(parts) == 4 and parts[:2] == ["v0", "agents"] and parts[3] == "isolate":
+            if not self._auth("admin"):
+                return
+            try:
+                self.server.store.isolate(parts[2], bool(body.get("isolated", True)))
+            except KeyError:
+                self._error(404, "unknown agent")
+                return
+            self._send(200, {"ok": True, "agent_id": parts[2],
+                             "isolated": bool(body.get("isolated", True))})
+            return
+
+        self._error(404, "not found")
+
+
+DASHBOARD = """<!doctype html><html lang="ru"><head><meta charset="utf-8">
+<title>STML — Fleet</title>
+<style>
+body{background:#0b0f17;color:#e5e9f0;font:14px Inter,system-ui,sans-serif;margin:0}
+header{background:#111827;border-bottom:1px solid #243044;padding:14px 20px;display:flex;gap:16px;align-items:center}
+h1{font-size:16px;margin:0;color:#3b82f6}
+input{background:#1a2234;border:1px solid #243044;color:#e5e9f0;padding:6px 10px;border-radius:6px}
+button{background:#3b82f6;border:0;color:#fff;padding:6px 12px;border-radius:6px;cursor:pointer}
+main{padding:20px}
+table{width:100%;border-collapse:collapse;background:#111827;border:1px solid #243044;border-radius:8px;overflow:hidden}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid #243044;font-size:13px}
+th{color:#8b98a9;font-weight:500}
+.ok{color:#22c55e}.warn{color:#f59e0b}.bad{color:#ef4444}
+#msg{color:#8b98a9;font-size:12px}
+</style></head><body>
+<header><h1>STML Console</h1><span id="msg">read-only</span>
+<input id="token" type="password" placeholder="viewer token"><button onclick="load()">Load</button></header>
+<main><table><thead><tr><th>Host</th><th>OS</th><th>Version</th><th>Status</th><th>Last seen</th><th>Isolated</th></tr></thead>
+<tbody id="rows"></tbody></table></main>
+<script>
+function esc(v){return String(v).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
+async function load(){
+ const t=document.getElementById('token').value;
+ const r=await fetch('/v0/agents',{headers:{Authorization:'Bearer '+t}});
+ if(!r.ok){document.getElementById('msg').textContent='auth error';return}
+ const d=await r.json(); const rows=d.agents.map(a=>`<tr><td>${esc(a.hostname)}</td><td>${esc(a.os)}</td><td>${esc(a.agent_version)}</td><td class="${a.status==='healthy'?'ok':a.status==='degraded'?'warn':'bad'}">${esc(a.status)}</td><td>${new Date(a.last_seen*1000).toLocaleTimeString()}</td><td>${a.isolated?'yes':'no'}</td></tr>`).join('');
+ document.getElementById('rows').innerHTML=rows; document.getElementById('msg').textContent=d.agents.length+' agents';
+}
+</script></body></html>"""
+
+
+def start_server(store: Store, config: ServerConfig, port: int = 0) -> tuple[StmlServer, threading.Thread]:
+    server = StmlServer(("127.0.0.1", port), store, config)
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    return server, thread

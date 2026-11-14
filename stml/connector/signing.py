@@ -45,6 +45,10 @@ def load_public(path: str | Path) -> Ed25519PublicKey:
     return serialization.load_pem_public_key(Path(path).read_bytes())  # type: ignore[return-value]
 
 
+def public_from_pem(pem: str) -> Ed25519PublicKey:
+    return serialization.load_pem_public_key(pem.encode())  # type: ignore[return-value]
+
+
 def key_id(public_key: Ed25519PublicKey) -> str:
     raw = public_key.public_bytes(
         encoding=serialization.Encoding.Raw,

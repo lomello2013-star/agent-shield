@@ -27,6 +27,18 @@
 | D-18 | Threat model коннектора | **принята делегированно** (AI под human-approval) | ждать human-подписи до S0.1b | не блокирует S0; финальная подпись — приёмка |
 | D-19 | 5 read-only RPC | **прокси к агенту: ping/health/stats/self_test/immutable_check** | только connector-level status | соответствует S0.1b |
 
+## S1 (Fleet Core)
+
+| # | Решение | Принято | Альтернативы | Почему |
+|---|---|---|---|---|
+| D-20 | Хранилище S1 | **SQLite MVP** (`Store` интерфейс) | PostgreSQL сразу | быстрый протокол и тесты; Postgres — S1.5 |
+| D-21 | Сервер S1 | **Python stdlib reference** | Rust/axum сразу | проверка протокола/UX до порта; Rust — production gate |
+| D-22 | Аутентификация агента | **Ed25519 подпись тела + одноразовый enrolment token** | mTLS сразу | mTLS/CA — S2 |
+| D-23 | Dashboard | **read-only HTML, viewer token в браузере** | полноценный SPA | S1 = read-only |
+| D-24 | TUI kill-switch | **CLI `isolate` с admin token** | ratatui-интерфейс | SSH-совместимо; ratatui — S3 |
+| D-25 | Policy CRUD/rollout | **отложено (слой B)** | реализовать в S1 | gate S1 закрывается без B |
+| D-26 | Audit traffic | **audit только смены статуса и P0** | audit каждого heartbeat/report | иначе цепочка растёт на 864k/сутки |
+
 ## Открытые (предложены, не приняты)
 
 | # | Вопрос | Варианты | Рекомендация |

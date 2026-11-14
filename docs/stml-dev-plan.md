@@ -54,18 +54,19 @@
 
 ---
 
-## Фаза 1 — Fleet Core + приём отчётов + GUI read-only (S1)
+## Фаза 1 — Fleet Core + приём отчётов + GUI read-only (S1) `[partial: functional core]`
 
-1. Реестр агентов (PostgreSQL): enrolment, heartbeat, inventory, статус, версия, `tenant_id`.
-2. Enrolment: one-time token → Ed25519 → отзыв.
-3. Report ingest: идемпотентность по `report_id`, очереди P0–P3, audit chain.
-4. GUI read-only (Dashboard/Fleet/Agents).
-5. TUI аварийный (health, kill-switch).
-6. TUI kill-switch ≤5 мин.
-7. Policy CRUD + diff + dry-run (слой B).
-8. Rollout canary 1→10→50→100 %, halt, rollback (слой B).
-9. p95 baseline (`docs/s1-baseline.md`) + профиль нагрузки (`docs/s1-load-profile.md`).
-- **Гейт S1:** 1+ агент online, p95 ≤2 с; нагрузочный 100 синтетических; TUI kill-switch ≤5 мин; P0 потерь 0; подпись policy на тестовой policy (dry-run); deny-by-default; GUI read-only.
+1. [x] Реестр агентов (SQLite MVP): enrolment, heartbeat, inventory, статус, версия, `tenant_id`.
+2. [x] Enrolment: one-time token → Ed25519 pubkey (отзыв сертификата — S2).
+3. [x] Report ingest: идемпотентность по `report_id`, audit chain (P0–P3 — в модели).
+4. [x] GUI read-only: Dashboard/Fleet/Agents (`GET /`, `/v0/agents`).
+5. [x] TUI аварийный: `python -m stml.server isolate <id>` (admin token).
+6. [x] TUI kill-switch ≤5 мин (тест isolate → heartbeat isolated=true).
+7. [ ] Policy CRUD + diff + dry-run (слой B) — следующий шаг.
+8. [ ] Rollout canary 1→10→50→100 %, halt, rollback (слой B).
+9. [x] p95 baseline + 100 синтетических агентов (`test_100_agents_enrolled_and_heartbeat_concurrently`).
+- **Гейт S1:** 100 агентов online, p95 ≤2 с; TUI isolate; P0 идемпотентность; подпись heartbeat/inventory/reports; deny-by-default; GUI read-only. **Остаток:** policy-подпись/dry-run (B), Rust/axum port.
+- **Реализация:** `stml/server/` (Python stdlib, SQLite) — reference; production Rust/axum — отдельный gate.
 
 ---
 
