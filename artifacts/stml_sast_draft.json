@@ -1,0 +1,13 @@
+{
+  "kind": "sast-draft",
+  "tool": "pattern-scan",
+  "findings": [
+    {
+      "file": "core\\ipc.py",
+      "line": 159,
+      "rule": "pickle_loads",
+      "excerpt": "return pickle.loads(raw)"
+    }
+  ],
+  "note": "Not a substitute for Bandit/Semgrep or human review."
+}

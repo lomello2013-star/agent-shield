@@ -30,10 +30,11 @@ def main() -> int:
     ap.add_argument("--rust-viewer", default="viewer")
     ap.add_argument("--rust-admin", default="admin")
     ap.add_argument("--no-write", action="store_true")
+    ap.add_argument("--load-url", default="")
     args = ap.parse_args()
 
     report: dict = {"generated_at": datetime.now(timezone.utc).isoformat(),
-                    "read": None, "write": None}
+                    "read": None, "write": None, "load": None}
     code, out = run([sys.executable, "scripts/stml_rust_parity.py",
                      "--python-url", args.python_url,
                      "--python-viewer", args.python_viewer,
@@ -49,10 +50,17 @@ def main() -> int:
         report["write"] = {"ok": code == 0, "output": out[-4000:]}
         ok = ok and code == 0
 
+    if args.load_url:
+        code, out = run([sys.executable, "scripts/stml_rust_load.py",
+                         "--url", args.load_url])
+        report["load"] = {"ok": code == 0, "output": out[-4000:]}
+        ok = ok and code == 0
+
     Path("artifacts/stml_parity_ci.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps({"ok": ok, "read": report["read"]["ok"],
-                      "write": report["write"]["ok"] if report["write"] else None},
+                      "write": report["write"]["ok"] if report["write"] else None,
+                      "load": report["load"]["ok"] if report["load"] else None},
                      ensure_ascii=False))
     return 0 if ok else 1
 

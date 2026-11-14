@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-14T18:20:20.996404+00:00",
+  "generated_at": "2026-11-14T18:23:25.710673+00:00",
   "service": {
     "task": "AIDefender-STML-Rust",
     "bind": "127.0.0.1:8090",
@@ -13,11 +13,18 @@
   "pentest": {
     "script": "scripts/stml_pentest.py",
     "draft": "artifacts/stml_pentest_draft.json",
-    "ok": true
+    "ok": true,
+    "fuzz": "20 malformed bodies, no 5xx"
   },
   "dpia": {
     "draft": "docs/dpia-draft.md",
     "legal_signoff": false
   },
-  "parity_ci": "scripts/stml_parity_ci.py"
+  "parity_ci": "read+write (+optional load via --load-url)",
+  "sast": {
+    "script": "scripts/stml_sast.py",
+    "findings": 1,
+    "finding": "pickle.loads in core/ipc.py (named-pipe authkey transport)",
+    "report": "artifacts/stml_sast_draft.json"
+  }
 }

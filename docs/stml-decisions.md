@@ -155,6 +155,8 @@
 | D-103 | ModelPack keys | **PEM↔hex helpers; signature hex or base64 accepted** | только hex | совместимость STML/агент |
 | D-104 | CaseMemory | **маппинг STML case + реальный v3 Verdict** | синтетический verdict | атрибуция |
 | D-105 | LearningUpdate | **verify+store через команду; application rules/models — отдельно** | сразу применять | fail-closed, без автоприменения |
+| D-106 | SAST | **pattern scan; 1 known finding: `pickle.loads` в core/ipc.py** | Bandit/Semgrep | named-pipe authkey, не сетевой вход |
+| D-107 | Fuzz | **20 malformed JSON heartbeat, no 5xx** | полноценный fuzz | smoke |
 
 ## Production acceptance
 
