@@ -3062,6 +3062,35 @@ parameters=2
 
 ---
 
+## [2026-11-14 12:00] IMA appraisal: подпись файла создаётся, проверка ключа не проходит (evmctl 1.4 vs OpenSSL 3) [experiment]
+
+**Действие**: вторая половина Linux-целостности — попытка включить appraisal: сгенерирован ключ, файл подписан (`evmctl sign --imasig`), проверены `getfattr`, `ima_verify`, импорт ключа в keyring, тампер-тест с сохранением xattr.
+**Файлы**: `/root/ima-keys/{privkey.pem,privkey_trad.pem,pubkey.pem,ls_signed2,ls_tampered2}` в `AIDF-Linux`; сводка — `artifacts/linux_ima_appraise.json`.
+
+**Числа**:
+| Проверка | Результат |
+|---|---|
+| `evmctl --version` | **1.4** |
+| Подпись файла (`evmctl sign --imasig -k privkey`) | `security.ima` записан (base64-подпись, ~400 Б) |
+| `evmctl ima_verify ls_signed2` | код возврата 0, но в выводе **`key 1: 9553b8c3 (unknown keyid)`** — фактической проверки не произошло |
+| Импорт ключа (`evmctl import pubkey.pem`) | **ошибка**: `openssl ... nested asn1 error`, `errno: No such file or directory` |
+| Тампер-тест (`cp --preserve=xattr` + дописанный байт) | тот же `unknown keyid` — отличить целый файл от испорченного **не удалось** |
+| `keyctl show` | keyring содержит только `_ses`/`_uid.1000`, ключа IMA нет |
+| IMA-политика в ядре | `ima_policy=tcb` — **правила appraise нет**, поэтому ядро appraisal не выполняет |
+| Измерений IMA | **3 713** (растёт) |
+| Суточный soak на хосте | **48 320 с**, 0 перезапусков, 100 % |
+
+**Вердикт: appraisal не включён и не измерен.** Подпись создаётся, но `evmctl 1.4` не принимает ключ, сгенерированный OpenSSL 3 (ASN.1 nested error), поэтому проверка подписи не выполняется, а ядро appraisal не делает вовсе из-за политики `tcb`. Тампер-тест в такой конфигурации ничего не доказывает — это записано, а не выдано за успех.
+**Decision**: для реального appraisal нужен отдельный цикл: (1) привести ключ к формату, который понимает evmctl 1.4 (`evmctl convert`, либо ключ из пакета `ima-evm-utils`), (2) загрузить его в `.ima` keyring, (3) подписать **весь rootfs** (иначе `ima_policy=appraise_tcb` заблокирует загрузку/SSH), (4) только затем переключать политику и мерить отказы. Без шага (3) включать appraise_tcb на живой VM нельзя — потеряем доступ.
+**Найденные дефекты**: 1) `evmctl ima_verify` возвращает 0 даже при «unknown keyid» — код возврата нельзя использовать как признак успеха, нужен разбор вывода; 2) `evmctl import` падает на ключе OpenSSL 3 (ASN.1); 3) `cp` без `--preserve=xattr` теряет `security.ima` — тампер-тест был бы ложным; 4) `tcb` не аппрейзит по определению.
+**Ограничения (честно)**: 1) appraisal не измерен; 2) ключ не загружен в keyring; 3) rootfs не подписан; 4) переключение политики не выполнялось (осознанно — риск потери доступа); 5) TPM/vTPM нет, PCR не измерялись.
+**Проверка**: `evmctl sign` → xattr есть; `getfattr -m security.ima` → подпись; `evmctl ima_verify` → `unknown keyid`; `evmctl import` → ASN.1 error; `keyctl show` → ключа нет; `/proc/cmdline` → `ima_policy=tcb`; soak → 48 320 с, 100 %.
+**Статус**: IMA appraisal не включён; измерение работает
+**Actor**: agent
+**Run_id**: ima-appraise-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

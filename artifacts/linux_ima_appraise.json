@@ -1,0 +1,38 @@
+{
+  "environment": {
+    "host": "aidf-linux",
+    "os": "Ubuntu 24.04.5 LTS",
+    "kernel": "6.8.0-147-generic",
+    "secure_boot": true,
+    "ima_policy": "tcb",
+    "ima_appraise": "enforce",
+    "evmctl_version": "1.4"
+  },
+  "signing": {
+    "command": "evmctl sign --imasig -k privkey.pem file",
+    "security_ima_xattr_written": true,
+    "signature_bytes_approx": 400
+  },
+  "verification": {
+    "command": "evmctl ima_verify file",
+    "exit_code": 0,
+    "output_contains_unknown_keyid": true,
+    "actually_verified": false,
+    "key_import_error": "openssl nested asn1 error (OpenSSL 3 key vs evmctl 1.4)",
+    "keyring_has_ima_key": false
+  },
+  "tamper_test": {
+    "method": "cp --preserve=xattr + append byte",
+    "verification_differs": false,
+    "note": "verification never ran, so the test proves nothing"
+  },
+  "ima_measurements": 3713,
+  "kernel_appraisal_rules": 0,
+  "verdict": "appraisal not enabled and not measured; signing works, key handling with evmctl 1.4 fails",
+  "next_steps": [
+    "convert key to a format evmctl 1.4 accepts or use the packaged ima key",
+    "import key into the .ima keyring",
+    "sign the whole rootfs before switching to ima_policy=appraise_tcb",
+    "then measure denials; without step 3 the VM loses access"
+  ]
+}
