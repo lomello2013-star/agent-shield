@@ -403,9 +403,49 @@ class Daemon:
         return self.policy_store.state(self)
 
     def apply_policy(self, policy: dict, pubkey_pem: str = "",
-                     dry_run: bool = True) -> dict:
+                     dry_run: bool = True, live: bool = False) -> dict:
         key = pubkey_pem or os.environ.get("AIDF_POLICY_PUBKEY", "")
-        return self.policy_store.apply(self, policy, key, dry_run=bool(dry_run))
+        return self.policy_store.apply(self, policy, key, dry_run=bool(dry_run),
+                                       live=bool(live))
+
+    def apply_live_policy(self, content: dict) -> dict:
+        """Apply the safe, hot-swappable subset of a signed policy.
+
+        Sources/queue changes still require a restart; thresholds and gate
+        confidence are updated atomically so the detector/gate see one value.
+        """
+        changed: dict[str, Any] = {}
+        restart: list[str] = []
+        thresholds = content.get("thresholds") or {}
+        if "min_confidence" in thresholds:
+            value = float(thresholds["min_confidence"])
+            self.gate.min_confidence = value
+            self.config.thresholds["min_confidence"] = value
+            changed["min_confidence"] = value
+        if "alert_budget" in thresholds:
+            value = int(thresholds["alert_budget"])
+            self.gate.budget.per_window = value
+            self.config.thresholds["alert_budget"] = value
+            changed["alert_budget"] = value
+        if "heartbeat_timeout_s" in thresholds:
+            value = float(thresholds["heartbeat_timeout_s"])
+            if value <= 0:
+                raise ValueError("heartbeat_timeout_s must be positive")
+            self.heartbeat.timeout_s = value
+            self.heartbeat.warn_s = value * 0.5
+            self.heartbeat.escalate_s = value * 0.75
+            self.config.thresholds["heartbeat_timeout_s"] = value
+            changed["heartbeat_timeout_s"] = value
+        if "allowlist" in content and isinstance(content["allowlist"], list):
+            self.config.allowlist = list(content["allowlist"])
+            changed["allowlist"] = len(self.config.allowlist)
+        if content.get("sources") not in (None, self.config.sources):
+            restart.append("sources")
+        if content.get("queue") not in (None, self.config.queue):
+            restart.append("queue")
+        self.log.append("policy_live_reload", {"changed": sorted(changed),
+                                              "restart_required": restart})
+        return {"live": True, "changed": changed, "restart_required": restart}
 
     def command_poll(self) -> dict:
         return {"commands": self.commands.poll(), "isolated": self.isolated}

@@ -60,9 +60,10 @@ class AgentClient:
     def policy_state(self) -> dict:
         return self._call("policy_state")
 
-    def apply_policy(self, policy: dict, pubkey: str = "", dry_run: bool = True) -> dict:
+    def apply_policy(self, policy: dict, pubkey: str = "", dry_run: bool = True,
+                     live: bool = False) -> dict:
         return self._call("apply_policy", {"policy": policy, "pubkey": pubkey,
-                                           "dry_run": dry_run})
+                                           "dry_run": dry_run, "live": live})
 
     def command_poll(self) -> dict:
         return self._call("command_poll")

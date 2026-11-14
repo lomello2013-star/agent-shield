@@ -24,7 +24,7 @@ def make_policy():
                           "thresholds": {"min_confidence": 0.6}}}
     policy["signature"] = base64.b64encode(
         private.sign(canonical_policy(policy))).decode()
-    return policy, pub_pem
+    return policy, pub_pem, private
 
 
 def test_policy_state_apply_and_commands(tmp_path):
@@ -35,7 +35,7 @@ def test_policy_state_apply_and_commands(tmp_path):
                        build_daemon_registry(daemon))
     server.start()
     time.sleep(0.05)
-    policy, pub_pem = make_policy()
+    policy, pub_pem, private = make_policy()
     try:
         viewer = RpcClient(address, b"k" * 32, "viewer")
         operator = RpcClient(address, b"k" * 32, "operator")
@@ -57,6 +57,17 @@ def test_policy_state_apply_and_commands(tmp_path):
             assert applied["accepted"] is True
             assert operator.call("policy_state")["version"] == "v1"
             assert daemon.safe_mode.is_safe is False
+
+            policy2 = {**policy, "version": "v2",
+                       "content": {"schema_version": "1.0", "sources": [],
+                                   "thresholds": {"min_confidence": 0.7}}}
+            policy2["signature"] = base64.b64encode(
+                private.sign(canonical_policy(policy2))).decode()
+            live = operator.call("apply_policy", {"policy": policy2, "pubkey": pub_pem,
+                                                  "dry_run": False, "live": True})
+            assert live["live"] is True
+            assert daemon.gate.min_confidence == 0.7
+            assert operator.call("policy_state")["live"] is True
 
             bad = dict(policy)
             bad["version"] = "v2"

@@ -78,11 +78,11 @@ class PolicyStore:
                 "channel": state.get("channel"),
                 "fingerprint": state.get("fingerprint"),
                 "applied_at": state.get("applied_at"),
-                "live": False,
+                "live": bool(state.get("live", False)),
                 "safe_mode": daemon.safe_mode.status()}
 
     def apply(self, daemon, policy: dict[str, Any], pubkey_pem: str,
-              dry_run: bool = True) -> dict[str, Any]:
+              dry_run: bool = True, live: bool = False) -> dict[str, Any]:
         verify_policy(policy, pubkey_pem)
         content = policy.get("content")
         if not isinstance(content, dict):
@@ -103,14 +103,23 @@ class PolicyStore:
         if not applied.accepted:
             return {"accepted": False, "dry_run": False,
                     "reason": applied.reason, "fingerprint": fingerprint}
+        live_result: dict[str, Any] = {"live": False, "changed": {}}
+        if live:
+            try:
+                live_result = daemon.apply_live_policy(content)
+            except Exception as exc:  # noqa: BLE001 - keep LKG, report no live apply
+                live_result = {"live": False, "changed": {}, "error": str(exc)}
         state = {"policy_id": policy.get("policy_id"),
                  "version": policy.get("version"),
                  "channel": policy.get("channel", "stable"),
                  "key_id": policy.get("key_id", ""),
                  "fingerprint": fingerprint,
+                 "live": bool(live_result.get("live")),
                  "applied_at": datetime.now(timezone.utc).isoformat()}
         self.save(state)
         daemon.log.append("policy_applied", {"policy_id": state["policy_id"],
                                             "version": state["version"],
-                                            "fingerprint": fingerprint})
-        return {**result, "config_fingerprint": applied.fingerprint}
+                                            "fingerprint": fingerprint,
+                                            "live": state["live"]})
+        return {**result, "live": state["live"], "live_result": live_result,
+                "config_fingerprint": applied.fingerprint}

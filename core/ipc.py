@@ -280,7 +280,8 @@ def build_daemon_registry(daemon, kill_switch_add: Callable[[str], None] | None 
             raise RpcError(INVALID_PARAMS, "policy object is required")
         try:
             return daemon.apply_policy(policy, str(params.get("pubkey", "")),
-                                       dry_run=bool(params.get("dry_run", True)))
+                                       dry_run=bool(params.get("dry_run", True)),
+                                       live=bool(params.get("live", False)))
         except ValueError as exc:
             raise RpcError(INVALID_PARAMS, str(exc)) from exc
 

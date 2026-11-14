@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-14T12:32:28.878450+00:00",
+  "generated_at": "2026-11-14T18:14:34.616626+00:00",
   "phase": "B",
   "scope": "agent-side",
   "status": "verified-phase-b-reference",
@@ -29,14 +29,15 @@
     "signed /v0/commands/ack",
     "connector executes+acks isolate",
     "approval -> confirm command bridge",
-    "agent execute_command(confirm)"
+    "agent execute_command(confirm)",
+    "live policy reload for thresholds/gate confidence (sources/queue require restart)"
   ],
   "not_yet": [
-    "Rust parity for commands/approval bridge",
-    "policy live reload"
+    "Rust parity for commands/approval bridge"
   ],
   "notes": [
     "live=false: policy applied to last-known-good, detector reload on restart",
     "socket exhaustion observed during full suite (16k TIME_WAIT); targeted tests pass"
-  ]
+  ],
+  "live_reload": true
 }

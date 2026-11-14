@@ -97,7 +97,7 @@
     "apply_policy": true,
     "command_poll": true,
     "command_ack": true,
-    "live_reload": false,
+    "live_reload": true,
     "server_command_delivery": true,
     "connector_ack": true,
     "approval_confirm_bridge": true,
