@@ -29,12 +29,14 @@
     {"id": "linux-smb-lateral", "rule": "NET-SMB-LATERAL-012", "events": 2, "verdicts": 2,
      "control": "connect 445 + 4444"},
     {"id": "linux-mass-write", "rule": "FILE-MASS-WRITE-014", "events": 50, "verdicts": 1,
-     "control": "50 x touch /tmp/aidf_write_*"}
+     "control": "50 x touch /tmp/aidf_write_*"},
+    {"id": "linux-canary-delete", "rule": "FILE-CANARY-015", "events": 2, "verdicts": 1,
+     "control": "rm /tmp/aidf_canary_test"}
   ],
-  "live_count": 14,
+  "live_count": 15,
   "limitations": [
-    "14 of 20 Linux scenarios are live",
-    "remaining 6 need new sensors (DNS, exfil bytes, canary delete) or are Windows-only",
+    "15 of 20 Linux scenarios are live",
+    "remaining 5 need DNS/exfil sensors or are Windows-only",
     "production collector (loader->pipeline service) is not integrated",
     "fapolicyd was stopped for BPF loader tests and restored afterwards"
   ]

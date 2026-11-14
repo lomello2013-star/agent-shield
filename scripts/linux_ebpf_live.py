@@ -49,6 +49,10 @@ def _raw(item: dict) -> dict | None:
                    exe=item.get("comm", ""), cmdline=item.get("comm", ""),
                    daddr=item.get("daddr", ""), dport=item["dport"],
                    proto="tcp")
+    elif item.get("op") == "unlink":
+        raw.update(category="file.delete", action="delete",
+                   exe=item.get("comm", ""), cmdline=item.get("comm", ""),
+                   filename=item.get("path", ""))
     elif "path" in item:
         path = item["path"]
         writable = bool(item.get("writable"))

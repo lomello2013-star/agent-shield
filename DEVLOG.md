@@ -3358,6 +3358,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 16:25] Canary delete live; Linux 15/20 [experiment]
+
+**Действие**: добавлен LSM `path_unlink` сенсор (`unlink_lsm.bpf.c`) и режим `stream_unlink`; `rm /tmp/aidf_canary_test` → `FILE-CANARY-015`. Linux live: **15/20**.
+**Числа**: 2 события → 1 вердикт 015; Linux live 15/20; pytest 530 (не менялся); `run_all` 29/29 (не менялся).
+**Вердикт**: canary live закрыт; осталось 5 (DNS/exfil — новые сенсоры, остальные Windows-only) и production-коллектор.
+**Проверка**: `/tmp/unlink.jsonl`; evaluator → 015; `artifacts/linux_ebpf_live.json`.
+**Статус**: verified (canary); open (5/20, production collector)
+**Actor**: agent
+**Run_id**: linux-canary-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

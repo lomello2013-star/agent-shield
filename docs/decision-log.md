@@ -76,11 +76,11 @@ alert-правилом, а не молчанием.
 **Рекомендация:** **A**, при блокере — **B** с явной пометкой «fixture-level».
 **Выбор:** A (рекомендация агента), fallback B только при доказанном блокере.
 **Обоснование:** пользователь просил live; fixture-level не должен подменять его.
-**Статус:** A: **14/20 live** — exec (`101`), cred-read (`104`), mprotect (`107`),
+**Статус:** A: **15/20 live** — exec (`101`), cred-read (`104`), mprotect (`107`),
 procmem/ptrace/memwrite (`106`), net C2 (`105`), SMB (`012`), cron (`102`),
-audit (`103`), корреляция injection (`108/109/110`), mass-write (`014`).
-Оставшиеся 6 требуют новых сенсоров (DNS, exfil bytes, canary delete) или
-Windows-only; production-коллектор — open.
+audit (`103`), корреляция injection (`108/109/110`), mass-write (`014`),
+canary delete (`015`). Оставшиеся 5: DNS, exfil-bytes, Windows-only;
+production-коллектор — open.
 
 ---
 
