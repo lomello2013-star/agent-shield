@@ -121,6 +121,7 @@
     <h2 id="drawer-title">Agent</h2>
     <div class="kv" id="drawer-kv"></div>
     <div class="row" id="drawer-actions"></div>
+    <div id="drawer-cmds" class="muted" style="padding:10px 14px"></div>
   </aside>
 </main>
 <script>
@@ -206,6 +207,15 @@ function openAgent(id){
     <div>isolated</div><div>${a.isolated?'yes':'no'}</div>`;
   $('#drawer-actions').innerHTML=`<button class="act" onclick="isolate('${a.id}',${!a.isolated})">${a.isolated?'Resume':'Isolate'}</button><button class="ghost" onclick="closeDrawer()">Close</button>`;
   $('#drawer').classList.remove('hidden');
+  loadCommands(a.id);
+}
+async function loadCommands(id){
+  const el=$('#drawer-cmds');
+  try{
+    const d=await api('/v0/agents/'+id+'/commands');
+    const rows=(d.commands||[]).slice(0,8);
+    el.innerHTML='<b>Commands</b><br>'+ (rows.length?rows.map(c=>`<span class="mono">${esc(c.kind)} · ${esc(c.status)}</span>`).join('<br>'):'none');
+  }catch(e){el.textContent='commands: '+e.message}
 }
 function closeDrawer(){state.drawer=null;$('#drawer').classList.add('hidden')}
 document.addEventListener('keydown',e=>{

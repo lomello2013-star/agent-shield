@@ -224,6 +224,8 @@ class Handler(BaseHTTPRequestHandler):
                     self._error(404, "unknown agent")
                 else:
                     self._send(200, agent.__dict__)
+            elif len(parts) == 4 and parts[3] == "commands":
+                self._send(200, {"commands": self.server.store.commands_for(parts[2])})
             return
         if parts == ["metrics"]:
             if not self._auth("admin"):
@@ -677,6 +679,18 @@ class Handler(BaseHTTPRequestHandler):
                 self._error(404, "unknown command")
                 return
             self._send(200, result)
+            return
+
+        if len(parts) == 4 and parts[:2] == ["v0", "agents"] and parts[3] == "commands":
+            if not self._auth("admin"):
+                return
+            kind = str(body.get("kind", ""))
+            if not kind:
+                self._error(400, "kind required")
+                return
+            command = self.server.store.enqueue_command(
+                parts[2], kind, body.get("payload") if isinstance(body.get("payload"), dict) else {})
+            self._send(201, command)
             return
 
         if len(parts) == 4 and parts[:2] == ["v0", "agents"] and parts[3] == "isolate":

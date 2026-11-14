@@ -264,6 +264,17 @@ class Store:
                  "payload": json.loads(row["payload"]), "status": row["status"],
                  "created_at": row["created_at"]} for row in rows]
 
+    def commands_for(self, agent_id: str, limit: int = 50) -> list[dict[str, Any]]:
+        with self._lock:
+            rows = self._db.execute(
+                "SELECT * FROM commands WHERE agent_id = ? ORDER BY created_at DESC LIMIT ?",
+                (agent_id, limit)).fetchall()
+        return [{"command_id": row["command_id"], "kind": row["kind"],
+                 "payload": json.loads(row["payload"]), "status": row["status"],
+                 "created_at": row["created_at"], "acked_at": row["acked_at"],
+                 "result": json.loads(row["result"]) if row["result"] else None}
+                for row in rows]
+
     def ack_command(self, agent_id: str, command_id: str, status: str = "acked",
                     result: dict[str, Any] | None = None) -> dict[str, Any]:
         now = time.time()

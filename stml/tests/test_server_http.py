@@ -176,6 +176,22 @@ def test_approval_confirm_enqueues_command(tmp_path):
         store.close()
 
 
+def test_command_list_and_enqueue(tmp_path):
+    store, server, port, agent_id, _ = _setup(tmp_path)
+    try:
+        code, body = _request(port, "POST", f"/v0/agents/{agent_id}/commands",
+                              {"kind": "noop", "payload": {"x": 1}}, token="admin")
+        assert code == 201 and body["kind"] == "noop", body
+        code, body = _request(port, "GET", f"/v0/agents/{agent_id}/commands",
+                              token="viewer")
+        assert code == 200 and len(body["commands"]) == 1
+        assert body["commands"][0]["status"] == "pending"
+    finally:
+        server.shutdown()
+        server.server_close()
+        store.close()
+
+
 def test_reports_and_audit(tmp_path):
     store, server, port, agent_id, priv = _setup(tmp_path)
     try:

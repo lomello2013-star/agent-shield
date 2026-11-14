@@ -1,0 +1,23 @@
+{
+  "generated_at": "2026-11-14T18:20:20.996404+00:00",
+  "service": {
+    "task": "AIDefender-STML-Rust",
+    "bind": "127.0.0.1:8090",
+    "healthcheck": "ok"
+  },
+  "gui": {
+    "commands_endpoint": true,
+    "commands_drawer": true,
+    "policy_column": true
+  },
+  "pentest": {
+    "script": "scripts/stml_pentest.py",
+    "draft": "artifacts/stml_pentest_draft.json",
+    "ok": true
+  },
+  "dpia": {
+    "draft": "docs/dpia-draft.md",
+    "legal_signoff": false
+  },
+  "parity_ci": "scripts/stml_parity_ci.py"
+}

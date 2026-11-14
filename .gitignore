@@ -25,6 +25,7 @@ artifacts/rust_ml_holdout_state.json
 *.log
 
 # STML runtime state
+artifacts/pg-backups/
 *.sqlite3
 *.sqlite3-wal
 *.sqlite3-shm

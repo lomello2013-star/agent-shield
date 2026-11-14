@@ -395,6 +395,67 @@ async fn enqueue_command(
     Ok(command_id)
 }
 
+async fn list_commands(
+    State(state): State<AppState>,
+    headers: HeaderMap,
+    axum::extract::Path(agent_id): axum::extract::Path<String>,
+) -> Result<Json<Value>, ApiError> {
+    auth(&headers, &state, "viewer")?;
+    let uuid =
+        Uuid::parse_str(&agent_id).map_err(|_| err(StatusCode::BAD_REQUEST, "bad agent id"))?;
+    let db = pool(&state)?;
+    let rows = sqlx::query(
+        "SELECT command_id::text AS command_id, kind, payload, status, \
+         created_at::text AS created_at, acked_at::text AS acked_at \
+         FROM commands WHERE agent_id=$1 ORDER BY created_at DESC LIMIT 50",
+    )
+    .bind(uuid)
+    .fetch_all(db)
+    .await
+    .map_err(|e| err(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+    let commands: Vec<Value> = rows
+        .into_iter()
+        .map(|r| {
+            json!({
+                "command_id": r.get::<String, _>("command_id"),
+                "kind": r.get::<String, _>("kind"),
+                "payload": r.get::<SqlJson<Value>, _>("payload").0,
+                "status": r.get::<String, _>("status"),
+                "created_at": r.get::<String, _>("created_at"),
+                "acked_at": r.get::<Option<String>, _>("acked_at"),
+            })
+        })
+        .collect();
+    Ok(Json(json!({"commands": commands})))
+}
+
+async fn enqueue_agent_command(
+    State(state): State<AppState>,
+    headers: HeaderMap,
+    axum::extract::Path(agent_id): axum::extract::Path<String>,
+    body: Bytes,
+) -> Result<(StatusCode, Json<Value>), ApiError> {
+    auth(&headers, &state, "admin")?;
+    let uuid =
+        Uuid::parse_str(&agent_id).map_err(|_| err(StatusCode::BAD_REQUEST, "bad agent id"))?;
+    let value: Value = serde_json::from_slice(&body)
+        .map_err(|e| err(StatusCode::BAD_REQUEST, format!("json: {e}")))?;
+    let kind = value.get("kind").and_then(Value::as_str).unwrap_or("");
+    if kind.is_empty() {
+        return Err(err(StatusCode::BAD_REQUEST, "kind required"));
+    }
+    let payload = value.get("payload").cloned().unwrap_or_else(|| json!({}));
+    let db = pool(&state)?;
+    let command_id = enqueue_command(db, uuid, kind, payload.clone()).await?;
+    Ok((
+        StatusCode::CREATED,
+        Json(
+            json!({"command_id": command_id, "kind": kind, "payload": payload,
+                   "status": "pending"}),
+        ),
+    ))
+}
+
 async fn isolate_agent(
     State(state): State<AppState>,
     headers: HeaderMap,
@@ -1819,6 +1880,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .route("/health", get(health))
         .route("/v0/agents", get(agents))
         .route("/v0/agents/{id}/isolate", post(isolate_agent))
+        .route(
+            "/v0/agents/{id}/commands",
+            get(list_commands).post(enqueue_agent_command),
+        )
         .route("/v0/commands/ack", post(ack_command))
         .route("/v0/enrol", post(enrol))
         .route("/v0/heartbeat", post(heartbeat))

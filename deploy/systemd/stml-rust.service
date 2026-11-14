@@ -1,0 +1,21 @@
+[Unit]
+Description=STML Rust server
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=stml
+Group=stml
+WorkingDirectory=/opt/stml
+EnvironmentFile=/etc/stml/rust.env
+ExecStart=/opt/stml/rust/stml-server
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/stml
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

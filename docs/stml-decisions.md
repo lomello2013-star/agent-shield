@@ -148,6 +148,10 @@
 | D-96 | HTTP 201 parity | **enrol/policy/approval/rollout возвращают 201, как Python** | оставить 200 | parity |
 | D-97 | PostgreSQL RLS | **FORCE RLS по `tenant_id`; `app.tenant_id` задаётся на pool connection из `STML_TENANT`** | per-request setting | один tenant на инстанс |
 | D-98 | Backup | **pg_dump custom + SHA256; restore в существующую БД** | WAL/PITR | MVP |
+| D-99 | Rust service | **SYSTEM task/systemd, bind 8090, healthcheck** | контейнер | не конфликтует с Python 8080 |
+| D-100 | GUI commands | **GET/POST `/v0/agents/{id}/commands`, drawer показывает очередь** | только policy view | control-plane минимум |
+| D-101 | Pen-test automation | **auth/replay/path/SQL smoke, draft report** | независимый аудит | не заменяет human |
+| D-102 | DPIA | **технический черновик, без юридической подписи** | сразу подписывать | честный scope |
 
 ## Production acceptance
 
