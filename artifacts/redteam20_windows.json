@@ -1,0 +1,214 @@
+{
+    "generated_at":  "2026-11-14T10:25:18.3152906Z",
+    "head":  "f0651b0",
+    "vm":  "AIDFLAB",
+    "scenarios":  [
+                      {
+                          "id":  "WIN-01",
+                          "technique":  "T1543.003",
+                          "expected":  "WIN-SERVICE-CREATE-007",
+                          "detected":  true,
+                          "observed":  "WIN-SERVICE-CREATE-007",
+                          "run":  true,
+                          "holdout":  false,
+                          "error":  ""
+                      },
+                      {
+                          "id":  "WIN-02",
+                          "technique":  "T1204",
+                          "expected":  "WIN-EXEC-TEMP-001",
+                          "detected":  true,
+                          "observed":  "WIN-EXEC-TEMP-001",
+                          "run":  true,
+                          "holdout":  false,
+                          "error":  ""
+                      },
+                      {
+                          "id":  "WIN-03",
+                          "technique":  "T1059.001",
+                          "expected":  "WIN-PS-ENCODED-002",
+                          "detected":  true,
+                          "observed":  "WIN-PS-ENCODED-002",
+                          "run":  true,
+                          "holdout":  false,
+                          "error":  ""
+                      },
+                      {
+                          "id":  "WIN-04",
+                          "technique":  "T1059.003",
+                          "expected":  "WIN-EXEC-TEMP-001",
+                          "detected":  true,
+                          "observed":  "WIN-EXEC-TEMP-001",
+                          "run":  true,
+                          "holdout":  true,
+                          "error":  ""
+                      },
+                      {
+                          "id":  "WIN-05",
+                          "technique":  "T1053.005",
+                          "expected":  "WIN-SCHTASK-006",
+                          "detected":  false,
+                          "observed":  "",
+                          "run":  true,
+                          "holdout":  false,
+                          "error":  ""
+                      },
+                      {
+                          "id":  "WIN-06",
+                          "technique":  "T1547.001",
+                          "expected":  "WIN-RUNKEY-005",
+                          "detected":  false,
+                          "observed":  "",
+                          "run":  true,
+                          "holdout":  true,
+                          "error":  ""
+                      },
+                      {
+                          "id":  "WIN-07",
+                          "technique":  "T1136.001",
+                          "expected":  "none",
+                          "detected":  false,
+                          "run":  false,
+                          "skipped":  "destructive/catalog-only",
+                          "holdout":  false
+                      },
+                      {
+                          "id":  "WIN-08",
+                          "technique":  "T1562.001",
+                          "expected":  "WIN-DEFENDER-TAMPER-009",
+                          "detected":  false,
+                          "observed":  "",
+                          "run":  true,
+                          "holdout":  true,
+                          "error":  ""
+                      },
+                      {
+                          "id":  "WIN-09",
+                          "technique":  "T1047",
+                          "expected":  "WIN-WMI-SUBSCRIPTION-018",
+                          "detected":  false,
+                          "observed":  "",
+                          "run":  true,
+                          "holdout":  false,
+                          "error":  "The term \u0027wmic.exe\u0027 is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again."
+                      },
+                      {
+                          "id":  "WIN-10",
+                          "technique":  "T1105",
+                          "expected":  "none",
+                          "detected":  true,
+                          "observed":  "WIN-SERVICE-CREATE-007",
+                          "run":  true,
+                          "holdout":  true,
+                          "error":  "Program \u0027certutil.exe\u0027 failed to run: Access is deniedAt C:\\AIDefender\\redteam20_vm.ps1:57 char:17\r\n+ ...    action={ \u0026 certutil.exe -urlcache -f \"https://example.com/\" \"C:\\Te ...\r\n+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~."
+                      },
+                      {
+                          "id":  "WIN-11",
+                          "technique":  "T1218",
+                          "expected":  "none",
+                          "detected":  false,
+                          "observed":  "",
+                          "run":  true,
+                          "holdout":  false,
+                          "error":  ""
+                      },
+                      {
+                          "id":  "WIN-12",
+                          "technique":  "T1055",
+                          "expected":  "WIN-INJECT-010",
+                          "detected":  false,
+                          "run":  false,
+                          "skipped":  "destructive/catalog-only",
+                          "holdout":  false
+                      },
+                      {
+                          "id":  "WIN-13",
+                          "technique":  "T1003.001",
+                          "expected":  "WIN-LSASS-ACCESS-004",
+                          "detected":  false,
+                          "run":  false,
+                          "skipped":  "destructive/catalog-only",
+                          "holdout":  false
+                      },
+                      {
+                          "id":  "WIN-14",
+                          "technique":  "T1070.001",
+                          "expected":  "WIN-LOG-CLEAR-008",
+                          "detected":  false,
+                          "run":  false,
+                          "skipped":  "destructive/catalog-only",
+                          "holdout":  false
+                      },
+                      {
+                          "id":  "WIN-15",
+                          "technique":  "T1490",
+                          "expected":  "none",
+                          "detected":  false,
+                          "run":  false,
+                          "skipped":  "destructive/catalog-only",
+                          "holdout":  false
+                      },
+                      {
+                          "id":  "WIN-16",
+                          "technique":  "T1027",
+                          "expected":  "WIN-MASQUERADE-011",
+                          "detected":  true,
+                          "observed":  "WIN-EXEC-TEMP-001,WIN-MASQUERADE-011",
+                          "run":  true,
+                          "holdout":  true,
+                          "error":  ""
+                      },
+                      {
+                          "id":  "WIN-17",
+                          "technique":  "T1204",
+                          "expected":  "WIN-DOWNLOADS-EXEC-016",
+                          "detected":  false,
+                          "observed":  "",
+                          "run":  true,
+                          "holdout":  true,
+                          "error":  ""
+                      },
+                      {
+                          "id":  "WIN-18",
+                          "technique":  "T1569.002",
+                          "expected":  "WIN-SERVICE-CREATE-007",
+                          "detected":  false,
+                          "observed":  "",
+                          "run":  true,
+                          "holdout":  false,
+                          "error":  ""
+                      },
+                      {
+                          "id":  "WIN-19",
+                          "technique":  "T1112",
+                          "expected":  "none",
+                          "detected":  false,
+                          "observed":  "",
+                          "run":  true,
+                          "holdout":  false,
+                          "error":  ""
+                      },
+                      {
+                          "id":  "WIN-20",
+                          "technique":  "control",
+                          "expected":  "none",
+                          "detected":  false,
+                          "observed":  "",
+                          "run":  true,
+                          "holdout":  false,
+                          "error":  ""
+                      }
+                  ],
+    "summary":  {
+                    "catalog":  20,
+                    "run":  15,
+                    "skipped":  5,
+                    "attacks_run":  11,
+                    "attacks_detected":  5,
+                    "controls_run":  4,
+                    "control_fp":  1,
+                    "holdout_total":  5,
+                    "holdout_detected":  2
+                },
+    "limitations":  "Safe emulation, 20/OS catalog with 5 destructive entries skipped; detection only for this run (prevention measured separately); E1-E6 still require real samples and a hidden holdout."
+}

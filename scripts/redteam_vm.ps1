@@ -1,4 +1,4 @@
-#requires -RunAsAdministrator
+﻿#requires -RunAsAdministrator
 <#
 .SYNOPSIS
     Safe Windows red-team emulation, run INSIDE the AIDF-Win11 VM.
@@ -132,5 +132,6 @@ $report = [ordered]@{
     }
     limitations = "Safe technique emulation, not real malware; one VM, one run; E1-E6 still need a full 20-scenario/OS red-team."
 }
-$report | ConvertTo-Json -Depth 8 | Set-Content -Path "C:\AIDefender\redteam_result.json" -Encoding UTF8
+$report | ConvertTo-Json -Depth 8 | Set-Content -Path "C:\AIDefender\redteam_result.json" -Encoding ASCII
 Write-Host "redteam result written: C:\AIDefender\redteam_result.json"
+

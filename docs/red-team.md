@@ -71,3 +71,45 @@ powershell -ExecutionPolicy Bypass -File scripts\redteam_windows.ps1
 3. E3/E4: credential access и privilege escalation — на изолированной VM.
 4. Связать драйвер с вердиктом агента (IOCTL/FltSendMessage) вместо
    фиксированного пути.
+
+## 20 сценариев/ОС — первый срез (2026-11-14)
+
+Каталог: **20 Windows + 20 Linux** по реестру техник; для Windows 15 безопасных
+сценариев выполнены, 5 деструктивных (LSASS dump, injection, log clear,
+vssadmin, local user) помечены catalog-only.
+
+### Windows (live, `artifacts/redteam20_windows.json`)
+
+| Метрика | Значение |
+|---|---|
+| Выполнено / пропущено | **15 / 5** |
+| Атакующих сценариев | 11 |
+| Обнаружено | **5 / 11** |
+| Holdout (5) | **2 / 5** (WIN-04 temp cmd, WIN-16 masquerade) |
+| Benign-контроль | 4, **1 FP** (запоздавший 7045 от WIN-01 — атрибуция окна, не новый FP) |
+
+**Обнаружены:** service create (007), temp exec (001), encoded PowerShell (002),
+temp cmd (001), masquerade (011).
+**Пропущены (честно):**
+- `schtasks` / Run key / WMI / registry — **нет источников** (Security 4698,
+  registry, WMI) в текущем коллекторе;
+- Defender exclusion — 5007 не пришёл/не сматчился;
+- Downloads exec — правило 016 не сработало на `calc.exe` в Downloads;
+- WMIC — компонент отсутствует в Win11;
+- service start — 7036 не даёт нового 7045.
+
+Это не «5/11 эффективности»: каталог показывает **source gaps**, а не только
+качество правил. Для E1–E6 нужны реальные образцы и полный 20/ОС прогон.
+
+### Linux
+
+20-сценарный Linux-прогон в этом срезе **не выполнялся**; существующие
+`linux_*_e2e` (9 техник) и fapolicyd (10/10) — отдельные измерения, не red-team
+агента. Следующий шаг — тот же каталог на Linux-VM с eBPF-агентом.
+
+### Найденный дефект харнесса
+
+`Get-RuleDelta` был назван `Diff`; PowerShell-алиас `diff → Compare-Object`
+перекрыл функцию, и первый прогон дал 0/11. Переименовано; повторный прогон —
+5/11. Это дефект измерения, а не детекции.
+

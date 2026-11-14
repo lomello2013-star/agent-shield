@@ -20,6 +20,27 @@
 | запись в `C:\AIDefender\protected\rt.txt` | **Access denied** |
 | запись в `C:\AIDefender\allowed.txt` | OK |
 
+## Канал политики (агент → драйвер)
+
+Драйвер создаёт port `\AidfFilterPort`; по умолчанию политика **пустая**, то есть
+блокировки нет. User-mode клиент отправляет подстроку:
+
+```powershell
+python scripts\aidf_driver_policy.py "\\protected\\"
+```
+
+Проверено в VM:
+
+| Политика | `C:\AIDefender\protected` | `C:\AIDefender\secret` |
+|---|---|---|
+| пустая | allowed | allowed |
+| `\protected\` | **denied** | allowed |
+| `\secret\` | allowed | **denied** |
+
+Порт защищён DACL (SYSTEM + Administrators); это прообраз канала, по которому
+агент будет отправлять путь при подтверждённом вердикте. Сейчас policy client
+запускается вручную.
+
 ## Сборка (host)
 
 ```powershell

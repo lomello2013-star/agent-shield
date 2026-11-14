@@ -3130,6 +3130,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 13:25] Драйвер↔политика + 20-сценарный срез [experiment]
+
+**Действие**: (1) `AidfFilter` получил communication port `\AidfFilterPort` + DACL (SYSTEM/Administrators); Python-клиент `aidf_driver_policy.py` шлёт политику. Проверено: пустая политика → запись разрешена, `\protected\` → deny, `\secret\` → deny другого пути. (2) 20-сценарный Windows-каталог: 15 безопасных выполнено, 5 деструктивных catalog-only; holdout 5, benign 4. Найден дефект харнесса: функция `Diff` перекрыта алиасом PowerShell `diff → Compare-Object` → 0/11; переименована в `Get-RuleDelta`, после фикса 5/11, holdout 2/5, 1 FP (запоздавший 7045 — атрибуция окна, не новый FP). (3) Подготовлены `AidfFilter.inf` и `docs/whql.md`; EV/WHQL не закрыты — нужны EV-сертификат и HLK (внешние блокеры).
+**Числа**: pytest **467**; cargo **133**; `run_all` **29/29**; driver policy **3/3**; redteam20: **15 run / 5 skipped**, **5/11 detected**, 1 FP, holdout **2/5**; Linux 20 — не выполнялся.
+**Вердикт**: канал агент→драйвер работает; 20-сценарный срез выявил source gaps (schtasks/Run key/WMI/registry/Defender exclusion/Downloads); E1–E6 не закрыты; EV/WHQL — пакет готов, внешние блокеры.
+**Проверка**: `aidf_driver_policy.py` (3 режима); `artifacts/redteam20_windows.json`; `pytest`; `docs_consistency`.
+**Статус**: verified (lab); open: Linux 20, EV/WHQL
+**Actor**: agent
+**Run_id**: driver-policy-redteam20-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

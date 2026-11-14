@@ -1,0 +1,45 @@
+;
+; AidfFilter minifilter INF (lab / WHQL package skeleton)
+;
+; Test-signing today; production requires an EV certificate + WHQL submission.
+;
+
+[Version]
+Signature   = "$WINDOWS NT$"
+Class       = ActivityMonitor
+ClassGuid   = {b86dff51-a31e-4bac-b3cf-e8cfe75c9fc2}
+Provider    = %Provider%
+DriverVer   = 11/14/2026,1.0.0.0
+CatalogFile = AidfFilter.cat
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+AidfFilter.sys = 1,,
+
+[DefaultInstall.NT]
+CopyFiles = @AidfFilter.sys
+
+[DefaultInstall.NT.Services]
+AddService = AidfFilter, 0x00000002, AidfService
+
+[AidfService]
+ServiceType   = 2
+StartType     = 3
+ErrorControl  = 1
+ServiceBinary = %12%\AidfFilter.sys
+
+[AidfFilter.Instances]
+DefaultInstance = AidfFilter
+
+[AidfFilter]
+Altitude = 328000
+Flags    = 0
+
+[Strings]
+Provider = "AIDefender"
+DiskName = "AIDefender Driver"
