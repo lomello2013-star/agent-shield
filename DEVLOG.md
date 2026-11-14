@@ -3466,6 +3466,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 22:35] Holdout 5/5: WIN-17 закрыт 016A live; 10/11, 0 FP
+
+**Действие**: после чистого reboot сервис поднялся, 30 правил загружены; red-team 20: **10/11**, holdout **5/5**, **0 FP**. WIN-17 observed `WIN-DOWNLOADS-EXEC-016A`; единственный пропуск — WIN-18 (7036 source gap).
+**Числа**: attacks 11, detected 10, controls 4/0 FP, holdout 5/5.
+**Вердикт**: holdout закрыт; WIN-18 — source gap; E7/F10 — revised.
+**Проверка**: `artifacts/redteam20_windows.json`; `docs/red-team.md`.
+**Статус**: verified (10/11, 5/5, 0 FP)
+**Actor**: agent
+**Run_id**: redteam-holdout-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

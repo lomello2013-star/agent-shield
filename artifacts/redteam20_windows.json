@@ -1,6 +1,6 @@
 {
-    "generated_at":  "2026-11-14T11:31:37.1180921Z",
-    "head":  "ee26644",
+    "generated_at":  "2026-11-14T19:42:52.3098983Z",
+    "head":  "c81fd68",
     "vm":  "AIDFLAB",
     "scenarios":  [
                       {
@@ -8,7 +8,7 @@
                           "technique":  "T1543.003",
                           "expected":  "WIN-SERVICE-CREATE-007",
                           "detected":  true,
-                          "observed":  "WIN-SERVICE-CREATE-007",
+                          "observed":  "WIN-SERVICE-CREATE-007,WIN-SERVICE-CREATE-007A",
                           "run":  true,
                           "holdout":  false,
                           "error":  ""
@@ -162,8 +162,8 @@
                           "id":  "WIN-17",
                           "technique":  "T1204",
                           "expected":  "WIN-DOWNLOADS-EXEC-016",
-                          "detected":  false,
-                          "observed":  "",
+                          "detected":  true,
+                          "observed":  "WIN-DOWNLOADS-EXEC-016A",
                           "run":  true,
                           "holdout":  true,
                           "error":  ""
@@ -204,11 +204,11 @@
                     "run":  15,
                     "skipped":  5,
                     "attacks_run":  11,
-                    "attacks_detected":  9,
+                    "attacks_detected":  10,
                     "controls_run":  4,
                     "control_fp":  0,
                     "holdout_total":  5,
-                    "holdout_detected":  4
+                    "holdout_detected":  5
                 },
     "limitations":  "Safe emulation, 20/OS catalog with 5 destructive entries skipped; detection only for this run (prevention measured separately); E1-E6 still require real samples and a hidden holdout."
 }

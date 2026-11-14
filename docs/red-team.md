@@ -84,18 +84,17 @@ vssadmin, local user) помечены catalog-only.
 |---|---|
 | Выполнено / пропущено | **15 / 5** |
 | Атакующих сценариев | 11 |
-| Обнаружено | **9 / 11** |
-| Holdout (5) | **4 / 5** (WIN-04, WIN-06, WIN-08, WIN-16) |
+| Обнаружено | **10 / 11** |
+| Holdout (5) | **5 / 5** (WIN-04, WIN-06, WIN-08, WIN-16, WIN-17) |
 | Benign-контроль | 4, **0 FP** |
 
-**Обнаружены (9):** service create (007), temp exec (001), encoded PowerShell
-(002), temp cmd (001), **scheduled task (006)**, **Run key (005)**,
-**Defender exclusion (009)**, **WMI subscription (018)**, masquerade (011).
-**Пропущены (честно):**
-- Downloads exec (WIN-17) — 016 остаётся для unsigned; добавлено
-  alert-правило **`WIN-DOWNLOADS-EXEC-016A`** (medium, signed/unsigned) и
-  fixture; live rerun WIN-17 не завершён из-за IPC-зависания сервиса;
-- service start (WIN-18) — 7036 не даёт нового 7045.
+**Обнаружены (10):** service create (007/007A), temp exec (001), encoded
+PowerShell (002), temp cmd (001), **scheduled task (006)**, **Run key (005)**,
+**Defender exclusion (009)**, **WMI subscription (018)**, masquerade (011),
+**Downloads exec (016A)**.
+**Пропущен (честно):**
+- service start (WIN-18) — 7036 не даёт нового 7045; это source gap, не
+  сигнатура правила.
 
 **Defender exclusion (WIN-08) закрыт:** 5007 писался, но
 `classify_defender_change` не видел ключ `Exclusions\Paths` (был только
@@ -114,9 +113,9 @@ programdata`; кроме того, атрибуция идёт по `event_ts` �
 alert-only **`WIN-SERVICE-CREATE-007A`** (low, prevention=false) добавлен для
 generic/ambient и не блокирует (D-001).
 
-Это не «9/11 эффективности»: каталог показывает **source gaps**, а не только
-качество правил; два пропуска объяснены (signed non-match и 7036). Для E1–E6
-нужны реальные образцы и полный 20/ОС прогон.
+Это **10/11** с одним объяснённым source gap (7036); каталог всё равно
+показывает не только качество правил. Для E1–E6 нужны реальные образцы и
+полный 20/ОС прогон.
 
 ### Linux
 
