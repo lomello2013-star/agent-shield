@@ -446,6 +446,10 @@ class Daemon:
 
     def stats(self) -> dict:
         return {"pipeline": self.pipeline.stats(), "gate": self.gate.stats(self.host.host_id),
+                "platform": {"os": self.host.os, "arch": self.host.arch,
+                             "version": self.host.version, "kernel": self.host.kernel,
+                             "capabilities": ["ipc", "rules", "response",
+                                              "selfprotect", "audit", "confirm"]},
                 "audit": {"records": self.log.verify().records},
                 "response": {"executed": self.response_executed,
                              "refused": self.response_refused,

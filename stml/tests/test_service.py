@@ -74,3 +74,34 @@ def test_read_only_rpc_bridge(tmp_path):
     assert connector.rpc_stats()["version"] == "0.1.0"
     assert connector.rpc_self_test()["ok"] is True
     assert connector.rpc_immutable_check()["immutable"] == "ok"
+
+
+class PlatformAgent:
+    def health(self):
+        return {"status": "ok", "safe_mode": {"safe_mode": False, "reason": ""}}
+
+    def stats(self):
+        return {"platform": {"os": "windows", "arch": "arm64", "version": "10.0.26100",
+                             "capabilities": ["ipc", "rules"]}}
+
+    def immutable_check(self):
+        return {"immutable": "ok"}
+
+
+def test_platform_block_and_safe_mode_mapping(tmp_path):
+    connector = _connector(tmp_path, PlatformAgent(), MemoryTransport())
+    connector.tick()
+    assert connector.last_heartbeat.status.value == "healthy"
+    assert connector.last_inventory.os == "windows"
+    assert connector.last_inventory.arch == "arm64"
+    assert connector.last_inventory.agent_version == "10.0.26100"
+    assert connector.last_inventory.capabilities == ["ipc", "rules"]
+
+    class SafeAgent(PlatformAgent):
+        def health(self):
+            return {"status": "safe", "safe_mode": {"safe_mode": True, "reason": "bad config"}}
+
+    (tmp_path / "safe").mkdir()
+    connector2 = _connector(tmp_path / "safe", SafeAgent(), MemoryTransport())
+    connector2.tick()
+    assert connector2.last_heartbeat.status.value == "safe_mode"

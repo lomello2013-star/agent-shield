@@ -1,0 +1,40 @@
+{
+  "generated_at": "2026-11-14T11:32:22.486055+00:00",
+  "phase": "A",
+  "status": "done-readonly",
+  "smoke": {
+    "health_status": "healthy",
+    "health_source": "rpc",
+    "os": "windows",
+    "arch": "x64",
+    "agent_version": "10.0.19045",
+    "capabilities": [
+      "ipc",
+      "rules",
+      "response",
+      "selfprotect",
+      "audit",
+      "confirm"
+    ],
+    "immutable_ok": true
+  },
+  "tests": {
+    "stml": 54,
+    "ipc": 16,
+    "daemon_wiring": 13
+  },
+  "changed": [
+    "scripts/aidf_service.py",
+    "core/daemon.py::stats",
+    "stml/connector/service.py",
+    "stml/connector/__main__.py",
+    "scripts/run_stml_connector.cmd",
+    "scripts/install_stml_connector_task.ps1",
+    "deploy/systemd/stml-connector.service"
+  ],
+  "notes": [
+    "read-only: no policy/command delivery",
+    "agent F11/R1/R4 still open",
+    "production_ready=false"
+  ]
+}

@@ -32,6 +32,7 @@ artifacts/rust_ml_holdout_state.json
 
 # Rust build output
 rust/target/
+rust/stml-server/target/
 rust/unix_ipc_test/target/
 
 # Large external datasets / training caches

@@ -18,9 +18,27 @@ from stml.connector.signing import generate_keypair, load_private, load_public
 from stml.connector.transport import ConsoleTransport, HttpTransport
 
 
-def _authkey() -> bytes:
+def _authkey(path: str = "") -> bytes:
+    if path:
+        raw = open(path, encoding="utf-8").read().strip()
+        return bytes.fromhex(raw)
     raw = os.environ.get("AIDF_AUTHKEY", "")
+    if not raw:
+        file_path = os.environ.get("AIDF_AUTHKEY_FILE", "")
+        if file_path and os.path.exists(file_path):
+            raw = open(file_path, encoding="utf-8").read().strip()
     return bytes.fromhex(raw) if raw else secrets.token_bytes(32)
+
+
+def _token(path: str = "") -> str:
+    if path and os.path.exists(path):
+        return open(path, encoding="utf-8").read().strip()
+    if os.environ.get("AIDF_TOKEN"):
+        return os.environ["AIDF_TOKEN"]
+    file_path = os.environ.get("AIDF_OPERATOR_TOKEN_FILE", "")
+    if file_path and os.path.exists(file_path):
+        return open(file_path, encoding="utf-8").read().strip()
+    return ""
 
 
 def _run(args: argparse.Namespace, parser: argparse.ArgumentParser) -> int:
@@ -38,9 +56,10 @@ def _run(args: argparse.Namespace, parser: argparse.ArgumentParser) -> int:
         from core.ipc import default_address
 
         address = args.agent_address or default_address()
-        if not args.token:
-            parser.error("--token or AIDF_TOKEN is required with --agent-address")
-        agent = AgentClient(address, _authkey(), args.token)
+        token = args.token or _token(args.token_file)
+        if not token:
+            parser.error("--token/--token-file or AIDF_TOKEN is required with --agent-address")
+        agent = AgentClient(address, _authkey(args.authkey_file), token)
 
     config = ConnectorConfig(
         tenant_id=args.tenant,
@@ -121,6 +140,8 @@ def main(argv: list[str] | None = None) -> int:
     run.add_argument("--data-root", default=os.environ.get("AIDF_DATA", "."))
     run.add_argument("--agent-address", default=os.environ.get("AIDF_ADDRESS", ""))
     run.add_argument("--token", default=os.environ.get("AIDF_TOKEN", ""))
+    run.add_argument("--authkey-file", default=os.environ.get("AIDF_AUTHKEY_FILE", ""))
+    run.add_argument("--token-file", default=os.environ.get("AIDF_OPERATOR_TOKEN_FILE", ""))
     run.add_argument("--spool", default="stml-connector.sqlite3")
     run.add_argument("--state", default="stml-connector-state.json")
     run.add_argument("--server-url", default="")

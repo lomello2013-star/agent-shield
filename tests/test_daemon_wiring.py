@@ -225,5 +225,6 @@ def test_service_entry_wires_response_and_ipc():
     assert "daemon.response =" in src
     assert "build_daemon_registry(" in src
     assert "collect_interval_s=" in src
-    assert "bytes.fromhex(raw_key)" in src  # CLI sends hex; the server must decode it
+    assert "bytes.fromhex(authkey_hex)" in src  # shared authkey file is hex
+    assert "AIDF_AUTHKEY_FILE" in src           # connector reads the same file
     assert "channel_exists(" in src        # opt-in Sysmon must be probed, not assumed

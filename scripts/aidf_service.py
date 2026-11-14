@@ -14,6 +14,8 @@ from __future__ import annotations
 import ctypes
 import ctypes.wintypes as wt
 import os
+import secrets
+import subprocess
 import sys
 import threading
 import time
@@ -91,6 +93,40 @@ def _control(control: int, event_type: int, event_data: ctypes.c_void_p,
 _HANDLER = HANDLER(_control)
 
 
+def _restrict(path: str) -> None:
+    """Best-effort ACL for a local secret file (Windows)."""
+    user = os.environ.get("USERNAME", "")
+    if user:
+        subprocess.run(["icacls", path, "/inheritance:r", "/grant:r", f"{user}:F"],
+                       check=False, capture_output=True, timeout=10)
+
+
+def _shared_secret(env_name: str, file_env: str, default_name: str,
+                   *, token: bool = False) -> str:
+    """Return a secret shared by the service and the STML connector.
+
+    Precedence: env value → file → generate. The chosen value is persisted to the
+    file so the connector can read the same value without its own random key.
+    """
+    path = os.environ.get(file_env) or os.path.join(DATA_ROOT, default_name)
+    value = os.environ.get(env_name, "").strip()
+    if not value and os.path.exists(path):
+        with open(path, "r", encoding="utf-8") as fh:
+            value = fh.read().strip()
+    if not value:
+        value = secrets.token_urlsafe(32) if token else secrets.token_hex(32)
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+    try:
+        with open(path, "w", encoding="utf-8") as fh:
+            fh.write(value)
+            fh.flush()
+            os.fsync(fh.fileno())
+        _restrict(path)
+    except OSError:
+        pass
+    return value
+
+
 def _run_daemon() -> int:
     from core.daemon import Daemon, DaemonConfig
     from core.ipc import RpcServer, build_daemon_registry, default_address
@@ -129,17 +165,26 @@ def _run_daemon() -> int:
     quarantine = QuarantineStore(os.path.join(DATA_ROOT, "quarantine"), key_path=key_path)
     daemon.response = ResponseExecutor(daemon.confirmations, quarantine=quarantine)
     daemon.response_quarantine = quarantine
-    # IPC is enabled only when a token is provisioned; without it the CLI cannot
-    # authenticate, and the service still detects (fail-safe, no silent bypass).
+    # IPC is enabled by default; secrets are shared with the STML connector via
+    # ACL-protected files in DATA_ROOT (production: DPAPI/TPM/secret store).
     rpc = None
-    admin_token = os.environ.get("AIDF_ADMIN_TOKEN", "")
-    if admin_token:
-        tokens = {admin_token: "admin"}
-        operator_token = os.environ.get("AIDF_OPERATOR_TOKEN", "")
-        if operator_token:
-            tokens[operator_token] = "operator"
-        raw_key = os.environ.get("AIDF_AUTHKEY", "")
-        authkey = bytes.fromhex(raw_key) if raw_key else os.urandom(32)
+    if os.environ.get("AIDF_ENABLE_IPC", "1") != "0":
+        admin_token = _shared_secret("AIDF_ADMIN_TOKEN", "AIDF_ADMIN_TOKEN_FILE",
+                                     "admin.token", token=True)
+        operator_token = _shared_secret("AIDF_OPERATOR_TOKEN", "AIDF_OPERATOR_TOKEN_FILE",
+                                        "operator.token", token=True)
+        authkey_hex = _shared_secret("AIDF_AUTHKEY", "AIDF_AUTHKEY_FILE",
+                                     "authkey.hex")
+        try:
+            authkey = bytes.fromhex(authkey_hex)
+        except ValueError:
+            authkey = os.urandom(32)
+            authkey_hex = authkey.hex()
+            path = os.environ.get("AIDF_AUTHKEY_FILE") or os.path.join(DATA_ROOT, "authkey.hex")
+            with open(path, "w", encoding="utf-8") as fh:
+                fh.write(authkey_hex)
+            _restrict(path)
+        tokens = {admin_token: "admin", operator_token: "operator"}
         rpc = RpcServer(default_address(), authkey, tokens, build_daemon_registry(daemon))
         rpc.start()
     daemon.start()

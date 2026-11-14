@@ -1,0 +1,29 @@
+[Unit]
+Description=STML Agent Connector (read-only)
+After=network-online.target aidf.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=aidefender
+Group=aidefender
+WorkingDirectory=/opt/stml
+EnvironmentFile=-/etc/stml/connector.env
+Environment=AIDF_ADDRESS=/home/aidefender/.aidf.sock
+Environment=AIDF_DATA=/var/lib/aidefender
+Environment=AIDF_AUTHKEY_FILE=/var/lib/aidefender/authkey.hex
+Environment=AIDF_OPERATOR_TOKEN_FILE=/var/lib/aidefender/operator.token
+ExecStart=/opt/stml/venv/bin/python -m stml.connector run \
+  --data-root /var/lib/aidefender \
+  --server-url ${STML_SERVER_URL} \
+  --authkey-file /var/lib/aidefender/authkey.hex \
+  --token-file /var/lib/aidefender/operator.token
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/aidefender
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target

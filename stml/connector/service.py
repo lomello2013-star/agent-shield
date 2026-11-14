@@ -209,14 +209,15 @@ class Connector:
                 source = "files"
         else:
             source = "files"
+        platform = stats.get("platform") if isinstance(stats.get("platform"), dict) else {}
         inv = Inventory(
             **self._base(),
-            os=str(stats.get("os", "unknown")),
-            arch=str(stats.get("arch", "unknown")),
-            agent_version=str(stats.get("version", "unknown")),
+            os=str(platform.get("os", stats.get("os", "unknown"))),
+            arch=str(platform.get("arch", stats.get("arch", "unknown"))),
+            agent_version=str(platform.get("version", stats.get("version", "unknown"))),
             rules_version=stats.get("rules_version"),
             model_version=stats.get("model_version"),
-            capabilities=["health", "stats", "immutable_check"],
+            capabilities=list(platform.get("capabilities", ["health", "stats", "immutable_check"])),
             immutable_ok=immutable_ok,
             source=source,
         )
@@ -227,7 +228,10 @@ class Connector:
     @staticmethod
     def _status_from_health(health: dict[str, Any]) -> AgentStatus:
         raw = str(health.get("status", "healthy")).lower()
-        if health.get("safe_mode"):
+        safe = health.get("safe_mode")
+        if isinstance(safe, dict) and safe.get("safe_mode"):
+            return AgentStatus.SAFE_MODE
+        if safe is True:
             return AgentStatus.SAFE_MODE
         if raw in {"healthy", "ok", "running"}:
             return AgentStatus.HEALTHY

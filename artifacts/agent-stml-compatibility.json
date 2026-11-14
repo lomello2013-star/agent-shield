@@ -1,0 +1,105 @@
+{
+  "generated_at": "2026-11-14T11:24:19.473989+00:00",
+  "component": "agent<->STML",
+  "verdict": {
+    "transport": "compatible",
+    "fleet": "not ready",
+    "pilot": "after Phase A",
+    "production": "after B+C+D + external"
+  },
+  "sources": [
+    "v9.1 roadmap",
+    "DEVLOG",
+    "core/ipc.py",
+    "core/daemon.py",
+    "core/policy.py",
+    "core/modelpack.py",
+    "core/model_registry.py",
+    "core/updater.py",
+    "core/selfprotect.py",
+    "core/negotiation.py",
+    "scripts/aidf_service.py",
+    "schemas/v3",
+    "docs/learning-loop.md"
+  ],
+  "gaps": [
+    {
+      "id": "G1",
+      "severity": "critical",
+      "name": "authkey/token provisioning"
+    },
+    {
+      "id": "G2",
+      "severity": "high",
+      "name": "inventory/version"
+    },
+    {
+      "id": "G3",
+      "severity": "critical",
+      "name": "policy state/apply"
+    },
+    {
+      "id": "G4",
+      "severity": "high",
+      "name": "command/isolate"
+    },
+    {
+      "id": "G5",
+      "severity": "high",
+      "name": "confirm bridge"
+    },
+    {
+      "id": "G6",
+      "severity": "critical",
+      "name": "ModelPack format"
+    },
+    {
+      "id": "G7",
+      "severity": "critical",
+      "name": "LearningUpdate delivery"
+    },
+    {
+      "id": "G8",
+      "severity": "high",
+      "name": "CaseMemoryEntry schema"
+    },
+    {
+      "id": "G9",
+      "severity": "high",
+      "name": "telemetry upload"
+    },
+    {
+      "id": "G10",
+      "severity": "medium",
+      "name": "capability negotiation"
+    },
+    {
+      "id": "G11",
+      "severity": "high",
+      "name": "update delivery"
+    },
+    {
+      "id": "G12",
+      "severity": "medium",
+      "name": "sidecar install"
+    },
+    {
+      "id": "G13",
+      "severity": "medium",
+      "name": "audit anchor"
+    }
+  ],
+  "phases": [
+    "A pilot read-only",
+    "B policy/command",
+    "C learning",
+    "D reliability/updater",
+    "E agent Rust decision"
+  ],
+  "agent_status": {
+    "tests": 472,
+    "run_all": "29/29",
+    "soak": "6h clean on 3.12.9; 24h pending",
+    "f11_closed": false
+  }
+}
