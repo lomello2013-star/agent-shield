@@ -3274,6 +3274,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 15:15] bpf LSM + live cred-read; auth allowlist [experiment]
+
+**Действие**: `bpf` добавлен в `lsm=` (cloudimg `99-ima.cfg`), reboot; active LSM содержит `bpf`. Live `file_open` дал чтение `/etc/shadow`; первый прогон дал FP на `sshd` (легитимная аутентификация), добавлен `actor.name not_regex` allowlist (sshd/systemd/passwd/sudo/login/polkitd) — `cat` по-прежнему `LINUX-CRED-READ-104`, `sshd` без вердикта. Linux live: 2 сценария (exec 101, cred-read 104).
+**Числа**: pytest **529**; `run_all` **29/29**; cred-read 2 события → 1 вердикт; exec 3 события → 1 вердикт; LSM `bpf` active.
+**Вердикт**: LSM-блокер снят; credential-read live работает с allowlist; net cgroup и 20/20 остаются open.
+**Проверка**: `/proc/cmdline` + `/sys/kernel/security/lsm`; `/tmp/open.jsonl`; `linux_ebpf_live.py`; `run_all` 29/29.
+**Статус**: verified (cred-read); open (net cgroup, 20/20, production collector)
+**Actor**: agent
+**Run_id**: bpf-lsm-cred-read-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

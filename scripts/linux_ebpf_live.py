@@ -24,17 +24,29 @@ def main(path: str) -> int:
             item = json.loads(line)
         except json.JSONDecodeError:
             continue
-        if "pid" not in item or "filename" not in item:
+        if "pid" not in item:
+            continue
+        if "filename" in item:
+            category, action = "process.start", "execve"
+            exe = item["filename"]
+            filename = None
+        elif "path" in item:
+            category, action = "file.read", "open"
+            exe = item.get("comm", "")
+            filename = item["path"]
+        else:
             continue
         raw = {
-            "category": "process.start",
-            "action": "execve",
+            "category": category,
+            "action": action,
             "pid": item["pid"],
             "ppid": item.get("ppid"),
             "comm": item.get("comm", ""),
-            "exe": item["filename"],
-            "cmdline": item["filename"],
+            "exe": exe,
+            "cmdline": exe,
         }
+        if filename is not None:
+            raw["filename"] = filename
         try:
             event = normalizer.normalize("linux.ebpf", raw)
         except Exception as exc:  # noqa: BLE001 - diagnostic path

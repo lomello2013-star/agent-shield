@@ -5,7 +5,7 @@
   },
   "phases": {
     "correlated": {
-      "helper": "{\"writes\":5,\"execs\":5,\"child\":1403}",
+      "helper": "{\"writes\":5,\"execs\":5,\"child\":1426}",
       "corr_alerts": 5,
       "signal_alerts": 5,
       "events": 10
@@ -17,10 +17,10 @@
       "events": 30
     },
     "inject_only": {
-      "helper": "{\"writes\":20,\"child\":1410}",
+      "helper": "{\"writes\":20,\"child\":1433}",
       "corr_alerts": 0,
-      "signal_alerts": 1,
-      "events": 51
+      "signal_alerts": 0,
+      "events": 50
     }
   },
   "corr_alerts_correlated": 5,

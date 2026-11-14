@@ -130,8 +130,8 @@ alert-правилом, а не молчанием.
 **Рекомендация:** **C**.
 **Выбор:** C (рекомендация агента).
 **Обоснование:** нельзя выдавать 467 за текущее; нельзя и скрывать stml.
-**Статус:** closed: STML зелёный, `pytest` = **528**, `run_all` **29/29**,
-`status.md` = 528; readiness/dev-report/release синхронизированы.
+**Статус:** closed: STML зелёный, `pytest` = **529**, `run_all` **29/29**,
+`status.md` = 529; readiness/dev-report/release синхронизированы.
 
 ---
 
@@ -203,3 +203,21 @@ T1562.001.
 **Обоснование:** адаптер уже маппит `net.connect`/`object.port` (unit-тест
 `LINUX-C2-PORT-105` зелёный); остаётся корректно поместить процесс в cgroup.
 **Статус:** open: `ready:true`, events=0; нужен cgroup-scope/placement.
+
+---
+
+## D-011. Auth-демоны в правиле credential-read
+
+**Вопрос:** live cred-read дал FP на `sshd` (легитимное чтение `/etc/shadow`).
+
+| Вариант | Плюсы | Минусы |
+|---|---|---|
+| A. Игнорировать sshd FP | просто | высокий FP на каждом login |
+| B. `actor.name not_regex` allowlist (sshd/systemd/passwd/sudo/login/polkitd) | убирает FP | атакующий может мимикрировать под sshd |
+| C. Контекст сессии/родителя | точнее | сложнее, нужен parent-контекст |
+
+**Рекомендация:** **B** + позже C.
+**Выбор:** B (рекомендация агента).
+**Обоснование:** `sshd`/`systemd`/`passwd` читают shadow штатно; allowlist
+убирает FP, а мимикрия — известный остаточный риск, фиксируем.
+**Статус:** implemented & verified: `cat` → 104, `sshd` → нет вердикта.

@@ -1,40 +1,71 @@
 {
-  "generated_at": "2026-11-14T11:32:22.486055+00:00",
   "phase": "A",
-  "status": "done-readonly",
-  "smoke": {
-    "health_status": "healthy",
-    "health_source": "rpc",
-    "os": "windows",
-    "arch": "x64",
-    "agent_version": "10.0.19045",
-    "capabilities": [
-      "ipc",
-      "rules",
-      "response",
-      "selfprotect",
-      "audit",
-      "confirm"
-    ],
-    "immutable_ok": true
+  "date": "2026-11-14",
+  "goal": "STML sees the real agent (read-only). No policy/rollout/isolate control.",
+  "environment": {
+    "os": "Windows 10 (DESKTOP-JHQB492)",
+    "python": "3.12 (C:\\Users\\lomel\\AppData\\Local\\Programs\\Python\\Python312)",
+    "repo": "D:\\ИИ защитник Вектор-защитник"
   },
-  "tests": {
-    "stml": 54,
-    "ipc": 16,
-    "daemon_wiring": 13
+  "components": {
+    "agent_service": {
+      "name": "AIDefender",
+      "status": "Running",
+      "start_type": "Automatic",
+      "note": "restarted 14.11.2026 to load commit 8ee1166 (IPC/RPC + shared authkey/token files)"
+    },
+    "stml_server": {
+      "url": "http://127.0.0.1:8080",
+      "run_as": "user process (python -m stml.server run), boot log: C:\\ProgramData\\AIDefender\\stml\\server.boot.log",
+      "db": "C:\\ProgramData\\AIDefender\\stml\\server.sqlite3",
+      "trust_dir": "C:\\ProgramData\\AIDefender\\stml\\trust",
+      "tls": "none (plain HTTP, localhost pilot)"
+    },
+    "connector": {
+      "launch": "scheduled task AIDefender-STML-Connector (SYSTEM, AtStartup, RestartCount 3)",
+      "wrapper": "C:\\ProgramData\\AIDefender\\stml\\run_connector_logged.cmd -> scripts\\run_stml_connector.cmd",
+      "log": "C:\\ProgramData\\AIDefender\\stml\\connector.log",
+      "enrolled": true
+    }
   },
-  "changed": [
-    "scripts/aidf_service.py",
-    "core/daemon.py::stats",
-    "stml/connector/service.py",
-    "stml/connector/__main__.py",
-    "scripts/run_stml_connector.cmd",
-    "scripts/install_stml_connector_task.ps1",
-    "deploy/systemd/stml-connector.service"
+  "checks": {
+    "heartbeat_healthy_source_rpc": true,
+    "inventory_not_unknown": {
+      "os": "windows",
+      "arch": "x64",
+      "agent_version": "10",
+      "capabilities": ["ipc", "rules", "response", "selfprotect", "audit", "confirm"]
+    },
+    "immutable_ok": true,
+    "survives_restart": true,
+    "agents_on_server": {
+      "count": 1,
+      "hostname": "DESKTOP-JHQB492",
+      "status": "healthy",
+      "policy_version": null
+    }
+  },
+  "secrets": {
+    "location": "C:\\ProgramData\\AIDefender (authkey.hex, admin.token, operator.token, stml\\tokens.json)",
+    "tokens_json_acl": "restricted: DESKTOP-JHQB492\\lomel:(F) only",
+    "agent_token_files_acl": "default ProgramData ACL (SYSTEM/Админы full, Пользователи read) - service _restrict(icacls) did not apply",
+    "rotation_note": "server tokens rotated once after accidental console exposure; enrol token single-use, already consumed"
+  },
+  "fixes_applied": [
+    "run_stml_connector.cmd: absolute python path (STML_PY fallback), rpc-lock moved to %ProgramData%\\AIDefender\\stml\\rpc.lock",
+    "install_stml_connector_task.ps1: saved as UTF-8 with BOM (PS 5.1 read Cyrillic repo path as ANSI)",
+    "state/spool file ACLs: granted SYSTEM:(F) after user-run connector had restricted them to lomel only"
   ],
-  "notes": [
-    "read-only: no policy/command delivery",
-    "agent F11/R1/R4 still open",
-    "production_ready=false"
-  ]
+  "limitations": [
+    "Read-only: policy/rollout/isolate do not reach the agent (Phase B)",
+    "F11/R1/R4 not closed; not production",
+    "authkey.hex/tokens are plain files; production: DPAPI/TPM/secret store",
+    "STML server is a user-space process, not a service; TLS and client certs disabled for localhost pilot",
+    "Users have RX on operator.token/authkey.hex (ACL hardening in aidf_service.py failed silently under SYSTEM)"
+  ],
+  "rollback": {
+    "connector_task": "Stop-ScheduledTask / Unregister-ScheduledTask AIDefender-STML-Connector",
+    "stml_server": "kill python -m stml.server process (Ctrl+C equivalent)",
+    "agent_service": "keep installed (per instructions)"
+  }
 }

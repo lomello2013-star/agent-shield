@@ -355,6 +355,9 @@
         "platform": "linux",
         "object.path": {
           "regex": "^(/etc/shadow|/etc/gshadow|/etc/sudoers|/root/\\.ssh/)"
+        },
+        "actor.name": {
+          "not_regex": "(?i)^(sshd|systemd|systemd-logind|passwd|sudo|login|polkitd|dbus-daemon)$"
         }
       }
     },

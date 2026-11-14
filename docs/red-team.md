@@ -124,9 +124,13 @@ alert-правило для generic pending (D-001).
 выдали ровно **`LINUX-EXEC-TMP-101`**, benign `/bin/true` — без вердикта
 (`artifacts/linux_ebpf_live.json`).
 
-LSM-сенсоры (cred read) **не работают**: ядро загружено без `bpf` в `lsm=`
-(active: `lockdown,capability,landlock,yama,apparmor`), поэтому `file_open`
-программа не получает событий. Нужен `lsm=...,bpf` + перезагрузка.
+**bpf LSM включён:** добавлен `lsm=...,bpf` в cloudimg `GRUB_CMDLINE_LINUX`
+(`/etc/default/grub.d/99-ima.cfg`), reboot; active LSM содержит `bpf`. Live
+cred-read: `cat /etc/shadow` → **`LINUX-CRED-READ-104`**, `sshd` исключён
+allowlist (иначе легитимная аутентификация давала FP).
+
+**Итого Linux live:** 2 сценария — exec (`101`) и cred-read (`104`);
+`artifacts/linux_ebpf_live.json`.
 
 **Net live:** `stream_net` (cgroup/connect) даёт `ready:true`, но **0 событий**;
 `echo $$ > cgroup.procs` → `EINVAL`. Адаптер `net.connect → object.port` уже

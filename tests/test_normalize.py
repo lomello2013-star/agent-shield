@@ -185,6 +185,24 @@ def test_win_sysmon_registry_event_maps_object_path():
     assert "CurrentVersion" in ev.object.path
 
 
+def test_linux_cred_read_allows_auth_daemons():
+    import pathlib
+
+    from core.rules import RuleEngine, load_rules
+
+    rules = str(pathlib.Path(__file__).resolve().parents[1] / "rules" / "base.json")
+    engine = RuleEngine(load_rules([rules]))
+
+    def cred(comm: str):
+        return normalizer().normalize("linux.ebpf", {
+            "category": "file.read", "action": "open", "pid": 1,
+            "ppid": 0, "comm": comm, "exe": comm, "filename": "/etc/shadow",
+        })
+
+    assert "LINUX-CRED-READ-104" in [v.rule_id for v in engine.evaluate(cred("cat"))]
+    assert "LINUX-CRED-READ-104" not in [v.rule_id for v in engine.evaluate(cred("sshd"))]
+
+
 def test_linux_ebpf_net_connect_maps_object_port():
     import pathlib
 

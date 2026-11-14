@@ -15,7 +15,7 @@
     ],
     "last_record_id": 2885,
     "calls": 2,
-    "last_query_ms": 17.781
+    "last_query_ms": 18.839
   },
   "events_read": 200,
   "second_poll_fresh": 0,
@@ -44,9 +44,9 @@
   "rule_hits": {
     "WIN-DEFENDER-TAMPER-009": 29
   },
-  "poll_ms": 17.781,
-  "pipeline_ms_p50": 0.037,
-  "pipeline_ms_p95": 0.123,
+  "poll_ms": 18.839,
+  "pipeline_ms_p50": 0.036,
+  "pipeline_ms_p95": 0.125,
   "loss": 0,
   "ledger_ok": true,
   "audit_chain_ok": true,
