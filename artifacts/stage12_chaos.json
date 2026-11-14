@@ -12,13 +12,13 @@
       "WIN-DEFENDER-TAMPER-009": 1
     },
     "tick_ms_p50": 0.06,
-    "tick_ms_p95": 0.146,
+    "tick_ms_p95": 0.135,
     "ingest_received": 160,
     "lost": 0
   },
   "R2_silent_source": {
     "timeout_s": 0.2,
-    "detection_s": 1.51,
+    "detection_s": 1.516,
     "detected": true,
     "note": "silence measured from a fresh beat of all sources"
   },
@@ -38,7 +38,7 @@
   },
   "R10_tamper": {
     "audit_chain_ok": false,
-    "detect_ms": 0.189
+    "detect_ms": 0.21
   },
   "R6_update": {
     "active_before_failed_update": "B",
@@ -49,7 +49,7 @@
   },
   "R3_watchdog": {
     "restarted": true,
-    "mttr_ms": 11.7,
+    "mttr_ms": 11.3,
     "target_ms": 30000,
     "within_target": true
   },

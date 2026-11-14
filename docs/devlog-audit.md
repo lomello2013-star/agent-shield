@@ -1,21 +1,21 @@
 # Аудит DEVLOG
 
-> Сгенерировано `scripts/devlog_audit.py` — 2026-11-14T09:48 UTC.
+> Сгенерировано `scripts/devlog_audit.py` — 2026-11-14T19:28 UTC.
 
-Записей: **118**, полных по формату §8: **94 (79.7 %)**, неполных (legacy): **24**.
+Записей: **144**, полных по формату §8: **120 (83.3 %)**, неполных (legacy): **24**.
 
 ## По типам
 
 | Тип | Записей |
 |---|---|
 | auto_review | 6 |
-| code | 24 |
+| code | 27 |
 | config | 4 |
-| decision | 2 |
-| docs | 1 |
+| decision | 4 |
+| docs | 2 |
 | escalation | 1 |
-| experiment | 75 |
-| report | 4 |
+| experiment | 94 |
+| report | 5 |
 | test | 1 |
 
 ## Legacy-записи без полного набора (не переписаны)

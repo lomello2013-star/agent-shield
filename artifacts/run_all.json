@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-11-14T19:06:50.718798+00:00",
+  "generated_at": "2026-11-14T19:28:15.475864+00:00",
   "steps": [
     {
       "name": "tests",
       "ok": true,
       "required": true,
-      "detail": "543 passed in 34.17s",
-      "duration_s": 35.47
+      "detail": "543 passed in 29.76s",
+      "duration_s": 30.69
     },
     {
       "name": "rules_and_coverage",
@@ -41,105 +41,105 @@
       "ok": true,
       "required": true,
       "detail": "events=60 verdicts=8",
-      "duration_s": 0.38
+      "duration_s": 0.39
     },
     {
       "name": "windows_defender_e2e",
       "ok": true,
       "required": true,
       "detail": "events=200 verdicts=29 before_classification=200",
-      "duration_s": 1.4
+      "duration_s": 1.42
     },
     {
       "name": "windows_chaos",
       "ok": true,
       "required": true,
       "detail": "final_verdicts=11 loss=0",
-      "duration_s": 18.61
+      "duration_s": 20.47
     },
     {
       "name": "linux_exec_e2e",
       "ok": true,
       "required": false,
       "detail": "exit=0",
-      "duration_s": 12.49
+      "duration_s": 40.45
     },
     {
       "name": "linux_lsm_e2e",
       "ok": true,
       "required": false,
       "detail": "exit=0",
-      "duration_s": 2.43
+      "duration_s": 2.38
     },
     {
       "name": "linux_net_e2e",
       "ok": true,
       "required": false,
       "detail": "exit=0",
-      "duration_s": 2.48
+      "duration_s": 2.32
     },
     {
       "name": "linux_mem_e2e",
       "ok": true,
       "required": false,
       "detail": "exit=0",
-      "duration_s": 13.79
+      "duration_s": 13.74
     },
     {
       "name": "linux_ptrace_e2e",
       "ok": true,
       "required": false,
       "detail": "exit=0",
-      "duration_s": 13.4
+      "duration_s": 13.46
     },
     {
       "name": "linux_procmem_e2e",
       "ok": true,
       "required": false,
       "detail": "exit=0",
-      "duration_s": 13.35
+      "duration_s": 13.42
     },
     {
       "name": "linux_mprotect_e2e",
       "ok": true,
       "required": false,
       "detail": "exit=0",
-      "duration_s": 13.29
+      "duration_s": 13.34
     },
     {
       "name": "linux_corr_e2e",
       "ok": true,
       "required": false,
       "detail": "exit=0",
-      "duration_s": 22.97
+      "duration_s": 23.59
     },
     {
       "name": "linux_tree_e2e",
       "ok": true,
       "required": false,
       "detail": "exit=0",
-      "duration_s": 10.59
+      "duration_s": 10.67
     },
     {
       "name": "linux_tree_fp",
       "ok": true,
       "required": false,
       "detail": "exit=0",
-      "duration_s": 16.87
+      "duration_s": 16.94
     },
     {
       "name": "linux_provenance",
       "ok": true,
       "required": false,
       "detail": "exit=0",
-      "duration_s": 19.06
+      "duration_s": 19.08
     },
     {
       "name": "gen_docs",
       "ok": true,
       "required": true,
       "detail": "exit=0 bytes=540",
-      "duration_s": 0.25
+      "duration_s": 0.29
     },
     {
       "name": "f04_r2_margin",
@@ -159,36 +159,36 @@
       "name": "f01_confidence_gap",
       "ok": true,
       "required": true,
-      "detail": "exit=0 bytes=506 stderr=[0;93m2026-11-14 22:06:48.1550671 [W:onnxruntime:, execution_frame.cc:913 onnxruntime::ExecutionFrame::VerifyOutputSizes",
-      "duration_s": 3.35
+      "detail": "exit=0 bytes=506 stderr=[0;93m2026-11-14 22:28:12.9796366 [W:onnxruntime:, execution_frame.cc:913 onnxruntime::ExecutionFrame::VerifyOutputSizes",
+      "duration_s": 3.07
     },
     {
       "name": "f09_ppv_target",
       "ok": true,
       "required": true,
       "detail": "exit=0 bytes=1601",
-      "duration_s": 0.24
+      "duration_s": 0.25
     },
     {
       "name": "f12_behavioral",
       "ok": true,
       "required": true,
       "detail": "exit=0 bytes=2623",
-      "duration_s": 0.36
+      "duration_s": 0.35
     },
     {
       "name": "f13_scenarios",
       "ok": true,
       "required": true,
       "detail": "exit=0 bytes=2502",
-      "duration_s": 0.27
+      "duration_s": 0.26
     },
     {
       "name": "supervisor_measure",
       "ok": true,
       "required": true,
       "detail": "exit=0 bytes=1135",
-      "duration_s": 1.34
+      "duration_s": 1.31
     },
     {
       "name": "final_summary",
@@ -202,11 +202,11 @@
       "ok": true,
       "required": true,
       "detail": "exit=0 bytes=1345",
-      "duration_s": 0.07
+      "duration_s": 0.08
     }
   ],
   "passed": 29,
   "failed_required": [],
-  "total_s": 203.14,
+  "total_s": 228.61,
   "status_doc": "D:\\ИИ защитник Вектор-защитник\\docs\\status.md"
 }

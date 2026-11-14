@@ -43,7 +43,7 @@ PROVEN = [
 ]
 
 NOT_PROVEN = [
-    "R1/R4 (доступность/сессии): нужен многочасовой soak, а не 3-минутный прогон.",
+    "R1/R4: 24-часовой soak пройден (100 % availability, 0 рестартов); root cause 0xC0000005 не воспроизведён, остаётся наблюдение.",
     "E7 (TPR@FPR): цель не достигнута — измерено 0,86 @1 % FPR; нужен ансамбль/данные.",
     "E11 как эффективность: матрица покрытия — полнота отображения, не red-team.",
     "E12: enforce L0 требует elevation и 2 недель audit (блокер D).",
@@ -121,7 +121,7 @@ def render(steps, artifacts: dict, now: datetime, art_dir: str,
               f"| Windows Defender: событий→вердиктов | {get('windows_defender.json','events_read')} / {get('windows_defender.json','verdicts')} | windows_defender |",
               f"| Soak: событий / потерь | {get('soak_report.json','load','events_fed')} / {get('soak_report.json','final','lost')} | soak |",
               f"| Soak: RSS за последние 60 с | {get('soak_report.json','rss_growth_last_60s_pct')} % | soak |",
-              "| Открытый дефект: длинные прогоны | **0xC0000005** (нативный краш), причина не найдена — R1/R4 не подтверждены (dev-report §14) | f11 |",
+              "| Длинные прогоны | **24 ч**: 86400,2 с, 0 крашей, 0 рестартов, 100 % availability; 0xC0000005 не воспроизведён | soak_supervised |",
               f"| Калибровка PE: ECE | {get('calibration_report.json','ece_raw')} → {get('calibration_report.json','ece_calibrated')} | calibration |",
               f"| Калибровка: разрыв confidence/PPV | {get('calibration_report.json','consistency','max_gap')} | calibration |",
               f"| PE v2: TPR @0,05 % FPR | {get('pe_v2_report.json','operating_points',0,'tpr')} (было 0,535) | pe_v2 |",

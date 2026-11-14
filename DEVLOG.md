@@ -3454,6 +3454,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 22:20] 24h soak: R1/R4 подтверждены; 543 теста, 30 правил
+
+**Действие**: суточный soak завершён — **86400,2 с**, 0 крашей, 0 рестартов, **100 % availability**, audit chain 373 564 записи; root cause `0xC0000005` не воспроизведён. Status regenerated, E7/F10 пересмотрены (D-014/D-015), добавлены `016A`/`007A`, агент получил queue+manifest.
+**Числа**: pytest **543**; rules **30**; run_all **29/29**; soak 24 ч/0 крашей; агент `dropped=0`, manifest verified.
+**Вердикт**: R1/R4 закрыты для 24 ч; holdout live rerun — open (IPC), подпись агента — open.
+**Проверка**: `artifacts/soak_supervised.json`; `docs/status.md`; `run_all` 29/29.
+**Статус**: verified; R1/R4 24h
+**Actor**: agent
+**Run_id**: soak24-r1r4-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

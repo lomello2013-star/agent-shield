@@ -12,7 +12,7 @@
     ],
     "last_record_id": 11501,
     "calls": 2,
-    "last_query_ms": 13.414
+    "last_query_ms": 13.286
   },
   "events_read": 60,
   "second_poll_fresh": 0,
@@ -25,9 +25,9 @@
     "WIN-SERVICE-CREATE-007A": 7,
     "WIN-SERVICE-CREATE-007": 1
   },
-  "poll_ms": 13.414,
+  "poll_ms": 13.286,
   "pipeline_ms_p50": 0.062,
-  "pipeline_ms_p95": 0.149,
+  "pipeline_ms_p95": 0.183,
   "loss": 0,
   "ledger_ok": true,
   "audit_chain_ok": true,
