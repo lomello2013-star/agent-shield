@@ -85,11 +85,15 @@
   `command_ack`, `command_enqueue` (admin), isolate на ack, файловая очередь.
 - Сервер/коннектор: `isolate` ставит команду в SQLite; heartbeats возвращают
   `commands`; коннектор выполняет и подписанно ack-ает `/v0/commands/ack`.
+- Approval→confirm: approval kind=`confirm` с payload `agent_id/confirmation_id`
+  после approve ставит команду `confirm`; агент вызывает `daemon.confirm`.
 - Тест: `tests/test_policy_commands.py` — dry-run не меняет state, wrong signature reject,
-  viewer forbidden, isolate command.
+  viewer forbidden, isolate command, confirm command.
 - Тест: `stml/tests/test_server_http.py::test_command_delivery_and_ack` — isolate →
   command → signed ack → очередь пуста.
-- Остаток: Rust parity для commands, policy live reload, approval → `confirm`.
+- Тест: `stml/tests/test_server_http.py::test_approval_confirm_enqueues_command` —
+  approval → confirm command.
+- Остаток: Rust parity для commands/approval bridge, policy live reload.
 
 ### Phase C — Learning/ModelPack/LearningUpdate
 

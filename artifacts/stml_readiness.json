@@ -87,6 +87,7 @@
     "command_ack": true,
     "live_reload": false,
     "server_command_delivery": true,
-    "connector_ack": true
+    "connector_ack": true,
+    "approval_confirm_bridge": true
   }
 }

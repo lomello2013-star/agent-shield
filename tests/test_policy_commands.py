@@ -73,6 +73,11 @@ def test_policy_state_apply_and_commands(tmp_path):
             assert ack["isolated"] is True
             assert daemon.isolated is True
             assert operator.call("command_poll")["commands"] == []
+
+            conf = daemon.confirmations.request("test-action", level="normal", destructive=False)
+            confirmed = daemon.execute_command(
+                "confirm", {"confirmation_id": conf.confirmation_id, "decision": "approved"})
+            assert confirmed["status"] == "acked"
         finally:
             viewer.close()
             operator.close()

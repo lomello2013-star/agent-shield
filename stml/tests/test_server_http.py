@@ -29,7 +29,8 @@ def _request(port: int, method: str, path: str, payload=None, token: str = "",
 
 def _setup(tmp_path):
     store = Store(tmp_path / "db.sqlite3")
-    config = ServerConfig(tenant_id="t", admin_token="admin", viewer_token="viewer")
+    config = ServerConfig(tenant_id="t", admin_token="admin", viewer_token="viewer",
+                          approver_token="approver")
     server, _ = start_server(store, config, port=0)
     port = server.server_address[1]
     token = store.create_enrol_token("t")
@@ -138,6 +139,37 @@ def test_command_delivery_and_ack(tmp_path):
         code, body = _request(port, "POST", "/v0/heartbeat", p3, signature=sig3)
         assert code == 200 and body["commands"] == []
         assert store.agent(agent_id).isolated is True
+    finally:
+        server.shutdown()
+        server.server_close()
+        store.close()
+
+
+def test_approval_confirm_enqueues_command(tmp_path):
+    store, server, port, agent_id, priv = _setup(tmp_path)
+    try:
+        code, body = _request(port, "POST", "/v0/approvals",
+                              {"kind": "confirm", "target": f"agent:{agent_id}",
+                               "payload": {"agent_id": agent_id,
+                                           "confirmation_id": "cid-1"}},
+                              token="admin")
+        assert code == 201, body
+        approval_id = body["approval_id"]
+        code, body = _request(port, "POST", f"/v0/approvals/{approval_id}/approve",
+                              {}, token="approver")
+        assert code == 200, body
+        pending = store.pending_commands(agent_id)
+        assert len(pending) == 1
+        assert pending[0]["kind"] == "confirm"
+        assert pending[0]["payload"]["confirmation_id"] == "cid-1"
+
+        hb = Heartbeat(tenant_id="t", agent_id=agent_id, connector_id="c",
+                       message_id=str(uuid.uuid4()), nonce=uuid.uuid4().hex,
+                       status=AgentStatus.HEALTHY)
+        payload = hb.model_dump(mode="json")
+        _, sig = _signed(priv, payload)
+        code, body = _request(port, "POST", "/v0/heartbeat", payload, signature=sig)
+        assert code == 200 and body["commands"][0]["kind"] == "confirm"
     finally:
         server.shutdown()
         server.server_close()

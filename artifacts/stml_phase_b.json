@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-11-14T12:31:22.525828+00:00",
+  "generated_at": "2026-11-14T12:32:28.878450+00:00",
   "phase": "B",
   "scope": "agent-side",
-  "status": "verified-server-and-agent",
+  "status": "verified-phase-b-reference",
   "rpc": {
     "policy_state": "viewer/operator/admin",
     "apply_policy": "operator/admin, signed, dry-run",
@@ -15,7 +15,7 @@
     "stml": 54,
     "ipc": 16,
     "daemon_wiring": 13,
-    "server_http": 6
+    "server_http": 7
   },
   "done": [
     "signed policy verify + key_id",
@@ -27,12 +27,13 @@
     "server command queue (SQLite)",
     "heartbeat returns commands",
     "signed /v0/commands/ack",
-    "connector executes+acks isolate"
+    "connector executes+acks isolate",
+    "approval -> confirm command bridge",
+    "agent execute_command(confirm)"
   ],
   "not_yet": [
-    "Rust parity for commands",
-    "policy live reload",
-    "approval -> confirm bridge"
+    "Rust parity for commands/approval bridge",
+    "policy live reload"
   ],
   "notes": [
     "live=false: policy applied to last-known-good, detector reload on restart",

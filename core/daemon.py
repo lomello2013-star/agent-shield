@@ -431,6 +431,13 @@ class Daemon:
             self.isolated = bool(payload.get("isolated", True))
             self.log.append("isolate", {"isolated": self.isolated, "source": "command"})
             return {"status": "acked", "isolated": self.isolated}
+        if kind == "confirm":
+            cid = str(payload.get("confirmation_id", ""))
+            decision = str(payload.get("decision", "approved"))
+            if not cid:
+                return {"status": "failed", "error": "confirmation_id required"}
+            result = self.confirm(cid, decision, "approver")
+            return {"status": "acked", "confirmation": result}
         return {"status": "unsupported", "kind": kind}
 
     def run_for(self, seconds: float, interval_s: float = 0.05) -> None:

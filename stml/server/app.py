@@ -427,6 +427,18 @@ class Handler(BaseHTTPRequestHandler):
             except KeyError as exc:
                 self._error(404, str(exc))
                 return
+            if status == "approved":
+                approval = self.server.store.approval(int(parts[2]))
+                try:
+                    payload = json.loads(approval["payload"]) if approval else {}
+                except (TypeError, ValueError):
+                    payload = {}
+                if (approval and approval.get("kind") == "confirm"
+                        and payload.get("agent_id") and payload.get("confirmation_id")):
+                    self.server.store.enqueue_command(
+                        str(payload["agent_id"]), "confirm",
+                        {"confirmation_id": str(payload["confirmation_id"]),
+                         "decision": "approved"})
             self._send(200, {"ok": True, "approval_id": int(parts[2]), "status": status})
             return
 
