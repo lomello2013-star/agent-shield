@@ -56,3 +56,28 @@ def test_tenant_isolation_policies_agents_approvals(tmp_path):
     store.decide_approval(approval, "approved", "approver")
     assert store.is_approved("policy", "p@v1", "a") is True
     assert store.is_approved("policy", "p@v1", "b") is False
+
+
+def test_staged_rollout_1_10_50_100(tmp_path):
+    store = Store(tmp_path / "db.sqlite3")
+    for i in range(20):
+        token = store.create_enrol_token("t")
+        store.enrol(token, "t", f"h{i:02d}", "windows", "x64", "0.1.0", "pem")
+    store.add_policy({"policy_id": "p", "version": "v1", "channel": "stable",
+                      "content": {}, "key_id": "k", "signature": "s", "tenant_id": "t"})
+    rollout = store.start_rollout("p", "v1", 1, "t")
+    assert rollout["percent"] == 1 and len(rollout["applied"]) == 1
+
+    promoted = store.promote_rollout(rollout["rollout_id"])
+    assert promoted["percent"] == 10
+    promoted = store.promote_rollout(rollout["rollout_id"])
+    assert promoted["percent"] == 50
+    promoted = store.promote_rollout(rollout["rollout_id"])
+    assert promoted["percent"] == 100 and promoted["status"] == "completed"
+    assert len([a for a in store.agents("t") if a.policy_version == "v1"]) == 20
+    try:
+        store.promote_rollout(rollout["rollout_id"])
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("completed rollout cannot be promoted")

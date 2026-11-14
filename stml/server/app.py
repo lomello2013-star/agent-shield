@@ -582,6 +582,10 @@ class Handler(BaseHTTPRequestHandler):
             if not self._auth("admin"):
                 return
             try:
+                if parts[3] == "promote":
+                    result = self.server.store.promote_rollout(int(parts[2]))
+                    self._send(200, result)
+                    return
                 if parts[3] == "halt":
                     self.server.store.halt_rollout(int(parts[2]))
                 elif parts[3] == "rollback":
@@ -591,6 +595,9 @@ class Handler(BaseHTTPRequestHandler):
                     return
             except KeyError as exc:
                 self._error(404, str(exc))
+                return
+            except ValueError as exc:
+                self._error(409, str(exc))
                 return
             self._send(200, {"ok": True, "rollout_id": int(parts[2]), "action": parts[3]})
             return

@@ -37,6 +37,7 @@ Replay: `nonce` одноразовый (`nonces`), `sent_at` ±300 с.
 | POST | `/v0/rollouts` | `{policy_id,version,percent}` (admin) |
 | GET | `/v0/rollouts/<id>` | статус + затронутые агенты (viewer) |
 | POST | `/v0/rollouts/<id>/halt` | остановить (admin) |
+| POST | `/v0/rollouts/<id>/promote` | следующий этап 1→10→50→100 (admin) |
 | POST | `/v0/rollouts/<id>/rollback` | вернуть старые версии (admin) |
 | GET | `/v0/approvals` | очередь approvals (viewer) |
 | POST | `/v0/approvals` | propose `{kind,target,payload}` (admin) |

@@ -78,7 +78,8 @@ class Store:
             CREATE TABLE IF NOT EXISTS rollouts (
                 id INTEGER PRIMARY KEY AUTOINCREMENT, policy_id TEXT NOT NULL,
                 version TEXT NOT NULL, percent INTEGER NOT NULL, status TEXT NOT NULL,
-                created_at REAL NOT NULL, updated_at REAL NOT NULL
+                created_at REAL NOT NULL, updated_at REAL NOT NULL,
+                tenant_id TEXT NOT NULL DEFAULT ''
             );
             CREATE TABLE IF NOT EXISTS rollout_agents (
                 rollout_id INTEGER NOT NULL, agent_id TEXT NOT NULL,
@@ -124,7 +125,7 @@ class Store:
 
     def _migrate_columns(self) -> None:
         """Add tenant columns to databases created by earlier STML snapshots."""
-        for table in ("policies", "approvals"):
+        for table in ("policies", "approvals", "rollouts"):
             columns = [row[1] for row in self._db.execute(f"PRAGMA table_info({table})")]
             if "tenant_id" not in columns:
                 self._db.execute(
@@ -333,7 +334,7 @@ class Store:
         return {"policy_id": policy_id, "version": version, "channel": policy["channel"],
                 "agents": len(agents), "would_change": len(changes), "changes": changes}
 
-    def start_rollout(self, policy_id: str, version: str, percent: int,
+    def start_rollout(self, policy_id: str, version: str, percent: int = 1,
                       tenant_id: str | None = None) -> dict[str, Any]:
         policy = self.policy(policy_id, version, tenant_id)
         if policy is None:
@@ -343,11 +344,12 @@ class Store:
         count = 0 if percent == 0 else max(1, (len(agents) * percent + 99) // 100)
         selected = agents[:count]
         now = time.time()
+        status = "completed" if percent >= 100 else "running"
         with self._lock:
             cur = self._db.execute(
-                "INSERT INTO rollouts(policy_id, version, percent, status, created_at, updated_at) "
-                "VALUES (?, ?, ?, 'running', ?, ?)",
-                (policy_id, version, percent, now, now),
+                "INSERT INTO rollouts(policy_id, version, percent, status, created_at, updated_at, "
+                "tenant_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                (policy_id, version, percent, status, now, now, policy.get("tenant_id", "")),
             )
             rollout_id = int(cur.lastrowid)
             for agent in selected:
@@ -360,7 +362,43 @@ class Store:
             self._db.commit()
         self._audit("operator", "rollout_start", f"{policy_id}@{version}:{percent}%")
         return {"rollout_id": rollout_id, "policy_id": policy_id, "version": version,
-                "percent": percent, "applied": [a.id for a in selected], "status": "running"}
+                "percent": percent, "applied": [a.id for a in selected], "status": status}
+
+    def promote_rollout(self, rollout_id: int) -> dict[str, Any]:
+        stages = (1, 10, 50, 100)
+        with self._lock:
+            row = self._db.execute("SELECT * FROM rollouts WHERE id = ?", (rollout_id,)).fetchone()
+            if row is None:
+                raise KeyError("unknown rollout")
+            if row["status"] != "running":
+                raise ValueError("rollout is not running")
+            current = int(row["percent"])
+            next_percent = next((s for s in stages if s > current), 100)
+            agents = self._db.execute(
+                "SELECT id, policy_version FROM agents WHERE tenant_id = ? ORDER BY hostname",
+                (row["tenant_id"],),
+            ).fetchall()
+            target = max(1, (len(agents) * next_percent + 99) // 100)
+            applied = {r["agent_id"] for r in self._db.execute(
+                "SELECT agent_id FROM rollout_agents WHERE rollout_id = ?", (rollout_id,))}
+            newly: list[str] = []
+            for agent in agents[:target]:
+                if agent["id"] in applied:
+                    continue
+                self._db.execute(
+                    "INSERT OR REPLACE INTO rollout_agents(rollout_id, agent_id, old_version) "
+                    "VALUES (?, ?, ?)", (rollout_id, agent["id"], agent["policy_version"]))
+                self._db.execute("UPDATE agents SET policy_version = ? WHERE id = ?",
+                                 (row["version"], agent["id"]))
+                newly.append(agent["id"])
+            status = "completed" if next_percent >= 100 else "running"
+            self._db.execute(
+                "UPDATE rollouts SET percent = ?, status = ?, updated_at = ? WHERE id = ?",
+                (next_percent, status, time.time(), rollout_id))
+            self._db.commit()
+        self._audit("operator", "rollout_promote", f"{rollout_id}:{next_percent}%")
+        return {"rollout_id": rollout_id, "percent": next_percent, "status": status,
+                "applied": newly}
 
     def rollout(self, rollout_id: int) -> dict[str, Any] | None:
         with self._lock:

@@ -75,7 +75,7 @@
   <section id="policies" class="hidden">
     <div class="panel"><h2>Policies</h2><table><thead><tr><th>Policy</th><th>Version</th><th>Channel</th><th>Key</th><th>Created</th></tr></thead><tbody id="pol-rows"></tbody></table></div>
     <div class="panel"><h2>Dry-run / rollout</h2>
-      <div class="row"><input id="p-id" placeholder="policy_id" size="14"><input id="p-ver" placeholder="version" size="10"><input id="p-pct" type="number" value="50" min="0" max="100" style="width:80px"><button class="act" id="dry">Dry-run</button><button class="act" id="roll">Rollout</button></div>
+      <div class="row"><input id="p-id" placeholder="policy_id" size="14"><input id="p-ver" placeholder="version" size="10"><input id="p-pct" type="number" value="1" min="0" max="100" style="width:80px"><button class="act" id="dry">Dry-run</button><button class="act" id="roll">Rollout</button><input id="r-id" placeholder="rollout_id" size="10"><button class="act" id="promote">Promote</button></div>
       <div class="err" id="pol-msg"></div>
     </div>
   </section>
@@ -188,7 +188,8 @@ async function load(){
 async function isolate(id,on){try{await api('/v0/agents/'+id+'/isolate',{method:'POST',body:JSON.stringify({isolated:on})},'admin');load()}catch(e){alert(e.message)}}
 async function decide(id,action){try{await api('/v0/approvals/'+id+'/'+action,{method:'POST',body:'{}'},'approver');load()}catch(e){alert(e.message)}}
 $('#dry').onclick=async()=>{try{const r=await api('/v0/policies/'+$('#p-id').value+'/'+$('#p-ver').value+'/dry-run',{method:'POST',body:'{}'});$('#pol-msg').textContent=JSON.stringify(r,null,2)}catch(e){$('#pol-msg').textContent=e.message}};
-$('#roll').onclick=async()=>{try{const r=await api('/v0/rollouts',{method:'POST',body:JSON.stringify({policy_id:$('#p-id').value,version:$('#p-ver').value,percent:Number($('#p-pct').value)})},'admin');$('#pol-msg').textContent=JSON.stringify(r,null,2)}catch(e){$('#pol-msg').textContent=e.message}};
+$('#roll').onclick=async()=>{try{const r=await api('/v0/rollouts',{method:'POST',body:JSON.stringify({policy_id:$('#p-id').value,version:$('#p-ver').value,percent:Number($('#p-pct').value)})},'admin');$('#r-id').value=r.rollout_id||'';$('#pol-msg').textContent=JSON.stringify(r,null,2)}catch(e){$('#pol-msg').textContent=e.message}};
+$('#promote').onclick=async()=>{try{const r=await api('/v0/rollouts/'+$('#r-id').value+'/promote',{method:'POST',body:'{}'},'admin');$('#pol-msg').textContent=JSON.stringify(r,null,2)}catch(e){$('#pol-msg').textContent=e.message}};
 $('#verify').onclick=async()=>{try{const r=await api('/v0/audit/verify',{},'admin');$('#audit-msg').textContent='audit ok: '+r.ok}catch(e){$('#audit-msg').textContent=e.message}};
 $('#save').onclick=()=>{sessionStorage.setItem('stml.viewer',$('#t-viewer').value);sessionStorage.setItem('stml.admin',$('#t-admin').value);sessionStorage.setItem('stml.approver',$('#t-approver').value);$('#who').textContent='tokens saved';load()};
 function openAgent(id){

@@ -63,7 +63,7 @@
 5. [x] TUI аварийный: `python -m stml.server isolate <id>` (admin token).
 6. [x] TUI kill-switch ≤5 мин (тест isolate → heartbeat isolated=true).
 7. [x] Policy CRUD + diff + dry-run (слой B): подпись Ed25519, `dry-run`, `would_change`.
-8. [x] Rollout canary 1→10→50→100 %, halt, rollback (слой B): `start_rollout`, `halt`, `rollback`.
+8. [x] Rollout canary 1→10→50→100 %, promote, halt, rollback (слой B): `start_rollout`, `promote`, `halt`, `rollback`.
 9. [x] p95 baseline + 100 синтетических агентов (`test_100_agents_enrolled_and_heartbeat_concurrently`).
 10. [x] **S1.5:** коннектор → сервер: auto-enrol, подписанные heartbeat/inventory/reports, isolate/resume (буферизация reports).
 - **Гейт S1:** 100 агентов online, p95 ≤2 с; TUI isolate; P0 идемпотентность; подпись heartbeat/inventory/reports; deny-by-default; GUI read-only. **Остаток:** policy-подпись/dry-run (B), Rust/axum port.

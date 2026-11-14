@@ -117,6 +117,8 @@
 | D-65 | Keyboard | **1..9 разделы, Esc закрывает drawer** | только мышь | SOC-эргономика |
 | D-66 | Отзыв client cert | **CRL-lite: serial в БД + проверка после handshake** | OCSP сразу | минимальный срез |
 | D-67 | Формат serial | **hex upper, без `:`/пробелов** | как в сертификате | сравнение |
+| D-68 | Rollout stages | **1→10→50→100, promote по одному шагу** | произвольный percent | canary-дисциплина |
+| D-69 | Promote scope | **только tenant политики, детерминированно по hostname** | все агенты | изоляция |
 
 ## Production acceptance
 
