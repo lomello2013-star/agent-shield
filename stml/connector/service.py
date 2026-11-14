@@ -304,6 +304,7 @@ class Connector:
             try:
                 response = self.server.heartbeat(hb)
                 self.isolated = bool(response.get("isolated", False))
+                self.last_error = ""          # a successful call clears the sticky error
                 self._apply_commands(response.get("commands", []))
             except Exception as exc:  # noqa: BLE001 - server down: keep buffering
                 self.last_error = f"server heartbeat: {exc}"
@@ -312,6 +313,7 @@ class Connector:
             if self.server is not None and self.enrolled:
                 try:
                     self.server.inventory(inv)
+                    self.last_error = ""
                 except Exception as exc:  # noqa: BLE001
                     self.last_error = f"server inventory: {exc}"
         self.collect_reports()

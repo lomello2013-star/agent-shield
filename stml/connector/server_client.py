@@ -24,6 +24,16 @@ class ServerError(RuntimeError):
         self.body = body
 
 
+def is_replay_conflict(status: int, body: str) -> bool:
+    """True for "already accepted" conflicts: the retry re-sent a known nonce.
+
+    The server rejects a repeated nonce with 409 (anti-replay). That means the first
+    attempt *was* processed, so a retry must be treated as an acknowledged delivery,
+    not as an error — otherwise the connector keeps a sticky last_error forever.
+    """
+    return status == 409 and "replayed nonce" in body.lower()
+
+
 class ServerClient:
     def __init__(self, base_url: str, private_key: Ed25519PrivateKey,
                  agent_id: str = "", timeout_s: float = 5.0,
@@ -76,8 +86,12 @@ class ServerClient:
                     conn.request("POST", self._prefix + path, body=raw, headers=headers)
                     resp = conn.getresponse()
                     data = resp.read()
+                    body = data.decode(errors="replace")
+                    if is_replay_conflict(resp.status, body):
+                        # the earlier attempt was accepted; this is an idempotent ack
+                        return {"ok": True, "replayed": True}
                     if resp.status >= 400:
-                        raise ServerError(resp.status, data.decode(errors="replace"))
+                        raise ServerError(resp.status, body)
                     if resp.will_close:
                         conn.close()
                         self._conn = None
