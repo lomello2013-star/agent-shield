@@ -15,7 +15,13 @@ set "AIDF_AUTHKEY_FILE=%AIDF_DATA%\authkey.hex"
 set "AIDF_OPERATOR_TOKEN_FILE=%AIDF_DATA%\operator.token"
 if not exist "%STML_DATA%" mkdir "%STML_DATA%"
 
-python -m stml.connector run ^
+set "STML_PY=%STML_PY%"
+REM SYSTEM has no per-user python on PATH: prefer absolute path, then STML_PY, then PATH.
+if not exist "%ProgramData%\AIDefender\stml" mkdir "%ProgramData%\AIDefender\stml"
+if "%STML_PY%"=="" set "STML_PY=C:\Users\lomel\AppData\Local\Programs\Python\Python312\python.exe"
+if not exist "%STML_PY%" set "STML_PY=python"
+
+"%STML_PY%" -m stml.connector run ^
   --tenant "%STML_TENANT%" ^
   --data-root "%AIDF_DATA%" ^
   --spool "%STML_DATA%\spool.sqlite3" ^

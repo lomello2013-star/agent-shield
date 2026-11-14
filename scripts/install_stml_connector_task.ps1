@@ -1,4 +1,4 @@
-# Phase A: register the STML connector as a scheduled task (SYSTEM, at startup).
+﻿# Phase A: register the STML connector as a scheduled task (SYSTEM, at startup).
 # Run from an elevated PowerShell. Adjust $Repo if needed.
 $ErrorActionPreference = "Stop"
 $Repo = "D:\ИИ защитник Вектор-защитник"

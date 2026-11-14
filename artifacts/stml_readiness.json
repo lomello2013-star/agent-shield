@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-14T11:32:35.917165+00:00",
+  "generated_at": "2026-11-14T11:46:20.536605+00:00",
   "component": "STML",
   "commit": "da64eb4",
   "tests": {
@@ -31,12 +31,28 @@
   "production_ready": false,
   "blockers": [
     "HSM+quorum",
-    "PostgreSQL/HA",
-    "Rust/axum",
+    "PostgreSQL HA/RLS/parity",
+    "Rust/axum parity/auth",
     "Tauri/mTLS-client",
     "real retrain/sandbox",
     "Docker/Helm runtime",
     "EDR/OS matrix",
     "pen-test/DPIA/human-acceptance"
-  ]
+  ],
+  "infra": {
+    "postgres": {
+      "version": "16.16",
+      "service": "running",
+      "db": "stml",
+      "migration": "0001_init.sql",
+      "status": "local-dev"
+    },
+    "rust_scaffold": {
+      "cargo_check": true,
+      "cargo_build": true,
+      "health_db": "ok",
+      "agents_query": true,
+      "parity": false
+    }
+  }
 }

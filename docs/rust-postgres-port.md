@@ -1,19 +1,27 @@
 # Rust/axum + PostgreSQL — каркас и план порта
 
-> Статус: **scaffold**, не parity. Python reference остаётся рабочим.
-> Каркас: `rust/stml-server/` (axum `/health`, `/v0/agents` placeholder;
-> `migrations/0001_init.sql`).
+> Статус: **scaffold работает локально**, parity ещё нет. Python reference
+> остаётся рабочим. Каркас: `rust/stml-server/`.
+
+## 0. Локальная проверка (2026-11-14)
+
+- PostgreSQL **16.16** установлен (winget), служба `postgresql-x64-16` работает.
+- Dev-БД: `stml`, роль `stml` / пароль `stml` (только localhost; не production).
+- Миграция `migrations/0001_init.sql` применена; таблицы agents/reports/policies/approvals.
+- `cargo check --features postgres` — успешно.
+- `cargo build --features postgres` — успешно.
+- Сервер запущен с `DATABASE_URL=postgres://stml:stml@127.0.0.1:5432/stml`;
+  `/health` → `{"db":"ok"}`, `/v0/agents` вернул вставленную тестовую строку.
+- **Не проверено:** нагрузка, auth, parity API, RLS, HA, backup/DR.
 
 ## 1. Что уже есть
 
 - `Cargo.toml`: axum, tokio, serde, tracing; `sqlx` — optional feature
   `postgres`.
-- `src/main.rs`: `/health`, `/v0/agents` (пустой placeholder), bind
+- `src/main.rs`: `/health` (DB probe), `/v0/agents` (SQL query); bind
   `STML_BIND` (default `127.0.0.1:8080`).
 - `migrations/0001_init.sql`: agents/reports/policies/approvals под PostgreSQL.
-- **Сборка не проверена:** `cargo check` не смог скачать `axum` — DNS
-  `index.crates.io` недоступен в текущем окружении. Это внешний сетевой блокер,
-  не ошибка кода.
+- `Cargo.lock` — зафиксирован для воспроизводимости.
 
 ## 2. Принцип порта
 
@@ -43,16 +51,15 @@
 
 ## 5. Блокеры
 
-- Нет сети к crates.io → сборка не проверена.
-- Нет PostgreSQL-сервера → интеграционные тесты не запускались.
 - Нет Node/npm → Tauri не начат.
+- Нет parity-тестов Python↔Rust; auth/RLS/HA/backup не реализованы.
+- Dev-пароль `stml` — только localhost; production — секрет-менеджер.
 
 ## 6. Следующий шаг
 
-После появления сети/Postgres:
 ```powershell
-cargo check --manifest-path rust\stml-server\Cargo.toml
-cargo check --manifest-path rust\stml-server\Cargo.toml --features postgres
-$env:DATABASE_URL="postgres://..."
-sqlx migrate run --source rust\stml-server\migrations
+$env:DATABASE_URL="postgres://stml:stml@127.0.0.1:5432/stml"
+cargo run --manifest-path rust\stml-server\Cargo.toml --features postgres
+# /health -> {"db":"ok"}; /v0/agents -> rows
 ```
+Далее: P1 (enrol/heartbeat/reports + Ed25519), P2 (policies/rollouts/approvals).
