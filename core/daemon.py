@@ -288,7 +288,12 @@ class Daemon:
                 self._execute_actions(verdict, decision.actions)
             self.log.append("verdict", {"rule": verdict.rule_id, "severity": verdict.severity,
                                         "actions": list(decision.actions),
-                                        "alert": decision.alert})
+                                        "alert": decision.alert,
+                                        "event_id": str(verdict.event_id),
+                                        "event_ts": (verdict.event_ts.isoformat()
+                                                     if verdict.event_ts is not None else None),
+                                        "actor_pid": verdict.actor_pid,
+                                        "object_path": verdict.object_path})
         return {"incidents": len(incidents), "verdicts": len(verdicts)}
 
     def _execute_actions(self, verdict, actions) -> None:

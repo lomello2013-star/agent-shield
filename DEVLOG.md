@@ -3178,6 +3178,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 14:10] Автопродление + decision log; 007 сужен; audit event_ts [code]
+
+**Действие**: создан persisted-goal с автопродлением (30 раундов) и `docs/decision-log.md` (D-001…D-008: варианты, рекомендация, выбор). По D-001 правило `WIN-SERVICE-CREATE-007` сужено на `\users|temp|tmp|programdata\` (ambient System32 больше не high); по D-002 `Verdict` получил `event_ts`, audit-verdict — `event_id/event_ts/actor_pid/object_path`; схемы переэкспортированы.
+**Числа**: `pytest tests` **472 passed**; схемы **21**; `docs_consistency` 13/13.
+**Вердикт**: D-001/D-002 частично реализованы; осталось alert-правило для generic 007 и audit-матчинг в харнессе.
+**Проверка**: `pytest tests`; `export_schemas.py` (21); audit payload содержит `event_ts`.
+**Статус**: verified (D-001/D-002 поля), open (alert 007, harness matching, Linux 20)
+**Actor**: agent
+**Run_id**: auto-goal-decisionlog-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

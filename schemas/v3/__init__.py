@@ -177,6 +177,7 @@ class Verdict(_Base):
     reason_text: str
     actor_pid: int | None = None      # process-targeted actions (suspend/resume)
     object_path: str | None = None    # file-targeted actions (quarantine)
+    event_ts: datetime | None = None  # source-event time, for attribution
 
 
 class RollbackRef(_Base):

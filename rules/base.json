@@ -116,6 +116,9 @@
         "action": {
           "in": ["service_create", "service_change"]
         },
+        "object.path": {
+          "regex": "(?i)\\\\(users|temp|tmp|programdata)\\\\"
+        },
         "platform": "windows"
       }
     },

@@ -83,7 +83,7 @@ class Pipeline:
             # An aggregated noise record represents N identical events; rules run
             # once on the representative event (documented approximation).
             for verdict in self.engine.evaluate(event):
-                updates = {}
+                updates = {"event_ts": event.ts_event}
                 if verdict.actor_pid is None and event.actor is not None:
                     updates["actor_pid"] = event.actor.pid
                 if verdict.object_path is None and event.object is not None:

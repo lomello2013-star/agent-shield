@@ -119,6 +119,19 @@
       ],
       "default": null,
       "title": "Object Path"
+    },
+    "event_ts": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Event Ts"
     }
   },
   "required": [
