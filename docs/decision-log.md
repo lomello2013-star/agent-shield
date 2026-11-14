@@ -36,7 +36,8 @@
 **Обоснование:** ambient-службы идут из System32/LocalSystem; malware чаще
 использует temp/user/ProgramData. Потерю generic-детекции компенсируем
 alert-правилом, а не молчанием.
-**Статус:** implemented (regex в 007); alert-правило для generic — pending.
+**Статус:** implemented (regex в 007); ambient FP = 0 в 20-срезе; alert-правило
+для generic — pending.
 
 ---
 
@@ -56,8 +57,8 @@ alert-правилом, а не молчанием.
 **Выбор:** B (рекомендация агента).
 **Обоснование:** атрибуция по времени обработки неверна; нужен `ts_event` и
 `object_path` в audit, чтобы матчить действие с событием, а не с окном.
-**Статус:** audit-поля реализованы (`event_id/event_ts/object_path` в verdict);
-матчинг в харнессе — pending.
+**Статус:** implemented & verified: `event_id/event_ts/object_path` + матчинг
+`Get-VerdictsSince`; 20-срез 8/11, **0 FP** (WIN-08 — реальный miss, не гонка).
 
 ---
 

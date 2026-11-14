@@ -44,6 +44,23 @@ function Wait-Settled {
         $last = $cur
     }
 }
+function Get-VerdictsSince([datetime]$since) {
+    # Attribute by source-event time, not by processing window. A delayed RUNKEY
+    # carries the event_ts of its own scenario and is excluded here.
+    $h = @{}
+    $path = "C:\ProgramData\AIDefender\audit\chain.jsonl"
+    if (-not (Test-Path $path)) { return $h }
+    Get-Content $path -Tail 500 -ErrorAction SilentlyContinue | ForEach-Object {
+        try { $o = $_ | ConvertFrom-Json } catch { return }
+        if ($o.type -ne "verdict" -or -not $o.payload.event_ts) { return }
+        $ts = $null
+        try { $ts = [datetime]::Parse([string]$o.payload.event_ts).ToUniversalTime() } catch { return }
+        if ($ts -lt $since) { return }
+        $r = [string]$o.payload.rule
+        if ($r) { if (-not $h.ContainsKey($r)) { $h[$r] = 0 }; $h[$r]++ }
+    }
+    return $h
+}
 
 $rows = @(
     @{ id="WIN-01"; technique="T1543.003"; expected="WIN-SERVICE-CREATE-007"; safe=$true; holdout=$false; desc="service create";
@@ -110,21 +127,18 @@ foreach ($row in $rows) {
         continue
     }
     Wait-Settled
-    $before = Get-Rules
+    $t0 = (Get-Date).ToUniversalTime()
     $err = ""
     try { & $row.action } catch { $err = $_.Exception.Message }
-    $after = Get-Rules
-    $new = Get-RuleDelta $before $after
+    $new = Get-VerdictsSince $t0
     $deadline = (Get-Date).AddSeconds(20)
     while ($new.Count -eq 0 -and (Get-Date) -lt $deadline) {
         Start-Sleep -Seconds 2
-        $after = Get-Rules
-        $new = Get-RuleDelta $before $after
+        $new = Get-VerdictsSince $t0
     }
     $detected = ($new.Count -gt 0)
-    if ($row.expected -eq "none" -and $detected) { $detected = $detected } # control FP is recorded below
     $results += [ordered]@{ id=$row.id; technique=$row.technique; expected=$row.expected; detected=$detected
-        observed=($new -join ","); run=$true; holdout=$row.holdout; error=$err }
+        observed=(($new.Keys | Sort-Object) -join ","); run=$true; holdout=$row.holdout; error=$err }
     try { & $row.cleanup } catch {}
 }
 

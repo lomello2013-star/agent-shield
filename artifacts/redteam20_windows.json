@@ -1,6 +1,6 @@
 {
-    "generated_at":  "2026-11-14T10:57:55.7165564Z",
-    "head":  "a578eeb",
+    "generated_at":  "2026-11-14T11:13:52.6553229Z",
+    "head":  "21198c0",
     "vm":  "AIDFLAB",
     "scenarios":  [
                       {
@@ -76,8 +76,8 @@
                           "id":  "WIN-08",
                           "technique":  "T1562.001",
                           "expected":  "WIN-DEFENDER-TAMPER-009",
-                          "detected":  true,
-                          "observed":  "WIN-RUNKEY-005",
+                          "detected":  false,
+                          "observed":  "",
                           "run":  true,
                           "holdout":  true,
                           "error":  ""
@@ -90,7 +90,7 @@
                           "observed":  "WIN-WMI-SUBSCRIPTION-018",
                           "run":  true,
                           "holdout":  false,
-                          "error":  ""
+                          "error":  "Object or property already exists "
                       },
                       {
                           "id":  "WIN-10",
@@ -100,7 +100,7 @@
                           "observed":  "",
                           "run":  true,
                           "holdout":  true,
-                          "error":  "Program \u0027certutil.exe\u0027 failed to run: Access is deniedAt C:\\AIDefender\\redteam20_vm.ps1:76 char:17\r\n+ ...    action={ \u0026 certutil.exe -urlcache -f \"https://example.com/\" \"C:\\Te ...\r\n+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~."
+                          "error":  "Program \u0027certutil.exe\u0027 failed to run: Access is deniedAt C:\\AIDefender\\redteam20_vm.ps1:93 char:17\r\n+ ...    action={ \u0026 certutil.exe -urlcache -f \"https://example.com/\" \"C:\\Te ...\r\n+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~."
                       },
                       {
                           "id":  "WIN-11",
@@ -192,8 +192,8 @@
                           "id":  "WIN-20",
                           "technique":  "control",
                           "expected":  "none",
-                          "detected":  true,
-                          "observed":  "WIN-SERVICE-CREATE-007",
+                          "detected":  false,
+                          "observed":  "",
                           "run":  true,
                           "holdout":  false,
                           "error":  ""
@@ -204,11 +204,11 @@
                     "run":  15,
                     "skipped":  5,
                     "attacks_run":  11,
-                    "attacks_detected":  9,
+                    "attacks_detected":  8,
                     "controls_run":  4,
-                    "control_fp":  1,
+                    "control_fp":  0,
                     "holdout_total":  5,
-                    "holdout_detected":  4
+                    "holdout_detected":  3
                 },
     "limitations":  "Safe emulation, 20/OS catalog with 5 destructive entries skipped; detection only for this run (prevention measured separately); E1-E6 still require real samples and a hidden holdout."
 }

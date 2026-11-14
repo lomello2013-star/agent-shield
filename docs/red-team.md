@@ -84,10 +84,9 @@ vssadmin, local user) помечены catalog-only.
 |---|---|
 | Выполнено / пропущено | **15 / 5** |
 | Атакующих сценариев | 11 |
-| Обнаружено (raw) | **9 / 11** |
-| Обнаружено (с учётом атрибуции) | **8 / 11** (WIN-08 получил запоздавший `RUNKEY` от WIN-06) |
-| Holdout (5) | **4 / 5** raw, **3 / 5** после атрибуции |
-| Benign-контроль | 4, **1 FP**: ambient `7045` на WIN-20 (правило 007 широкое); FP 010 **устранён** |
+| Обнаружено | **8 / 11** |
+| Holdout (5) | **3 / 5** (WIN-04, WIN-06, WIN-16) |
+| Benign-контроль | 4, **0 FP** |
 
 **Обнаружены (8):** service create (007), temp exec (001), encoded PowerShell
 (002), temp cmd (001), **scheduled task (006 — после 4698)**, **Run key (005 —
@@ -96,17 +95,19 @@ vssadmin, local user) помечены catalog-only.
 - Downloads exec (WIN-17) — правило 016 требует `integrity.verified=false`;
   `calc.exe` подписан, поэтому это корректный non-match, а не пропуск;
 - service start (WIN-18) — 7036 не даёт нового 7045;
-- Defender exclusion (WIN-08) — 5007 не пришёл; его «детекция» в raw-прогоне —
-  запоздавший RUNKEY.
+- Defender exclusion (WIN-08) — 5007 не пришёл; это **реальный miss**, а не
+  запоздавший RUNKEY (атрибуция теперь по `event_ts`).
 
 **FP 010 устранён:** источник — `powershell.exe → CreateRemoteThread` в
 `<unknown process>` (PS Direct). Правило 010 теперь требует
 `object.path = *.exe`; `<unknown process>` очищается в нормализаторе. Контроль
 WIN-10 больше не даёт `INJECT-010`.
 
-**Остаточный FP** — ambient `7045` на WIN-20: Windows сам ставит службы в фоне;
-правило 007 не отличает benign service install от атакующего. Нужен allowlist/
-контекст (подпись, путь, родитель), иначе 007 будет шуметь на любом хосте.
+**Ambient 7045 больше не FP:** правило 007 сужено на `users/temp/tmp/
+programdata`; кроме того, атрибуция идёт по `event_ts` из audit
+(`Get-VerdictsSince`), поэтому запоздавшие события не приписываются контролю.
+Общая детекция service install без suspicious-пути теперь **не** даёт high —
+alert-правило для generic pending (D-001).
 
 Это не «5/11 эффективности»: каталог показывает **source gaps**, а не только
 качество правил. Для E1–E6 нужны реальные образцы и полный 20/ОС прогон.
@@ -134,6 +135,7 @@ WIN-10 больше не даёт `INJECT-010`.
 | Ложный `stalled` | heartbeat на успешный poll (даже 0 записей) | fixed |
 
 `win.sysmon` подписан на 1/8/10/11/12/13/14/19/20/21; `win.security` —
-4698/4720/4688/1102. После закрытия 4698/registry/WMI 20-срез: raw **9/11**,
-после атрибуции **8/11**, FP 1 (ambient 7045), FP 010 устранён.
+4698/4720/4688/1102. После закрытия 4698/registry/WMI и перехода на audit-
+атрибуцию 20-срез: **8/11**, holdout **3/5**, **0 FP**; FP 010 устранён; WIN-08 —
+реальный miss (5007).
 

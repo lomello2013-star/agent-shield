@@ -3190,6 +3190,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 14:15] Атрибуция по event_ts: 20-срез 8/11, 0 FP [experiment]
+
+**Действие**: audit verdict содержит `event_id/event_ts/actor_pid/object_path`; харнесс переведён с дельты rule counts на `Get-VerdictsSince` по `event_ts`. 20-срез перезапущен: **8/11**, holdout **3/5**, **0 FP**; `WIN-08` — реальный miss (5007 не пришёл), а не запоздавший RUNKEY; ambient 7045 больше не FP (007 сужен + атрибуция).
+**Числа**: `pytest tests` **472**; raw 8/11, corrected 8/11; holdout 3/5; FP **0**; 15 run / 5 skipped.
+**Вердикт**: D-002 закрыт (атрибуция), D-001 закрыт по ambient FP; остались Defender 5007, Downloads (signed non-match), service start (7036), Linux 20, EV/HLK.
+**Проверка**: `artifacts/redteam20_windows.json`; audit `event_ts`; `pytest tests`; `docs_consistency`.
+**Статус**: verified (attribution/FP); open (Linux 20, EV/HLK, status sync)
+**Actor**: agent
+**Run_id**: audit-attribution-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,
