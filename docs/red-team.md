@@ -134,7 +134,8 @@ mprotect (`107`), procmem/ptrace/memwrite (`106`), net C2 (`105`),
 SMB lateral (`012`), cron (`102`), audit tamper (`103`), корреляция injection
 (`108/109/110`), mass-write (`014`), canary delete (`015`), exfil-bytes (`017`),
 DNS long (`013`); все прошли через `linux.ebpf`-адаптер и правила.
-Остальные 3 из 20 — Windows-only.
+Остальные 3 из 20 — Windows-only (N/A для Linux, D-012), поэтому корректная
+метрика — **17/17 applicable live**.
 
 | Сценарий | События | Вердикт |
 |---|---|---|

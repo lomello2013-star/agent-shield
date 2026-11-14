@@ -3394,6 +3394,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 16:50] D-012: 17/17 Linux-applicable live [decision]
+
+**Действие**: зафиксировано, что 3 из 20 сценариев — Windows-only; метрика Linux — **17/17 applicable live**, 3 N/A. Production-коллектор остаётся open.
+**Числа**: 17 live; 3 N/A; pytest 533; `run_all` 29/29.
+**Вердикт**: Linux-детекция закрыта для применимых сценариев; остаётся упаковка коллектора и внешние EV/HLK.
+**Проверка**: `artifacts/linux_ebpf_live.json`; `docs/decision-log.md` D-012.
+**Статус**: verified (17/17); open (production collector, EV/HLK)
+**Actor**: agent
+**Run_id**: linux-17-applicable-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,
