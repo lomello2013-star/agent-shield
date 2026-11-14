@@ -76,10 +76,10 @@ alert-правилом, а не молчанием.
 **Рекомендация:** **A**, при блокере — **B** с явной пометкой «fixture-level».
 **Выбор:** A (рекомендация агента), fallback B только при доказанном блокере.
 **Обоснование:** пользователь просил live; fixture-level не должен подменять его.
-**Статус:** A: **16/20 live** — exec (`101`), cred-read (`104`), mprotect (`107`),
+**Статус:** A: **17/20 live** — exec (`101`), cred-read (`104`), mprotect (`107`),
 procmem/ptrace/memwrite (`106`), net C2 (`105`), SMB (`012`), cron (`102`),
 audit (`103`), корреляция injection (`108/109/110`), mass-write (`014`),
-canary (`015`), exfil (`017`). Оставшиеся 4: DNS и Windows-only;
+canary (`015`), exfil (`017`), DNS (`013`). Остальные 3 из 20 — Windows-only;
 production-коллектор — open.
 
 ---
@@ -132,8 +132,8 @@ production-коллектор — open.
 **Рекомендация:** **C**.
 **Выбор:** C (рекомендация агента).
 **Обоснование:** нельзя выдавать 467 за текущее; нельзя и скрывать stml.
-**Статус:** closed: STML зелёный, `pytest` = **531**, `run_all` **29/29**,
-`status.md` = 531; readiness/dev-report/release синхронизированы.
+**Статус:** closed: STML зелёный, `pytest` = **533**, `run_all` **29/29**,
+`status.md` = 533; readiness/dev-report/release синхронизированы.
 
 ---
 

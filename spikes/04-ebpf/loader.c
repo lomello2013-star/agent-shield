@@ -120,6 +120,15 @@ struct send_evt {
     char comm[16];
 };
 
+struct dns_evt {
+    unsigned int pid;
+    unsigned int ppid;
+    unsigned long long ts_ns;
+    unsigned int len;
+    char comm[16];
+    unsigned char payload[96];
+};
+
 struct exec_path_evt {
     unsigned int pid;
     unsigned int ppid;
@@ -222,6 +231,19 @@ static int on_open_json(void *ctx, void *data, size_t sz)
     printf("{\"pid\":%u,\"ppid\":%u,\"ts_ns\":%llu,\"comm\":\"%s\",\"path\":\"%s\",\"writable\":%u}\n",
            e->pid, e->ppid, (unsigned long long)e->ts_ns, e->comm, e->path,
            e->writable);
+    fflush(stdout);
+    got++;
+    return 0;
+}
+
+static int on_dns_json(void *ctx, void *data, size_t sz)
+{
+    struct dns_evt *e = data;
+    printf("{\"op\":\"dns\",\"pid\":%u,\"ppid\":%u,\"ts_ns\":%llu,\"len\":%u,\"comm\":\"%s\",\"payload\":\"",
+           e->pid, e->ppid, (unsigned long long)e->ts_ns, e->len, e->comm);
+    for (unsigned int i = 0; i < sizeof(e->payload); i++)
+        printf("%02x", e->payload[i]);
+    printf("\"}\n");
     fflush(stdout);
     got++;
     return 0;
@@ -380,6 +402,23 @@ int main(int argc, char **argv)
         if (!link) { printf("{\"error\":\"attach_lsm\",\"errno\":%d}\n", errno); return 1; }
         int mfd = bpf_object__find_map_fd_by_name(obj, "open_events");
         struct ring_buffer *rb = ring_buffer__new(mfd, on_open_json, NULL, NULL);
+        if (!rb) { printf("{\"error\":\"ringbuf\"}\n"); return 1; }
+        printf("{\"ready\":true}\n");
+        fflush(stdout);
+        int limit = argc >= 4 ? atoi(argv[3]) : 0;
+        while ((limit == 0 || got < limit)) {
+            int rc = ring_buffer__poll(rb, 200);
+            if (rc < 0 && rc != -EINTR && rc != -EAGAIN) break;
+        }
+        ring_buffer__free(rb);
+        bpf_link__destroy(link);
+    } else if (strcmp(mode, "stream_dns") == 0) {
+        struct bpf_program *prog = bpf_object__find_program_by_name(obj, "on_dns");
+        if (!prog) { printf("{\"error\":\"prog_not_found\"}\n"); return 1; }
+        struct bpf_link *link = bpf_program__attach(prog);
+        if (!link) { printf("{\"error\":\"attach\",\"errno\":%d}\n", errno); return 1; }
+        int mfd = bpf_object__find_map_fd_by_name(obj, "dns_events");
+        struct ring_buffer *rb = ring_buffer__new(mfd, on_dns_json, NULL, NULL);
         if (!rb) { printf("{\"error\":\"ringbuf\"}\n"); return 1; }
         printf("{\"ready\":true}\n");
         fflush(stdout);

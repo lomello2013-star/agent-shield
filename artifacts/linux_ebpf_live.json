@@ -33,12 +33,13 @@
     {"id": "linux-canary-delete", "rule": "FILE-CANARY-015", "events": 2, "verdicts": 1,
      "control": "rm /tmp/aidf_canary_test"},
     {"id": "linux-exfil-large", "rule": "NET-EXFIL-LARGE-017", "events": 1, "verdicts": 1,
-     "control": "sendto 12 MB UDP"}
+     "control": "sendto 12 MB UDP"},
+    {"id": "linux-dns-long", "rule": "NET-DNS-LONG-013", "events": 2, "verdicts": 1,
+     "control": "short qname: no verdict"}
   ],
-  "live_count": 16,
+  "live_count": 17,
   "limitations": [
-    "16 of 20 Linux scenarios are live",
-    "remaining 4 need DNS sensor or are Windows-only",
+    "17 of 20 Linux scenarios are live; the other 3 are Windows-only",
     "production collector (loader->pipeline service) is not integrated",
     "fapolicyd was stopped for BPF loader tests and restored afterwards"
   ]

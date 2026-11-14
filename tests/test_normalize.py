@@ -203,6 +203,21 @@ def test_linux_cred_read_allows_auth_daemons():
     assert "LINUX-CRED-READ-104" not in [v.rule_id for v in engine.evaluate(cred("sshd"))]
 
 
+def test_linux_dns_long_qname_rule():
+    import pathlib
+
+    from core.rules import RuleEngine, load_rules
+
+    ev = normalizer().normalize("linux.ebpf", {
+        "category": "dns.query", "action": "query", "pid": 13,
+        "ppid": 1, "comm": "dns", "exe": "dns",
+        "qname": "a" * 50 + ".example",
+    })
+    rules = str(pathlib.Path(__file__).resolve().parents[1] / "rules" / "base.json")
+    verdicts = RuleEngine(load_rules([rules])).evaluate(ev)
+    assert "NET-DNS-LONG-013" in [v.rule_id for v in verdicts]
+
+
 def test_linux_net_exfil_bytes_rule():
     import pathlib
 

@@ -17,6 +17,22 @@ from core.normalize import HostContext, Normalizer  # noqa: E402
 from core.rules import RuleEngine, load_rules  # noqa: E402
 
 
+def _dns_qname(payload: bytes) -> str:
+    if len(payload) < 13:
+        return ""
+    off = 12
+    labels: list[str] = []
+    while off < len(payload) and len(labels) < 8:
+        size = payload[off]
+        if size == 0:
+            break
+        if size > 63 or off + 1 + size > len(payload):
+            return ""
+        labels.append(payload[off + 1:off + 1 + size].decode("latin1"))
+        off += 1 + size
+    return ".".join(labels)
+
+
 def _raw(item: dict) -> dict | None:
     raw = {
         "pid": item["pid"],
@@ -39,6 +55,11 @@ def _raw(item: dict) -> dict | None:
         raw.update(category="memory.access", action="ptrace",
                    exe=item.get("comm", ""), cmdline=item.get("comm", ""),
                    request=item["request"], target=item.get("target"))
+    elif item.get("op") == "dns":
+        qname = _dns_qname(bytes.fromhex(item.get("payload", "")))
+        raw.update(category="dns.query", action="query",
+                   exe=item.get("comm", ""), cmdline=item.get("comm", ""),
+                   qname=qname)
     elif item.get("op") == "sendto":
         raw.update(category="net.connect", action="sendto",
                    exe=item.get("comm", ""), cmdline=item.get("comm", ""),

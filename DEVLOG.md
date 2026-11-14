@@ -3382,6 +3382,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 16:45] DNS live; Linux 17/20; 533 tests [experiment]
+
+**Действие**: добавлен sendto-сенсор DNS с payload в hex; user-space парсер qname; длинный qname (50) → `NET-DNS-LONG-013`, короткий — без вердикта. Linux live: **17/20**; остальные 3 — Windows-only. `pytest` **533**, `run_all` **29/29**.
+**Числа**: 2 DNS-события → 1 вердикт 013; pytest 533; run_all 29/29; Linux live 17/20.
+**Вердикт**: все Linux-applicable live-сценарии закрыты; production-коллектор и 3 Windows-only — open.
+**Проверка**: `/tmp/dns.jsonl`; evaluator → 013; `run_all` 29/29.
+**Статус**: verified (DNS); open (production collector, 3 Windows-only)
+**Actor**: agent
+**Run_id**: linux-dns-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

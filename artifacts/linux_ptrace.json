@@ -3,7 +3,7 @@
     "python": "3.14.4",
     "kernel": "6.18.54.1-microsoft-standard-WSL2"
   },
-  "helper_result": "{\"pokes\":100,\"child\":1260}",
+  "helper_result": "{\"pokes\":100,\"child\":1261}",
   "control_events": 0,
   "events": 100,
   "verdicts": 100,
@@ -13,12 +13,12 @@
   "max_verdicts_per_event": 1,
   "duplicate_verdicts": false,
   "latency_kernel_to_user_ms": {
-    "p50": 11.276,
-    "p95": 20.859
+    "p50": 23.609,
+    "p95": 39.781
   },
   "latency_pipeline_ms": {
-    "p50": 0.126,
-    "p95": 0.183
+    "p50": 0.267,
+    "p95": 0.343
   },
   "loss": 0,
   "ledger_ok": true,

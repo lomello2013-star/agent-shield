@@ -5,7 +5,7 @@
 
 ## 1. Код и контракты
 
-- [x] User-mode ядро, 28 правил, 21 схема, тесты Python (**531 passed / 0 skip**, включает STML; `run_all` 29/29).
+- [x] User-mode ядро, 28 правил, 21 схема, тесты Python (**533 passed / 0 skip**, включает STML; `run_all` 29/29).
 - [x] Rust-порт 12 модулей: 133 теста, gate, benchmark, Python-wire IPC.
 - [x] Immutable-константы не менялись; fingerprint стабилен.
 - [x] `secrets/` исключён из git; dev-ключ не production.

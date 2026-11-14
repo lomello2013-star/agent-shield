@@ -29,7 +29,7 @@
 | IPC | ✅ | 6 631 выз./с, роли не обходятся |
 | ML-инфра | ✅ инфра / ❌ качество | ONNX shadow, ModelPack fail-closed, калибровка ECE 0,037→0,005 |
 | Источники | ✅ Linux / ⚠️ Windows | Linux eBPF exec/LSM/net/mem/ptrace/provenance; Windows только System+Defender (без admin) |
-| Тесты | ✅ | **531 passed, 0 skipped** (3.12.9; `pytest` целиком, включая STML); `run_all` **29/29**; Rust 133 — на 2026-11-14 |
+| Тесты | ✅ | **533 passed, 0 skipped** (3.12.9; `pytest` целиком, включая STML); `run_all` **29/29**; Rust 133 — на 2026-11-14 |
 | Суточный soak | ⏳ | 6 ч = 100 % доступности, 24 ч идёт; F11 открыт |
 
 ## 3. Честные разрывы
@@ -56,7 +56,7 @@
 
 ### P0 — блокирует зачёт (без этого «принято» нельзя)
 
-- [ ] `python -m pytest -o addopts="" -q` → **531 passed, 0 skipped** (на 3.12.9; сверять с `docs/status.md`); любое расхождение — разобрать, а не списать.
+- [ ] `python -m pytest -o addopts="" -q` → **533 passed, 0 skipped** (на 3.12.9; сверять с `docs/status.md`); любое расхождение — разобрать, а не списать.
 - [ ] `python scripts/run_all.py` → **29/29**, обязательных провалов нет. *Внимание:* `run_all` перегенерирует `docs/status.md` — это ожидаемо.
 - [ ] `cargo test --manifest-path rust/Cargo.toml` → **133 passed**.
 - [ ] `python scripts/docs_consistency.py` → **13/13** (все проверки строгие; константно-True удалены).
