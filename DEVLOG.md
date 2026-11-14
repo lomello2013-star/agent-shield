@@ -3154,6 +3154,18 @@ parameters=2
 
 ---
 
+## [2026-11-14 13:50] 20-срез после 4698/registry: raw 8/11, после атрибуции 7/11 [experiment]
+
+**Действие**: после закрытия 4698 и registry перезапущен 20-сценарный Windows-срез. Raw **8/11**, но `WIN-08` получил запоздавший `RUNKEY` от `WIN-06` (атрибуция окна), поэтому корректно **7/11**; holdout raw 4/5, после атрибуции 3/5. FP **1**: `WIN-INJECT-010` на benign-контроле — реальный FP правила 010 на Sysmon-событии, требует разбора. `WIN-05` (schtasks) и `WIN-06` (Run key) теперь детектируются; WMI/Downloads/service start остаются.
+**Числа**: `pytest tests` **471 passed** (полный pytest 490 — 1 stml-тест автора); redteam20 raw **8/11**, corrected **7/11**, holdout **4/5 → 3/5**, FP **1**.
+**Вердикт**: source gaps 4698/registry закрыты; атрибуция и FP 010 не закрыты; Linux 20 не выполнен.
+**Проверка**: `artifacts/redteam20_windows.json`; audit verdict timestamps; `docs/red-team.md`.
+**Статус**: verified (source), open (FP 010, Linux 20)
+**Actor**: agent
+**Run_id**: redteam20-after-4698-2026-11-14
+
+---
+
 <!-- Ниже агент добавляет записи по мере работы.
      Типы: code, test, experiment, config, system-action, decision,
      incident, module, report, tamper, auto_review, escalation,

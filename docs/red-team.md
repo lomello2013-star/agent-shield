@@ -84,19 +84,26 @@ vssadmin, local user) помечены catalog-only.
 |---|---|
 | Выполнено / пропущено | **15 / 5** |
 | Атакующих сценариев | 11 |
-| Обнаружено | **5 / 11** |
-| Holdout (5) | **2 / 5** (WIN-04 temp cmd, WIN-16 masquerade) |
-| Benign-контроль | 4, **1 FP** (запоздавший 7045 от WIN-01 — атрибуция окна, не новый FP) |
+| Обнаружено (raw) | **8 / 11** |
+| Обнаружено (с учётом атрибуции) | **7 / 11** (WIN-08 получил запоздавший `RUNKEY` от WIN-06) |
+| Holdout (5) | **4 / 5** raw, **3 / 5** после атрибуции |
+| Benign-контроль | 4, **1 FP**: `WIN-INJECT-010` на WIN-10 |
 
-**Обнаружены:** service create (007), temp exec (001), encoded PowerShell (002),
-temp cmd (001), masquerade (011).
+**Обнаружены (7):** service create (007), temp exec (001), encoded PowerShell
+(002), temp cmd (001), **scheduled task (006 — после 4698)**, **Run key (005 —
+после Sysmon registry)**, masquerade (011).
 **Пропущены (честно):**
-- `schtasks` / Run key / WMI / registry — **нет источников** (Security 4698,
-  registry, WMI) в текущем коллекторе;
-- Defender exclusion — 5007 не пришёл/не сматчился;
-- Downloads exec — правило 016 не сработало на `calc.exe` в Downloads;
-- WMIC — компонент отсутствует в Win11;
-- service start — 7036 не даёт нового 7045.
+- WMI (WIN-09) — `wmic` отсутствует в Win11; нужен WMI-subscription сценарий
+  и события 19/20/21;
+- Downloads exec (WIN-17) — правило 016 требует `integrity.verified=false`;
+  `calc.exe` подписан, поэтому это корректный non-match, а не пропуск;
+- service start (WIN-18) — 7036 не даёт нового 7045;
+- Defender exclusion (WIN-08) — 5007 не пришёл; его «детекция» в raw-прогоне —
+  запоздавший RUNKEY.
+
+`WIN-INJECT-010` на benign-контроле — **реальный FP** (не атрибуция): правило
+010 сработало на Sysmon-событии, порождённом обычной активностью; требует
+разбора (какой процесс и событие).
 
 Это не «5/11 эффективности»: каталог показывает **source gaps**, а не только
 качество правил. Для E1–E6 нужны реальные образцы и полный 20/ОС прогон.
@@ -117,13 +124,13 @@ temp cmd (001), masquerade (011).
 
 | Gap | Что сделано | Статус |
 |---|---|---|
-| Security 4698 (schtasks) | `auditpol Other Object Access Events` + opt-in `win.security` (`AIDF_SECURITY=1`) | **live: 006 = 2 за 8 с** |
+| Security 4698 (schtasks) | `auditpol Other Object Access Events` + opt-in `win.security` (`AIDF_SECURITY=1`) | **live: 006 = 2 за 8 с; WIN-05 detected** |
 | FileCreate 11 | Swift Sysmon config; события 11 пишутся | live |
-| Registry 12/13/14 | маппинг добавлен; Sysmon config их не пишет | **open** |
-| WMI 19/20/21 | маппинг добавлен; нужен WMI-subscription сценарий | **open** |
+| Registry 12/13/14 | Swift config + маппинг; `WIN-06` Run key detected | **live** |
+| WMI 19/20/21 | маппинг добавлен; нужен WMI-subscription сценарий; `wmic` отсутствует | **open** |
 | Ложный `stalled` | heartbeat на успешный poll (даже 0 записей) | fixed |
 
-`win.sysmon` теперь подписан на 1/8/10/11/12/13/14/19/20/21; `win.security` —
-4698/4720/4688/1102. После закрытия 4698 20-срез **не перезапускался**; это
-следующий шаг вместе с registry/WMI.
+`win.sysmon` подписан на 1/8/10/11/12/13/14/19/20/21; `win.security` —
+4698/4720/4688/1102. После закрытия 4698/registry 20-срез перезапущен:
+raw **8/11**, после атрибуции **7/11**, FP 1 (`INJECT-010`).
 

