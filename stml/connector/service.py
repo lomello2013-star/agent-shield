@@ -243,6 +243,7 @@ class Connector:
     def _paths(self) -> list[Path]:
         root = Path(self.config.data_root)
         return [root / "spool" / "events.jsonl",
+                root / "reports" / "events.jsonl",
                 root / "audit" / "chain.jsonl",
                 root / "quarantine.jsonl"]
 

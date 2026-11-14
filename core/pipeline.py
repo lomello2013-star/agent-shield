@@ -52,6 +52,7 @@ class Pipeline:
     ingest: IngestPipeline
     engine: RuleEngine
     on_verdict: Callable[[Verdict], None] | None = None
+    on_event: Callable[[Event], None] | None = None
     verdicts: list[Verdict] = field(default_factory=list)
     rejected: int = 0
 
@@ -61,6 +62,12 @@ class Pipeline:
         if event is None:
             self.rejected += 1
             return False
+        if self.on_event is not None:
+            try:
+                self.on_event(event)
+            except Exception:
+                # Reporting is observability, never a detector blocker.
+                pass
         key = ""
         if event.actor is not None:
             key = event.actor.sha256 or event.actor.path

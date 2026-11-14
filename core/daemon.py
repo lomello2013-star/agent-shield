@@ -42,6 +42,10 @@ class DaemonConfig:
     queue: dict[str, float] = field(default_factory=lambda: {"capacity": 10_000})
     watchdog: dict[str, float] = field(default_factory=dict)
     allowlist: list[str] = field(default_factory=list)
+    # Linux auditd source path (ignored on Windows).
+    audit_log_path: str = "/var/log/audit/audit.log"
+    # Emit one normalized event per line so the connector can deliver it to STML.
+    event_reports: bool = True
     # health() must stay cheap: re-hashing the data directory on every call is both
     # expensive and (see DEVLOG F11) points at a native crash on long runs
     manifest_interval_s: float = 30.0
@@ -59,6 +63,14 @@ def build_default_collectors(config: DaemonConfig) -> list[Any]:
     daemon that never collects costs nothing. Unknown/unimplemented source names
     are skipped rather than faked.
     """
+    if sys.platform.startswith("linux"):
+        from core.auditsource import LinuxAuditSource
+        built: list[Any] = []
+        for source in config.sources:
+            if source == "linux.auditd":
+                built.append(LinuxAuditSource(
+                    path=config.audit_log_path or "/var/log/audit/audit.log"))
+        return built
     if sys.platform != "win32":
         return []
     from core.winsource import WindowsEventLogSource
@@ -127,6 +139,12 @@ class Daemon:
                                   on_incident=lambda reason: self.log.append("ingest_incident",
                                                                              {"reason": reason})),
             engine=self.engine)
+        self._event_report_lock = threading.Lock()
+        self._event_report_fh = None
+        self.event_reports_path = os.path.join(self.root, "reports", "events.jsonl")
+        if self.config.event_reports:
+            os.makedirs(os.path.dirname(self.event_reports_path), exist_ok=True)
+            self.pipeline.on_event = self._write_event_report
         self.gate = PolicyGate(
             min_confidence=float(self.config.thresholds.get("min_confidence", 0.5)),
             budget=AlertBudget(per_window=int(self.config.thresholds.get("alert_budget", 1)),
@@ -137,6 +155,7 @@ class Daemon:
         self.policy_store = PolicyStore(self.root)
         self.commands = CommandQueue(os.path.join(self.root, "commands.json"))
         self.isolated = False
+        self.paused = False
         # Response layer (stage 7): without it the gate's actions were only counted.
         self.response = response
         if response is not None and getattr(response, "quarantine", None) is not None:
@@ -263,17 +282,47 @@ class Daemon:
             self._httpd.server_close()
             self._httpd = None
         self.pipeline.ingest.close()
+        with self._event_report_lock:
+            if self._event_report_fh is not None:
+                try:
+                    self._event_report_fh.close()
+                except OSError:
+                    pass
+                self._event_report_fh = None
         try:
             self.log.seal()
         except ValueError:
             pass
 
     # ------------------------------------------------------------------ events
+    def _write_event_report(self, event: Any) -> None:
+        """Append a normalized event for the STML connector.
+
+        The connector tails this file; it is deliberately separate from
+        `spool/events.jsonl`, which is the ingest overflow journal.
+        """
+        priority = "P1" if str(event.category) in {
+            "process.start", "process.access", "persistence.change",
+            "defender.tamper", "log.tamper", "priv.grant", "memory.access",
+        } else "P2"
+        line = json.dumps({
+            "kind": "event",
+            "priority": priority,
+            "event": event.model_dump(mode="json"),
+        }, ensure_ascii=False)
+        with self._event_report_lock:
+            if self._event_report_fh is None:
+                self._event_report_fh = open(self.event_reports_path, "a", encoding="utf-8")
+            self._event_report_fh.write(line + "\n")
+            self._event_report_fh.flush()
+
     def submit(self, source: str, raw: dict) -> bool:
         self.heartbeat.beat(source)
         return self.pipeline.submit_raw(source, raw)
 
     def tick(self) -> dict:
+        if self.paused:
+            return {"paused": True, "incidents": 0, "verdicts": 0}
         incidents = self.heartbeat.check()
         for conf in self.confirmations.expire():
             self.pending_actions.pop(conf.confirmation_id, None)
@@ -525,6 +574,7 @@ class Daemon:
             "response_failed": self.response_failed,
             "actions_skipped": self.actions_skipped,
             "pending_confirmations": len(self.confirmations.pending()),
+            "paused": self.paused,
         }
 
     def _manifest_snapshot(self) -> dict:

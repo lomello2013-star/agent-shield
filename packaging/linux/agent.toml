@@ -1,0 +1,26 @@
+# AIDefender agent configuration (Linux auditd source).
+# Install to /etc/aidf/agent.toml; secrets are NOT stored here.
+
+[agent]
+source = "linux.auditd"
+audit_log = "/var/log/audit/audit.log"
+data_root = "/var/lib/aidf"
+# Emit one JSON event per line for the STML connector.
+report_events = true
+collect_interval_s = 1.0
+queue_capacity = 10000
+# Local-only agent panel (no remote bind).
+gui_host = "127.0.0.1"
+gui_port = 18080
+
+[thresholds]
+heartbeat_timeout_s = 60.0
+alert_budget = 1
+min_confidence = 0.5
+
+[stml]
+# Used by the connector process, not by the detector itself.
+server_url = "http://127.0.0.1:8080"
+tenant = "default"
+enrol_token_file = "/etc/aidf/enrol.token"
+tokens_file = "/etc/aidf/tokens.json"

@@ -78,10 +78,12 @@ class DualSlot:
         active = self.active_slot()
         return self.slots[1] if active == self.slots[0] else self.slots[0]
 
-    def _write_pointer(self, slot: str, version: str, previous: str | None) -> None:
+    def _write_pointer(self, slot: str, version: str, previous: str | None,
+                       previous_version: str | None = None) -> None:
         path = self._pointer_path()
         tmp = path + ".tmp"
-        payload = {"slot": slot, "version": version, "previous": previous}
+        payload = {"slot": slot, "version": version, "previous": previous,
+                   "previous_version": previous_version}
         with open(tmp, "w", encoding="utf-8") as fh:
             json.dump(payload, fh)
             fh.flush()
@@ -141,8 +143,9 @@ class DualSlot:
         """Atomically switch the pointer to a verified slot."""
         if not self.verify_slot(slot):
             raise UpdateError(f"slot {slot} is not verified; refusing to activate")
-        previous = self.active_slot()
-        self._write_pointer(slot, version, previous)
+        current = self.pointer()
+        previous = current.get("slot", "A")
+        self._write_pointer(slot, version, previous, current.get("version"))
         return self.pointer()
 
     def rollback(self) -> dict:
@@ -152,7 +155,8 @@ class DualSlot:
             raise UpdateError("no previous slot to roll back to")
         if not self.verify_slot(previous):
             raise UpdateError("previous slot failed verification; manual intervention required")
-        self._write_pointer(previous, self.pointer().get("version", "unknown"), current["slot"])
+        previous_version = current.get("previous_version") or current.get("version", "unknown")
+        self._write_pointer(previous, previous_version, current["slot"], current.get("version"))
         return self.pointer()
 
     # ---------------- health-gated update ----------------

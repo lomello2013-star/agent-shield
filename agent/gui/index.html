@@ -106,11 +106,11 @@
   <div class="brand"><div class="mark">A</div>
     <div><h1>AIDefender Agent</h1><div class="sub">DESKTOP-LAB · Windows 11 · v1.0.0</div></div>
   </div>
-  <span class="badge ok"><span class="dot ok"></span>PROTECTED</span>
+  <span class="badge ok" id="agent-state"><span class="dot ok"></span>PROTECTED</span>
   <span class="grow"></span>
-  <span class="badge">policy v12</span>
-  <span class="badge">tenant demo</span>
-  <span class="badge"><span class="dot ok"></span>server connected</span>
+  <span class="badge" id="policy-badge">policy v12</span>
+  <span class="badge" id="tenant-badge">tenant demo</span>
+  <span class="badge" id="server-badge"><span class="dot ok"></span>server connected</span>
 </header>
 
 <main>
@@ -119,23 +119,23 @@
       <div class="shield">🛡️</div>
       <div>
         <div class="eyebrow">LOCAL AGENT · REAL-TIME</div>
-        <h2>This device is protected</h2>
-        <p>Kernel visibility, deterministic reflex and ML scoring are active. Last heartbeat 2 seconds ago; no action needed.</p>
+        <h2 id="hero-title">This device is protected</h2>
+        <p id="hero-sub">Kernel visibility, deterministic reflex and ML scoring are active. Last heartbeat 2 seconds ago; no action needed.</p>
       </div>
     </div>
     <div class="actions">
-      <button class="ghost">Pause protection</button>
-      <button>Run scan</button>
-      <button class="primary">Open server console</button>
+      <button class="ghost" id="pause-btn">Pause protection</button>
+      <button id="scan-btn">Run scan</button>
+      <button class="primary" id="console-btn">Open server console</button>
     </div>
   </div>
 
   <div class="cards">
-    <div class="card ok"><div class="k">Protection</div><div class="v" style="color:var(--ok)">ON</div><div class="h">5 / 5 layers</div></div>
-    <div class="card"><div class="k">Heartbeat</div><div class="v">2<span style="font-size:14px;color:var(--dim)">s</span></div><div class="h">last contact</div></div>
-    <div class="card"><div class="k">Verdicts 24h</div><div class="v">37</div><div class="h">4 high · 2 critical</div></div>
-    <div class="card warn"><div class="k">Needs decision</div><div class="v" style="color:var(--warn)">2</div><div class="h">pending approvals</div></div>
-    <div class="card"><div class="k">Quarantine</div><div class="v">3</div><div class="h">1.8 MB isolated</div></div>
+    <div class="card ok" id="card-protection"><div class="k">Protection</div><div class="v" id="protection-value" style="color:var(--ok)">ON</div><div class="h" id="protection-sub">5 / 5 layers</div></div>
+    <div class="card" id="card-heartbeat"><div class="k">Heartbeat</div><div class="v" id="heartbeat-value">2<span style="font-size:14px;color:var(--dim)">s</span></div><div class="h" id="heartbeat-sub">last contact</div></div>
+    <div class="card" id="card-verdicts"><div class="k">Verdicts 24h</div><div class="v" id="verdicts-value">37</div><div class="h" id="verdicts-sub">4 high · 2 critical</div></div>
+    <div class="card warn" id="card-pending"><div class="k">Needs decision</div><div class="v" id="pending-value" style="color:var(--warn)">2</div><div class="h" id="pending-sub">pending approvals</div></div>
+    <div class="card" id="card-quarantine"><div class="k">Quarantine</div><div class="v" id="quarantine-value">3</div><div class="h" id="quarantine-sub">1.8 MB isolated</div></div>
   </div>
 
   <div class="grid">
@@ -153,7 +153,7 @@
         <div class="panel-head"><h3>Recent verdicts</h3><span class="badge">last 24h</span></div>
         <table>
           <thead><tr><th>Time</th><th>Severity</th><th>Rule</th><th>What happened</th><th>Action</th></tr></thead>
-          <tbody>
+          <tbody id="verdicts-body">
             <tr><td class="mono">2m ago</td><td><span class="sev medium">medium</span></td><td class="mono">WIN-DOWNLOADS-EXEC-016A</td><td>calc.exe executed from Downloads</td><td><span class="badge warn">alert</span></td></tr>
             <tr><td class="mono">11m ago</td><td><span class="sev high">high</span></td><td class="mono">LINUX-C2-PORT-105</td><td>python3 → 10.0.0.9:4444</td><td><span class="badge bad">blocked</span></td></tr>
             <tr><td class="mono">1h ago</td><td><span class="sev critical">critical</span></td><td class="mono">FILE-MASS-WRITE-014</td><td>50 writes in 10 s (ransomware pattern)</td><td><span class="badge bad">quarantined</span></td></tr>
@@ -175,33 +175,22 @@
     </div>
 
     <div class="stack">
-      <div class="panel">
-        <div class="panel-head"><h3>Needs your decision</h3><span class="badge warn">2 pending</span></div>
-        <div class="approval">
-          <div class="top"><div class="title">Quarantine file</div><span class="badge bad">high</span></div>
-          <div class="meta mono">C:\Users\aidf\Downloads\rt.exe · SHA256 9f3a…7c21</div>
-          <div class="row"><button class="primary">Approve</button><button class="danger">Deny</button><button class="ghost">Details</button></div>
-        </div>
-        <div class="approval">
-          <div class="top"><div class="title">Block process</div><span class="badge warn">medium</span></div>
-          <div class="meta mono">pid 4832 · powershell.exe · parent explorer.exe</div>
-          <div class="row"><button class="primary">Approve</button><button class="danger">Deny</button><button class="ghost">Details</button></div>
-        </div>
+      <div class="panel" id="decision-panel">
+        <div class="panel-head"><h3>Needs your decision</h3><span class="badge warn" id="decision-count">2 pending</span></div>
+        <div id="decision-list"></div>
+      </div>
+
+      <div class="panel" id="quarantine-panel">
+        <div class="panel-head"><h3>Quarantine</h3><span class="badge" id="quarantine-count">3 items</span></div>
+        <div id="quarantine-list"></div>
       </div>
 
       <div class="panel">
-        <div class="panel-head"><h3>Quarantine</h3><span class="badge">3 items</span></div>
-        <div class="qitem"><span class="path mono">C:\ProgramData\aidf\q\rt.exe</span><span class="badge">1.2 MB</span></div>
-        <div class="qitem"><span class="path mono">C:\ProgramData\aidf\q\dropper.exe</span><span class="badge">440 KB</span></div>
-        <div class="qitem"><span class="path mono">/var/lib/aidf/q/tmp.bin</span><span class="badge">160 KB</span></div>
-      </div>
-
-      <div class="panel">
-        <div class="panel-head"><h3>Server link</h3><span class="badge ok"><span class="dot ok"></span>online</span></div>
-        <div class="linkrow"><span>Console</span><span class="mono">127.0.0.1:18080/ui/</span></div>
-        <div class="linkrow"><span>Last sync</span><span class="mono">2s ago</span></div>
-        <div class="linkrow"><span>Policy</span><span class="mono">v12 · stable</span></div>
-        <div class="linkrow"><span>Agent ID</span><span class="mono">prod-win-01</span></div>
+        <div class="panel-head"><h3>Server link</h3><span class="badge ok" id="link-state"><span class="dot ok"></span>online</span></div>
+        <div class="linkrow"><span>Console</span><span class="mono" id="link-console">127.0.0.1:18080/ui/</span></div>
+        <div class="linkrow"><span>Last sync</span><span class="mono" id="link-sync">2s ago</span></div>
+        <div class="linkrow"><span>Policy</span><span class="mono" id="link-policy">v12 · stable</span></div>
+        <div class="linkrow"><span>Agent ID</span><span class="mono" id="link-agent">prod-win-01</span></div>
       </div>
     </div>
   </div>
@@ -212,5 +201,142 @@
     <span>AIDefender Agent · lab build</span>
   </div>
 </main>
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const esc = (v) => String(v ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+  const stateEl = $("agent-state");
+
+  function setBadge(el, text, cls) {
+    if (!el) return;
+    el.className = "badge " + (cls || "");
+    el.textContent = text;
+  }
+
+  function renderStack(stack) {
+    const panels = [...document.querySelectorAll(".panel")];
+    const panel = panels.find(p => p.querySelector("h3")?.textContent === "Protection stack");
+    if (!panel) return;
+    panel.querySelectorAll(".layer").forEach(n => n.remove());
+    for (const item of stack || []) {
+      const ok = ["loaded", "active", "live", "ok", "shadow"].includes(item.state);
+      const row = document.createElement("div");
+      row.className = "layer";
+      row.innerHTML = `<div class="ic">◈</div><div class="body"><div class="name">${esc(item.name)}</div>` +
+        `<div class="desc">${esc(item.detail)}</div></div>` +
+        `<span class="dot ${ok ? "ok" : "warn"}"></span><span class="badge">${esc(item.state)}</span>`;
+      panel.appendChild(row);
+    }
+  }
+
+  function renderVerdicts(rows) {
+    const body = $("verdicts-body");
+    if (!body) return;
+    if (!rows || !rows.length) {
+      body.innerHTML = '<tr><td colspan="5" class="empty">No verdicts in this session</td></tr>';
+      return;
+    }
+    body.innerHTML = rows.slice().reverse().map(v => {
+      const sev = esc(v.severity || "info");
+      const action = v.severity === "critical" ? "quarantined" :
+                     (v.severity === "high" ? "alert" : "logged");
+      const badge = v.severity === "critical" ? "bad" : (v.severity === "high" ? "warn" : "");
+      return `<tr><td class="mono">${esc((v.event_ts || "").replace("T", " ").slice(11, 19))}</td>` +
+        `<td><span class="sev ${sev}">${sev}</span></td>` +
+        `<td class="mono">${esc(v.rule_id || v.detector || "")}</td>` +
+        `<td>${esc(v.reason_text || "")}</td>` +
+        `<td><span class="badge ${badge}">${action}</span></td></tr>`;
+    }).join("");
+  }
+
+  function renderDecisions(items) {
+    const list = $("decision-list");
+    const count = $("decision-count");
+    if (!list) return;
+    if (count) count.textContent = `${(items || []).length} pending`;
+    if (!items || !items.length) {
+      list.innerHTML = '<div class="empty">No pending decisions</div>';
+      return;
+    }
+    list.innerHTML = items.map(item => {
+      const cid = esc(item.confirmation_id);
+      const level = esc(item.level || "normal");
+      const target = esc(item.target || item.action_type || "action");
+      return `<div class="approval"><div class="top"><div class="title">${target}</div>` +
+        `<span class="badge ${level === "critical_system" ? "bad" : "warn"}">${level}</span></div>` +
+        `<div class="meta mono">${esc(item.reason || item.action_type || "")} · ${cid.slice(0, 8)}…</div>` +
+        `<div class="row"><button class="primary" data-confirm="${cid}" data-decision="approved">Approve</button>` +
+        `<button class="danger" data-confirm="${cid}" data-decision="rejected">Deny</button></div></div>`;
+    }).join("");
+  }
+
+  async function refresh() {
+    try {
+      const r = await fetch("/api/overview", {cache: "no-store"});
+      if (!r.ok) throw new Error("http " + r.status);
+      const data = await r.json();
+      const health = data.health || {};
+      const status = health.status || "unknown";
+      const ok = status === "ok";
+      setBadge(stateEl, ok ? "PROTECTED" : status.toUpperCase(), ok ? "ok" : "warn");
+      $("hero-title").textContent = ok ? "This device is protected" : "Attention required";
+      $("hero-sub").textContent = `Status: ${status}. Collector: ${(data.stats?.collectors || []).map(c => c.name).join(", ") || "none"}.`;
+
+      $("protection-value").textContent = ok ? "ON" : (status === "safe" ? "SAFE" : "DEGRADED");
+      $("protection-sub").textContent = `${(data.stack || []).filter(x => !["stopped", "idle", "degraded"].includes(x.state)).length} / ${(data.stack || []).length} layers`;
+      $("heartbeat-value").textContent = `${Math.max(0, Math.round(health.uptime_s || 0))}s`;
+      $("heartbeat-sub").textContent = "agent uptime";
+      $("verdicts-value").textContent = data.stats?.verdicts ?? 0;
+      $("verdicts-sub").textContent = `${health.alerts || 0} alerts`;
+      $("pending-value").textContent = (data.pending || []).length;
+      $("pending-sub").textContent = "pending approvals";
+      $("quarantine-value").textContent = "0";
+      $("quarantine-sub").textContent = "no local quarantine view";
+
+      renderStack(data.stack || []);
+      renderVerdicts(data.recent_verdicts || []);
+      renderDecisions(data.pending || []);
+
+      $("link-state").innerHTML = `<span class="dot ${ok ? "ok" : "warn"}"></span>${ok ? "online" : status}`;
+      $("link-console").textContent = location.host + "/ui/";
+      $("link-sync").textContent = "just now";
+      $("link-policy").textContent = data.policy?.policy_id ? `${data.policy.policy_id} · ${data.policy.version || ""}` : "local defaults";
+      $("link-agent").textContent = data.host?.host_id || "unknown";
+      const qc = $("quarantine-count"); if (qc) qc.textContent = "0 items";
+      const ql = $("quarantine-list"); if (ql) ql.innerHTML = '<div class="empty">Quarantine API not exposed by the local agent yet</div>';
+    } catch (exc) {
+      setBadge(stateEl, "UNAVAILABLE", "bad");
+      $("hero-title").textContent = "Agent panel unavailable";
+      $("hero-sub").textContent = String(exc);
+    }
+  }
+
+  document.addEventListener("click", async (e) => {
+    const btn = e.target.closest("[data-confirm]");
+    if (btn) {
+      const r = await fetch("/api/confirm", {method: "POST", headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({confirmation_id: btn.dataset.confirm, decision: btn.dataset.decision})});
+      if (!r.ok) alert("confirmation failed");
+      refresh();
+    }
+  });
+  $("pause-btn").addEventListener("click", async () => {
+    const r = await fetch("/api/pause", {method: "POST", headers: {"Content-Type": "application/json"}, body: "{}"});
+    const j = await r.json();
+    $("pause-btn").textContent = j.paused ? "Resume protection" : "Pause protection";
+    refresh();
+  });
+  $("scan-btn").addEventListener("click", async () => {
+    const r = await fetch("/api/scan", {method: "POST", headers: {"Content-Type": "application/json"}, body: "{}"});
+    const j = await r.json();
+    alert(j.ok === false ? "Self-test failed: " + (j.failed || []).join(", ") : "Self-test passed");
+  });
+  $("console-btn").addEventListener("click", () => window.open("http://127.0.0.1:8080/ui/", "_blank"));
+  refresh();
+  setInterval(refresh, 2000);
+})();
+</script>
 </body>
 </html>
