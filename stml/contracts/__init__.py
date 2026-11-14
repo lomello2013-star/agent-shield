@@ -1,5 +1,6 @@
 """`stml/v0` contracts."""
 
+from stml.contracts.policy import Policy, canonical_policy
 from stml.contracts.v0 import (
     SCHEMA_VERSION,
     Ack,
@@ -30,4 +31,6 @@ __all__ = [
     "JsonRpcResponse",
     "Priority",
     "Report",
+    "Policy",
+    "canonical_policy",
 ]

@@ -10,7 +10,8 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any
 from urllib.parse import urlparse
 
-from stml.connector.signing import public_from_pem, verify
+from stml.connector.signing import key_id, public_from_pem, verify
+from stml.contracts.policy import canonical_policy
 from stml.contracts.v0 import Heartbeat, Inventory
 from stml.server.store import Store
 
@@ -24,6 +25,7 @@ class ServerConfig:
     admin_token: str = ""
     viewer_token: str = ""
     db_path: str = "stml-server.sqlite3"
+    policy_pubkey: str = ""
 
 
 class StmlServer(ThreadingHTTPServer):
@@ -103,6 +105,27 @@ class Handler(BaseHTTPRequestHandler):
             return False
         return True
 
+    def _verify_policy(self, body: dict[str, Any]) -> bool:
+        if not self.server.config.policy_pubkey:
+            self._error(503, "policy signing not configured")
+            return False
+        try:
+            pub = public_from_pem(self.server.config.policy_pubkey)
+        except Exception:  # noqa: BLE001
+            self._error(500, "bad server policy pubkey")
+            return False
+        if body.get("key_id") != key_id(pub):
+            self._error(403, "policy key_id mismatch")
+            return False
+        canonical = canonical_policy(str(body.get("policy_id", "")),
+                                     str(body.get("version", "")),
+                                     str(body.get("channel", "stable")),
+                                     body.get("content") or {})
+        if not verify(pub, canonical, str(body.get("signature", ""))):
+            self._error(403, "bad policy signature")
+            return False
+        return True
+
     # -- GET -------------------------------------------------------------
     def do_GET(self) -> None:  # noqa: N802
         parts = urlparse(self.path).path.strip("/").split("/")
@@ -132,6 +155,18 @@ class Handler(BaseHTTPRequestHandler):
         if parts == ["v0", "audit", "verify"]:
             if self._auth("admin"):
                 self._send(200, {"ok": self.server.store.verify_audit()})
+            return
+        if parts == ["v0", "policies"]:
+            if self._auth("viewer"):
+                self._send(200, {"policies": self.server.store.policies()})
+            return
+        if len(parts) == 3 and parts[:2] == ["v0", "rollouts"]:
+            if self._auth("viewer"):
+                rollout = self.server.store.rollout(int(parts[2]))
+                if rollout is None:
+                    self._error(404, "unknown rollout")
+                else:
+                    self._send(200, rollout)
             return
         self._error(404, "not found")
 
@@ -165,6 +200,67 @@ class Handler(BaseHTTPRequestHandler):
                 return
             self._send(201, {"agent_id": agent_id, "tenant_id": body.get("tenant_id",
                                                                        self.server.config.tenant_id)})
+            return
+
+        if parts == ["v0", "policies"]:
+            if not self._auth("admin") or not self._verify_policy(body):
+                return
+            try:
+                self.server.store.add_policy({
+                    "policy_id": str(body.get("policy_id", "")),
+                    "version": str(body.get("version", "")),
+                    "channel": str(body.get("channel", "stable")),
+                    "content": body.get("content") or {},
+                    "key_id": str(body.get("key_id", "")),
+                    "signature": str(body.get("signature", "")),
+                })
+            except ValueError as exc:
+                self._error(409, str(exc))
+                return
+            self._send(201, {"ok": True, "policy_id": body.get("policy_id"),
+                             "version": body.get("version")})
+            return
+
+        if len(parts) == 5 and parts[:2] == ["v0", "policies"] and parts[4] == "dry-run":
+            if not self._auth("viewer"):
+                return
+            try:
+                result = self.server.store.dry_run(parts[2], parts[3],
+                                                   body.get("agent_ids") if body else None)
+            except KeyError:
+                self._error(404, "unknown policy")
+                return
+            self._send(200, result)
+            return
+
+        if parts == ["v0", "rollouts"]:
+            if not self._auth("admin"):
+                return
+            try:
+                rollout = self.server.store.start_rollout(
+                    str(body.get("policy_id", "")), str(body.get("version", "")),
+                    int(body.get("percent", 0)))
+            except KeyError:
+                self._error(404, "unknown policy")
+                return
+            self._send(201, rollout)
+            return
+
+        if len(parts) == 4 and parts[:2] == ["v0", "rollouts"]:
+            if not self._auth("admin"):
+                return
+            try:
+                if parts[3] == "halt":
+                    self.server.store.halt_rollout(int(parts[2]))
+                elif parts[3] == "rollback":
+                    self.server.store.rollback_rollout(int(parts[2]))
+                else:
+                    self._error(404, "not found")
+                    return
+            except KeyError as exc:
+                self._error(404, str(exc))
+                return
+            self._send(200, {"ok": True, "rollout_id": int(parts[2]), "action": parts[3]})
             return
 
         if parts == ["v0", "heartbeat"]:

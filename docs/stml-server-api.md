@@ -29,6 +29,20 @@ Replay: `nonce` одноразовый (`nonces`), `sent_at` ±300 с.
 | GET | `/v0/agents/<id>` | агент (viewer) |
 | POST | `/v0/agents/<id>/isolate` | `{isolated: bool}` (admin) |
 | GET | `/v0/audit/verify` | проверка audit-цепочки (admin) |
+| GET | `/v0/policies` | список policy-версий (viewer) |
+| POST | `/v0/policies` | подписанная policy (admin, `policy_pubkey`) |
+| POST | `/v0/policies/<id>/<ver>/dry-run` | `{agent_ids?}` → would_change (viewer) |
+| POST | `/v0/rollouts` | `{policy_id,version,percent}` (admin) |
+| GET | `/v0/rollouts/<id>` | статус + затронутые агенты (viewer) |
+| POST | `/v0/rollouts/<id>/halt` | остановить (admin) |
+| POST | `/v0/rollouts/<id>/rollback` | вернуть старые версии (admin) |
+
+## 2a. Policy signing
+
+- Канонический payload: `{"policy_id","version","channel","content"}` JSON sorted.
+- Подпись Ed25519; `key_id` = sha256(pubkey)[:16]; сервер проверяет `policy_pubkey` из конфигурации.
+- `dry-run` не меняет состояние; `rollout percent` выбирает первых N агентов (детерминированно), сохраняет `old_version` для rollback.
+- `halt` не откатывает; `rollback` восстанавливает `old_version`.
 
 ## 3. Пример heartbeat
 

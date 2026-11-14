@@ -69,6 +69,20 @@ class Store:
             CREATE TABLE IF NOT EXISTS nonces (
                 nonce TEXT PRIMARY KEY, seen_at REAL NOT NULL
             );
+            CREATE TABLE IF NOT EXISTS policies (
+                policy_id TEXT NOT NULL, version TEXT NOT NULL, channel TEXT NOT NULL,
+                content TEXT NOT NULL, key_id TEXT NOT NULL, signature TEXT NOT NULL,
+                created_at REAL NOT NULL, PRIMARY KEY (policy_id, version)
+            );
+            CREATE TABLE IF NOT EXISTS rollouts (
+                id INTEGER PRIMARY KEY AUTOINCREMENT, policy_id TEXT NOT NULL,
+                version TEXT NOT NULL, percent INTEGER NOT NULL, status TEXT NOT NULL,
+                created_at REAL NOT NULL, updated_at REAL NOT NULL
+            );
+            CREATE TABLE IF NOT EXISTS rollout_agents (
+                rollout_id INTEGER NOT NULL, agent_id TEXT NOT NULL,
+                old_version TEXT, PRIMARY KEY (rollout_id, agent_id)
+            );
             """
         )
         self._db.commit()
@@ -209,6 +223,128 @@ class Store:
                 "FROM reports ORDER BY id DESC LIMIT ?", (limit,)
             ).fetchall()
         return [dict(r) for r in rows]
+
+    # -- policies / rollout ---------------------------------------------
+    def add_policy(self, policy: dict[str, Any]) -> None:
+        with self._lock:
+            try:
+                self._db.execute(
+                    "INSERT INTO policies(policy_id, version, channel, content, key_id, "
+                    "signature, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                    (policy["policy_id"], policy["version"], policy.get("channel", "stable"),
+                     json.dumps(policy.get("content", {})), policy.get("key_id", ""),
+                     policy.get("signature", ""), time.time()),
+                )
+                self._db.commit()
+            except sqlite3.IntegrityError as exc:
+                raise ValueError("policy version already exists") from exc
+        self._audit("operator", "policy_add", f"{policy['policy_id']}@{policy['version']}")
+
+    def policies(self) -> list[dict[str, Any]]:
+        with self._lock:
+            rows = self._db.execute(
+                "SELECT policy_id, version, channel, key_id, created_at FROM policies "
+                "ORDER BY created_at DESC"
+            ).fetchall()
+        return [dict(r) for r in rows]
+
+    def policy(self, policy_id: str, version: str) -> dict[str, Any] | None:
+        with self._lock:
+            row = self._db.execute(
+                "SELECT * FROM policies WHERE policy_id = ? AND version = ?",
+                (policy_id, version),
+            ).fetchone()
+        if row is None:
+            return None
+        data = dict(row)
+        data["content"] = json.loads(data["content"])
+        return data
+
+    def dry_run(self, policy_id: str, version: str,
+                agent_ids: list[str] | None = None) -> dict[str, Any]:
+        policy = self.policy(policy_id, version)
+        if policy is None:
+            raise KeyError("unknown policy")
+        agents = self.agents()
+        if agent_ids:
+            wanted = set(agent_ids)
+            agents = [a for a in agents if a.id in wanted]
+        changes = [
+            {"agent_id": a.id, "from": a.policy_version, "to": version}
+            for a in agents if a.policy_version != version
+        ]
+        return {"policy_id": policy_id, "version": version, "channel": policy["channel"],
+                "agents": len(agents), "would_change": len(changes), "changes": changes}
+
+    def start_rollout(self, policy_id: str, version: str, percent: int) -> dict[str, Any]:
+        policy = self.policy(policy_id, version)
+        if policy is None:
+            raise KeyError("unknown policy")
+        percent = max(0, min(100, int(percent)))
+        agents = self.agents()
+        count = 0 if percent == 0 else max(1, (len(agents) * percent + 99) // 100)
+        selected = agents[:count]
+        now = time.time()
+        with self._lock:
+            cur = self._db.execute(
+                "INSERT INTO rollouts(policy_id, version, percent, status, created_at, updated_at) "
+                "VALUES (?, ?, ?, 'running', ?, ?)",
+                (policy_id, version, percent, now, now),
+            )
+            rollout_id = int(cur.lastrowid)
+            for agent in selected:
+                self._db.execute(
+                    "INSERT OR REPLACE INTO rollout_agents(rollout_id, agent_id, old_version) "
+                    "VALUES (?, ?, ?)", (rollout_id, agent.id, agent.policy_version),
+                )
+                self._db.execute("UPDATE agents SET policy_version = ? WHERE id = ?",
+                                 (version, agent.id))
+            self._db.commit()
+        self._audit("operator", "rollout_start", f"{policy_id}@{version}:{percent}%")
+        return {"rollout_id": rollout_id, "policy_id": policy_id, "version": version,
+                "percent": percent, "applied": [a.id for a in selected], "status": "running"}
+
+    def rollout(self, rollout_id: int) -> dict[str, Any] | None:
+        with self._lock:
+            row = self._db.execute("SELECT * FROM rollouts WHERE id = ?", (rollout_id,)).fetchone()
+            agents = self._db.execute(
+                "SELECT agent_id, old_version FROM rollout_agents WHERE rollout_id = ?",
+                (rollout_id,),
+            ).fetchall()
+        if row is None:
+            return None
+        data = dict(row)
+        data["agents"] = [dict(a) for a in agents]
+        return data
+
+    def halt_rollout(self, rollout_id: int) -> None:
+        with self._lock:
+            cur = self._db.execute(
+                "UPDATE rollouts SET status = 'halted', updated_at = ? WHERE id = ? AND status = 'running'",
+                (time.time(), rollout_id),
+            )
+            self._db.commit()
+        if cur.rowcount == 0:
+            raise KeyError("unknown or finished rollout")
+        self._audit("operator", "rollout_halt", str(rollout_id))
+
+    def rollback_rollout(self, rollout_id: int) -> None:
+        with self._lock:
+            row = self._db.execute("SELECT status FROM rollouts WHERE id = ?",
+                                   (rollout_id,)).fetchone()
+            if row is None:
+                raise KeyError("unknown rollout")
+            agents = self._db.execute(
+                "SELECT agent_id, old_version FROM rollout_agents WHERE rollout_id = ?",
+                (rollout_id,),
+            ).fetchall()
+            for agent in agents:
+                self._db.execute("UPDATE agents SET policy_version = ? WHERE id = ?",
+                                 (agent["old_version"], agent["agent_id"]))
+            self._db.execute("UPDATE rollouts SET status = 'rolled_back', updated_at = ? WHERE id = ?",
+                             (time.time(), rollout_id))
+            self._db.commit()
+        self._audit("operator", "rollout_rollback", str(rollout_id))
 
     # -- replay ----------------------------------------------------------
     def seen_nonce(self, nonce: str) -> bool:
