@@ -4,6 +4,8 @@ metadata:
   name: {{ .Release.Name }}-stml
 spec:
   replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: Recreate          # SQLite + RWO volume: never two writers
   selector:
     matchLabels:
       app: {{ .Release.Name }}-stml
@@ -12,23 +14,34 @@ spec:
       labels:
         app: {{ .Release.Name }}-stml
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        fsGroup: 10001
       containers:
         - name: stml
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 8080
-          env:
-            {{- range $k, $v := .Values.env }}
-            - name: {{ $k }}
-              value: {{ $v | quote }}
-            {{- end }}
+          envFrom:
+            - secretRef:
+                name: {{ default (printf "%s-stml-tokens" .Release.Name) .Values.tokens.existingSecret }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
           readinessProbe:
-            httpGet: { path: /health, port: 8080 }
+            httpGet:
+              path: /health
+              port: 8080
             initialDelaySeconds: 3
+            periodSeconds: 10
           livenessProbe:
-            httpGet: { path: /health, port: 8080 }
+            httpGet:
+              path: /health
+              port: 8080
             initialDelaySeconds: 10
+            periodSeconds: 20
+            failureThreshold: 3
           volumeMounts:
             - name: data
               mountPath: /data

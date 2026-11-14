@@ -36,6 +36,8 @@ install -m 0644 "$ROOT/packaging/linux/aidf-auditd.service" \
     "$STAGE/lib/systemd/system/aidf-auditd.service"
 install -d "$STAGE/opt/aidf/docs"
 install -m 0644 "$ROOT/docs/linux-auditd.md" "$STAGE/opt/aidf/docs/linux-auditd.md"
+install -d "$STAGE/opt/aidf/agent/gui"
+install -m 0644 "$ROOT/agent/gui/index.html" "$STAGE/opt/aidf/agent/gui/index.html"
 
 if [ -n "$OBJECTS" ]; then
     if [ ! -x "$OBJECTS/loader" ]; then

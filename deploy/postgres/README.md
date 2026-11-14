@@ -34,7 +34,13 @@ Create an empty target DB first (role needs CREATEDB, or DBA does it), then:
 
 `-CreateDatabase` exists but requires CREATEDB; normal `stml` role does not have it.
 
+## HA/PITR
+
+See [ha.md](ha.md) for streaming replication, promotion, WAL archiving and PITR.
+A single host can test backup/restore; true failover needs a second node and a
+quorum manager (Patroni/etcd), which is external to this repository.
+
 ## Not covered
 
-- HA/failover, PITR/WAL archiving, retention policy, off-site copies.
+- Automated failover (Patroni/etcd), VIP/pgBouncer, off-site object storage.
 - Production HSM/KMS for DB credentials.

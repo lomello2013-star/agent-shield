@@ -12,6 +12,8 @@ cp -r "$ROOT/core" "$ROOT/schemas" "$ROOT/rules" "$DEST/"
 install -m 0644 "$ROOT/scripts/aidf_agent.py" "$DEST/aidf_agent.py"
 install -d "$DEST/docs"
 install -m 0644 "$ROOT/docs/linux-auditd.md" "$DEST/docs/linux-auditd.md" 2>/dev/null || true
+install -d "$DEST/agent/gui"
+install -m 0644 "$ROOT/agent/gui/index.html" "$DEST/agent/gui/index.html"
 if [ ! -f "$CONF/agent.toml" ]; then
     install -m 0644 "$ROOT/packaging/linux/agent.toml" "$CONF/agent.toml"
 fi

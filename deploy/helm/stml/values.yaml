@@ -2,16 +2,21 @@ image:
   repository: aidfender/stml
   tag: dev
   pullPolicy: IfNotPresent
-replicaCount: 2
+# SQLite on a ReadWriteOnce volume supports one replica. Use PostgreSQL and a
+# separate Rust deployment for real HA; see deploy/postgres/ha.md.
+replicaCount: 1
 service:
   port: 8080
 persistence:
   size: 10Gi
-env:
-  STML_TENANT: default
-  STML_ADMIN_TOKEN: change-me-admin
-  STML_VIEWER_TOKEN: change-me-viewer
-  STML_APPROVER_TOKEN: change-me-approver
+# Prefer an existing Secret in production. If empty, the chart creates one from
+# the values below (development only; never commit real tokens).
+tokens:
+  existingSecret: ""
+  tenant: default
+  admin: change-me-admin
+  viewer: change-me-viewer
+  approver: change-me-approver
 resources:
   requests:
     cpu: 250m
@@ -19,3 +24,10 @@ resources:
   limits:
     cpu: "1"
     memory: 1Gi
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 10001
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: false
+  capabilities:
+    drop: ["ALL"]
