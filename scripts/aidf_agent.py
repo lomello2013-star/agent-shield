@@ -26,7 +26,8 @@ import threading
 import time
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
+HERE = Path(__file__).resolve().parent
+ROOT = HERE.parent if (HERE.parent / "core").exists() else HERE
 sys.path.insert(0, str(ROOT))
 
 from core.agentconfig import load_agent_config  # noqa: E402
