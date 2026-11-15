@@ -42,6 +42,10 @@ static int add_inode(int fd, const char *path)
 {
     struct stat st;
     if (stat(path, &st) != 0) {
+        if (errno == ENOENT) {
+            fprintf(stderr, "policy: skip missing %s\n", path);
+            return 0;
+        }
         fprintf(stderr, "policy: stat %s: %s\n", path, strerror(errno));
         return -1;
     }
