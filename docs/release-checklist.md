@@ -71,3 +71,6 @@
 - [x] Clean install .deb: /opt/aidf/venv pydantic 2.14.3; idf-auditd active without override.
 
 
+
+- [x] Russian UI visual: STML console screenshot shows Консоль STML / Хост / ОС / Статус / Загрузить.
+

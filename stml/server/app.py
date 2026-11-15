@@ -1,4 +1,4 @@
-"""STML Fleet Core HTTP API (S1 MVP) and read-only dashboard."""
+﻿"""STML Fleet Core HTTP API (S1 MVP) and read-only dashboard."""
 
 from __future__ import annotations
 
@@ -723,7 +723,7 @@ MODULES = [
 
 
 DASHBOARD = """<!doctype html><html lang="ru"><head><meta charset="utf-8">
-<title>STML — Fleet</title>
+<title>STML вЂ” Fleet</title>
 <style>
 body{background:#0b0f17;color:#e5e9f0;font:14px Inter,system-ui,sans-serif;margin:0}
 header{background:#111827;border-bottom:1px solid #243044;padding:14px 20px;display:flex;gap:16px;align-items:center}
@@ -737,18 +737,18 @@ th{color:#8b98a9;font-weight:500}
 .ok{color:#22c55e}.warn{color:#f59e0b}.bad{color:#ef4444}
 #msg{color:#8b98a9;font-size:12px}
 </style></head><body>
-<header><h1>STML Console</h1><span id="msg">read-only</span>
-<input id="token" type="password" placeholder="viewer token"><button onclick="load()">Load</button></header>
-<main><table><thead><tr><th>Host</th><th>OS</th><th>Version</th><th>Status</th><th>Last seen</th><th>Isolated</th></tr></thead>
+<header><h1>Консоль STML</h1><span id="msg">только чтение</span>
+<input id="token" type="password" placeholder="токен просмотра"><button onclick="load()">Загрузить</button></header>
+<main><table><thead><tr><th>Хост</th><th>ОС</th><th>Версия</th><th>Статус</th><th>Последний контакт</th><th>Изолирован</th></tr></thead>
 <tbody id="rows"></tbody></table></main>
 <script>
 function esc(v){return String(v).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
 async function load(){
  const t=document.getElementById('token').value;
  const r=await fetch('/v0/agents',{headers:{Authorization:'Bearer '+t}});
- if(!r.ok){document.getElementById('msg').textContent='auth error';return}
+ if(!r.ok){document.getElementById('msg').textContent='ошибка авторизации';return}
  const d=await r.json(); const rows=d.agents.map(a=>`<tr><td>${esc(a.hostname)}</td><td>${esc(a.os)}</td><td>${esc(a.agent_version)}</td><td class="${a.status==='healthy'?'ok':a.status==='degraded'?'warn':'bad'}">${esc(a.status)}</td><td>${new Date(a.last_seen*1000).toLocaleTimeString()}</td><td>${a.isolated?'yes':'no'}</td></tr>`).join('');
- document.getElementById('rows').innerHTML=rows; document.getElementById('msg').textContent=d.agents.length+' agents';
+ document.getElementById('rows').innerHTML=rows; document.getElementById('msg').textContent=d.agents.length+' агентов';
 }
 </script></body></html>"""
 
@@ -758,3 +758,4 @@ def start_server(store: Store, config: ServerConfig, port: int = 0) -> tuple[Stm
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     return server, thread
+
