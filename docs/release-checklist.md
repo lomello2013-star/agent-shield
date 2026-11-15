@@ -57,3 +57,6 @@
 - [x] Approval -> ResponseExecutor -> QuarantineStore test (real quarantine).
 
 
+
+- [x] Windows watchdog: scheduled task every 5 min; stopped AIDefender -> watchdog started it (Running).
+
