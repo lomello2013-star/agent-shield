@@ -1,4 +1,4 @@
-# Security review — pilot
+﻿# Security review вЂ” pilot
 
 Scope: AIDefender/STML pilot, excluding legal/EV/WHQL/HDC.
 
@@ -16,14 +16,14 @@ Scope: AIDefender/STML pilot, excluding legal/EV/WHQL/HDC.
 
 ## Open risks
 
-1. **No TLS for STML** — local HTTP on loopback/lab network. Do not expose remotely.
-2. **Tokens** — stored in `tokens.json`/auth files; verify 0600 on Linux and ACL on Windows.
-3. **Policy/update signing** — dev key only; production key rotation not implemented.
-4. **Agent IPC** — local auth key; no OS-level peer verification beyond ACL.
-5. **Windows service** — LocalSystem has broad rights; no PPL/ELAM (out of scope).
-6. **WDAC hashes** — must be regenerated after every service build.
-7. **PII** — command lines are hashed/redacted, paths not always.
-8. **Update channel** — no signed A/B service update verified end-to-end.
+1. **No TLS for STML** вЂ” local HTTP on loopback/lab network. Do not expose remotely.
+2. **Tokens** вЂ” stored in `tokens.json`/auth files; verify 0600 on Linux and ACL on Windows.
+3. **Policy/update signing** вЂ” dev key only; production key rotation not implemented.
+4. **Agent IPC** вЂ” local auth key; no OS-level peer verification beyond ACL.
+5. **Windows service** вЂ” LocalSystem has broad rights; no PPL/ELAM (out of scope).
+6. **WDAC hashes** вЂ” must be regenerated after every service build.
+7. **PII** вЂ” command lines are hashed/redacted, paths not always.
+8. **Update channel** вЂ” no signed A/B service update verified end-to-end.
 
 ## Required before wider use
 
@@ -32,3 +32,4 @@ Scope: AIDefender/STML pilot, excluding legal/EV/WHQL/HDC.
 - Replace dev signing keys; document rotation.
 - Restrict STML bind address to loopback by default.
 - Run the acceptance matrix on clean VMs.
+

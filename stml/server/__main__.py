@@ -39,6 +39,7 @@ def main(argv: list[str] | None = None) -> int:
     run.add_argument("--trust-dir", default=os.environ.get("STML_TRUST_DIR", ""))
     run.add_argument("--trust-backend", default="file")
     run.add_argument("--no-require-approval", action="store_true")
+    run.add_argument("--allow-remote", action="store_true", help="allow non-loopback bind")
     run.add_argument("--tls-cert", default="")
     run.add_argument("--tls-key", default="")
     run.add_argument("--tls-ca", default="")
@@ -77,6 +78,8 @@ def main(argv: list[str] | None = None) -> int:
     res.add_argument("--trust-dir", default="")
 
     args = parser.parse_args(argv)
+    if args.cmd == "run" and args.host not in ("127.0.0.1", "::1", "localhost") and not args.allow_remote:
+        parser.error("refusing non-loopback bind without --allow-remote (use TLS)")
     if args.cmd == "backup":
         from stml.server.backup import backup
 
@@ -160,3 +163,5 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
