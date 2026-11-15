@@ -79,3 +79,10 @@ validated on a real kernel before calling it ready.
 
 
 
+
+## Final lab verification (2026-11-15)
+
+- AIDF-Linux-ISO: static 172.23.213.50; BPF LSM enabled via lsm=...,bpf; eBPF exec denied (/tmp/t2 RC=126) and persisted after reboot; pt-get update APT_RC=0.
+- AIDF-Win11: AppLocker EXE Enforce with allow rules for %PROGRAMFILES%, %WINDIR%, AIDefender; WDAC AIDefender Enforce HashAllow IsEnforced=True; AIDefender and Sysmon64 Running; win.sysmon reports present.
+- fanotify removed.
+
