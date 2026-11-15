@@ -120,7 +120,7 @@ Release:        1%{?dist}
 Summary:        AIDefender Linux auditd agent
 License:        Proprietary
 BuildArch:      x86_64
-Requires:       python3 >= 3.10, audit
+Requires:       python3 >= 3.10, audit, python3-pydantic, python3-cryptography
 
 %description
 Reads auditd records, normalizes them to Event v3 and writes report JSONL
@@ -162,6 +162,8 @@ fi
 
 echo "built:"
 ls -1 "$OUT"/aidf-auditd* 2>/dev/null || true
+
+
 
 
 
