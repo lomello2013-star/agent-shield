@@ -1,4 +1,4 @@
-[Unit]
+﻿[Unit]
 Description=AIDefender Linux auditd agent
 Documentation=file:///opt/aidf/docs/linux-auditd.md
 After=auditd.service network-online.target
@@ -9,7 +9,7 @@ ConditionPathExists=/var/log/audit/audit.log
 Type=simple
 User=root
 WorkingDirectory=/opt/aidf
-ExecStart=/usr/bin/python3 /opt/aidf/aidf_agent.py --config /etc/aidf/agent.toml
+ExecStart=/opt/aidf/venv/bin/python /opt/aidf/aidf_agent.py --config /etc/aidf/agent.toml
 Restart=on-failure
 RestartSec=5
 StateDirectory=aidf
@@ -19,3 +19,4 @@ NoNewPrivileges=false
 
 [Install]
 WantedBy=multi-user.target
+

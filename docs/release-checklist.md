@@ -67,3 +67,6 @@
 
 - [x] auditd fallback live: eBPF stopped, aidf-auditd active (venv pydantic2).
 
+
+- [x] Clean install .deb: /opt/aidf/venv pydantic 2.14.3; idf-auditd active without override.
+

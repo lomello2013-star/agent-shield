@@ -32,6 +32,8 @@ find "$STAGE" -type f -name '*.pyc' -delete
 chmod 0755 "$STAGE"
 install -m 0755 "$ROOT/scripts/aidf_agent.py" "$STAGE/opt/aidf/aidf_agent.py"
 install -m 0644 "$ROOT/packaging/linux/agent.toml" "$STAGE/etc/aidf/agent.toml"
+install -d "$STAGE/opt/aidf/wheels"
+install -m 0644 "$ROOT/packaging/linux/wheels"/*.whl "$STAGE/opt/aidf/wheels/"
 install -m 0644 "$ROOT/packaging/linux/aidf-auditd.service" \
     "$STAGE/lib/systemd/system/aidf-auditd.service"
 install -d "$STAGE/opt/aidf/docs"
@@ -70,7 +72,7 @@ Section: admin
 Priority: optional
 Architecture: $ARCH
 Maintainer: AIDefender <local@localhost>
-Depends: python3 (>= 3.10), auditd
+Depends: python3 (>= 3.10), python3-venv, auditd
 Description: AIDefender Linux auditd agent
  Reads auditd records, normalizes them to Event v3 and writes report JSONL
  for the STML connector. No network access from the detector itself.
@@ -79,6 +81,9 @@ EOF
 cat > "$STAGE/DEBIAN/postinst" <<'EOF'
 #!/bin/sh
 set -e
+rm -rf /opt/aidf/venv
+python3 -m venv --system-site-packages /opt/aidf/venv
+/opt/aidf/venv/bin/pip install -q --upgrade --no-index --find-links /opt/aidf/wheels "pydantic>=2"
 systemctl daemon-reload >/dev/null 2>&1 || true
 systemctl enable aidf-auditd >/dev/null 2>&1 || true
 exit 0
@@ -92,6 +97,9 @@ EOF
 cat > "$STAGE/DEBIAN/postrm" <<'EOF'
 #!/bin/sh
 set -e
+rm -rf /opt/aidf/venv
+python3 -m venv --system-site-packages /opt/aidf/venv
+/opt/aidf/venv/bin/pip install -q --upgrade --no-index --find-links /opt/aidf/wheels "pydantic>=2"
 systemctl daemon-reload >/dev/null 2>&1 || true
 exit 0
 EOF
@@ -148,3 +156,9 @@ fi
 
 echo "built:"
 ls -1 "$OUT"/aidf-auditd* 2>/dev/null || true
+
+
+
+
+
+
