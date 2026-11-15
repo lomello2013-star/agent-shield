@@ -108,7 +108,9 @@ exit 0
 EOF
 chmod 0755 "$STAGE/DEBIAN/postinst" "$STAGE/DEBIAN/prerm" "$STAGE/DEBIAN/postrm"
 
-dpkg-deb --build "$STAGE" "$OUT/aidf-auditd_${VERSION}_${ARCH}.deb" >/dev/null
+export SOURCE_DATE_EPOCH="${SOURCE_DATE_EPOCH:-1700000000}"
+find "$STAGE" -exec touch -h -d "@$SOURCE_DATE_EPOCH" {} +
+dpkg-deb --build --root-owner-group "$STAGE" "$OUT/aidf-auditd_${VERSION}_${ARCH}.deb" >/dev/null
 tar -C "$STAGE" -czf "$OUT/aidf-auditd-${VERSION}.tar.gz" opt etc lib
 
 cat > "$OUT/aidf-auditd.spec" <<EOF
@@ -160,6 +162,7 @@ fi
 
 echo "built:"
 ls -1 "$OUT"/aidf-auditd* 2>/dev/null || true
+
 
 
 

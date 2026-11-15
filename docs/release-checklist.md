@@ -69,3 +69,4 @@
 
 - [ ] Two builds of the same .deb are byte-identical: **NO** (2c5... vs db0b...). Timestamps/venv paths vary; not yet reproducible.
 
+
