@@ -1,52 +1,53 @@
-# Чек-лист пилотного релиза AIDefender/STML
+﻿# Р§РµРє-Р»РёСЃС‚ РїРёР»РѕС‚РЅРѕРіРѕ СЂРµР»РёР·Р° AIDefender/STML
 
-Статус: **pilot / lab-only**. Не production. EV/WHQL/HDC и юрчасть заморожены.
+РЎС‚Р°С‚СѓСЃ: **pilot / lab-only**. РќРµ production. EV/WHQL/HDC Рё СЋСЂС‡Р°СЃС‚СЊ Р·Р°РјРѕСЂРѕР¶РµРЅС‹.
 
-## Linux — проверено
+## Linux вЂ” РїСЂРѕРІРµСЂРµРЅРѕ
 
-- [x] Ubuntu 24.04 VM, статический IP `172.23.213.50/20`.
-- [x] Вход по SSH-ключу.
-- [x] BPF LSM включён: `lsm=lockdown,capability,landlock,yama,apparmor,bpf`.
-- [x] `aidf-ebpf-guard.service` активен при загрузке.
-- [x] eBPF exec deny: `/tmp/t2` → `Permission denied` (RC 126), переживает reboot.
-- [x] `apt-get update` под enforce: `APT_RC=0`.
-- [x] `.deb` и `.rpm` собраны и установлены.
-- [x] Подписанный манифест объектов (`objects.sha256` + `.sig`).
-- [ ] eBPF write-deny перепроверить на финальной VM.
-- [ ] fanotify удалён; fallback — только auditd.
+- [x] Ubuntu 24.04 VM, СЃС‚Р°С‚РёС‡РµСЃРєРёР№ IP `172.23.213.50/20`.
+- [x] Р’С…РѕРґ РїРѕ SSH-РєР»СЋС‡Сѓ.
+- [x] BPF LSM РІРєР»СЋС‡С‘РЅ: `lsm=lockdown,capability,landlock,yama,apparmor,bpf`.
+- [x] `aidf-ebpf-guard.service` Р°РєС‚РёРІРµРЅ РїСЂРё Р·Р°РіСЂСѓР·РєРµ.
+- [x] eBPF exec deny: `/tmp/t2` в†’ `Permission denied` (RC 126), РїРµСЂРµР¶РёРІР°РµС‚ reboot.
+- [x] `apt-get update` РїРѕРґ enforce: `APT_RC=0`.
+- [x] `.deb` Рё `.rpm` СЃРѕР±СЂР°РЅС‹ Рё СѓСЃС‚Р°РЅРѕРІР»РµРЅС‹.
+- [x] РџРѕРґРїРёСЃР°РЅРЅС‹Р№ РјР°РЅРёС„РµСЃС‚ РѕР±СЉРµРєС‚РѕРІ (`objects.sha256` + `.sig`).
+- [ ] eBPF write-deny РїРµСЂРµРїСЂРѕРІРµСЂРёС‚СЊ РЅР° С„РёРЅР°Р»СЊРЅРѕР№ VM.
+- [ ] fanotify СѓРґР°Р»С‘РЅ; fallback вЂ” С‚РѕР»СЊРєРѕ auditd.
 
-## Windows — проверено
+## Windows вЂ” РїСЂРѕРІРµСЂРµРЅРѕ
 
-- [x] Onedir-служба в `C:\Program Files\AIDefender\service`.
-- [x] Служба `AIDefender` Running после reboot.
-- [x] Sysmon64 Running; события `win.sysmon` пишутся.
-- [x] Defender ASR/CFA/NP: audit → enforce.
-- [x] WDAC enforce с SHA256 hash-allowlist (`AIDefender Enforce HashAllow`, IsEnforced=True).
-- [x] AppLocker enforce для **Exe + Dll + Script**; allow-правила:
+- [x] Onedir-СЃР»СѓР¶Р±Р° РІ `C:\Program Files\AIDefender\service`.
+- [x] РЎР»СѓР¶Р±Р° `AIDefender` Running РїРѕСЃР»Рµ reboot.
+- [x] Sysmon64 Running; СЃРѕР±С‹С‚РёСЏ `win.sysmon` РїРёС€СѓС‚СЃСЏ.
+- [x] Defender ASR/CFA/NP: audit в†’ enforce.
+- [x] WDAC enforce СЃ SHA256 hash-allowlist (`AIDefender Enforce HashAllow`, IsEnforced=True).
+- [x] AppLocker enforce РґР»СЏ **Exe + Dll + Script**; allow-РїСЂР°РІРёР»Р°:
   - `%WINDIR%\*`
   - `%PROGRAMFILES%\*`
   - `C:\Program Files\AIDefender\*`
-- [x] Firewall block/unblock, quarantine/restore, suspend/resume проверены на benign-объектах.
-- [x] Service recovery + ACL hardening применены.
-- [ ] После любого изменения бинарников пересобрать WDAC hash-allowlist.
+- [x] Firewall block/unblock, quarantine/restore, suspend/resume РїСЂРѕРІРµСЂРµРЅС‹ РЅР° benign-РѕР±СЉРµРєС‚Р°С….
+- [x] Service recovery + ACL hardening РїСЂРёРјРµРЅРµРЅС‹.
+- [ ] РџРѕСЃР»Рµ Р»СЋР±РѕРіРѕ РёР·РјРµРЅРµРЅРёСЏ Р±РёРЅР°СЂРЅРёРєРѕРІ РїРµСЂРµСЃРѕР±СЂР°С‚СЊ WDAC hash-allowlist.
 
 ## STML
 
-- [x] guard event → connector → STML report (`kind=guard`) в WSL.
-- [x] Полный `pytest` — pass.
-- [ ] Live end-to-end на финальной Linux VM.
+- [x] guard event в†’ connector в†’ STML report (`kind=guard`) РІ WSL.
+- [x] РџРѕР»РЅС‹Р№ `pytest` вЂ” pass.
+- [ ] Live end-to-end РЅР° С„РёРЅР°Р»СЊРЅРѕР№ Linux VM.
 
-## Гейты релиза
+## Р“РµР№С‚С‹ СЂРµР»РёР·Р°
 
-- [ ] Пересобрать пакеты с финального коммита.
-- [ ] Пересчитать `objects.sha256` + подпись.
-- [ ] Пересчитать WDAC hash-allowlist после пересборки сервиса.
-- [ ] Приёмочный прогон на чистых Linux + Windows VM.
-- [ ] Не заявлять production; приложить этот чек-лист к пилоту.
+- [ ] РџРµСЂРµСЃРѕР±СЂР°С‚СЊ РїР°РєРµС‚С‹ СЃ С„РёРЅР°Р»СЊРЅРѕРіРѕ РєРѕРјРјРёС‚Р°.
+- [ ] РџРµСЂРµСЃС‡РёС‚Р°С‚СЊ `objects.sha256` + РїРѕРґРїРёСЃСЊ.
+- [ ] РџРµСЂРµСЃС‡РёС‚Р°С‚СЊ WDAC hash-allowlist РїРѕСЃР»Рµ РїРµСЂРµСЃР±РѕСЂРєРё СЃРµСЂРІРёСЃР°.
+- [ ] РџСЂРёС‘РјРѕС‡РЅС‹Р№ РїСЂРѕРіРѕРЅ РЅР° С‡РёСЃС‚С‹С… Linux + Windows VM.
+- [ ] РќРµ Р·Р°СЏРІР»СЏС‚СЊ production; РїСЂРёР»РѕР¶РёС‚СЊ СЌС‚РѕС‚ С‡РµРє-Р»РёСЃС‚ Рє РїРёР»РѕС‚Сѓ.
 
-## Известные ограничения
+## РР·РІРµСЃС‚РЅС‹Рµ РѕРіСЂР°РЅРёС‡РµРЅРёСЏ
 
-- AppLocker DLL enforcement может влиять на производительность; проверять на целевом ПК.
-- WDAC-хеши привязаны к конкретной сборке.
-- На Windows нет собственного драйвера; нет PPL/ELAM.
-- EV/WHQL/HDC и юридическая сертификация — вне scope.
+- AppLocker DLL enforcement РјРѕР¶РµС‚ РІР»РёСЏС‚СЊ РЅР° РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊРЅРѕСЃС‚СЊ; РїСЂРѕРІРµСЂСЏС‚СЊ РЅР° С†РµР»РµРІРѕРј РџРљ.
+- WDAC-С…РµС€Рё РїСЂРёРІСЏР·Р°РЅС‹ Рє РєРѕРЅРєСЂРµС‚РЅРѕР№ СЃР±РѕСЂРєРµ.
+- РќР° Windows РЅРµС‚ СЃРѕР±СЃС‚РІРµРЅРЅРѕРіРѕ РґСЂР°Р№РІРµСЂР°; РЅРµС‚ PPL/ELAM.
+- EV/WHQL/HDC Рё СЋСЂРёРґРёС‡РµСЃРєР°СЏ СЃРµСЂС‚РёС„РёРєР°С†РёСЏ вЂ” РІРЅРµ scope.
+
