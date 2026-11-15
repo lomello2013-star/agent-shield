@@ -8,7 +8,7 @@ New-Item -ItemType Directory -Force -Path $Bundle | Out-Null
 
 $files = @(
     "aidf-agent.exe", "agent.toml",
-    "install_product.ps1", "install_service.ps1", "uninstall_service.ps1",
+    "install_product.ps1", "install_service.ps1", "uninstall_service.ps1", "uninstall_product.ps1",
     "install_aidf_agent.ps1", "uninstall_aidf_agent.ps1",
     "install_sysmon.ps1", "sysmonconfig.xml",
     "harden_defender.ps1", "harden_service.ps1", "build_wdac_audit.ps1", "build_wdac_enforce_allowlist.ps1"
@@ -26,4 +26,5 @@ if (Test-Path $zip) { Remove-Item $zip -Force }
 Compress-Archive -Path (Join-Path $Bundle "*") -DestinationPath $zip
 Write-Output "built $zip"
 Get-ChildItem $Bundle | Select-Object Name,Length
+
 
