@@ -1,4 +1,4 @@
-[Unit]
+﻿[Unit]
 Description=AIDefender Linux eBPF LSM prevention
 Documentation=file:///opt/aidf/docs/linux-ebpf-guard.md
 After=local-fs.target
@@ -17,3 +17,4 @@ NoNewPrivileges=false
 
 [Install]
 WantedBy=multi-user.target
+
