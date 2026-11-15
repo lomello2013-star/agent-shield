@@ -8,16 +8,26 @@
 #>
 param(
     [string]$OutDir = "C:\ProgramData\AIDefender\wdac",
-    [switch]$Deploy
+    [switch]$Deploy,
+    [switch]$Enforce,
+    [switch]$IUnderstand
 )
 $ErrorActionPreference = "Stop"
+if ($Enforce -and -not $IUnderstand) {
+    throw "Enforce mode can block applications. Re-run with -Enforce -IUnderstand after a VM/audit review."
+}
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
 $template = Join-Path $env:WINDIR "schemas\CodeIntegrity\ExamplePolicies\DefaultWindows_Enforced.xml"
 if (-not (Test-Path $template)) { throw "WDAC template not found: $template" }
-$xml = Join-Path $OutDir "AIDefender-Audit.xml"
+$name = if ($Enforce) { "AIDefender-Enforce.xml" } else { "AIDefender-Audit.xml" }
+$xml = Join-Path $OutDir $name
 Copy-Item $template $xml -Force
-Set-RuleOption -FilePath $xml -Option 3          # Enabled:Audit Mode
-Set-CIPolicyIdInfo -FilePath $xml -PolicyName "AIDefender Audit" -ResetPolicyID
+if ($Enforce) {
+    Set-RuleOption -FilePath $xml -Option 3 -Delete
+} else {
+    Set-RuleOption -FilePath $xml -Option 3
+}
+Set-CIPolicyIdInfo -FilePath $xml -PolicyName "AIDefender $(if ($Enforce) {'Enforce'} else {'Audit'})" -ResetPolicyID
 $policyId = ([xml](Get-Content $xml)).SiPolicy.PolicyId
 $cip = Join-Path $OutDir ("$policyId.cip")
 ConvertFrom-CIPolicy $xml $cip
