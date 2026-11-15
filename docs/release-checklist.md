@@ -1,82 +1,59 @@
-﻿# Р§РµРє-Р»РёСЃС‚ РїРёР»РѕС‚РЅРѕРіРѕ СЂРµР»РёР·Р° AIDefender/STML
+# Чек-лист пилотного релиза AIDefender/STML
 
-РЎС‚Р°С‚СѓСЃ: **pilot / lab-only**. РќРµ production. EV/WHQL/HDC Рё СЋСЂС‡Р°СЃС‚СЊ Р·Р°РјРѕСЂРѕР¶РµРЅС‹.
+Статус: **pilot / lab-only**. Не production. EV/WHQL/HDC и юрчасть заморожены.
 
-## Linux вЂ” РїСЂРѕРІРµСЂРµРЅРѕ
+## Linux — проверено
 
-- [x] Ubuntu 24.04 VM, СЃС‚Р°С‚РёС‡РµСЃРєРёР№ IP `172.23.213.50/20`.
-- [x] Р’С…РѕРґ РїРѕ SSH-РєР»СЋС‡Сѓ.
-- [x] BPF LSM РІРєР»СЋС‡С‘РЅ: `lsm=lockdown,capability,landlock,yama,apparmor,bpf`.
-- [x] `aidf-ebpf-guard.service` Р°РєС‚РёРІРµРЅ РїСЂРё Р·Р°РіСЂСѓР·РєРµ.
-- [x] eBPF exec deny: `/tmp/t2` в†’ `Permission denied` (RC 126), РїРµСЂРµР¶РёРІР°РµС‚ reboot.
-- [x] `apt-get update` РїРѕРґ enforce: `APT_RC=0`.
-- [x] `.deb` Рё `.rpm` СЃРѕР±СЂР°РЅС‹ Рё СѓСЃС‚Р°РЅРѕРІР»РµРЅС‹.
-- [x] РџРѕРґРїРёСЃР°РЅРЅС‹Р№ РјР°РЅРёС„РµСЃС‚ РѕР±СЉРµРєС‚РѕРІ (`objects.sha256` + `.sig`).
-- [ ] eBPF write-deny РїРµСЂРµРїСЂРѕРІРµСЂРёС‚СЊ РЅР° С„РёРЅР°Р»СЊРЅРѕР№ VM.
-- [ ] fanotify СѓРґР°Р»С‘РЅ; fallback вЂ” С‚РѕР»СЊРєРѕ auditd.
+- [x] Ubuntu 24.04 VM, статический IP `172.23.213.50/20`.
+- [x] Вход по SSH-ключу.
+- [x] BPF LSM: `lsm=lockdown,capability,landlock,yama,apparmor,bpf`.
+- [x] `aidf-ebpf-guard.service` активен после reboot.
+- [x] eBPF exec deny: `/tmp/t2` → `Permission denied` (RC 126).
+- [x] eBPF write deny: `write=/tmp/wtest`.
+- [x] `apt-get update` под enforce: `APT_RC=0`.
+- [x] `.deb` и `.rpm` собраны.
+- [x] Pydantic 2.14.3 в `/opt/aidf/venv`.
+- [x] auditd fallback активен без eBPF.
+- [x] logrotate reports/audit/raw — 14 дней.
 
-## Windows вЂ” РїСЂРѕРІРµСЂРµРЅРѕ
+## Windows — проверено
 
-- [x] Onedir-СЃР»СѓР¶Р±Р° РІ `C:\Program Files\AIDefender\service`.
-- [x] РЎР»СѓР¶Р±Р° `AIDefender` Running РїРѕСЃР»Рµ reboot.
-- [x] Sysmon64 Running; СЃРѕР±С‹С‚РёСЏ `win.sysmon` РїРёС€СѓС‚СЃСЏ.
-- [x] Defender ASR/CFA/NP: audit в†’ enforce.
-- [x] WDAC enforce СЃ SHA256 hash-allowlist (`AIDefender Enforce HashAllow`, IsEnforced=True).
-- [x] AppLocker enforce РґР»СЏ **Exe + Dll + Script**; allow-РїСЂР°РІРёР»Р°:
-  - `%WINDIR%\*`
-  - `%PROGRAMFILES%\*`
-  - `C:\Program Files\AIDefender\*`
-- [x] Firewall block/unblock, quarantine/restore, suspend/resume РїСЂРѕРІРµСЂРµРЅС‹ РЅР° benign-РѕР±СЉРµРєС‚Р°С….
-- [x] Service recovery + ACL hardening РїСЂРёРјРµРЅРµРЅС‹.
-- [ ] РџРѕСЃР»Рµ Р»СЋР±РѕРіРѕ РёР·РјРµРЅРµРЅРёСЏ Р±РёРЅР°СЂРЅРёРєРѕРІ РїРµСЂРµСЃРѕР±СЂР°С‚СЊ WDAC hash-allowlist.
+- [x] Onedir-служба в `C:\Program Files\AIDefender\service`.
+- [x] `AIDefender` Running после reboot.
+- [x] `Sysmon64` Running, события `win.sysmon`.
+- [x] Defender ASR/CFA/NP audit → enforce.
+- [x] WDAC enforce + SHA256 hash-allowlist.
+- [x] AppLocker Exe + Dll + Script enforce.
+- [x] Firewall block/unblock.
+- [x] Quarantine/restore.
+- [x] Suspend/resume.
+- [x] Uninstall/rollback и reinstall/upgrade.
+- [x] Watchdog: остановленная служба поднимается.
+- [x] Log maintenance 30 дней.
 
 ## STML
 
-- [x] guard event в†’ connector в†’ STML report (`kind=guard`) РІ WSL.
-- [x] РџРѕР»РЅС‹Р№ `pytest` вЂ” pass.
-- [ ] Live end-to-end РЅР° С„РёРЅР°Р»СЊРЅРѕР№ Linux VM.
+- [x] Live Linux → connector → STML (1 guard report).
+- [x] Live Windows → connector → STML (50 reports).
+- [x] HTTPS self-signed.
+- [x] mTLS: без cert reject, с cert OK.
+- [x] non-loopback bind требует `--allow-remote`.
+- [x] Русский STML UI и динамические статусы.
+- [x] Русский agent panel в пересобранном EXE/MSI.
 
-## Р“РµР№С‚С‹ СЂРµР»РёР·Р°
+## Гейты релиза
 
-- [ ] РџРµСЂРµСЃРѕР±СЂР°С‚СЊ РїР°РєРµС‚С‹ СЃ С„РёРЅР°Р»СЊРЅРѕРіРѕ РєРѕРјРјРёС‚Р°.
-- [ ] РџРµСЂРµСЃС‡РёС‚Р°С‚СЊ `objects.sha256` + РїРѕРґРїРёСЃСЊ.
-- [ ] РџРµСЂРµСЃС‡РёС‚Р°С‚СЊ WDAC hash-allowlist РїРѕСЃР»Рµ РїРµСЂРµСЃР±РѕСЂРєРё СЃРµСЂРІРёСЃР°.
-- [ ] РџСЂРёС‘РјРѕС‡РЅС‹Р№ РїСЂРѕРіРѕРЅ РЅР° С‡РёСЃС‚С‹С… Linux + Windows VM.
-- [ ] РќРµ Р·Р°СЏРІР»СЏС‚СЊ production; РїСЂРёР»РѕР¶РёС‚СЊ СЌС‚РѕС‚ С‡РµРє-Р»РёСЃС‚ Рє РїРёР»РѕС‚Сѓ.
+- [x] Пакеты пересобраны.
+- [x] `objects.sha256` + подпись.
+- [x] Release manifest / SBOM.
+- [x] CI workflow добавлен.
+- [ ] CI реально прогнан на GitHub.
+- [ ] Clean-VM acceptance на чистом Ubuntu/Windows.
+- [ ] RPM live на Fedora/RHEL.
 
-## РР·РІРµСЃС‚РЅС‹Рµ РѕРіСЂР°РЅРёС‡РµРЅРёСЏ
+## Известные ограничения
 
-- AppLocker DLL enforcement РјРѕР¶РµС‚ РІР»РёСЏС‚СЊ РЅР° РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊРЅРѕСЃС‚СЊ; РїСЂРѕРІРµСЂСЏС‚СЊ РЅР° С†РµР»РµРІРѕРј РџРљ.
-- WDAC-С…РµС€Рё РїСЂРёРІСЏР·Р°РЅС‹ Рє РєРѕРЅРєСЂРµС‚РЅРѕР№ СЃР±РѕСЂРєРµ.
-- РќР° Windows РЅРµС‚ СЃРѕР±СЃС‚РІРµРЅРЅРѕРіРѕ РґСЂР°Р№РІРµСЂР°; РЅРµС‚ PPL/ELAM.
-- EV/WHQL/HDC Рё СЋСЂРёРґРёС‡РµСЃРєР°СЏ СЃРµСЂС‚РёС„РёРєР°С†РёСЏ вЂ” РІРЅРµ scope.
-
-
-
-
-- [x] Approval -> ResponseExecutor -> QuarantineStore test (real quarantine).
-
-
-
-- [x] Windows watchdog: scheduled task every 5 min; stopped AIDefender -> watchdog started it (Running).
-
-
-- [x] Upgrade-in-place: install_service поверх Running; reboot -> AIDefender/Sysmon Running, WDAC active.
-- [x] WDAC hash-allowlist runtime generation (-OutDir test) produced merged.cip.
-
-
-- [x] auditd fallback live: eBPF stopped, aidf-auditd active (venv pydantic2).
-
-
-- [x] Clean install .deb: /opt/aidf/venv pydantic 2.14.3; idf-auditd active without override.
-
-
-
-- [x] Russian UI visual: STML console screenshot shows Консоль STML / Хост / ОС / Статус / Загрузить.
-
-
-- [x] STML dynamic statuses translated (в норме/деградация/офлайн); isolated да/нет.
-
-
-- [x] Agent panel Russian: rebuilt aidf-agent.exe/MSI; screenshot shows Устройство защищено / Проверить / Открыть консоль сервера.
-
+- AppLocker DLL enforcement может влиять на производительность.
+- WDAC hashes нужно пересчитывать после каждой сборки сервиса.
+- Нет собственного Windows-драйвера/PPL/ELAM.
+- EV/WHQL/HDC и юридическая сертификация — вне scope.
