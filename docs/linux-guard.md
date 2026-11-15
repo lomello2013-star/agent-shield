@@ -1,4 +1,4 @@
-# Linux kernel-level prevention (fanotify)
+﻿# Linux kernel-level prevention (fanotify)
 
 `aidf_linux_guard.py` uses fanotify permission events to deny:
 
@@ -31,7 +31,7 @@ Expected start line:
 {"kind":"guard_ready","mode":"audit","mark":"/"}
 ```
 
-## Audit → enforce
+## Audit в†’ enforce
 
 1. Run in `mode = "audit"`.
 2. Trigger a benign test:
@@ -59,7 +59,7 @@ allow_write_processes = ["apt", "dpkg", "rpm", "systemctl"]
 The guard writes `guard/events.jsonl` under the agent data root; the connector
 tails it and sends `kind=guard` reports to STML.
 
-## Limitations / validation
+## Status\n\n**Experimental.** Global mark `/` and even `/tmp` mark deadlocked the lab VM; do not auto-enable. Use eBPF LSM as the primary path.\n\n## Limitations / validation
 
 - WSL2 does not reliably expose fanotify permission events; validate on a
   real Linux host/VM.
@@ -68,3 +68,4 @@ tails it and sends `kind=guard` reports to STML.
 - A root attacker can stop the daemon; use systemd hardening, ACLs and a
   separate management channel.
 - This is a **pilot** component, not a certified AV/EDR.
+
