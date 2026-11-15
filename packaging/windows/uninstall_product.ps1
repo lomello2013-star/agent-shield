@@ -1,4 +1,4 @@
-﻿#requires -RunAsAdministrator
+#requires -RunAsAdministrator
 <#
 .SYNOPSIS
   Unified AIDefender Windows uninstall / rollback.
@@ -46,7 +46,7 @@ Get-NetFirewallRule -DisplayName "AIDF-block-*" -ErrorAction SilentlyContinue |
 $action = if ($DefenderMode -eq "Audit") { "AuditMode" } else { "Disabled" }
 $prefs = Get-MpPreference
 $ids = @($prefs.AttackSurfaceReductionRules_Ids)
-if ($ids.Count -gt 0) {
+if ($ids.Count -gt 0 -and $ids[0]) {
     Add-MpPreference -AttackSurfaceReductionRules_Ids $ids `
         -AttackSurfaceReductionRules_Actions (@($action) * $ids.Count)
 }

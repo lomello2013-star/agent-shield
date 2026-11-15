@@ -78,6 +78,22 @@ Not performed: the Windows 11 install ISO is not present in `D:\vm` (only
 `answer.vhdx`/`unattend.iso` and the existing installed disk). A real
 clean install needs the ISO or a clean VM image.
 
+## Clean Windows acceptance
+
+Fresh Windows 11 Enterprise Evaluation VM (`AIDF-Win11-Accept`), installed
+from `windows11-enterprise-eval-x64.iso` + `unattend.iso`.
+
+| Step | Result |
+|---|---|
+| install product | `AIDefender` service Running |
+| reboot | service Running after reboot |
+| uninstall/rollback | completed; service removed |
+| reinstall | service Running |
+| Defender ASR with empty rule list | fixed uninstall guard |
+
+The first clean uninstall failed because `Add-MpPreference` received an empty
+ASR rule id list. Fixed `uninstall_product.ps1` to require `$ids[0]`.
+
 ## Not closed
 
 - RPM live на Fedora/RHEL — нет Fedora VM.
