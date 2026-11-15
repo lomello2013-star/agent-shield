@@ -1,4 +1,4 @@
-$ErrorActionPreference = "Stop"
+﻿$ErrorActionPreference = "Stop"
 $Root = Split-Path $PSScriptRoot -Parent
 $Root = Split-Path $Root -Parent
 $Out = Join-Path $Root "dist\windows"
@@ -11,7 +11,7 @@ $files = @(
     "install_product.ps1", "install_service.ps1", "uninstall_service.ps1",
     "install_aidf_agent.ps1", "uninstall_aidf_agent.ps1",
     "install_sysmon.ps1", "sysmonconfig.xml",
-    "harden_defender.ps1", "harden_service.ps1", "build_wdac_audit.ps1"
+    "harden_defender.ps1", "harden_service.ps1", "build_wdac_audit.ps1", "build_wdac_enforce_allowlist.ps1"
 )
 foreach ($name in $files) {
     $src = Join-Path $Out $name
@@ -26,3 +26,4 @@ if (Test-Path $zip) { Remove-Item $zip -Force }
 Compress-Archive -Path (Join-Path $Bundle "*") -DestinationPath $zip
 Write-Output "built $zip"
 Get-ChildItem $Bundle | Select-Object Name,Length
+
