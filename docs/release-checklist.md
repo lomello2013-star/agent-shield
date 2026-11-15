@@ -51,7 +51,7 @@
 - [x] Reproducible `.deb`: две сборки byte-identical.
 - [x] Reproducible `.rpm`: две сборки byte-identical.
 - [ ] CI реально прогнан на GitHub.
-- [ ] Clean-VM acceptance на чистом Ubuntu/Windows.
+- [x] Clean-VM acceptance на чистом Ubuntu/Windows.
 - [x] RPM live на Fedora 43.
 
 ## Тесты
