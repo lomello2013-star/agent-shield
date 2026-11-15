@@ -162,10 +162,24 @@ def test_executor_refuses_terminate():
     assert result.status == "refused"
 
 
-def test_executor_reports_unsupported_network_actions():
-    ex = ResponseExecutor(ConfirmationManager())
+def test_executor_blocks_network_with_firewall():
+    calls = []
+
+    class Result:
+        returncode = 0
+        stderr = ""
+
+    def runner(argv, **kwargs):
+        calls.append(argv)
+        return Result()
+
+    from core.response import FirewallController
+    ex = ResponseExecutor(ConfirmationManager(),
+                          firewall=FirewallController(runner=runner))
     result = ex.execute(make_action("block_network", target="10.0.0.1:445"))
-    assert result.status == "failed" and "not supported" in result.error
+    assert result.status == "executed"
+    assert calls and calls[0][:4] == ["netsh", "advfirewall", "firewall", "add"]
+    assert "remoteip=10.0.0.1" in calls[0] and "remoteport=445" in calls[0]
 
 
 def test_executor_quarantine_failure_is_reported(tmp_path):

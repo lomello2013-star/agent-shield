@@ -31,7 +31,7 @@ from schemas.v3 import Action
 
 REVERSIBLE_ACTIONS = {"suspend", "resume", "quarantine", "restore", "notify",
                       "block_network", "unblock_network"}
-UNSUPPORTED_ACTIONS = {"block_network", "unblock_network"}
+UNSUPPORTED_ACTIONS = {"unblock_network"}
 QUARANTINE_MAGIC = b"AIDFQ1"
 
 if sys.platform == "win32":
@@ -336,6 +336,52 @@ class CanaryStore:
         return broken
 
 
+# ---------------------------------------------------------------------- firewall
+class FirewallController:
+    """User-mode network block via Windows Firewall (no kernel driver).
+
+    This is post-detection containment, not a WFP callout. Rules are named and
+    reversible with ``unblock``.
+    """
+
+    def __init__(self, runner=None) -> None:
+        self._run = runner or __import__("subprocess").run
+        self.rules: dict[str, str] = {}
+
+    @staticmethod
+    def _parse(target: str) -> tuple[str, str]:
+        text = str(target).strip()
+        if not text:
+            raise ActionError("empty firewall target")
+        ip, _, port = text.rpartition(":")
+        if ip and port.isdigit():
+            return ip, port
+        return text, "any"
+
+    def block(self, target: str, name: str | None = None) -> str:
+        if sys.platform != "win32":
+            raise ActionError("Windows Firewall response is Windows-only")
+        ip, port = self._parse(target)
+        rule = name or f"AIDF-block-{uuid.uuid4().hex[:12]}"
+        argv = ["netsh", "advfirewall", "firewall", "add", "rule",
+                f"name={rule}", "dir=out", "action=block",
+                f"remoteip={ip}", f"remoteport={port}", "protocol=TCP"]
+        completed = self._run(argv, capture_output=True, text=True, timeout=30)
+        if getattr(completed, "returncode", 1) != 0:
+            raise ActionError(f"firewall add failed: {getattr(completed, 'stderr', '')[:200]}")
+        self.rules[rule] = target
+        return rule
+
+    def unblock(self, rule: str) -> None:
+        if sys.platform != "win32":
+            raise ActionError("Windows Firewall response is Windows-only")
+        completed = self._run(["netsh", "advfirewall", "firewall", "delete", "rule",
+                               f"name={rule}"], capture_output=True, text=True, timeout=30)
+        if getattr(completed, "returncode", 1) != 0:
+            raise ActionError(f"firewall delete failed: {getattr(completed, 'stderr', '')[:200]}")
+        self.rules.pop(rule, None)
+
+
 # ---------------------------------------------------------------------- executor
 @dataclass
 class ExecutionResult:
@@ -351,10 +397,12 @@ class ResponseExecutor:
     def __init__(self, confirmations: ConfirmationManager,
                  processes: ProcessController | None = None,
                  quarantine: QuarantineStore | None = None,
+                 firewall: FirewallController | None = None,
                  clock=time.perf_counter) -> None:
         self.confirmations = confirmations
         self.processes = processes or ProcessController()
         self.quarantine = quarantine
+        self.firewall = firewall or FirewallController()
         self.clock = clock
 
     def execute(self, action: Action) -> ExecutionResult:
@@ -388,6 +436,13 @@ class ResponseExecutor:
                 self.quarantine.restore(action.target)
                 status = "executed"
             elif action.type == "notify":
+                status = "executed"
+            elif action.type == "block_network":
+                rule = self.firewall.block(action.target)
+                action = action.model_copy(update={"target": rule})
+                status = "executed"
+            elif action.type == "unblock_network":
+                self.firewall.unblock(action.target)
                 status = "executed"
             else:
                 raise ActionError(f"unknown action type: {action.type}")

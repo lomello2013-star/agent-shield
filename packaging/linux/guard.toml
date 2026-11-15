@@ -1,0 +1,25 @@
+# AIDefender Linux kernel-level prevention (fanotify).
+# Start in audit mode, verify events, then switch to enforce.
+
+[guard]
+mode = "audit"
+mark_path = "/"
+
+# Executables from these trees are denied in enforce mode.
+deny_exec = ["/tmp/", "/var/tmp/", "/dev/shm/", "/run/user/"]
+
+# Writable opens of these paths are denied, except allowlisted package managers.
+protect_write = [
+  "/etc/shadow",
+  "/etc/gshadow",
+  "/etc/sudoers",
+  "/etc/ssh/sshd_config",
+  "/boot/",
+  "/var/lib/aidf/",
+  "/opt/aidf/",
+]
+
+allow_write_processes = [
+  "apt", "apt-get", "dpkg", "rpm", "dnf", "yum", "systemctl",
+  "packagekitd", "snapd", "unattended-upgr",
+]

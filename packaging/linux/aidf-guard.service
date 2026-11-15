@@ -1,0 +1,19 @@
+[Unit]
+Description=AIDefender Linux kernel-level prevention (fanotify)
+Documentation=file:///opt/aidf/docs/linux-guard.md
+After=local-fs.target
+ConditionPathExists=/etc/aidf/guard.toml
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/aidf
+ExecStart=/usr/bin/python3 /opt/aidf/aidf_linux_guard.py --config /etc/aidf/guard.toml --out /var/lib/aidf/guard/events.jsonl
+Restart=on-failure
+RestartSec=5
+StateDirectory=aidf
+LimitNOFILE=65536
+NoNewPrivileges=false
+
+[Install]
+WantedBy=multi-user.target

@@ -139,7 +139,7 @@ def _run_daemon() -> int:
                        os="windows", version=platform.version() or "unknown",
                        arch=platform.machine() or "x64")
     sources = ["win.eventlog", "win.defender"]
-    sysmon_requested = os.environ.get("AIDF_SYSMON") == "1"
+    sysmon_requested = os.environ.get("AIDF_SYSMON", "1") != "0"
     sysmon_ok = False
     if sysmon_requested:
         from core.winsource import channel_exists

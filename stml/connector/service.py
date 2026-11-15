@@ -260,6 +260,7 @@ class Connector:
         root = Path(self.config.data_root)
         return [root / "spool" / "events.jsonl",
                 root / "reports" / "events.jsonl",
+                root / "guard" / "events.jsonl",
                 root / "audit" / "chain.jsonl",
                 root / "quarantine.jsonl"]
 
