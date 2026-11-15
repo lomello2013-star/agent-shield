@@ -41,7 +41,7 @@
 | Windows service EXE | **Onedir build verified in AIDF-Win11 VM**: installed at `C:\Program Files\AIDefender\service`, service Running; no temp extraction | Reboot timing check |
 | Sysmon channel | **Verified in AIDF-Win11 VM**: Sysmon64 Running; `win.sysmon` reports are produced | none |
 | Defender ASR/CFA | **Verified in AIDF-Win11 VM**: audit (2/2/2) then enforce (1/1/1), ASR=9 | none |
-| WDAC audit/enforce | **Deployed in AIDF-Win11 VM**; onedir filepath allow rules still did not let the service start. All test policies removed offline; VM recovered, `AIDefender Running`. | Use signed/supplemental policy with DLL rules before enforce |
+| WDAC audit/enforce | **Verified in AIDF-Win11 VM**: enforce + SHA256 hash allowlist for the onedir tree; `AIDefender` and `Sysmon64` Running after reboot. Filepath-only rules fail for DLLs. | keep hashes updated per build |
 | Windows response | **Verified in AIDF-Win11 VM**: firewall block/unblock, quarantine/restore, suspend/resume | none |
 | STML end-to-end with guard | No live Linux guard events in STML | Linux VM в†’ connector в†’ STML |
 
@@ -60,6 +60,7 @@
 This is a **pilot build**, not a certified product. The Windows path is a user-mode
 EDR-lite over Defender/Sysmon; the Linux path is kernel enforcement but must be
 validated on a real kernel before calling it ready.
+
 
 
 
