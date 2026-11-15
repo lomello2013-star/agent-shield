@@ -1,4 +1,4 @@
-name: pilot-ci
+﻿name: pilot-ci
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: python -m pip install -e ".[dev]" || python -m pip install pytest pydantic cryptography
+      - run: python -m pip install -e ".[dev]" || python -m pip install pytest pydantic cryptography numpy
       - run: python -m pytest -q
       - name: Linux packages
         run: VERSION=0.1.0 bash packaging/build_linux_packages.sh
@@ -26,3 +26,4 @@ jobs:
             dist/*.rpm
             dist/*.tar.gz
             dist/release-manifest.json
+
