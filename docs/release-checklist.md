@@ -64,3 +64,8 @@
 - [x] pytest stml/tests — pass.
 - [ ] Single-process full pytest after long session — Windows socket exhaustion (10048/10055); run after host reboot/cleanup.
 
+
+## Build reproducibility
+
+- [ ] Two builds of the same .deb are byte-identical: **NO** (2c5... vs db0b...). Timestamps/venv paths vary; not yet reproducible.
+
