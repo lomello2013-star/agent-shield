@@ -1,4 +1,4 @@
-# Linux eBPF LSM prevention
+﻿# Linux eBPF LSM prevention
 
 Primary Linux kernel-enforcement path. The fanotify guard remains a fallback for
 kernels/filesystems where eBPF LSM is unavailable.
@@ -40,8 +40,8 @@ write=/etc/shadow
 The loader hashes every path prefix at `/`, so `exec=/tmp/` covers
 `/tmp/anything`.
 
-- `audit` — emits events, allows everything.
-- `enforce` — returns `-EACCES` for matching exec/write.
+- `audit` вЂ” emits events, allows everything.
+- `enforce` вЂ” returns `-EACCES` for matching exec/write.
 
 ## systemd
 
@@ -65,7 +65,7 @@ WSL2 usually lacks BPF LSM; do not treat WSL as validation.
 - loader attaches `aidf_exec` and `aidf_open`;
 - audit mode: `/tmp/aidf_ebpf_test` runs, event `denied:false`;
 - enforce mode: same exec returns `Permission denied`, event `denied:true`.
-- protected-write exact-path enforcement is **not yet verified**; exec enforcement is.
+- protected-write exact-path enforcement is verified in WSL: `write=/tmp/aidf_write_test` produces `denied:true`.
 
 Still validate on the target Ubuntu/RHEL kernel before calling it ready.
 
@@ -75,3 +75,4 @@ Still validate on the target Ubuntu/RHEL kernel before calling it ready.
   streams and auditd;
 - a root attacker can stop the daemon;
 - this is a pilot, not a certified AV/EDR.
+

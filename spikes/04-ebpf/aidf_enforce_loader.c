@@ -43,13 +43,14 @@ static int on_event(void *ctx, void *data, size_t sz)
     const struct {
         uint32_t pid, ppid;
         uint64_t ts_ns;
+        uint64_t hash;
         uint8_t kind, denied;
         char comm[16];
         char path[MAX_PATH];
     } *e = data;
-    printf("{\"kind\":\"%s\",\"pid\":%u,\"ppid\":%u,\"comm\":\"%s\",\"path\":\"%s\",\"denied\":%s}\n",
+    printf("{\"kind\":\"%s\",\"pid\":%u,\"ppid\":%u,\"comm\":\"%s\",\"path\":\"%s\",\"hash\":\"%016llx\",\"denied\":%s}\n",
            e->kind == 1 ? "exec" : "write", e->pid, e->ppid, e->comm, e->path,
-           e->denied ? "true" : "false");
+           (unsigned long long)e->hash, e->denied ? "true" : "false");
     fflush(stdout);
     return 0;
 }

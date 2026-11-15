@@ -32,6 +32,7 @@ struct guard_evt {
     __u32 pid;
     __u32 ppid;
     __u64 ts_ns;
+    __u64 hash;
     __u8 kind;
     __u8 denied;
     char comm[16];
@@ -51,11 +52,13 @@ static __always_inline int exec_denied(const char *p)
            !bpf_strncmp(p, 10, "/run/user/");
 }
 
-static __always_inline void emit(__u8 kind, __u8 denied, const char *path, int len)
+static __always_inline void emit(__u8 kind, __u8 denied, const char *path, int len,
+                                 __u64 hash)
 {
     struct guard_evt e = {};
     e.pid = bpf_get_current_pid_tgid() >> 32;
     e.ts_ns = bpf_ktime_get_ns();
+    e.hash = hash;
     e.kind = kind;
     e.denied = denied;
     bpf_get_current_comm(&e.comm, sizeof(e.comm));
@@ -95,7 +98,7 @@ int BPF_PROG(aidf_exec, struct linux_binprm *bprm)
     if (n <= 0 || !exec_denied(path))
         return 0;
     int enforce = active();
-    emit(1, enforce, path, (int)n);
+    emit(1, enforce, path, (int)n, 0);
     return enforce ? -13 : 0;
 }
 
@@ -113,7 +116,7 @@ int BPF_PROG(aidf_open, struct file *file)
     if (!bpf_map_lookup_elem(&deny_write, &h))
         return 0;
     int enforce = active();
-    emit(2, enforce, path, (int)n);
+    emit(2, enforce, path, (int)n, h);
     return enforce ? -13 : 0;
 }
 
