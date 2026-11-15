@@ -38,11 +38,11 @@
 | eBPF deny exec | **Verified in WSL**: `Permission denied` + `denied:true` event | Validate on target VM |
 | fanotify permission events | WSL did not deliver them in our test | Real Linux VM: audit event, then enforce deny |
 | `apt update` under guard | **Verified in WSL** in audit and enforce with a test-only write policy: `APT_RC=0` | Recheck with production policy on target VM |
-| Windows service EXE | Built; current service is Python; not replaced | Lab VM: install_service, reboot, health |
-| Sysmon channel | Sysmon not installed on this host | Install signed Sysmon, restart service |
-| Defender ASR/CFA | Not applied (would change host) | VM: audit, review, enforce |
+| Windows service EXE | **Verified in AIDF-Win11 VM**: AIDefender service Running from `C:\Program Files\AIDefender\aidf-service.exe` | Restart/reboot test remains |
+| Sysmon channel | **Verified in AIDF-Win11 VM**: Sysmon64 Running; `win.sysmon` reports are produced | none |
+| Defender ASR/CFA | **Verified in AIDF-Win11 VM**: ASR=9, actions=2 (Audit), CFA=2, NP=2 | enforce after review |
 | WDAC audit | Not deployed | VM: CiTool, CodeIntegrity log |
-| Windows response | Not tested on benign process/file | VM: suspend/quarantine/firewall |
+| Windows response | Unit-tested; benign VM test remains | VM: suspend/quarantine/firewall |
 | STML end-to-end with guard | No live Linux guard events in STML | Linux VM в†’ connector в†’ STML |
 
 ## Next actions (ordered)
@@ -60,6 +60,7 @@
 This is a **pilot build**, not a certified product. The Windows path is a user-mode
 EDR-lite over Defender/Sysmon; the Linux path is kernel enforcement but must be
 validated on a real kernel before calling it ready.
+
 
 
 
