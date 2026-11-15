@@ -292,5 +292,162 @@ $('#t-viewer').value=tokens().viewer;$('#t-admin').value=tokens().admin;$('#t-ap
 const _startTab=_demoHash.get('tab');
 if(_startTab&&document.getElementById(_startTab))show(_startTab);else load();
 </script>
+<script>
+/* Russian UI layer for the operations console. */
+(() => {
+  const map = {
+    "AIDefender / STML": "AIDefender / STML",
+    "Operations console · lab fleet": "Консоль оператора · лабораторный флот",
+    "LAB": "ЛАБ",
+    "read-only · tokens in Settings": "только чтение · токены в Настройках",
+    "health: ?": "состояние: ?",
+    "health: ok": "состояние: норма",
+    "health: error": "состояние: ошибка",
+    "Dashboard": "Обзор",
+    "Fleet": "Агенты",
+    "Policies": "Политики",
+    "Approvals": "Подтверждения",
+    "Learning": "Обучение",
+    "Reports": "Отчёты",
+    "Incidents": "Инциденты",
+    "Modules": "Модули",
+    "Ops": "Эксплуатация",
+    "Audit": "Аудит",
+    "Settings": "Настройки",
+    "FLEET OVERVIEW": "ОБЗОР ФЛОТА",
+    "Security posture": "Состояние защиты",
+    "Live view of enrolled agents, pending trust decisions and policy channels. Demo data is seeded for visual review.": "Живой обзор агентов, ожидающих решений и каналов политик. Демо-данные добавлены для визуальной проверки.",
+    "Refresh": "Обновить",
+    "Agents": "Агенты",
+    "Healthy": "В норме",
+    "Degraded / offline": "Деградация / офлайн",
+    "Pending approvals": "Ожидают подтверждения",
+    "enrolled fleet": "в составе флота",
+    "heartbeat fresh": "свежий пульс",
+    "needs attention": "требует внимания",
+    "trust queue": "очередь доверия",
+    "versions in registry": "версий в реестре",
+    "Recent agents": "Последние агенты",
+    "last heartbeat": "последний пульс",
+    "Host": "Хост",
+    "OS": "ОС",
+    "Status": "Статус",
+    "Last seen": "Последний контакт",
+    "Policy": "Политика",
+    "Action required": "Требует действия",
+    "Policy channels": "Каналы политик",
+    "registry": "реестр",
+    "No pending approvals — fleet is clean.": "Нет ожидающих подтверждений — флот чист.",
+    "No policy versions registered.": "Версии политик не зарегистрированы.",
+    "healthy": "в норме",
+    "degraded": "деградация",
+    "offline": "офлайн",
+    "unknown": "неизвестно",
+    "pending": "ожидает",
+    "approved": "одобрено",
+    "rejected": "отклонено",
+    "yes": "да",
+    "no": "нет",
+    "Isolate": "Изолировать",
+    "Resume": "Вернуть",
+    "OS / Arch": "ОС / арх.",
+    "Isolated": "Изолирован",
+    "Action": "Действие",
+    "Dry-run / rollout": "Пробный запуск / развёртывание",
+    "Dry-run": "Пробный запуск",
+    "Rollout": "Развернуть",
+    "Promote": "Продвинуть",
+    "Kind": "Тип",
+    "Target": "Цель",
+    "Decided by": "Кто решил",
+    "Actions": "Действия",
+    "Approve": "Одобрить",
+    "Deny": "Отклонить",
+    "Models": "Модели",
+    "Name": "Имя",
+    "Version": "Версия",
+    "TPR@FPR": "TPR@FPR",
+    "FP budget": "Бюджет FP",
+    "Key": "Ключ",
+    "Cases": "Кейсы",
+    "Case": "Кейс",
+    "Report": "Отчёт",
+    "Label": "Метка",
+    "Holdout": "Отложенная выборка",
+    "ID": "ID",
+    "Agent": "Агент",
+    "Priority": "Приоритет",
+    "Time": "Время",
+    "Incidents (P0/P1)": "Инциденты (P0/P1)",
+    "Modules": "Модули",
+    "Trust": "Доверие",
+    "Note": "Примечание",
+    "Ops": "Эксплуатация",
+    "Verify chain": "Проверить цепочку",
+    "Export JSON": "Экспорт JSON",
+    "Export CEF": "Экспорт CEF",
+    "Tokens (sessionStorage only)": "Токены (только sessionStorage)",
+    "Save": "Сохранить",
+    "viewer token": "токен наблюдателя",
+    "admin token": "токен администратора",
+    "approver token": "токен утверждающего",
+    "Agent": "Агент",
+    "OS / arch": "ОС / арх.",
+    "version": "версия",
+    "status": "статус",
+    "last seen": "последний контакт",
+    "policy": "политика",
+    "isolated": "изолирован",
+    "Close": "Закрыть",
+    "Commands": "Команды",
+    "none": "нет",
+    "security posture": "состояние защиты"
+  };
+  const patterns = [
+    [/^health:\s*ok$/, "состояние: норма"],
+    [/^health:\s*error$/, "состояние: ошибка"],
+    [/^(\d+)s$/, "$1 с"],
+    [/^(\d+)m$/, "$1 мин"],
+    [/^(\d+)h$/, "$1 ч"],
+    [/^uptime\s+(.*)$/, "работа: $1"],
+    [/^agents\s+(.*)$/, "агентов: $1"],
+    [/^reports\s+(.*)$/, "отчётов: $1"],
+    [/^bus\s+(.*)$/, "шина: $1"],
+    [/^actions\s+(.*)$/, "действий: $1"]
+  ];
+  function translate(text) {
+    const trimmed = text.trim();
+    if (!trimmed) return text;
+    let out = map[trimmed];
+    if (out === undefined) for (const [re, repl] of patterns) if (re.test(trimmed)) { out = trimmed.replace(re, repl); break; }
+    if (out === undefined || out === trimmed) return text;
+    return text.match(/^\s*/)[0] + out + text.match(/\s*$/)[0];
+  }
+  function walk(root) {
+    if (!root) return;
+    if (root.nodeType === Node.TEXT_NODE) {
+      const p = root.parentElement;
+      if (p && !["SCRIPT", "STYLE", "CODE", "PRE"].includes(p.tagName)) {
+        const next = translate(root.nodeValue);
+        if (next !== root.nodeValue) root.nodeValue = next;
+      }
+      return;
+    }
+    if (root.nodeType !== Node.ELEMENT_NODE && root.nodeType !== Node.DOCUMENT_FRAGMENT_NODE) return;
+    if (root.tagName === "SCRIPT" || root.tagName === "STYLE") return;
+    for (const child of root.childNodes) walk(child);
+    if (root.placeholder) root.placeholder = translate(root.placeholder);
+  }
+  let scheduled = false;
+  const schedule = () => {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(() => { scheduled = false; walk(document.body); });
+  };
+  new MutationObserver(schedule).observe(document.body, {childList: true, subtree: true, characterData: true});
+  walk(document.body);
+  document.title = "AIDefender / STML — консоль";
+})();
+</script>
 </body>
 </html>

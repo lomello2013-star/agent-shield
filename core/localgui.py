@@ -13,14 +13,18 @@ import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any
+from urllib.parse import quote
 
 
 class LocalGui:
     def __init__(self, daemon: Any, host: str = "127.0.0.1", port: int = 18080,
-                 html_path: str | None = None) -> None:
+                 html_path: str | None = None, server_url: str = "",
+                 tokens_file: str = "") -> None:
         self.daemon = daemon
         self.host = host
         self.port = int(port)
+        self.server_url = server_url.rstrip("/")
+        self.tokens_file = tokens_file
         self.html_path = Path(html_path or Path(__file__).resolve().parent.parent /
                               "agent" / "gui" / "index.html")
         self._httpd: ThreadingHTTPServer | None = None
@@ -71,6 +75,26 @@ class LocalGui:
         }
 
     # ------------------------------------------------------------------ server
+    def server_console_url(self) -> str:
+        """Return the STML UI URL with a session token hash for a local demo.
+
+        The token is placed in the URL fragment, which the STML UI reads and
+        removes from the address bar; it is never sent to the server in a
+        request. This endpoint is localhost-only.
+        """
+        base = self.server_url or "http://127.0.0.1:8080"
+        try:
+            data = json.loads(Path(self.tokens_file).read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return base + "/ui/"
+        parts = []
+        for role in ("viewer", "admin", "approver"):
+            value = str(data.get(f"{role}_token", ""))
+            if value:
+                parts.append(f"{role}={quote(value, safe='')}")
+        return base + "/ui/" + ("#" + "&".join(parts) if parts else "")
+
+    # ------------------------------------------------------------------ server
     def start(self) -> tuple[str, int]:
         gui = self
 
@@ -102,6 +126,8 @@ class LocalGui:
                     self._html()
                 elif self.path == "/api/overview":
                     self._json(200, gui.overview())
+                elif self.path == "/api/server-console":
+                    self._json(200, {"url": gui.server_console_url()})
                 else:
                     self._json(404, {"error": "not found"})
 

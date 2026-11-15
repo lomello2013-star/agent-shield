@@ -24,9 +24,9 @@ C:\ProgramData\AIDefender\agent-demo\
 
 Screenshots from this host:
 
-- [server dashboard](../artifacts/stml-server-live3.png)
+- [server dashboard](../artifacts/stml-server-ru.png)
 - [server reports](../artifacts/stml-reports-live.png)
-- [agent panel](../artifacts/agent-panel-live2.png)
+- [agent panel](../artifacts/agent-panel-ru3.png)
 
 ### Server UI `/ui/`
 

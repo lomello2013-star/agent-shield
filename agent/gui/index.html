@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -97,6 +97,16 @@
     font-size:11px;padding:14px 2px 0;margin-top:4px}
   .spark{display:flex;align-items:flex-end;gap:3px;height:26px}
   .spark i{display:block;width:5px;background:#1d4ed8;border-radius:2px;opacity:.85}
+  .modal{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:rgba(4,8,14,.72);backdrop-filter:blur(4px)}
+  .modal.hidden{display:none}
+  .modal-card{width:min(640px,92vw);max-height:80vh;overflow:auto;background:linear-gradient(180deg,#141d2e,#101724);border:1px solid #2a3a55;border-radius:12px;box-shadow:0 24px 70px rgba(0,0,0,.5)}
+  .modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--bd)}
+  .modal-head h3{margin:0;font-size:15px}
+  .modal-body{padding:14px 16px}
+  .check{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid rgba(36,48,68,.6)}
+  .check:last-child{border-bottom:0}
+  .check .ok{color:var(--ok)}.check .bad{color:var(--bad)}
+  .modal-foot{display:flex;justify-content:flex-end;padding:12px 16px;border-top:1px solid var(--bd)}
   @media(max-width:1050px){.cards{grid-template-columns:repeat(3,minmax(0,1fr))}.grid{grid-template-columns:1fr}}
   @media(max-width:680px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{align-items:flex-start;flex-direction:column}}
 </style>
@@ -132,7 +142,7 @@
 
   <div class="cards">
     <div class="card ok" id="card-protection"><div class="k">Protection</div><div class="v" id="protection-value" style="color:var(--ok)">ON</div><div class="h" id="protection-sub">5 / 5 layers</div></div>
-    <div class="card" id="card-heartbeat"><div class="k">Heartbeat</div><div class="v" id="heartbeat-value">2<span style="font-size:14px;color:var(--dim)">s</span></div><div class="h" id="heartbeat-sub">last contact</div></div>
+    <div class="card" id="card-heartbeat"><div class="k">Heartbeat</div><div class="v" id="heartbeat-value">2<span style="font-size:14px;color:var(--dim)">с</span></div><div class="h" id="heartbeat-sub">last contact</div></div>
     <div class="card" id="card-verdicts"><div class="k">Verdicts 24h</div><div class="v" id="verdicts-value">37</div><div class="h" id="verdicts-sub">4 high · 2 critical</div></div>
     <div class="card warn" id="card-pending"><div class="k">Needs decision</div><div class="v" id="pending-value" style="color:var(--warn)">2</div><div class="h" id="pending-sub">pending approvals</div></div>
     <div class="card" id="card-quarantine"><div class="k">Quarantine</div><div class="v" id="quarantine-value">3</div><div class="h" id="quarantine-sub">1.8 MB isolated</div></div>
@@ -140,7 +150,7 @@
 
   <div class="grid">
     <div>
-      <div class="panel">
+      <div class="panel" id="stack-panel">
         <div class="panel-head"><h3>Protection stack</h3><span class="badge ok">all healthy</span></div>
         <div class="layer"><div class="ic">◈</div><div class="body"><div class="name">Kernel minifilter</div><div class="desc">AidfFilter.sys · test-signed lab · callbacks active</div></div><span class="dot ok"></span><span class="badge">loaded</span></div>
         <div class="layer"><div class="ic">⚡</div><div class="body"><div class="name">Reflex rules</div><div class="desc">30 rules · 100 % coverage · p95 0.07 ms</div></div><span class="dot ok"></span><span class="badge">30 active</span></div>
@@ -201,6 +211,13 @@
     <span>AIDefender Agent · lab build</span>
   </div>
 </main>
+<div id="scan-modal" class="modal hidden" role="dialog" aria-modal="true">
+  <div class="modal-card">
+    <div class="modal-head"><h3 id="scan-title">Самопроверка агента</h3><button class="ghost" id="scan-close">Закрыть</button></div>
+    <div class="modal-body" id="scan-body"></div>
+    <div class="modal-foot"><button class="primary" id="scan-ok">Понятно</button></div>
+  </div>
+</div>
 <script>
 (() => {
   const $ = (id) => document.getElementById(id);
@@ -216,8 +233,7 @@
   }
 
   function renderStack(stack) {
-    const panels = [...document.querySelectorAll(".panel")];
-    const panel = panels.find(p => p.querySelector("h3")?.textContent === "Protection stack");
+    const panel = document.getElementById("stack-panel");
     if (!panel) return;
     panel.querySelectorAll(".layer").forEach(n => n.remove());
     for (const item of stack || []) {
@@ -286,7 +302,7 @@
 
       $("protection-value").textContent = ok ? "ON" : (status === "safe" ? "SAFE" : "DEGRADED");
       $("protection-sub").textContent = `${(data.stack || []).filter(x => !["stopped", "idle", "degraded"].includes(x.state)).length} / ${(data.stack || []).length} layers`;
-      $("heartbeat-value").textContent = `${Math.max(0, Math.round(health.uptime_s || 0))}s`;
+      $("heartbeat-value").textContent = `${Math.max(0, Math.round(health.uptime_s || 0))}с`;
       $("heartbeat-sub").textContent = "agent uptime";
       $("verdicts-value").textContent = data.stats?.verdicts ?? 0;
       $("verdicts-sub").textContent = `${health.alerts || 0} alerts`;
@@ -328,14 +344,190 @@
     $("pause-btn").textContent = j.paused ? "Resume protection" : "Pause protection";
     refresh();
   });
+  function showScan(j) {
+    const names = {
+      "immutable_policy": "Неизменяемая политика",
+      "audit_chain": "Цепочка аудита",
+      "file_integrity": "Целостность файлов"
+    };
+    const checks = (j.checks || []).map(c => `<div class="check"><span class="${c.ok ? "ok" : "bad"}">${c.ok ? "✔" : "✖"}</span>` +
+      `<div><div class="strong">${esc(names[c.name] || c.name)}</div><div class="muted">${esc(c.detail || "")}</div></div></div>`).join("");
+    const failed = (j.failed || []);
+    const title = j.ok === false ? "Самопроверка: есть ошибки" : "Самопроверка пройдена";
+    $("scan-title").textContent = title;
+    $("scan-body").innerHTML = `<div class="muted" style="margin-bottom:8px">Проверено за ${esc(j.duration_ms ?? "?")} мс</div>` +
+      (checks || '<div class="empty">Проверки не вернули данных</div>') +
+      (failed.length ? `<div class="bad" style="margin-top:8px">Ошибки: ${esc(failed.join(", "))}</div>` : "");
+    $("scan-modal").classList.remove("hidden");
+  }
+  function closeScan() { $("scan-modal").classList.add("hidden"); }
+  $("scan-close").addEventListener("click", closeScan);
+  $("scan-ok").addEventListener("click", closeScan);
+  $("scan-modal").addEventListener("click", (e) => { if (e.target === $("scan-modal")) closeScan(); });
   $("scan-btn").addEventListener("click", async () => {
-    const r = await fetch("/api/scan", {method: "POST", headers: {"Content-Type": "application/json"}, body: "{}"});
-    const j = await r.json();
-    alert(j.ok === false ? "Self-test failed: " + (j.failed || []).join(", ") : "Self-test passed");
+    const btn = $("scan-btn");
+    btn.disabled = true; btn.textContent = "Проверка…";
+    try {
+      const r = await fetch("/api/scan", {method: "POST", headers: {"Content-Type": "application/json"}, body: "{}"});
+      const j = await r.json();
+      showScan(j);
+    } catch (exc) {
+      $("scan-title").textContent = "Ошибка самопроверки";
+      $("scan-body").innerHTML = `<div class="bad">${esc(exc)}</div>`;
+      $("scan-modal").classList.remove("hidden");
+    } finally {
+      btn.disabled = false; btn.textContent = "Проверить";
+    }
   });
-  $("console-btn").addEventListener("click", () => window.open("http://127.0.0.1:8080/ui/", "_blank"));
+  $("console-btn").addEventListener("click", async () => {
+    try {
+      const r = await fetch("/api/server-console", {cache: "no-store"});
+      const j = await r.json();
+      window.open(j.url || "http://127.0.0.1:8080/ui/", "_blank");
+    } catch { window.open("http://127.0.0.1:8080/ui/", "_blank"); }
+  });
   refresh();
   setInterval(refresh, 2000);
+})();
+</script>
+<script>
+/* Russian UI layer: static labels and dynamic values, without touching data. */
+(() => {
+  const map = {
+    "AIDefender Agent": "Агент AIDefender",
+    "LOCAL AGENT · REAL-TIME": "ЛОКАЛЬНЫЙ АГЕНТ · РЕАЛЬНОЕ ВРЕМЯ",
+    "This device is protected": "Устройство защищено",
+    "Attention required": "Требуется внимание",
+    "Agent panel unavailable": "Панель агента недоступна",
+    "Pause protection": "Пауза защиты",
+    "Resume protection": "Возобновить защиту",
+    "Run scan": "Проверить",
+    "Проверка…": "Проверка…",
+    "Open server console": "Открыть консоль сервера",
+    "Protection": "Защита",
+    "ON": "ВКЛ",
+    "Heartbeat": "Пульс",
+    "Verdicts 24h": "Вердикты 24 ч",
+    "Needs decision": "Требует решения",
+    "Quarantine": "Карантин",
+    "last contact": "последний контакт",
+    "agent uptime": "время работы",
+    "alerts": "оповещений",
+    "pending approvals": "ожидают подтверждения",
+    "no local quarantine view": "локальный карантин не подключён",
+    "Protection stack": "Стек защиты",
+    "all healthy": "всё в норме",
+    "Collector": "Источник событий",
+    "Reflex rules": "Правила реакции",
+    "ML model": "ML-модель",
+    "Network visibility": "Сетевой обзор",
+    "Self protection": "Самозащита",
+    "no model pack loaded": "пакет модели не загружен",
+    "collector-only": "только сбор",
+    "audit chain + integrity manifest": "цепочка аудита + манифест целостности",
+    "loaded": "загружен",
+    "stopped": "остановлен",
+    "active": "активен",
+    "shadow": "теневой режим",
+    "live": "работает",
+    "idle": "ожидает",
+    "ok": "в норме",
+    "degraded": "деградация",
+    "Recent verdicts": "Последние вердикты",
+    "last 24h": "за 24 ч",
+    "Time": "Время",
+    "Severity": "Важность",
+    "Rule": "Правило",
+    "What happened": "Что произошло",
+    "Action": "Действие",
+    "logged": "записано",
+    "alert": "оповещение",
+    "blocked": "заблокировано",
+    "quarantined": "в карантине",
+    "No verdicts in this session": "В этой сессии вердиктов нет",
+    "Needs your decision": "Требует вашего решения",
+    "No pending decisions": "Нет ожидающих решений",
+    "pending": "ожидает",
+    "Approve": "Одобрить",
+    "Deny": "Отклонить",
+    "Quarantine API not exposed by the local agent yet": "API карантина пока не подключён",
+    "Server link": "Связь с сервером",
+    "online": "онлайн",
+    "Console": "Консоль",
+    "Last sync": "Последняя синхронизация",
+    "just now": "только что",
+    "Policy": "Политика",
+    "local defaults": "локальные настройки",
+    "Agent ID": "ID агента",
+    "unknown": "неизвестно",
+    "chain ok": "цепочка в норме",
+    "low": "низкая",
+    "medium": "средняя",
+    "high": "высокая",
+    "critical": "критическая",
+    "Service installed (alert, including ambient)": "Установлена служба (оповещение, включая фоновые)",
+    "Service installed": "Установлена служба",
+    "No pending approvals": "Нет ожидающих подтверждений",
+    "No pending decisions": "Нет ожидающих решений",
+    "PROTECTED": "ЗАЩИЩЕНО",
+    "SAFE": "БЕЗОПАСНЫЙ РЕЖИМ",
+    "DEGRADED": "ДЕГРАДАЦИЯ",
+    "UNAVAILABLE": "НЕДОСТУПЕН",
+    "Policy v12": "Политика v12",
+    "tenant demo": "тенант demo",
+    "server connected": "сервер подключён",
+    "Policy v12": "Политика v12"
+  };
+  const patterns = [
+    [/^(\d+)\s*\/\s*(\d+) layers$/, "слоёв: $1 / $2"],
+    [/^(\d+) evaluations$/, "оценок: $1"],
+    [/^(\d+) alerts$/, "оповещений: $1"],
+    [/^(\d+) pending$/, "ожидает: $1"],
+    [/^Status:\s*(.*?)\.\s*Collector:\s*(.*?)\.$/, "Статус: $1. Источник: $2."],
+    [/^Статус:\s*ok\./, "Статус: в норме."],
+    [/^Статус:\s*degraded\./, "Статус: деградация."],
+    [/^s$/, "с"],
+    [/^policy v(\d+)$/, "политика v$1"],
+    [/^(\d+)\s+items$/, "объектов: $1"]
+  ];
+  function translate(text) {
+    const trimmed = text.trim();
+    if (!trimmed) return text;
+    let out = map[trimmed];
+    if (out === undefined) {
+      for (const [re, repl] of patterns) {
+        if (re.test(trimmed)) { out = trimmed.replace(re, repl); break; }
+      }
+    }
+    if (out === undefined || out === trimmed) return text;
+    const lead = text.match(/^\s*/)[0];
+    const trail = text.match(/\s*$/)[0];
+    return lead + out + trail;
+  }
+  function walk(root) {
+    if (!root) return;
+    if (root.nodeType === Node.TEXT_NODE) {
+      const p = root.parentElement;
+      if (p && !["SCRIPT", "STYLE", "CODE", "PRE"].includes(p.tagName)) {
+        const next = translate(root.nodeValue);
+        if (next !== root.nodeValue) root.nodeValue = next;
+      }
+      return;
+    }
+    if (root.nodeType !== Node.ELEMENT_NODE && root.nodeType !== Node.DOCUMENT_FRAGMENT_NODE) return;
+    if (root.tagName === "SCRIPT" || root.tagName === "STYLE") return;
+    for (const child of root.childNodes) walk(child);
+    if (root.placeholder) root.placeholder = translate(root.placeholder);
+  }
+  let scheduled = false;
+  const schedule = () => {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(() => { scheduled = false; walk(document.body); });
+  };
+  new MutationObserver(schedule).observe(document.body, {childList: true, subtree: true, characterData: true});
+  walk(document.body);
+  document.title = "Агент AIDefender";
 })();
 </script>
 </body>

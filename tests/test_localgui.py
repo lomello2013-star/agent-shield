@@ -41,6 +41,24 @@ def test_overview_has_live_state(tmp_path):
         d.stop()
 
 
+def test_server_console_url_contains_only_local_tokens(tmp_path):
+    tokens = tmp_path / "tokens.json"
+    tokens.write_text(json.dumps({"viewer_token": "v", "admin_token": "a",
+                                  "approver_token": "p"}), encoding="utf-8")
+    d = _daemon(tmp_path)
+    gui = LocalGui(d, port=0, server_url="http://127.0.0.1:8080",
+                   tokens_file=str(tokens))
+    host, port = gui.start()
+    try:
+        data = json.loads(urllib.request.urlopen(
+            f"http://{host}:{port}/api/server-console", timeout=5).read())
+        assert data["url"].startswith("http://127.0.0.1:8080/ui/#")
+        assert "viewer=v" in data["url"] and "admin=a" in data["url"]
+    finally:
+        gui.stop()
+        d.stop()
+
+
 def test_pause_and_scan(tmp_path):
     d = _daemon(tmp_path)
     gui = LocalGui(d, port=0)

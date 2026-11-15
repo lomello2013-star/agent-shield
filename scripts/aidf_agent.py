@@ -97,7 +97,9 @@ def run(config, once: bool = False, duration: float = 0.0) -> int:
     gui = None
     if not once and config.gui_port > 0:
         try:
-            gui = LocalGui(daemon, host=config.gui_host, port=config.gui_port)
+            gui = LocalGui(daemon, host=config.gui_host, port=config.gui_port,
+                           server_url=config.server_url,
+                           tokens_file=config.tokens_file)
             host, port = gui.start()
             print(f"aidf-agent: panel http://{host}:{port}/ui/", file=sys.stderr, flush=True)
         except OSError as exc:
