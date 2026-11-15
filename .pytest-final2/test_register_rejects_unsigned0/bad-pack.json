@@ -1,0 +1,1 @@
+{"model_id": "m", "version": "1.0.0", "platform": "windows", "format": "onnx", "sha256": "fa82b28d80c5a2a2ae6ca02105951a9c266cdaceb1a8d4ff00cc4c584d3dd783", "dataset_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd", "metrics": {"tpr": 0.9}, "limits": {}, "signature": ""}

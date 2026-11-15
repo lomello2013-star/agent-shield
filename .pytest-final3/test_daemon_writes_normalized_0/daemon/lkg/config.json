@@ -1,0 +1,16 @@
+{
+  "allowlist": [],
+  "queue": {
+    "capacity": 10000
+  },
+  "schema_version": "1.0",
+  "sources": [
+    "linux.auditd"
+  ],
+  "thresholds": {
+    "alert_budget": 1,
+    "heartbeat_timeout_s": 60.0,
+    "min_confidence": 0.5
+  },
+  "watchdog": {}
+}

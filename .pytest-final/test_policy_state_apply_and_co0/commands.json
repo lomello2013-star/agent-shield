@@ -1,0 +1,15 @@
+{
+  "commands": [
+    {
+      "command_id": "2e18084b-b933-4ff6-b473-d5dd991b7930",
+      "kind": "isolate",
+      "payload": {
+        "isolated": true
+      },
+      "status": "acked",
+      "created_at": "2026-11-15T19:33:29.776275+00:00",
+      "acked_at": "2026-11-15T19:33:29.787640+00:00",
+      "result": {}
+    }
+  ]
+}

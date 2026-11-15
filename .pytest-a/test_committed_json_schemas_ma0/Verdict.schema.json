@@ -1,0 +1,151 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "verdict_id": {
+      "format": "uuid",
+      "title": "Verdict Id",
+      "type": "string"
+    },
+    "trace_id": {
+      "format": "uuid",
+      "title": "Trace Id",
+      "type": "string"
+    },
+    "event_id": {
+      "format": "uuid",
+      "title": "Event Id",
+      "type": "string"
+    },
+    "detector": {
+      "enum": [
+        "rule",
+        "file_model",
+        "behavior_model",
+        "memory_model",
+        "net_model"
+      ],
+      "title": "Detector",
+      "type": "string"
+    },
+    "rule_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Rule Id"
+    },
+    "model_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Model Id"
+    },
+    "model_version": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Model Version"
+    },
+    "platform": {
+      "enum": [
+        "windows",
+        "linux"
+      ],
+      "title": "Platform",
+      "type": "string"
+    },
+    "confidence": {
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Confidence",
+      "type": "number"
+    },
+    "severity": {
+      "enum": [
+        "info",
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ],
+      "title": "Severity",
+      "type": "string"
+    },
+    "reason_code": {
+      "title": "Reason Code",
+      "type": "string"
+    },
+    "reason_text": {
+      "title": "Reason Text",
+      "type": "string"
+    },
+    "actor_pid": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Actor Pid"
+    },
+    "object_path": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Object Path"
+    },
+    "event_ts": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Event Ts"
+    }
+  },
+  "required": [
+    "verdict_id",
+    "trace_id",
+    "event_id",
+    "detector",
+    "platform",
+    "confidence",
+    "severity",
+    "reason_code",
+    "reason_text"
+  ],
+  "title": "Verdict",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

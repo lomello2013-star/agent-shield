@@ -1,0 +1,3 @@
+[agent]
+source = "linux.auditd"
+audit_log = "/a"

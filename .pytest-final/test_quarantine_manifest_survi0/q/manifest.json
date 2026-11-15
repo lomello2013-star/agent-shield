@@ -1,0 +1,12 @@
+{
+  "entries": [
+    {
+      "quarantine_id": "2af9bf3617f947d499dd28b997515c27",
+      "original_path": "D:\\\u0418\u0418 \u0437\u0430\u0449\u0438\u0442\u043d\u0438\u043a \u0412\u0435\u043a\u0442\u043e\u0440-\u0437\u0430\u0449\u0438\u0442\u043d\u0438\u043a\\.pytest-final\\test_quarantine_manifest_survi0\\a.txt",
+      "sha256": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+      "size": 5,
+      "created_at": 1794771209.8736155,
+      "reason": ""
+    }
+  ]
+}

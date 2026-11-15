@@ -1,0 +1,121 @@
+{
+  "$defs": {
+    "RollbackRef": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "title": "Kind",
+          "type": "string"
+        },
+        "payload": {
+          "additionalProperties": true,
+          "title": "Payload",
+          "type": "object"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "RollbackRef",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "action_id": {
+      "format": "uuid",
+      "title": "Action Id",
+      "type": "string"
+    },
+    "trace_id": {
+      "format": "uuid",
+      "title": "Trace Id",
+      "type": "string"
+    },
+    "verdict_id": {
+      "format": "uuid",
+      "title": "Verdict Id",
+      "type": "string"
+    },
+    "type": {
+      "enum": [
+        "notify",
+        "suspend",
+        "resume",
+        "block_network",
+        "unblock_network",
+        "quarantine",
+        "restore",
+        "terminate"
+      ],
+      "title": "Type",
+      "type": "string"
+    },
+    "target": {
+      "title": "Target",
+      "type": "string"
+    },
+    "reversible": {
+      "title": "Reversible",
+      "type": "boolean"
+    },
+    "requires_confirmation": {
+      "title": "Requires Confirmation",
+      "type": "boolean"
+    },
+    "confirmation_id": {
+      "anyOf": [
+        {
+          "format": "uuid",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Confirmation Id"
+    },
+    "status": {
+      "default": "pending",
+      "enum": [
+        "pending",
+        "approved",
+        "rejected",
+        "timeout",
+        "executed",
+        "failed"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "platform_effect": {
+      "default": "",
+      "title": "Platform Effect",
+      "type": "string"
+    },
+    "rollback": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RollbackRef"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "action_id",
+    "trace_id",
+    "verdict_id",
+    "type",
+    "target",
+    "reversible",
+    "requires_confirmation"
+  ],
+  "title": "Action",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

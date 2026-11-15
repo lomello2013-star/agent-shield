@@ -1,0 +1,531 @@
+{
+  "$defs": {
+    "Actor": {
+      "additionalProperties": false,
+      "properties": {
+        "pid": {
+          "minimum": 0,
+          "title": "Pid",
+          "type": "integer"
+        },
+        "ppid": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ppid"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "cmdline_hash": {
+          "title": "Cmdline Hash",
+          "type": "string"
+        },
+        "cmdline_redacted": {
+          "default": "",
+          "title": "Cmdline Redacted",
+          "type": "string"
+        },
+        "uid": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Uid"
+        },
+        "sid": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sid"
+        },
+        "session": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Session"
+        },
+        "container_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Container Id"
+        },
+        "signature": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Signature"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sha256"
+        }
+      },
+      "required": [
+        "pid",
+        "name",
+        "path",
+        "cmdline_hash"
+      ],
+      "title": "Actor",
+      "type": "object"
+    },
+    "HostInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "host_id": {
+          "title": "Host Id",
+          "type": "string"
+        },
+        "os": {
+          "title": "Os",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "string"
+        },
+        "arch": {
+          "title": "Arch",
+          "type": "string"
+        },
+        "kernel": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Kernel"
+        }
+      },
+      "required": [
+        "host_id",
+        "os",
+        "version",
+        "arch"
+      ],
+      "title": "HostInfo",
+      "type": "object"
+    },
+    "IntegrityInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "level": {
+          "title": "Level",
+          "type": "string"
+        },
+        "signature": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Signature"
+        },
+        "verified": {
+          "title": "Verified",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "level",
+        "verified"
+      ],
+      "title": "IntegrityInfo",
+      "type": "object"
+    },
+    "KernelMeta": {
+      "additionalProperties": false,
+      "properties": {
+        "irql": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Irql"
+        },
+        "callback_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Callback Type"
+        },
+        "trust": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Trust"
+        }
+      },
+      "title": "KernelMeta",
+      "type": "object"
+    },
+    "ObjectRef": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "title": "Type",
+          "type": "string"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sha256"
+        },
+        "ip": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ip"
+        },
+        "port": {
+          "anyOf": [
+            {
+              "maximum": 65535,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Port"
+        },
+        "proto": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Proto"
+        }
+      },
+      "required": [
+        "type",
+        "path"
+      ],
+      "title": "ObjectRef",
+      "type": "object"
+    },
+    "PiiFlags": {
+      "additionalProperties": false,
+      "properties": {
+        "paths_hashed": {
+          "default": true,
+          "title": "Paths Hashed",
+          "type": "boolean"
+        },
+        "cmdline_hashed": {
+          "default": true,
+          "title": "Cmdline Hashed",
+          "type": "boolean"
+        },
+        "usernames_hashed": {
+          "default": true,
+          "title": "Usernames Hashed",
+          "type": "boolean"
+        },
+        "ips_hashed": {
+          "default": false,
+          "title": "Ips Hashed",
+          "type": "boolean"
+        }
+      },
+      "title": "PiiFlags",
+      "type": "object"
+    },
+    "UserRef": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "domain": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Domain"
+        },
+        "uid": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Uid"
+        },
+        "sid_hash": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sid Hash"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "UserRef",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "default": "3.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "event_id": {
+      "format": "uuid",
+      "title": "Event Id",
+      "type": "string"
+    },
+    "trace_id": {
+      "format": "uuid",
+      "title": "Trace Id",
+      "type": "string"
+    },
+    "ts_event": {
+      "format": "date-time",
+      "title": "Ts Event",
+      "type": "string"
+    },
+    "ts_ingest": {
+      "format": "date-time",
+      "title": "Ts Ingest",
+      "type": "string"
+    },
+    "platform": {
+      "enum": [
+        "windows",
+        "linux"
+      ],
+      "title": "Platform",
+      "type": "string"
+    },
+    "source": {
+      "title": "Source",
+      "type": "string"
+    },
+    "layer": {
+      "enum": [
+        "kernel",
+        "user",
+        "script",
+        "network",
+        "memory"
+      ],
+      "title": "Layer",
+      "type": "string"
+    },
+    "category": {
+      "title": "Category",
+      "type": "string"
+    },
+    "action": {
+      "title": "Action",
+      "type": "string"
+    },
+    "actor": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Actor"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "object": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ObjectRef"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "user": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/UserRef"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "host": {
+      "$ref": "#/$defs/HostInfo"
+    },
+    "integrity": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/IntegrityInfo"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "raw_ref": {
+      "title": "Raw Ref",
+      "type": "string"
+    },
+    "pii": {
+      "$ref": "#/$defs/PiiFlags"
+    },
+    "platform_data": {
+      "additionalProperties": true,
+      "title": "Platform Data",
+      "type": "object"
+    },
+    "kernel_meta": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/KernelMeta"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "event_id",
+    "trace_id",
+    "ts_event",
+    "ts_ingest",
+    "platform",
+    "source",
+    "layer",
+    "category",
+    "action",
+    "host",
+    "raw_ref"
+  ],
+  "title": "Event",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

@@ -100,10 +100,9 @@ EOF
 cat > "$STAGE/DEBIAN/postrm" <<'EOF'
 #!/bin/sh
 set -e
-rm -rf /opt/aidf/venv
-python3 -m venv --system-site-packages /opt/aidf/venv
-/opt/aidf/venv/bin/pip install -q --upgrade --no-index --find-links /opt/aidf/wheels "pydantic>=2"
+systemctl disable aidf-auditd >/dev/null 2>&1 || true
 systemctl daemon-reload >/dev/null 2>&1 || true
+rm -rf /opt/aidf/venv
 exit 0
 EOF
 chmod 0755 "$STAGE/DEBIAN/postinst" "$STAGE/DEBIAN/prerm" "$STAGE/DEBIAN/postrm"

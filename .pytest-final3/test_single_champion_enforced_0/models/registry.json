@@ -1,0 +1,15 @@
+{
+  "models": [
+    {
+      "model_id": "a",
+      "version": "1.0.0",
+      "role": "champion",
+      "artifact": "D:\\\u0418\u0418 \u0437\u0430\u0449\u0438\u0442\u043d\u0438\u043a \u0412\u0435\u043a\u0442\u043e\u0440-\u0437\u0430\u0449\u0438\u0442\u043d\u0438\u043a\\.pytest-final3\\test_single_champion_enforced_0\\a-1.0.0.onnx",
+      "pack_path": "D:\\\u0418\u0418 \u0437\u0430\u0449\u0438\u0442\u043d\u0438\u043a \u0412\u0435\u043a\u0442\u043e\u0440-\u0437\u0430\u0449\u0438\u0442\u043d\u0438\u043a\\.pytest-final3\\test_single_champion_enforced_0\\a-1.0.0-pack.json",
+      "metrics": {
+        "tpr": 0.9
+      },
+      "added_at": "2026-11-15T19:38:27.899920+00:00"
+    }
+  ]
+}

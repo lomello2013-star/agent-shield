@@ -1,0 +1,7 @@
+{
+  "schema_version": "1.0",
+  "sources": [],
+  "thresholds": {
+    "min_confidence": 0.7
+  }
+}

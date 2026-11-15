@@ -1,0 +1,17 @@
+
+[agent]
+source = "linux.auditd"
+audit_log = "/tmp/audit.log"
+data_root = "/tmp/aidf"
+report_events = false
+collect_interval_s = 2.5
+queue_capacity = 77
+
+[thresholds]
+heartbeat_timeout_s = 12
+alert_budget = 3
+min_confidence = 0.7
+
+[stml]
+server_url = "http://example:8080"
+tenant = "t1"

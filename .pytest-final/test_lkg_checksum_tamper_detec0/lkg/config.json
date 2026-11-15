@@ -1,0 +1,1 @@
+{"schema_version": "1.0", "sources": ["win.etw.ti", "win.amsi"], "thresholds": {"alert_per_host_per_14d": 999}, "queue": {"capacity": 10000}, "allowlist": []}

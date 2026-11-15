@@ -1,0 +1,12 @@
+{
+  "entries": [
+    {
+      "quarantine_id": "7575a32dc4a74e59b38dc17679bd3a08",
+      "original_path": "D:\\\u0418\u0418 \u0437\u0430\u0449\u0438\u0442\u043d\u0438\u043a \u0412\u0435\u043a\u0442\u043e\u0440-\u0437\u0430\u0449\u0438\u0442\u043d\u0438\u043a\\.pytest-full4\\test_executor_quarantines_with0\\bad.bin",
+      "sha256": "b5c1fb2efc6d6b4674c2fdcc48ce01b43a3b7c03763c0c3355de0099ee0f8c73",
+      "size": 4,
+      "created_at": 1794771916.5964365,
+      "reason": "test"
+    }
+  ]
+}

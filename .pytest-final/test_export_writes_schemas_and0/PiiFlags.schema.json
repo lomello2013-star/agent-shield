@@ -1,0 +1,28 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "paths_hashed": {
+      "default": true,
+      "title": "Paths Hashed",
+      "type": "boolean"
+    },
+    "cmdline_hashed": {
+      "default": true,
+      "title": "Cmdline Hashed",
+      "type": "boolean"
+    },
+    "usernames_hashed": {
+      "default": true,
+      "title": "Usernames Hashed",
+      "type": "boolean"
+    },
+    "ips_hashed": {
+      "default": false,
+      "title": "Ips Hashed",
+      "type": "boolean"
+    }
+  },
+  "title": "PiiFlags",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}
