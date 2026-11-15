@@ -1,4 +1,4 @@
-# AIDefender/STML pilot product
+﻿# AIDefender/STML pilot product
 
 Scope: maximum protection that does not require Microsoft driver signing or a
 legal entity. EV/WHCP/HDC are deliberately out of scope.
@@ -12,8 +12,8 @@ legal entity. EV/WHCP/HDC are deliberately out of scope.
 | Windows service | `aidf-service.exe` | daemon, rules, audit, response |
 | Windows panel | `aidf-agent.exe` / localhost | local health, decisions |
 | Windows hardening | Sysmon + Defender ASR/CFA + Firewall | prevention/telemetry without our driver |
-| Linux auditd agent | `aidf-agent.py` | auditd → STML |
-| Linux guard | `aidf-linux-guard.py` | fanotify exec/write denial (pilot) |
+| Linux auditd agent | `aidf-agent.py` | auditd в†’ STML |
+| Linux guard | `aidf_linux_guard.py` | fanotify exec/write denial (pilot) |
 | Linux eBPF guard | `aidf-enforce` + `.bpf.o` | kernel LSM exec/write denial (primary) |
 | Updates | signed A/B bundles | versioned updates/rollback |
 
@@ -98,3 +98,4 @@ VERSION=0.1.0 bash packaging/build_linux_packages.sh --objects dist/ebpf
 - [ ] Quarantine/suspend/block_network tested on benign objects.
 - [ ] Update/rollback tested.
 - [ ] No claim of production certification.
+
