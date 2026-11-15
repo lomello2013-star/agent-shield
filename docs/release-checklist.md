@@ -1,76 +1,49 @@
-# Release checklist
+# AIDefender/STML pilot release checklist
 
-> Статус на 2026-11-14: **v1 lab/PoC готов; production-драйвер заморожен**.
-> v1 scope и freeze — [v1-release-scope.md](v1-release-scope.md), D-016.
+Status: **pilot / lab-only**. Not production-certified. No EV/WHQL/HDC or legal entity.
 
-## 0. v1 scope / freeze
+## Linux — verified
 
-- [x] E7 v1: TPR ≥0.90 @1 % FPR (0.90136); PPV 0.5642 @0.05 % (D-014).
-- [x] F10 v1: FBR ≤15 % lab (13.33 %); 10 % — pilot feed (D-015).
-- [ ] **FROZEN:** EV, Partner Center, HLK/WHQL, production-подпись драйвера,
-  production HSM/ключ (D-016). Не начинать до юрлица/партнёра.
-- [x] Lab-ключи: offline USB (LUKS + 2-of-3), [hsm-usb-plan.md](hsm-usb-plan.md).
+- [x] Ubuntu 24.04 VM, static IP `172.23.213.50/20`.
+- [x] SSH key login.
+- [x] BPF LSM enabled: `lsm=lockdown,capability,landlock,yama,apparmor,bpf`.
+- [x] `aidf-ebpf-guard.service` active at boot.
+- [x] eBPF exec deny: `/tmp/t2` → `Permission denied` (RC 126), survives reboot.
+- [x] `apt-get update` under enforce: `APT_RC=0`.
+- [x] `.deb` and `.rpm` built and installed.
+- [x] Signed object manifest (`objects.sha256` + `.sig`).
+- [ ] eBPF write-deny re-tested on this final VM.
+- [ ] fanotify removed; fallback is auditd only.
 
-## 1. Код и контракты
+## Windows — verified
 
-- [x] User-mode ядро, 30 правил, 21 схема, тесты Python (**545 passed / 0 skip**, включает STML; `run_all` 29/29).
-- [x] Rust-порт 12 модулей: 133 теста, gate, benchmark, Python-wire IPC.
-- [x] Immutable-константы не менялись; fingerprint стабилен.
-- [x] `secrets/` исключён из git; dev-ключ не production.
-- [x] **Windows-служба `AIDefender`** установлена (ctypes SCM-хост, автозапуск, start/stop ~0,3 с).
-- [ ] Пакетная поставка `rules/` и `models/` вне checkout.
-- [ ] Полный `pip install` + запуск демона в чистом окружении (сейчас проверяется только editable-install).
-- [ ] Installer (MSI/deb/rpm) и systemd unit для Linux — **не сделано**.
+- [x] Onedir service at `C:\Program Files\AIDefender\service`.
+- [x] `AIDefender` service Running after reboot.
+- [x] Sysmon64 Running; `win.sysmon` events produced.
+- [x] Defender ASR/CFA/NP audit → enforce.
+- [x] WDAC enforce with SHA256 hash allowlist (`AIDefender Enforce HashAllow`, IsEnforced=True).
+- [x] AppLocker enforce for **Exe + Dll + Script**; allow rules for `%WINDIR%`, `%PROGRAMFILES%`, `C:\Program Files\AIDefender`.
+- [x] Firewall block/unblock, quarantine/restore, suspend/resume tested on benign objects.
+- [x] Service recovery + ACL hardening applied.
+- [ ] Re-run WDAC after any binary change (hashes must be regenerated).
 
-## 2. Надёжность
+## STML
 
-- [x] R1/R4: **24-часовой soak** без `0xC0000005`: 86 400,2 с, 0 рестартов, 100 % availability, 373 564 записи.
-- [ ] 7-дневный soak на always-on VM.
-- [x] R2/R3/R6/R8/R9/R10 измерены (см. `artifacts/stage1_report.json`); R3 дополнен супервизором (перезапуск ~0,28 с).
-- [ ] R7 (FP-отключения) — нужен пилот.
+- [x] guard event → connector → STML report (`kind=guard`) in WSL.
+- [x] Unit tests: full `pytest` pass.
+- [ ] Live end-to-end test on the final Linux VM.
 
-## 3. Эффективность
+## Release gates
 
-- [x] E7 v1 ≥0,90 @1 % FPR (0,90136); исходная 0,95 @0,05 % — research (D-014).
-- [ ] **FROZEN:** E12 enforce <0,1 % — нужен admin/RTP/WDAC audit; не входит в v1 (D-016).
-- [ ] E1–E6/E8 — red-team 20 сценариев/ОС и 7-дневный пилот.
-- [x] E9 рабочая точка 56,4 % @0,05 % FPR; E10 в цели.
-- [x] E11 28/28 на авторских фикстурах (не red-team).
+- [ ] Rebuild packages from final commit.
+- [ ] Regenerate `objects.sha256` + signature.
+- [ ] Regenerate WDAC hash-allowlist after service rebuild.
+- [ ] Acceptance run on clean Linux + Windows VMs.
+- [ ] No production claim; attach this checklist to the pilot release.
 
-## 4. Платформа и подпись
+## Known limitations
 
-- [ ] **FROZEN:** A: EV-сертификат + Hardware Dev Center (D-016).
-- [ ] **FROZEN:** production-подпись драйвера/WHQL/HLK (D-016).
-- [x] B: Windows VM + WDK/test-signing — lab-драйвер проверен.
-- [x] C: Linux VM + Secure Boot/fapolicyd/IMA — lab-проверки выполнены.
-- [ ] **FROZEN:** E12/WDAC enforce — admin/EV, не входит в v1.
-- [x] Драйвер/minifilter — test-signed lab; production-подпись заморожена.
-
-## 5. Процесс
-
-- [ ] Независимый auto-review (вторая модель, temperature=0); M8/M9.
-- [ ] `human_acceptance` для релиза.
-- [ ] Red-team и chaos перед релизом.
-- [x] DEVLOG ведётся; измерения сопровождаются артефактами (формат-полнота 67 %, legacy раскрыты).
-- [x] `docs/status.md` — валидный UTF-8 без NUL; `docs_consistency` **13/13** (все проверки строгие).
-
-## 6. Инфраструктура
-
-- [x] `.gitignore`, README, LICENSE (proprietary placeholder), SECURITY, CHANGELOG.
-- [x] `pyproject.toml` с build-system и extras.
-- [x] CI workflow (Windows: pytest + Rust test/clippy) — файл добавлен, раннер не подключён.
-- [ ] Lockfile/полный набор версий для production; текущий `requirements.lock` — снимок dev-среды.
-- [ ] Подпись артефактов/репозитория обновлений.
-- [ ] Резервное копирование/откат на уровне поставки (есть только откат CI-политики и настроек Defender).
-
-## 7. Команды приёмки
-
-```powershell
-python -m pytest
-python scripts\run_all.py
-.\rust\gate.ps1
-python scripts\docs_consistency.py
-```
-
-Критерий: все обязательные шаги зелёные, `docs_consistency` 13/13,
-`docs/status.md` — валидный UTF-8 без NUL.
+- AppLocker DLL enforcement can affect performance; validate on target.
+- WDAC hashes are build-specific.
+- No kernel driver on Windows; no PPL/ELAM.
+- EV/WHQL/HDC and legal certification are frozen/out of scope.
