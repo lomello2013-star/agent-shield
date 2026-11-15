@@ -64,3 +64,6 @@
 - [x] Upgrade-in-place: install_service поверх Running; reboot -> AIDefender/Sysmon Running, WDAC active.
 - [x] WDAC hash-allowlist runtime generation (-OutDir test) produced merged.cip.
 
+
+- [x] auditd fallback live: eBPF stopped, aidf-auditd active (venv pydantic2).
+
