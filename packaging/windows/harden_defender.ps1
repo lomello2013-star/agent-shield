@@ -1,4 +1,4 @@
-#requires -RunAsAdministrator
+#requires -Version 5.1
 <#
 .SYNOPSIS
   Apply Microsoft Defender hardening (ASR, CFA, network protection) in audit or
@@ -13,9 +13,9 @@ param(
     [switch]$SkipCfa
 )
 $ErrorActionPreference = "Stop"
-if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()
+if ($Apply -and -not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()
         ).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-    throw "Run as administrator"
+    throw "Run as administrator for -Apply"
 }
 
 $mode = if ($Enforce) { 1 } else { 2 }   # 1=block, 2=audit

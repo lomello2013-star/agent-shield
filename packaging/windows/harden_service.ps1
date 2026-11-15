@@ -1,4 +1,4 @@
-#requires -RunAsAdministrator
+#requires -Version 5.1
 <#
 .SYNOPSIS
   Service recovery and folder ACL hardening for AIDefender.
@@ -6,9 +6,9 @@
 #>
 param([switch]$Apply)
 $ErrorActionPreference = "Stop"
-if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()
+if ($Apply -and -not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()
         ).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-    throw "Run as administrator"
+    throw "Run as administrator for -Apply"
 }
 $svc = "AIDefender"
 $data = "C:\ProgramData\AIDefender"
