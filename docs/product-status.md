@@ -37,7 +37,7 @@
 | eBPF LSM attach | **Verified in WSL**: `bpf` in `/sys/kernel/security/lsm`; loader attaches | Still validate on target Ubuntu kernel |
 | eBPF deny exec | **Verified in WSL**: `Permission denied` + `denied:true` event | Validate on target VM |
 | fanotify permission events | WSL did not deliver them in our test | Real Linux VM: audit event, then enforce deny |
-| `apt update` under guard | Must not break package manager | audit/enforce + apt |
+| `apt update` under guard | **Verified in WSL** in audit and enforce with a test-only write policy: `APT_RC=0` | Recheck with production policy on target VM |
 | Windows service EXE | Built; current service is Python; not replaced | Lab VM: install_service, reboot, health |
 | Sysmon channel | Sysmon not installed on this host | Install signed Sysmon, restart service |
 | Defender ASR/CFA | Not applied (would change host) | VM: audit, review, enforce |
@@ -60,6 +60,7 @@
 This is a **pilot build**, not a certified product. The Windows path is a user-mode
 EDR-lite over Defender/Sysmon; the Linux path is kernel enforcement but must be
 validated on a real kernel before calling it ready.
+
 
 
 
