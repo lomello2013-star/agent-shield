@@ -40,8 +40,8 @@
 | `apt update` under guard | **Verified in WSL** in audit and enforce with a test-only write policy: `APT_RC=0` | Recheck with production policy on target VM |
 | Windows service EXE | **Verified in AIDF-Win11 VM**: service Running after reboot (StartPending ~20 s) | Improve onefile startup |
 | Sysmon channel | **Verified in AIDF-Win11 VM**: Sysmon64 Running; `win.sysmon` reports are produced | none |
-| Defender ASR/CFA | **Verified in AIDF-Win11 VM**: ASR=9, actions=2 (Audit), CFA=2, NP=2 | enforce after review |
-| WDAC audit/enforce | **Deployed in AIDF-Win11 VM**; audit active; enforce test blocked unsigned `aidf-service.exe`, policies removed to recover | Add allow rules for agent before enforce |
+| Defender ASR/CFA | **Verified in AIDF-Win11 VM**: audit (2/2/2) then enforce (1/1/1), ASR=9 | none |
+| WDAC audit/enforce | **Deployed in AIDF-Win11 VM**; enforce blocks unsigned `aidf-service.exe`; policies removed to recover | Add allow rules for agent before enforce |
 | Windows response | **Verified in AIDF-Win11 VM**: firewall block/unblock, quarantine/restore, suspend/resume | none |
 | STML end-to-end with guard | No live Linux guard events in STML | Linux VM в†’ connector в†’ STML |
 
@@ -60,6 +60,7 @@
 This is a **pilot build**, not a certified product. The Windows path is a user-mode
 EDR-lite over Defender/Sysmon; the Linux path is kernel enforcement but must be
 validated on a real kernel before calling it ready.
+
 
 
 
