@@ -1,4 +1,4 @@
-# Minimal Sysmon configuration for AIDefender. Includes process/network/file/registry/DNS/image events.
+﻿<!-- Minimal Sysmon configuration for AIDefender. Includes process/network/file/registry/DNS/image events. -->
 <Sysmon schemaversion="4.90">
   <HashAlgorithms>SHA256</HashAlgorithms>
   <CheckRevocation>false</CheckRevocation>
@@ -16,3 +16,4 @@
     <CreateRemoteThread onmatch="exclude" />
   </EventFiltering>
 </Sysmon>
+
