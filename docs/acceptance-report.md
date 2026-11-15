@@ -55,7 +55,30 @@ VM: `AIDF-Win11`, Windows 11.
 | release manifest | `dist/release-manifest.json` |
 | CI workflow | YAML валиден, GitHub run не выполнялся |
 
-## Не закрыто
+## Clean Ubuntu acceptance
+
+Fresh Ubuntu 24.04 cloud VM (`AIDF-Ubuntu-Accept2`, 172.23.213.60), converted
+from the bootable qcow2 image (not the rootfs image).
+
+| Step | Result |
+|---|---|
+| install `python3-venv`, `auditd`, `.deb` | package installed |
+| service after install | `aidf-auditd: active`, `auditd: active` |
+| reboot | service active again |
+| reinstall same `.deb` | active |
+| remove package | `REMOVE_RC=0`, service inactive, package `rc` |
+| reinstall | active |
+
+The first package build had a broken `postrm` (it contained `postinst`
+contents); fixed by removing venv creation from `postrm` and rebuilding.
+
+## Windows clean VM
+
+Not performed: the Windows 11 install ISO is not present in `D:\vm` (only
+`answer.vhdx`/`unattend.iso` and the existing installed disk). A real
+clean install needs the ISO or a clean VM image.
+
+## Not closed
 
 - RPM live на Fedora/RHEL — нет Fedora VM.
 - CI на GitHub — нет remote/credentials.
