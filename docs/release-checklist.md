@@ -1,70 +1,66 @@
-﻿# Р§РµРє-Р»РёСЃС‚ РїРёР»РѕС‚РЅРѕРіРѕ СЂРµР»РёР·Р° AIDefender/STML
+# Чек-лист пилотного релиза AIDefender/STML
 
-РЎС‚Р°С‚СѓСЃ: **pilot / lab-only**. РќРµ production. EV/WHQL/HDC Рё СЋСЂС‡Р°СЃС‚СЊ Р·Р°РјРѕСЂРѕР¶РµРЅС‹.
+Статус: **pilot / lab-only**. Не production. EV/WHQL/HDC и юрчасть заморожены.
 
-## Linux вЂ” РїСЂРѕРІРµСЂРµРЅРѕ
+## Linux — проверено
 
-- [x] Ubuntu 24.04 VM, СЃС‚Р°С‚РёС‡РµСЃРєРёР№ IP `172.23.213.50/20`.
-- [x] Р’С…РѕРґ РїРѕ SSH-РєР»СЋС‡Сѓ.
+- [x] Ubuntu 24.04 VM, статический IP `172.23.213.50/20`.
+- [x] Вход по SSH-ключу.
 - [x] BPF LSM: `lsm=lockdown,capability,landlock,yama,apparmor,bpf`.
-- [x] `aidf-ebpf-guard.service` Р°РєС‚РёРІРµРЅ РїРѕСЃР»Рµ reboot.
-- [x] eBPF exec deny: `/tmp/t2` в†’ `Permission denied` (RC 126).
+- [x] `aidf-ebpf-guard.service` активен после reboot.
+- [x] eBPF exec deny: `/tmp/t2` → `Permission denied` (RC 126).
 - [x] eBPF write deny: `write=/tmp/wtest`.
-- [x] `apt-get update` РїРѕРґ enforce: `APT_RC=0`.
-- [x] `.deb` Рё `.rpm` СЃРѕР±СЂР°РЅС‹.
-- [x] Pydantic 2.14.3 РІ `/opt/aidf/venv`.
-- [x] auditd fallback Р°РєС‚РёРІРµРЅ Р±РµР· eBPF.
-- [x] logrotate reports/audit/raw вЂ” 14 РґРЅРµР№.
+- [x] `apt-get update` под enforce: `APT_RC=0`.
+- [x] `.deb` и `.rpm` собраны.
+- [x] Pydantic 2.14.3 в `/opt/aidf/venv`.
+- [x] auditd fallback активен без eBPF.
+- [x] logrotate reports/audit/raw — 14 дней.
+- [x] Fedora 43 VM: RPM установлен, `auditd`/`aidf-auditd` active, `linux.auditd` events.
 
-## Windows вЂ” РїСЂРѕРІРµСЂРµРЅРѕ
+## Windows — проверено
 
-- [x] Onedir-СЃР»СѓР¶Р±Р° РІ `C:\Program Files\AIDefender\service`.
-- [x] `AIDefender` Running РїРѕСЃР»Рµ reboot.
-- [x] `Sysmon64` Running, СЃРѕР±С‹С‚РёСЏ `win.sysmon`.
-- [x] Defender ASR/CFA/NP audit в†’ enforce.
+- [x] Onedir-служба в `C:\Program Files\AIDefender\service`.
+- [x] `AIDefender` Running после reboot.
+- [x] `Sysmon64` Running, события `win.sysmon`.
+- [x] Defender ASR/CFA/NP audit → enforce.
 - [x] WDAC enforce + SHA256 hash-allowlist.
 - [x] AppLocker Exe + Dll + Script enforce.
 - [x] Firewall block/unblock.
 - [x] Quarantine/restore.
 - [x] Suspend/resume.
-- [x] Uninstall/rollback Рё reinstall/upgrade.
-- [x] Watchdog: РѕСЃС‚Р°РЅРѕРІР»РµРЅРЅР°СЏ СЃР»СѓР¶Р±Р° РїРѕРґРЅРёРјР°РµС‚СЃСЏ.
-- [x] Log maintenance 30 РґРЅРµР№.
+- [x] Uninstall/rollback и reinstall/upgrade.
+- [x] Watchdog: остановленная служба поднимается.
+- [x] Log maintenance 30 дней.
 
 ## STML
 
-- [x] Live Linux в†’ connector в†’ STML (1 guard report).
-- [x] Live Windows в†’ connector в†’ STML (50 reports).
+- [x] Live Linux → connector → STML (1 guard report).
+- [x] Live Windows → connector → STML (50 reports).
 - [x] HTTPS self-signed.
-- [x] mTLS: Р±РµР· cert reject, СЃ cert OK.
-- [x] non-loopback bind С‚СЂРµР±СѓРµС‚ `--allow-remote`.
-- [x] Р СѓСЃСЃРєРёР№ STML UI Рё РґРёРЅР°РјРёС‡РµСЃРєРёРµ СЃС‚Р°С‚СѓСЃС‹.
-- [x] Р СѓСЃСЃРєРёР№ agent panel РІ РїРµСЂРµСЃРѕР±СЂР°РЅРЅРѕРј EXE/MSI.
+- [x] mTLS: без cert reject, с cert OK.
+- [x] non-loopback bind требует `--allow-remote`.
+- [x] Русский STML UI и динамические статусы.
+- [x] Русский agent panel в пересобранном EXE/MSI.
 
-## Р“РµР№С‚С‹ СЂРµР»РёР·Р°
+## Гейты релиза
 
-- [x] РџР°РєРµС‚С‹ РїРµСЂРµСЃРѕР±СЂР°РЅС‹.
-- [x] `objects.sha256` + РїРѕРґРїРёСЃСЊ.
+- [x] Пакеты пересобраны.
+- [x] `objects.sha256` + подпись.
 - [x] Release manifest / SBOM.
-- [x] CI workflow РґРѕР±Р°РІР»РµРЅ.
-- [x] Reproducible `.deb`: РґРІРµ СЃР±РѕСЂРєРё byte-identical.
-- [x] Reproducible `.rpm`: РґРІРµ СЃР±РѕСЂРєРё byte-identical.
-- [ ] CI СЂРµР°Р»СЊРЅРѕ РїСЂРѕРіРЅР°РЅ РЅР° GitHub.
-- [ ] Clean-VM acceptance РЅР° С‡РёСЃС‚РѕРј Ubuntu/Windows.
-- [ ] RPM live РЅР° Fedora/RHEL.
+- [x] CI workflow добавлен.
+- [x] Reproducible `.deb`: две сборки byte-identical.
+- [x] Reproducible `.rpm`: две сборки byte-identical.
+- [ ] CI реально прогнан на GitHub.
+- [ ] Clean-VM acceptance на чистом Ubuntu/Windows.
+- [x] RPM live на Fedora 43.
 
-## РўРµСЃС‚С‹
+## Тесты
 
-- [x] `pytest tests` вЂ” pass.
-- [x] `pytest stml/tests` вЂ” pass.
-- [ ] Full pytest РѕРґРЅРёРј РїСЂРѕС†РµСЃСЃРѕРј РїРѕСЃР»Рµ РґР»РёРЅРЅРѕР№ СЃРµСЃСЃРёРё вЂ” Windows socket exhaustion; РїРµСЂРµР·Р°РїСѓСЃС‚РёС‚СЊ РїРѕСЃР»Рµ cleanup.
+- [x] Full `pytest` — 100% pass после расширения dynamic port range.
 
-## РР·РІРµСЃС‚РЅС‹Рµ РѕРіСЂР°РЅРёС‡РµРЅРёСЏ
+## Известные ограничения
 
-- AppLocker DLL enforcement РјРѕР¶РµС‚ РІР»РёСЏС‚СЊ РЅР° РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊРЅРѕСЃС‚СЊ.
-- WDAC hashes РЅСѓР¶РЅРѕ РїРµСЂРµСЃС‡РёС‚С‹РІР°С‚СЊ РїРѕСЃР»Рµ РєР°Р¶РґРѕР№ СЃР±РѕСЂРєРё СЃРµСЂРІРёСЃР°.
-- РќРµС‚ СЃРѕР±СЃС‚РІРµРЅРЅРѕРіРѕ Windows-РґСЂР°Р№РІРµСЂР°/PPL/ELAM.
-- EV/WHQL/HDC Рё СЋСЂРёРґРёС‡РµСЃРєР°СЏ СЃРµСЂС‚РёС„РёРєР°С†РёСЏ вЂ” РІРЅРµ scope.
-
-
-
+- AppLocker DLL enforcement может влиять на производительность.
+- WDAC hashes нужно пересчитывать после каждой сборки сервиса.
+- Нет собственного Windows-драйвера/PPL/ELAM.
+- EV/WHQL/HDC и юридическая сертификация — вне scope.
