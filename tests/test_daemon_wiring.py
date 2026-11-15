@@ -228,3 +228,21 @@ def test_service_entry_wires_response_and_ipc():
     assert "bytes.fromhex(authkey_hex)" in src  # shared authkey file is hex
     assert "AIDF_AUTHKEY_FILE" in src           # connector reads the same file
     assert "channel_exists(" in src        # opt-in Sysmon must be probed, not assumed
+
+def test_approval_executes_real_quarantine(tmp_path):
+    """Approval -> ResponseExecutor -> QuarantineStore, no fake response."""
+    from core.response import QuarantineStore, ResponseExecutor
+    d = make_daemon(tmp_path)
+    target = tmp_path / "benign.txt"
+    target.write_text("benign", encoding="utf-8")
+    qroot = tmp_path / "q"
+    qroot.mkdir()
+    store = QuarantineStore(str(qroot), key=b"0" * 32)
+    d.response = ResponseExecutor(d.confirmations, quarantine=store)
+    d._execute_actions(_verdict(object_path=str(target)), ("quarantine",))
+    cid = next(iter(d.pending_actions))
+    assert target.exists()
+    result = d.confirm(cid, "approved")
+    assert result["status"] in ("executed", "failed")
+    assert not target.exists()
+    d.stop()
