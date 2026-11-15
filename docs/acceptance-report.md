@@ -94,6 +94,29 @@ from `windows11-enterprise-eval-x64.iso` + `unattend.iso`.
 The first clean uninstall failed because `Add-MpPreference` received an empty
 ASR rule id list. Fixed `uninstall_product.ps1` to require `$ids[0]`.
 
+## Service recovery / watchdog
+
+On the lab Windows VM `AIDF-Win11`:
+
+- `sc failure`: RESET_PERIOD 86400, restart 60s/120s/300s.
+- Watchdog task `AIDefender-Watchdog`: Ready.
+- Test: stop service with recovery disabled, run watchdog task, service returns Running.
+- Host `AIDefender` is Running; recovery actions configured; watchdog Ready.
+
+## Clean Ubuntu LSM limitation
+
+Clean Ubuntu cloud VM (`AIDF-Ubuntu-Accept2`) runs `auditd` and `aidf-auditd`
+active and writes `linux.auditd` events, but `/sys/kernel/security/lsm` is:
+
+```text
+lockdown,capability,landlock,yama,apparmor
+```
+
+No `bpf` entry, so the eBPF LSM guard cannot be loaded on this clean cloud
+image. The GRUB config was updated, but the cloud image's actual boot path
+does not consume it (`/proc/cmdline` unchanged). eBPF acceptance remains on
+the dedicated `AIDF-Linux-ISO` VM.
+
 ## Not closed
 
 - RPM live на Fedora/RHEL — нет Fedora VM.
