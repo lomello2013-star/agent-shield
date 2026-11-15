@@ -1,0 +1,7 @@
+
+[guard]
+mode = "enforce"
+mark_path = "/data"
+deny_exec = ["/data/tmp/"]
+protect_write = ["/data/etc/"]
+allow_write_processes = ["apt"]
