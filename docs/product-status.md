@@ -36,8 +36,8 @@
 |---|---|---|
 | eBPF LSM attach | **Verified in WSL**: `bpf` in `/sys/kernel/security/lsm`; loader attaches | Still validate on target Ubuntu kernel |
 | eBPF deny exec | **Verified in WSL**: `Permission denied` + `denied:true` event | Validate on target VM |
-| fanotify permission events | WSL did not deliver them in our test | Real Linux VM: audit event, then enforce deny |
-| `apt update` under guard | **Verified in WSL** in audit and enforce with a test-only write policy: `APT_RC=0` | Recheck with production policy on target VM |
+| fanotify permission events | Global mark `/` caused the VM to hang; not ready. eBPF is the verified path. | Mark only `/tmp`/mounts, add ignored masks |
+| `apt update` under guard | **Verified in WSL** and **AIDF-Linux VM**: `APT_RC=0` | none |
 | Windows service EXE | **Onedir build verified in AIDF-Win11 VM**: installed at `C:\Program Files\AIDefender\service`, service Running; no temp extraction | Reboot timing check |
 | Sysmon channel | **Verified in AIDF-Win11 VM**: Sysmon64 Running; `win.sysmon` reports are produced | none |
 | Defender ASR/CFA | **Verified in AIDF-Win11 VM**: audit (2/2/2) then enforce (1/1/1), ASR=9 | none |
@@ -60,6 +60,7 @@
 This is a **pilot build**, not a certified product. The Windows path is a user-mode
 EDR-lite over Defender/Sysmon; the Linux path is kernel enforcement but must be
 validated on a real kernel before calling it ready.
+
 
 
 
