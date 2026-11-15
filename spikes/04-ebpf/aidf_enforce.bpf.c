@@ -21,6 +21,18 @@ struct {
     __type(value, __u8);
 } deny_write SEC(".maps");
 
+struct inode_key {
+    __u64 dev;
+    __u64 ino;
+};
+
+struct {
+    __uint(type, BPF_MAP_TYPE_HASH);
+    __uint(max_entries, 4096);
+    __type(key, struct inode_key);
+    __type(value, __u8);
+} deny_inode SEC(".maps");
+
 struct {
     __uint(type, BPF_MAP_TYPE_ARRAY);
     __uint(max_entries, 1);
@@ -99,6 +111,22 @@ int BPF_PROG(aidf_exec, struct linux_binprm *bprm)
         return 0;
     int enforce = active();
     emit(1, enforce, path, (int)n, 0);
+    return enforce ? -13 : 0;
+}
+
+SEC("lsm/inode_permission")
+int BPF_PROG(aidf_inode, struct inode *inode, int mask)
+{
+    if ((mask & 0x2) == 0)       /* MAY_WRITE */
+        return 0;
+    struct inode_key k = {
+        .dev = BPF_CORE_READ(inode, i_sb, s_dev),
+        .ino = BPF_CORE_READ(inode, i_ino),
+    };
+    if (!bpf_map_lookup_elem(&deny_inode, &k))
+        return 0;
+    int enforce = active();
+    emit(2, enforce, "inode", 5, 0);
     return enforce ? -13 : 0;
 }
 

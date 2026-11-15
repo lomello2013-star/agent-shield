@@ -65,7 +65,7 @@ WSL2 usually lacks BPF LSM; do not treat WSL as validation.
 - loader attaches `aidf_exec` and `aidf_open`;
 - audit mode: `/tmp/aidf_ebpf_test` runs, event `denied:false`;
 - enforce mode: same exec returns `Permission denied`, event `denied:true`.
-- protected-write exact-path enforcement is **not proven**: an event with `denied:true` was observed, but a follow-up write still succeeded. Exec enforcement is verified.
+- protected-write exact-path enforcement is verified in WSL via `lsm/inode_permission` + inode map: writing `/tmp/aidf_write_test` returns `Permission denied`.
 
 Still validate on the target Ubuntu/RHEL kernel before calling it ready.
 
@@ -75,5 +75,6 @@ Still validate on the target Ubuntu/RHEL kernel before calling it ready.
   streams and auditd;
 - a root attacker can stop the daemon;
 - this is a pilot, not a certified AV/EDR.
+
 
 

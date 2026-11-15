@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 #include <unistd.h>
 
 #define MAX_PATH 256
@@ -22,7 +23,7 @@ static int lookup_mode(const char *s)
     return -1;
 }
 
-static int add_path(int fd, const char *path)
+static int add_hash(int fd, const char *path)
 {
     uint64_t key = 1469598103934665603ULL;
     for (const char *p = path; *p; p++) {
@@ -31,7 +32,24 @@ static int add_path(int fd, const char *path)
     }
     uint8_t one = 1;
     if (bpf_map_update_elem(fd, &key, &one, BPF_ANY) != 0) {
-        fprintf(stderr, "policy: cannot add %s: %s\n", path, strerror(errno));
+        fprintf(stderr, "policy: hash %s: %s\n", path, strerror(errno));
+        return -1;
+    }
+    return 0;
+}
+
+static int add_inode(int fd, const char *path)
+{
+    struct stat st;
+    if (stat(path, &st) != 0) {
+        fprintf(stderr, "policy: stat %s: %s\n", path, strerror(errno));
+        return -1;
+    }
+    struct { uint64_t dev; uint64_t ino; } key = {
+        .dev = (uint64_t)st.st_dev, .ino = (uint64_t)st.st_ino};
+    uint8_t one = 1;
+    if (bpf_map_update_elem(fd, &key, &one, BPF_ANY) != 0) {
+        fprintf(stderr, "policy: inode %s: %s\n", path, strerror(errno));
         return -1;
     }
     return 0;
@@ -73,8 +91,9 @@ int main(int argc, char **argv)
     }
 
     int write_fd = bpf_object__find_map_fd_by_name(obj, "deny_write");
+    int inode_fd = bpf_object__find_map_fd_by_name(obj, "deny_inode");
     int mode_fd = bpf_object__find_map_fd_by_name(obj, "mode");
-    if (write_fd < 0 || mode_fd < 0) {
+    if (write_fd < 0 || inode_fd < 0 || mode_fd < 0) {
         fprintf(stderr, "maps missing\n"); return 1;
     }
     uint32_t zero = 0, mode = (uint32_t)mode_val;
@@ -93,7 +112,8 @@ int main(int argc, char **argv)
         *eq = 0;
         const char *kind = line, *path = eq + 1;
         if (strcmp(kind, "write") == 0) {
-            if (add_path(write_fd, path) != 0) return 1;
+            if (add_hash(write_fd, path) != 0) return 1;
+            if (add_inode(inode_fd, path) != 0) return 1;
         }
         /* exec prefixes are compiled into the BPF program. */
     }
@@ -101,13 +121,16 @@ int main(int argc, char **argv)
 
     struct bpf_program *exec_prog = bpf_object__find_program_by_name(obj, "aidf_exec");
     struct bpf_program *open_prog = bpf_object__find_program_by_name(obj, "aidf_open");
-    if (!exec_prog || !open_prog) { fprintf(stderr, "programs missing\n"); return 1; }
+    struct bpf_program *inode_prog = bpf_object__find_program_by_name(obj, "aidf_inode");
+    if (!exec_prog || !open_prog || !inode_prog) { fprintf(stderr, "programs missing\n"); return 1; }
     struct bpf_link *exec_link = bpf_program__attach_lsm(exec_prog);
     struct bpf_link *open_link = bpf_program__attach_lsm(open_prog);
-    if (!exec_link || !open_link) {
+    struct bpf_link *inode_link = bpf_program__attach_lsm(inode_prog);
+    if (!exec_link || !open_link || !inode_link) {
         fprintf(stderr, "attach_lsm failed: %s (is BPF LSM enabled?)\n", strerror(errno));
         if (exec_link) bpf_link__destroy(exec_link);
         if (open_link) bpf_link__destroy(open_link);
+        if (inode_link) bpf_link__destroy(inode_link);
         bpf_object__close(obj);
         return 1;
     }
@@ -122,6 +145,7 @@ int main(int argc, char **argv)
     ring_buffer__free(rb);
     bpf_link__destroy(exec_link);
     bpf_link__destroy(open_link);
+    bpf_link__destroy(inode_link);
     bpf_object__close(obj);
     return 0;
 }
