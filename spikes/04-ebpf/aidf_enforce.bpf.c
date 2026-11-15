@@ -17,7 +17,7 @@
 struct {
     __uint(type, BPF_MAP_TYPE_HASH);
     __uint(max_entries, 4096);
-    __type(key, char[MAX_PATH]);
+    __type(key, __u64);
     __type(value, __u8);
 } deny_write SEC(".maps");
 
@@ -73,6 +73,20 @@ static __always_inline int active(void)
     return m && *m;
 }
 
+static __always_inline __u64 path_hash(const char *p)
+{
+    __u64 h = 1469598103934665603ULL;
+#pragma unroll
+    for (int i = 0; i < MAX_PATH; i++) {
+        char c = p[i];
+        if (!c)
+            break;
+        h ^= (unsigned char)c;
+        h *= 1099511628211ULL;
+    }
+    return h;
+}
+
 SEC("lsm/bprm_check_security")
 int BPF_PROG(aidf_exec, struct linux_binprm *bprm)
 {
@@ -95,7 +109,8 @@ int BPF_PROG(aidf_open, struct file *file)
     long n = bpf_d_path(&file->f_path, path, sizeof(path));
     if (n <= 0)
         return 0;
-    if (!bpf_map_lookup_elem(&deny_write, path))
+    __u64 h = path_hash(path);
+    if (!bpf_map_lookup_elem(&deny_write, &h))
         return 0;
     int enforce = active();
     emit(2, enforce, path, (int)n);

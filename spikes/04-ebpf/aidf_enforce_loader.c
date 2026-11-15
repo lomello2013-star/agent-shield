@@ -24,14 +24,13 @@ static int lookup_mode(const char *s)
 
 static int add_path(int fd, const char *path)
 {
-    char key[MAX_PATH] = {};
-    if (strlen(path) >= MAX_PATH) {
-        fprintf(stderr, "policy: path too long: %s\n", path);
-        return -1;
+    uint64_t key = 1469598103934665603ULL;
+    for (const char *p = path; *p; p++) {
+        key ^= (unsigned char)*p;
+        key *= 1099511628211ULL;
     }
-    strncpy(key, path, MAX_PATH - 1);
     uint8_t one = 1;
-    if (bpf_map_update_elem(fd, key, &one, BPF_ANY) != 0) {
+    if (bpf_map_update_elem(fd, &key, &one, BPF_ANY) != 0) {
         fprintf(stderr, "policy: cannot add %s: %s\n", path, strerror(errno));
         return -1;
     }
