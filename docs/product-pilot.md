@@ -13,7 +13,6 @@ legal entity. EV/WHCP/HDC are deliberately out of scope.
 | Windows panel | `aidf-agent.exe` / localhost | local health, decisions |
 | Windows hardening | Sysmon + Defender ASR/CFA + Firewall | prevention/telemetry without our driver |
 | Linux auditd agent | `aidf-agent.py` | auditd в†’ STML |
-| Linux guard | `aidf_linux_guard.py` | fanotify exec/write denial (pilot) |
 | Linux eBPF guard | `aidf-enforce` + `.bpf.o` | kernel LSM exec/write denial (primary) |
 | Updates | signed A/B bundles | versioned updates/rollback |
 
@@ -50,7 +49,6 @@ powershell -File packaging\windows\harden_service.ps1 -Apply
 sudo bash scripts/install_linux_audit_agent.sh
 sudo bash scripts/install_linux_guard.sh
 sudo nano /etc/aidf/guard.toml     # audit first
-sudo systemctl start aidf-guard
 ```
 
 eBPF LSM primary (kernel must have `lsm=...,bpf`):
@@ -75,7 +73,6 @@ VERSION=0.1.0 bash packaging/build_linux_packages.sh --objects dist/ebpf
 | Windows | Windows Firewall | network |
 | Windows | user-mode response | after detection |
 | Windows | Sysmon | telemetry only |
-| Linux | fanotify guard | yes (exec/write) |
 | Linux | auditd | telemetry |
 | Linux | eBPF LSM | optional future |
 
@@ -98,4 +95,5 @@ VERSION=0.1.0 bash packaging/build_linux_packages.sh --objects dist/ebpf
 - [ ] Quarantine/suspend/block_network tested on benign objects.
 - [ ] Update/rollback tested.
 - [ ] No claim of production certification.
+
 

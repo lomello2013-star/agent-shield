@@ -31,15 +31,11 @@ find "$STAGE" -type d -name __pycache__ -prune -exec rm -rf {} +
 find "$STAGE" -type f -name '*.pyc' -delete
 chmod 0755 "$STAGE"
 install -m 0755 "$ROOT/scripts/aidf_agent.py" "$STAGE/opt/aidf/aidf_agent.py"
-install -m 0755 "$ROOT/scripts/aidf_linux_guard.py" "$STAGE/opt/aidf/aidf_linux_guard.py"
-install -m 0644 "$ROOT/packaging/linux/guard.toml" "$STAGE/etc/aidf/guard.toml"
-install -m 0644 "$ROOT/packaging/linux/aidf-guard.service" "$STAGE/lib/systemd/system/aidf-guard.service"
 install -m 0644 "$ROOT/packaging/linux/agent.toml" "$STAGE/etc/aidf/agent.toml"
 install -m 0644 "$ROOT/packaging/linux/aidf-auditd.service" \
     "$STAGE/lib/systemd/system/aidf-auditd.service"
 install -d "$STAGE/opt/aidf/docs"
 install -m 0644 "$ROOT/docs/linux-auditd.md" "$STAGE/opt/aidf/docs/linux-auditd.md"
-install -m 0644 "$ROOT/docs/linux-guard.md" "$STAGE/opt/aidf/docs/linux-guard.md"
 install -m 0644 "$ROOT/docs/linux-ebpf-guard.md" "$STAGE/opt/aidf/docs/linux-ebpf-guard.md"
 install -d "$STAGE/opt/aidf/agent/gui"
 install -m 0644 "$ROOT/agent/gui/index.html" "$STAGE/opt/aidf/agent/gui/index.html"

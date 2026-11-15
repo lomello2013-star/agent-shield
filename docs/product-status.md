@@ -3,7 +3,6 @@
 ## Built and committed
 
 - Linux auditd agent + connector reports.
-- Linux fanotify guard (audit/enforce) + systemd + deb.
 - Linux eBPF LSM guard (`aidf_enforce.bpf.o`, `aidf-enforce`, policy, unit, deb).
 - Linux packages: deb + tar + rpm spec, eBPF objects/loader included.
 - Windows:
@@ -36,7 +35,6 @@
 |---|---|---|
 | eBPF LSM attach | **Verified in WSL**: `bpf` in `/sys/kernel/security/lsm`; loader attaches | Still validate on target Ubuntu kernel |
 | eBPF deny exec | **Verified in WSL**: `Permission denied` + `denied:true` event | Validate on target VM |
-| fanotify permission events | Global mark `/` caused the VM to hang; not ready. eBPF is the verified path. | Mark only `/tmp`/mounts, add ignored masks |
 | `apt update` under guard | **Verified in WSL** and **AIDF-Linux VM**: `APT_RC=0` | none |
 | Windows service EXE | **Onedir build verified in AIDF-Win11 VM**: installed at `C:\Program Files\AIDefender\service`, service Running; no temp extraction | Reboot timing check |
 | Sysmon channel | **Verified in AIDF-Win11 VM**: Sysmon64 Running; `win.sysmon` reports are produced | none |
@@ -49,7 +47,6 @@
 
 1. Create Ubuntu 24.04 VM with BPF LSM (`lsm=lockdown,capability,landlock,yama,apparmor,bpf`) and a second disk for tests.
 2. Run eBPF guard audit/enforce; capture errors.
-3. Run fanotify fallback; compare.
 4. Install Windows service in a Windows 11 VM; install Sysmon; Defender auditв†’enforce.
 5. Test response on benign process/file/firewall rule.
 6. Send Linux guard events to STML; verify Reports.
@@ -79,5 +76,6 @@ validated on a real kernel before calling it ready.
 
 
 | AppLocker | AuditOnly policy applied in AIDF-Win11 VM; enforce not enabled (no default allow rules) |
+
 
 

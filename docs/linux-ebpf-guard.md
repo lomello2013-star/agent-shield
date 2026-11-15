@@ -1,7 +1,6 @@
 ﻿# Linux eBPF LSM prevention
 
-Primary Linux kernel-enforcement path. The fanotify guard remains a fallback for
-kernels/filesystems where eBPF LSM is unavailable.
+Primary Linux kernel-enforcement path. No fanotify fallback: it was removed after hanging the lab VM.
 
 ## Requirements
 
@@ -55,7 +54,7 @@ The loader hashes every path prefix at `/`, so `exec=/tmp/` covers
 3. Run audit; execute `/tmp/test`; see `kind=exec`.
 4. Run enforce; execute `/tmp/test`; expect `Permission denied`.
 5. Check `apt update` still works; protected writes use allowlisted processes
-   via the fanotify fallback or package-manager policy.
+   via the policy map.
 
 WSL2 usually lacks BPF LSM; do not treat WSL as validation.
 
@@ -75,6 +74,7 @@ Still validate on the target Ubuntu/RHEL kernel before calling it ready.
   streams and auditd;
 - a root attacker can stop the daemon;
 - this is a pilot, not a certified AV/EDR.
+
 
 
 
