@@ -60,3 +60,7 @@
 
 - [x] Windows watchdog: scheduled task every 5 min; stopped AIDefender -> watchdog started it (Running).
 
+
+- [x] Upgrade-in-place: install_service поверх Running; reboot -> AIDefender/Sysmon Running, WDAC active.
+- [x] WDAC hash-allowlist runtime generation (-OutDir test) produced merged.cip.
+
