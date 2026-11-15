@@ -38,10 +38,10 @@
 | eBPF deny exec | **Verified in WSL**: `Permission denied` + `denied:true` event | Validate on target VM |
 | fanotify permission events | WSL did not deliver them in our test | Real Linux VM: audit event, then enforce deny |
 | `apt update` under guard | **Verified in WSL** in audit and enforce with a test-only write policy: `APT_RC=0` | Recheck with production policy on target VM |
-| Windows service EXE | **Verified in AIDF-Win11 VM**: service Running after reboot (StartPending ~20 s) | Improve onefile startup |
+| Windows service EXE | **Onedir build verified in AIDF-Win11 VM**: installed at `C:\Program Files\AIDefender\service`, service Running; no temp extraction | Reboot timing check |
 | Sysmon channel | **Verified in AIDF-Win11 VM**: Sysmon64 Running; `win.sysmon` reports are produced | none |
 | Defender ASR/CFA | **Verified in AIDF-Win11 VM**: audit (2/2/2) then enforce (1/1/1), ASR=9 | none |
-| WDAC audit/enforce | **Deployed in AIDF-Win11 VM**; filepath allow rule added, but PyInstaller onefile child executes from temp and is blocked; service stopped. Policies removed to recover. | Build onedir service or allow its temp extraction |
+| WDAC audit/enforce | **Deployed in AIDF-Win11 VM**; onedir allow rule still did not let service start; policy removed offline, service recovered Running | Fix recursive filepath rule/allow DLLs before enforce |
 | Windows response | **Verified in AIDF-Win11 VM**: firewall block/unblock, quarantine/restore, suspend/resume | none |
 | STML end-to-end with guard | No live Linux guard events in STML | Linux VM в†’ connector в†’ STML |
 
@@ -60,6 +60,7 @@
 This is a **pilot build**, not a certified product. The Windows path is a user-mode
 EDR-lite over Defender/Sysmon; the Linux path is kernel enforcement but must be
 validated on a real kernel before calling it ready.
+
 
 
 
