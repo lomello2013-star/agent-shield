@@ -77,3 +77,6 @@ validated on a real kernel before calling it ready.
 
 
 
+
+| AppLocker | AuditOnly policy applied in AIDF-Win11 VM; enforce not enabled (no default allow rules) |
+
