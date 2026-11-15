@@ -26,7 +26,7 @@
 - Full `pytest`: 100% pass.
 - Linux `.deb` builds and contains guard/eBPF/policy/units.
 - Windows EXE/MSI/service EXE build.
-- PowerShell scripts parse.
+- PowerShell scripts parse; Defender/service hardening dry-run plans verified.
 - Helm lint/template (earlier).
 - Local panel/STML smoke test (earlier).
 
@@ -60,6 +60,7 @@
 This is a **pilot build**, not a certified product. The Windows path is a user-mode
 EDR-lite over Defender/Sysmon; the Linux path is kernel enforcement but must be
 validated on a real kernel before calling it ready.
+
 
 
 
