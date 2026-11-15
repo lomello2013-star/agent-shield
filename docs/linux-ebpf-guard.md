@@ -59,6 +59,16 @@ The loader hashes every path prefix at `/`, so `exec=/tmp/` covers
 
 WSL2 usually lacks BPF LSM; do not treat WSL as validation.
 
+### Result on this WSL kernel (2026-11)
+
+- `/sys/kernel/security/lsm` contains `bpf`;
+- loader attaches `aidf_exec` and `aidf_open`;
+- audit mode: `/tmp/aidf_ebpf_test` runs, event `denied:false`;
+- enforce mode: same exec returns `Permission denied`, event `denied:true`.
+- protected-write exact-path enforcement is **not yet verified**; exec enforcement is.
+
+Still validate on the target Ubuntu/RHEL kernel before calling it ready.
+
 ## Limits
 
 - no network/memory hooks in this program; use the existing eBPF telemetry

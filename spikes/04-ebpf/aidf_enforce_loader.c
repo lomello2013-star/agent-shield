@@ -15,16 +15,6 @@
 static volatile sig_atomic_t stop;
 static void on_sig(int sig) { (void)sig; stop = 1; }
 
-static uint64_t fnv1a(const char *s)
-{
-    uint64_t h = 1469598103934665603ULL;
-    for (; *s; s++) {
-        h ^= (unsigned char)*s;
-        h *= 1099511628211ULL;
-    }
-    return h;
-}
-
 static int lookup_mode(const char *s)
 {
     if (strcmp(s, "enforce") == 0) return 1;
@@ -34,9 +24,14 @@ static int lookup_mode(const char *s)
 
 static int add_path(int fd, const char *path)
 {
-    uint64_t key = fnv1a(path);
+    char key[MAX_PATH] = {};
+    if (strlen(path) >= MAX_PATH) {
+        fprintf(stderr, "policy: path too long: %s\n", path);
+        return -1;
+    }
+    strncpy(key, path, MAX_PATH - 1);
     uint8_t one = 1;
-    if (bpf_map_update_elem(fd, &key, &one, BPF_ANY) != 0) {
+    if (bpf_map_update_elem(fd, key, &one, BPF_ANY) != 0) {
         fprintf(stderr, "policy: cannot add %s: %s\n", path, strerror(errno));
         return -1;
     }
@@ -71,18 +66,15 @@ int main(int argc, char **argv)
 
     struct bpf_object *obj = bpf_object__open_file(argv[2], NULL);
     if (!obj) { fprintf(stderr, "open: %s\n", strerror(errno)); return 1; }
-    fprintf(stderr, "debug: object opened\n");
     if (bpf_object__load(obj) != 0) {
         fprintf(stderr, "load failed: %s\n", strerror(errno));
         bpf_object__close(obj);
         return 1;
     }
-    fprintf(stderr, "debug: object loaded\n");
 
-    int exec_fd = bpf_object__find_map_fd_by_name(obj, "deny_exec");
     int write_fd = bpf_object__find_map_fd_by_name(obj, "deny_write");
     int mode_fd = bpf_object__find_map_fd_by_name(obj, "mode");
-    if (exec_fd < 0 || write_fd < 0 || mode_fd < 0) {
+    if (write_fd < 0 || mode_fd < 0) {
         fprintf(stderr, "maps missing\n"); return 1;
     }
     uint32_t zero = 0, mode = (uint32_t)mode_val;
@@ -100,11 +92,10 @@ int main(int argc, char **argv)
         if (!eq) continue;
         *eq = 0;
         const char *kind = line, *path = eq + 1;
-        if (strcmp(kind, "exec") == 0) {
-            if (add_path(exec_fd, path) != 0) return 1;
-        } else if (strcmp(kind, "write") == 0) {
+        if (strcmp(kind, "write") == 0) {
             if (add_path(write_fd, path) != 0) return 1;
         }
+        /* exec prefixes are compiled into the BPF program. */
     }
     fclose(fp);
 
