@@ -31,7 +31,8 @@ EV/WHQL/HDC and legal certification are out of scope and frozen.
 - AppLocker DLL enforcement can affect performance.
 - WDAC hashes are build-specific; regenerate after every service build.
 - No own Windows kernel driver/PPL/ELAM.
-- Clean-VM acceptance on fresh Ubuntu/Windows is not complete.
+- Clean-VM acceptance was completed for base Ubuntu and Windows install/reboot/uninstall/reinstall.
+- Windows service recovery is configured (`sc failure`) and verified by killing the service process.
 - Fanotify was removed as unstable.
 - No production certification.
 
