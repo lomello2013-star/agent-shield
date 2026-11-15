@@ -77,3 +77,6 @@
 
 - [x] STML dynamic statuses translated (в норме/деградация/офлайн); isolated да/нет.
 
+
+- [x] Agent panel Russian: rebuilt aidf-agent.exe/MSI; screenshot shows Устройство защищено / Проверить / Открыть консоль сервера.
+
