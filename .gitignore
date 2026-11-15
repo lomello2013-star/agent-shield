@@ -48,3 +48,6 @@ build/
 
 # Driver build artifacts / test-signing key (regenerate with build.ps1/sign.ps1)
 driver/minifilter/out/
+
+# pytest temp dirs created with a custom basetemp
+.pytest-tmp/

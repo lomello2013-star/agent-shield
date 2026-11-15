@@ -1,1 +1,0 @@
-{"kind": "guard", "pid": 42, "process": "evil", "path": "/tmp/evil", "allow": false, "reason": "exec under writable path"}
