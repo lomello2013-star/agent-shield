@@ -74,3 +74,6 @@
 
 - [x] Russian UI visual: STML console screenshot shows Консоль STML / Хост / ОС / Статус / Загрузить.
 
+
+- [x] STML dynamic statuses translated (в норме/деградация/офлайн); isolated да/нет.
+

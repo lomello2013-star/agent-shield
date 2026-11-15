@@ -747,7 +747,7 @@ async function load(){
  const t=document.getElementById('token').value;
  const r=await fetch('/v0/agents',{headers:{Authorization:'Bearer '+t}});
  if(!r.ok){document.getElementById('msg').textContent='ошибка авторизации';return}
- const d=await r.json(); const rows=d.agents.map(a=>`<tr><td>${esc(a.hostname)}</td><td>${esc(a.os)}</td><td>${esc(a.agent_version)}</td><td class="${a.status==='healthy'?'ok':a.status==='degraded'?'warn':'bad'}">${esc(a.status)}</td><td>${new Date(a.last_seen*1000).toLocaleTimeString()}</td><td>${a.isolated?'yes':'no'}</td></tr>`).join('');
+ const d=await r.json(); const st={healthy:'в норме',degraded:'деградация',offline:'офлайн',isolated:'изолирован'}; const rows=d.agents.map(a=>`<tr><td>${esc(a.hostname)}</td><td>${esc(a.os)}</td><td>${esc(a.agent_version)}</td><td class="${a.status==='healthy'?'ok':a.status==='degraded'?'warn':'bad'}">${st[a.status]||esc(a.status)}</td><td>${new Date(a.last_seen*1000).toLocaleTimeString()}</td><td>${a.isolated?'да':'нет'}</td></tr>`).join('');
  document.getElementById('rows').innerHTML=rows; document.getElementById('msg').textContent=d.agents.length+' агентов';
 }
 </script></body></html>"""
