@@ -1,0 +1,19 @@
+[Unit]
+Description=AIDefender Linux eBPF LSM prevention
+Documentation=file:///opt/aidf/docs/linux-ebpf-guard.md
+After=local-fs.target
+ConditionPathExists=/opt/aidf/aidf_enforce.bpf.o
+ConditionPathExists=/opt/aidf/aidf-enforce
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/aidf
+ExecStart=/opt/aidf/aidf-enforce audit /opt/aidf/aidf_enforce.bpf.o /etc/aidf/enforce.policy
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65536
+NoNewPrivileges=false
+
+[Install]
+WantedBy=multi-user.target

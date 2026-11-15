@@ -40,6 +40,7 @@ install -m 0644 "$ROOT/packaging/linux/aidf-auditd.service" \
 install -d "$STAGE/opt/aidf/docs"
 install -m 0644 "$ROOT/docs/linux-auditd.md" "$STAGE/opt/aidf/docs/linux-auditd.md"
 install -m 0644 "$ROOT/docs/linux-guard.md" "$STAGE/opt/aidf/docs/linux-guard.md"
+install -m 0644 "$ROOT/docs/linux-ebpf-guard.md" "$STAGE/opt/aidf/docs/linux-ebpf-guard.md"
 install -d "$STAGE/opt/aidf/agent/gui"
 install -m 0644 "$ROOT/agent/gui/index.html" "$STAGE/opt/aidf/agent/gui/index.html"
 
@@ -49,10 +50,16 @@ if [ -n "$OBJECTS" ]; then
         exit 2
     fi
     install -m 0755 "$OBJECTS/loader" "$STAGE/opt/aidf/loader"
+    if [ -x "$OBJECTS/aidf-enforce" ]; then
+        install -m 0755 "$OBJECTS/aidf-enforce" "$STAGE/opt/aidf/aidf-enforce"
+    fi
     for obj in "$OBJECTS"/*.bpf.o; do
         [ -e "$obj" ] || continue
         install -m 0644 "$obj" "$STAGE/opt/aidf/"
     done
+    install -m 0644 "$ROOT/packaging/linux/enforce.policy" "$STAGE/etc/aidf/enforce.policy"
+    install -m 0644 "$ROOT/packaging/linux/aidf-ebpf-guard.service" \
+        "$STAGE/lib/systemd/system/aidf-ebpf-guard.service"
     for extra in objects.sha256 objects.sha256.sig objects.sha256.pub; do
         if [ -f "$ROOT/packaging/linux/$extra" ]; then
             install -m 0644 "$ROOT/packaging/linux/$extra" "$STAGE/opt/aidf/$extra"

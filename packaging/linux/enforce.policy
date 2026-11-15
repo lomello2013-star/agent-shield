@@ -1,0 +1,13 @@
+# AIDefender eBPF LSM policy (hashes are computed by the loader).
+# mode is passed on the command line: audit|enforce.
+exec=/tmp/
+exec=/var/tmp/
+exec=/dev/shm/
+exec=/run/user/
+write=/etc/shadow
+write=/etc/gshadow
+write=/etc/sudoers
+write=/etc/ssh/sshd_config
+write=/boot/
+write=/var/lib/aidf/
+write=/opt/aidf/

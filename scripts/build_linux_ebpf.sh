@@ -24,9 +24,11 @@ for f in "$WORK"/*.bpf.c; do
     clang -O2 -g -target bpf -D__TARGET_ARCH_x86 -I"$WORK" -c "$f" -o "$name.o"
 done
 gcc -O2 -o loader loader.c -lbpf -lz -lelf
+gcc -O2 -o aidf-enforce aidf_enforce_loader.c -lbpf -lz -lelf
 
 mkdir -p "$OUT"
 cp loader "$OUT"/
+cp aidf-enforce "$OUT"/
 cp ./*.bpf.o "$OUT"/
 echo "built $(find "$OUT" -maxdepth 1 -name '*.bpf.o' | wc -l) objects + loader in $OUT"
 echo "next: python3 scripts/linux_object_manifest.py --src $OUT && python3 scripts/sign_linux_manifest.py"

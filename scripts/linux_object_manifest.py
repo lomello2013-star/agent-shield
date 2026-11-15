@@ -14,6 +14,8 @@ def main() -> int:
     args = ap.parse_args()
     src = pathlib.Path(args.src)
     names = ["loader"] + sorted(p.name for p in src.glob("*.bpf.o"))
+    if (src / "aidf-enforce").exists():
+        names.insert(1, "aidf-enforce")
     lines = []
     for name in names:
         path = src / name

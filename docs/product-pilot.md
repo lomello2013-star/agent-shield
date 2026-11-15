@@ -14,6 +14,7 @@ legal entity. EV/WHCP/HDC are deliberately out of scope.
 | Windows hardening | Sysmon + Defender ASR/CFA + Firewall | prevention/telemetry without our driver |
 | Linux auditd agent | `aidf-agent.py` | auditd → STML |
 | Linux guard | `aidf-linux-guard.py` | fanotify exec/write denial (pilot) |
+| Linux eBPF guard | `aidf-enforce` + `.bpf.o` | kernel LSM exec/write denial (primary) |
 | Updates | signed A/B bundles | versioned updates/rollback |
 
 ## Windows install order
@@ -35,6 +36,9 @@ powershell -File packaging\windows\harden_defender.ps1 -Apply          # audit
 # after review:
 powershell -File packaging\windows\harden_defender.ps1 -Apply -Enforce
 
+# 3b. optional WDAC audit policy
+powershell -File packaging\windows\build_wdac_audit.ps1
+
 # 4. optional service recovery/ACL
 powershell -File packaging\windows\harden_service.ps1
 powershell -File packaging\windows\harden_service.ps1 -Apply
@@ -47,6 +51,14 @@ sudo bash scripts/install_linux_audit_agent.sh
 sudo bash scripts/install_linux_guard.sh
 sudo nano /etc/aidf/guard.toml     # audit first
 sudo systemctl start aidf-guard
+```
+
+eBPF LSM primary (kernel must have `lsm=...,bpf`):
+
+```bash
+sudo bash scripts/build_linux_ebpf.sh dist/ebpf
+sudo bash scripts/install_linux_ebpf_guard.sh
+sudo systemctl start aidf-ebpf-guard   # audit mode in the unit
 ```
 
 For package builds:
