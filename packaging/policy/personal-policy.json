@@ -1,0 +1,17 @@
+{
+  "policy_id": "personal-1",
+  "version": "1",
+  "channel": "stable",
+  "content": {
+    "schema_version": "1.0",
+    "sources": ["win.eventlog", "win.defender", "win.sysmon"],
+    "thresholds": {
+      "heartbeat_timeout_s": 60,
+      "alert_budget": 1,
+      "min_confidence": 0.5
+    },
+    "queue": {"capacity": 10000},
+    "watchdog": {},
+    "allowlist": []
+  }
+}
