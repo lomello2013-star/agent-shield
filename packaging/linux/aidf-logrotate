@@ -1,0 +1,13 @@
+/var/lib/aidf/reports/*.jsonl
+/var/lib/aidf/audit/*.jsonl
+/var/lib/aidf/raw/*/*.json
+{
+    daily
+    rotate 14
+    compress
+    delaycompress
+    missingok
+    notifempty
+    copytruncate
+    su root root
+}

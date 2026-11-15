@@ -32,6 +32,8 @@ find "$STAGE" -type f -name '*.pyc' -delete
 chmod 0755 "$STAGE"
 install -m 0755 "$ROOT/scripts/aidf_agent.py" "$STAGE/opt/aidf/aidf_agent.py"
 install -m 0644 "$ROOT/packaging/linux/agent.toml" "$STAGE/etc/aidf/agent.toml"
+install -d "$STAGE/etc/logrotate.d"
+install -m 0644 "$ROOT/packaging/linux/aidf-logrotate" "$STAGE/etc/logrotate.d/aidf"
 install -d "$STAGE/opt/aidf/wheels"
 install -m 0644 "$ROOT/packaging/linux/wheels"/*.whl "$STAGE/opt/aidf/wheels/"
 install -m 0644 "$ROOT/packaging/linux/aidf-auditd.service" \
@@ -86,6 +88,7 @@ python3 -m venv --system-site-packages /opt/aidf/venv
 /opt/aidf/venv/bin/pip install -q --upgrade --no-index --find-links /opt/aidf/wheels "pydantic>=2"
 systemctl daemon-reload >/dev/null 2>&1 || true
 systemctl enable aidf-auditd >/dev/null 2>&1 || true
+systemctl restart aidf-auditd >/dev/null 2>&1 || true
 exit 0
 EOF
 cat > "$STAGE/DEBIAN/prerm" <<'EOF'
@@ -135,6 +138,7 @@ cp $STAGE/lib/systemd/system/aidf-auditd.service %{buildroot}/lib/systemd/system
 %post
 systemctl daemon-reload >/dev/null 2>&1 || true
 systemctl enable aidf-auditd >/dev/null 2>&1 || true
+systemctl restart aidf-auditd >/dev/null 2>&1 || true
 
 %preun
 systemctl stop aidf-auditd >/dev/null 2>&1 || true
@@ -156,6 +160,8 @@ fi
 
 echo "built:"
 ls -1 "$OUT"/aidf-auditd* 2>/dev/null || true
+
+
 
 
 

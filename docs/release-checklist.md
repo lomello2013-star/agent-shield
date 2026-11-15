@@ -70,3 +70,4 @@
 
 - [x] Clean install .deb: /opt/aidf/venv pydantic 2.14.3; idf-auditd active without override.
 
+
