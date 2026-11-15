@@ -1,4 +1,4 @@
-import json
+﻿import json
 import time
 import uuid
 from datetime import datetime, timezone
@@ -55,7 +55,7 @@ def test_health_dashboard_and_enrol(tmp_path):
     try:
         assert _request(port, "GET", "/health")[0] == 200
         with urlopen(f"http://127.0.0.1:{port}/", timeout=5) as resp:
-            assert "STML Console" in resp.read().decode()
+            assert "Консоль STML" in resp.read().decode()
         with urlopen(f"http://127.0.0.1:{port}/ui/", timeout=5) as resp:
             assert "Approvals" in resp.read().decode()
         code, body = _request(port, "GET", "/v0/agents", token="viewer")
@@ -272,3 +272,4 @@ def test_100_agents_enrolled_and_heartbeat_concurrently(tmp_path):
         server.shutdown()
         server.server_close()
         store.close()
+

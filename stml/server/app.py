@@ -723,7 +723,7 @@ MODULES = [
 
 
 DASHBOARD = """<!doctype html><html lang="ru"><head><meta charset="utf-8">
-<title>STML вЂ” Fleet</title>
+<title>STML — Fleet</title>
 <style>
 body{background:#0b0f17;color:#e5e9f0;font:14px Inter,system-ui,sans-serif;margin:0}
 header{background:#111827;border-bottom:1px solid #243044;padding:14px 20px;display:flex;gap:16px;align-items:center}
@@ -758,4 +758,5 @@ def start_server(store: Store, config: ServerConfig, port: int = 0) -> tuple[Stm
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     return server, thread
+
 
