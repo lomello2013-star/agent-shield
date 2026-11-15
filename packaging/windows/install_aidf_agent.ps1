@@ -1,6 +1,6 @@
 #requires -RunAsAdministrator
 param(
-    [string]$Source = (Join-Path $PSScriptRoot "dist"),
+    [string]$Source = $PSScriptRoot,
     [string]$InstallDir = "C:\Program Files\AIDefender",
     [string]$DataDir = "C:\ProgramData\AIDefender"
 )

@@ -13,4 +13,5 @@ python -m PyInstaller --noconfirm --clean --onefile --name aidf-service `
 
 Copy-Item (Join-Path $PSScriptRoot "install_service.ps1") $Out -Force
 Copy-Item (Join-Path $PSScriptRoot "uninstall_service.ps1") $Out -Force
+Copy-Item (Join-Path $PSScriptRoot "install_product.ps1") $Out -Force
 Write-Output "built $Out\aidf-service.exe"
