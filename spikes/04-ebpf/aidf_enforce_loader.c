@@ -71,11 +71,13 @@ int main(int argc, char **argv)
 
     struct bpf_object *obj = bpf_object__open_file(argv[2], NULL);
     if (!obj) { fprintf(stderr, "open: %s\n", strerror(errno)); return 1; }
+    fprintf(stderr, "debug: object opened\n");
     if (bpf_object__load(obj) != 0) {
         fprintf(stderr, "load failed: %s\n", strerror(errno));
         bpf_object__close(obj);
         return 1;
     }
+    fprintf(stderr, "debug: object loaded\n");
 
     int exec_fd = bpf_object__find_map_fd_by_name(obj, "deny_exec");
     int write_fd = bpf_object__find_map_fd_by_name(obj, "deny_write");
