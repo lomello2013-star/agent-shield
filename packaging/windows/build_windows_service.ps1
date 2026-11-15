@@ -1,3 +1,4 @@
+param([switch]$BuildWdac)
 $ErrorActionPreference = "Stop"
 $Root = Split-Path $PSScriptRoot -Parent
 $Root = Split-Path $Root -Parent
@@ -14,4 +15,5 @@ python -m PyInstaller --noconfirm --clean --onedir --name aidf-service `
 Copy-Item (Join-Path $PSScriptRoot "install_service.ps1") $Out -Force
 Copy-Item (Join-Path $PSScriptRoot "uninstall_service.ps1") $Out -Force
 Copy-Item (Join-Path $PSScriptRoot "install_product.ps1") $Out -Force
-Write-Output "built $Out\aidf-service\aidf-service.exe"
+if ($BuildWdac) { & (Join-Path $PSScriptRoot "build_wdac_enforce_allowlist.ps1") -AppDir (Join-Path $Out "aidf-service") -OutDir (Join-Path $Out "wdac") }\nWrite-Output "built $Out\aidf-service\aidf-service.exe"
+

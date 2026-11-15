@@ -1,4 +1,4 @@
-#requires -RunAsAdministrator
+﻿#requires -Version 5.1
 <#
 .SYNOPSIS
   Build/deploy a WDAC ENFORCE policy that hash-allows the AIDefender onedir tree.
@@ -12,7 +12,7 @@ param(
     [string]$OutDir = "C:\ProgramData\AIDefender\wdac-enforce",
     [switch]$Deploy
 )
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Stop"\nif ($Deploy -and -not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) { throw "Run as administrator for -Deploy" }
 if (-not (Test-Path $AppDir)) { throw "missing $AppDir" }
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
 $base = Join-Path $OutDir "base.xml"
@@ -31,3 +31,4 @@ if (-not $Deploy) { Write-Output "Not deployed. Review, then -Deploy."; return }
 if ($LASTEXITCODE -ne 0) { throw "CiTool deploy failed: $LASTEXITCODE" }
 & CiTool.exe --refresh
 Write-Output "deployed; reboot required. To roll back: CiTool --remove-policy <PolicyID>."
+
